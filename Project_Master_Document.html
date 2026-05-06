@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>はんちょー AI収益化プロジェクト 計画書＆進捗管理</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#070d18;--surface:#0f1929;--surface2:#162035;--border:#1e3354;
+  --accent:#00c8f0;--green:#10b981;--yellow:#f59e0b;--red:#ef4444;--purple:#a78bfa;
+  --text:#dde6f0;--muted:#5a7190;--mono:'IBM Plex Mono',monospace;--sans:'Noto Sans JP',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.7;}
+
+/* ── Header ── */
+.hdr{background:linear-gradient(135deg,#0a1628 0%,#0f2040 100%);border-bottom:1px solid var(--border);padding:28px 32px 20px;}
+.hdr-inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;}
+.hdr h1{font-family:var(--mono);font-size:18px;color:var(--accent);letter-spacing:.06em;}
+.hdr p{font-size:11px;color:var(--muted);margin-top:4px;}
+.hdr-meta{display:flex;gap:12px;font-family:var(--mono);font-size:11px;}
+.hdr-meta span{background:var(--surface2);border:1px solid var(--border);padding:4px 12px;border-radius:4px;color:var(--accent);}
+
+/* ── Tabs ── */
+.tab-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;display:flex;gap:0;overflow-x:auto;}
+.tab-btn{font-family:var(--mono);font-size:11px;letter-spacing:.08em;padding:14px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:.15s;}
+.tab-btn:hover{color:var(--text);}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab-pane{display:none;max-width:1100px;margin:0 auto;padding:32px;}
+.tab-pane.active{display:block;}
+
+/* ── Components ── */
+.sec{margin-bottom:40px;}
+.sec-title{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:20px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px 24px;margin-bottom:14px;}
+.card h3{font-size:14px;font-weight:700;margin-bottom:8px;}
+.card p,.card li{font-size:13px;color:#8aaec8;line-height:1.8;}
+.card ul{padding-left:18px;}
+.card li{margin-bottom:3px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:640px){.grid2{grid-template-columns:1fr;}}
+
+/* badges */
+.b{display:inline-block;padding:2px 9px;border-radius:20px;font-size:10px;font-family:var(--mono);font-weight:600;margin-right:6px;white-space:nowrap;}
+.b-done{background:rgba(16,185,129,.15);color:var(--green);border:1px solid rgba(16,185,129,.3);}
+.b-ip{background:rgba(0,200,240,.15);color:var(--accent);border:1px solid rgba(0,200,240,.3);}
+.b-todo{background:rgba(167,139,250,.15);color:var(--purple);border:1px solid rgba(167,139,250,.3);}
+.b-warn{background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3);}
+.b-fail{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+.b-hold{background:rgba(100,116,139,.15);color:#94a3b8;border:1px solid rgba(100,116,139,.3);}
+
+/* table */
+.tbl{width:100%;border-collapse:collapse;font-size:12px;}
+.tbl th{background:var(--surface2);color:var(--accent);font-family:var(--mono);font-size:10px;letter-spacing:.1em;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);}
+.tbl td{padding:10px 14px;border-bottom:1px solid rgba(30,51,84,.6);color:#8aaec8;vertical-align:top;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl td:first-child{color:var(--text);font-weight:500;}
+.tbl tr:hover td{background:rgba(255,255,255,.02);}
+
+/* code */
+.code{background:#040a14;border:1px solid var(--border);border-radius:6px;padding:14px 16px;font-family:var(--mono);font-size:11px;color:#7dd3fc;margin:10px 0;overflow-x:auto;white-space:pre;}
+
+/* highlight */
+.hl{background:rgba(0,200,240,.05);border:1px solid rgba(0,200,240,.18);border-radius:8px;padding:14px 18px;margin:12px 0;}
+.hl p{font-size:13px;color:#7dd3fc;}
+.hl-warn{background:rgba(245,158,11,.05);border-color:rgba(245,158,11,.2);}
+.hl-warn p{color:#fbbf24;}
+
+/* URL chip */
+.url-chip{display:inline-block;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:6px 14px;font-family:var(--mono);font-size:11px;color:var(--accent);margin:4px 4px 4px 0;word-break:break-all;}
+
+/* Gantt */
+.gantt{overflow-x:auto;}
+.gantt table{min-width:700px;}
+.gantt th{background:var(--surface2);color:var(--muted);font-family:var(--mono);font-size:10px;padding:8px 10px;border:1px solid var(--border);text-align:center;}
+.gantt td{padding:6px 10px;border:1px solid rgba(30,51,84,.5);font-size:12px;}
+.gantt td.bar-done{background:rgba(16,185,129,.25);color:var(--green);}
+.gantt td.bar-ip{background:rgba(0,200,240,.2);color:var(--accent);}
+.gantt td.bar-todo{background:rgba(167,139,250,.1);color:var(--purple);}
+.gantt td.bar-empty{background:transparent;}
+
+/* Arch SVG */
+.arch{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:28px;margin-bottom:16px;overflow-x:auto;}
+
+/* Alert box */
+.alert{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:8px;padding:14px 18px;margin-bottom:16px;}
+.alert p{font-size:13px;color:#fca5a5;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-inner">
+    <div>
+      <h1>はんちょー AIコンテンツ自動生成＆収益化 プロジェクト</h1>
+      <p>計画書 ＋ 進捗管理 ／ AI引き継ぎ共有ドキュメント ／ 最終更新：2026-05-07</p>
+    </div>
+    <div class="hdr-meta">
+      <span>開始：2026-05-03</span>
+      <span>更新：2026-05-07</span>
+      <span>ステータス：🟢 運用中</span>
+    </div>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab(0)">00 ／ AI引き継ぎサマリー</button>
+  <button class="tab-btn" onclick="showTab(1)">01 ／ 目的・ゴール</button>
+  <button class="tab-btn" onclick="showTab(2)">02 ／ スケジュール</button>
+  <button class="tab-btn" onclick="showTab(3)">03 ／ システム構成</button>
+  <button class="tab-btn" onclick="showTab(4)">04 ／ 作業ログ</button>
+  <button class="tab-btn" onclick="showTab(5)">05 ／ 課題・改善台帳</button>
+  <button class="tab-btn" onclick="showTab(6)">06 ／ リソース・リンク集</button>
+</div>
+
+<!-- ═══════════════════════════════════════ TAB 0 ═══════════ -->
+<div class="tab-pane active" id="tab0">
+
+  <div class="sec">
+    <div class="sec-title">現在地（2026-05-07時点）</div>
+    <div class="hl">
+      <p>AI記事自動生成パイプライン（Gemini+Python+Git）とV-Consultant環境（VC Client+veadotube+OBS）の構築が完了。Coconala（構築代行15,000円〜）・Coconalaコンテンツ（神設定500円）・note（980円有料記事）の3媒体で受注待ち状態。パイプラインは毎朝08:00自動稼働中。</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">直近アクション（次のAIが引き継ぐべきこと）</div>
+    <table class="tbl">
+      <tr><th>優先度</th><th>アクション</th><th>備考</th></tr>
+      <tr><td><span class="b b-fail">最優先</span></td><td>Coconala問い合わせ対応</td><td>来たら即対応。購入前メッセージ必須設定済み</td></tr>
+      <tr><td><span class="b b-warn">今週中</span></td><td>note 3本目の記事公開</td><td>Coconala導線強化。週1ペース目標</td></tr>
+      <tr><td><span class="b b-warn">今週中</span></td><td>Coconala振込先口座の登録確認</td><td>受注前に完了させておく</td></tr>
+      <tr><td><span class="b b-todo">余裕あれば</span></td><td>.gitignoreに__pycache__を追加</td><td>Gitに不要ファイルが入らないよう</td></tr>
+      <tr><td><span class="b b-todo">余裕あれば</span></td><td>Blogger自動投稿のパイプライン組み込み</td><td>AdSense収益化の布石</td></tr>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">重要な制約・注意事項</div>
+    <div class="alert">
+      <p>⚠️ <strong>Git制約：</strong>iCloud・OneDrive・Google Drive上でGitリポジトリを運用してはいけない。同期競合が発生する。リポジトリは必ず C:\Workspace\ 配下に置くこと。OneDriveはスタートアップ無効化済み。</p>
+    </div>
+    <div class="alert">
+      <p>⚠️ <strong>Python 3.14制約：</strong>sys.stdout.detach()が動作変更されているため、codecs.getwriter()は使用禁止。代わりにsys.stdout.reconfigure(encoding='utf-8')を使用すること。</p>
+    </div>
+    <div class="alert">
+      <p>⚠️ <strong>GPU制約：</strong>このPCのGPUはAMD Radeon（統合GPU・VRAM377MB）。CUDAが使用不可。VC Clientの声質変換はCPUモードで動作するため遅延が大きい。購入者PCがNVIDIA GPUなら問題なし。</p>
+    </div>
+    <div class="hl">
+      <p>✅ <strong>出力ルール（このプロジェクト共通）：</strong>手順書は「目的→As-Is/To-Be→概要手順→詳細手順→補足」の5構成で統一。スクリプトは常に全選択貼り替え形式で提供。変更点は変更履歴（Tab 03）に追記。</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">完成済みアセット一覧</div>
+    <table class="tbl">
+      <tr><th>アセット</th><th>状態</th><th>場所</th></tr>
+      <tr><td>AI記事生成パイプライン</td><td><span class="b b-done">✅ 稼働中</span></td><td>C:\Workspace\_Shared_Scripts\</td></tr>
+      <tr><td>V-Consultant環境（アバター＋OBS）</td><td><span class="b b-done">✅ 完了</span></td><td>ローカルPC</td></tr>
+      <tr><td>Coconala構築代行サービス</td><td><span class="b b-done">✅ 公開中</span></td><td>coconala.com/services/4200834</td></tr>
+      <tr><td>Coconalaコンテンツ（500円）</td><td><span class="b b-done">✅ 公開中</span></td><td>coconalaコンテンツマーケット</td></tr>
+      <tr><td>note記事（無料・導線用）</td><td><span class="b b-done">✅ 公開中</span></td><td>note.com/quiet_knot6239</td></tr>
+      <tr><td>note記事（有料980円）</td><td><span class="b b-done">✅ 公開中</span></td><td>note.com/quiet_knot6239</td></tr>
+      <tr><td>X（@aitsumamigui）bio・導線</td><td><span class="b b-done">✅ 設定済み</span></td><td>x.com/aitsumamigui</td></tr>
+      <tr><td>GitHubナレッジベース</td><td><span class="b b-done">✅ 稼働中</span></td><td>github.com/fooueen/hancho-kb</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ TAB 1 ═══════════ -->
+<div class="tab-pane" id="tab1">
+
+  <div class="sec">
+    <div class="sec-title">プロジェクト背景</div>
+    <div class="card">
+      <p>今月ちょっとお金がない状況から出発。「手っ取り早く稼ぐオンラインコンテンツを作りたい」という直接的なニーズに対し、既存スキル（DXコンサル・PMO・AI活用経験）を最大限活かした収益化パイプラインを構築する。完璧を求めず、打席に立ちながら経験値を積む方針。</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">目的</div>
+    <div class="card">
+      <h3>直近目的（今月）</h3>
+      <p>最短で数万円の収益を獲得しながら、成功・失敗体験を積む。Coconala・note・X の3媒体を使った収益化パイプラインを実証する。</p>
+    </div>
+    <div class="card">
+      <h3>中長期目的</h3>
+      <p>AI自動生成コンテンツ × DXコンサルの専門性 × V-Consultant環境を掛け合わせ、月5〜20万円規模の副収入源を確立する。Anthropic Solutions Architect / Applied AI 方向のキャリア転換を見据えた実績・ポートフォリオとしても機能させる。</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">As-Is → To-Be</div>
+    <table class="tbl">
+      <tr><th>項目</th><th>As-Is（開始時点）</th><th>To-Be（目指す状態）</th><th>達成状況</th></tr>
+      <tr><td>記事生成</td><td>手動・不定期</td><td>毎日ゼロ作業で自動生成・GitHub保存</td><td><span class="b b-done">✅</span></td></tr>
+      <tr><td>収益化導線</td><td>なし</td><td>X→note→Coconalaの3層ファネル</td><td><span class="b b-done">✅</span></td></tr>
+      <tr><td>商品ラインナップ</td><td>なし</td><td>500円〜40,000円の5商品</td><td><span class="b b-done">✅</span></td></tr>
+      <tr><td>アバター配信</td><td>顔出しのみ</td><td>AIアバター＋声質変換でZoom配信</td><td><span class="b b-done">✅（声変換は遅延あり）</span></td></tr>
+      <tr><td>月次収益</td><td>0円</td><td>今月：数万円、中期：月5〜20万円</td><td><span class="b b-ip">🔄 受注待ち</span></td></tr>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">KPI</div>
+    <table class="tbl">
+      <tr><th>指標</th><th>目標</th><th>現状</th></tr>
+      <tr><td>Coconala受注</td><td>今月1〜3件</td><td>0件（出品済み・受注待ち）</td></tr>
+      <tr><td>note記事数</td><td>週1本</td><td>2本公開済み</td></tr>
+      <tr><td>Xフォロワー</td><td>月+50人</td><td>6フォロワー（運用中）</td></tr>
+      <tr><td>AI記事自動生成</td><td>毎日1本</td><td>稼働中（毎朝08:00）</td></tr>
+      <tr><td>今月収益合計</td><td>数万円</td><td>0円（受注待ち）</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ TAB 2 ═══════════ -->
+<div class="tab-pane" id="tab2">
+
+  <div class="sec">
+    <div class="sec-title">フェーズ線表</div>
+    <div class="gantt">
+      <table class="tbl" style="min-width:700px;">
+        <tr>
+          <th style="width:200px;">フェーズ</th>
+          <th>5/3</th><th>5/4</th><th>5/5</th><th>5/6</th><th>5/7</th>
+          <th>5/8〜14</th><th>5/15〜21</th><th>5/22〜31</th>
+        </tr>
+        <tr>
+          <td>0. 戦略・販売設計</td>
+          <td class="bar-done">✅</td><td class="bar-empty"></td><td class="bar-empty"></td><td class="bar-empty"></td><td class="bar-empty"></td>
+          <td class="bar-empty"></td><td class="bar-empty"></td><td class="bar-empty"></td>
+        </tr>
+        <tr>
+          <td>1. AI記事生成パイプライン</td>
+          <td class="bar-done">✅</td><td class="bar-done">✅</td><td class="bar-done">✅</td><td class="bar-empty"></td><td class="bar-done">✅</td>
+          <td class="bar-empty"></td><td class="bar-empty"></td><td class="bar-empty"></td>
+        </tr>
+        <tr>
+          <td>2. V-Consultant環境構築</td>
+          <td class="bar-empty"></td><td class="bar-empty"></td><td class="bar-done">✅</td><td class="bar-done">✅</td><td class="bar-empty"></td>
+          <td class="bar-empty"></td><td class="bar-empty"></td><td class="bar-empty"></td>
+        </tr>
+        <tr>
+          <td>3. 収益化チャネル整備</td>
+          <td class="bar-done">✅</td><td class="bar-empty"></td><td class="bar-empty"></td><td class="bar-done">✅</td><td class="bar-done">✅</td>
+          <td class="bar-empty"></td><td class="bar-empty"></td><td class="bar-empty"></td>
+        </tr>
+        <tr>
+          <td>4. 運用・コンテンツ継続</td>
+          <td class="bar-empty"></td><td class="bar-empty"></td><td class="bar-empty"></td><td class="bar-empty"></td><td class="bar-ip">🔄</td>
+          <td class="bar-ip">🔄</td><td class="bar-ip">🔄</td><td class="bar-ip">🔄</td>
+        </tr>
+        <tr>
+          <td>5. 初受注・実績獲得</td>
+          <td class="bar-empty"></td><td class="bar-empty"></td><td class="bar-empty"></td><td class="bar-empty"></td><td class="bar-todo">📋</td>
+          <td class="bar-todo">📋</td><td class="bar-todo">📋</td><td class="bar-todo">📋</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">フェーズ・マイルストーン一覧</div>
+    <table class="tbl">
+      <tr><th>フェーズ</th><th>内容</th><th>主要タスク</th><th>状態</th></tr>
+      <tr>
+        <td>Phase 0<br>戦略設計</td>
+        <td>収益化戦略の確定と商品設計</td>
+        <td>3層ファネル設計、価格設定、Coconala出品</td>
+        <td><span class="b b-done">✅ 完了</span></td>
+      </tr>
+      <tr>
+        <td>Phase 1<br>パイプライン</td>
+        <td>AI記事自動生成システム構築</td>
+        <td>Python/PS1スクリプト、タスクスケジューラ、topics.txt、リトライ機能</td>
+        <td><span class="b b-done">✅ 完了</span></td>
+      </tr>
+      <tr>
+        <td>Phase 2<br>V-Consultant</td>
+        <td>顔出し不要コンサル環境構築</td>
+        <td>アバター生成、VC Client、veadotube、OBS、Zoom確認</td>
+        <td><span class="b b-done">✅ 完了</span></td>
+      </tr>
+      <tr>
+        <td>Phase 3<br>チャネル整備</td>
+        <td>収益化導線の構築</td>
+        <td>note記事2本、Coconalaコンテンツ500円、X bio設定</td>
+        <td><span class="b b-done">✅ 完了</span></td>
+      </tr>
+      <tr>
+        <td>Phase 4<br>運用継続</td>
+        <td>コンテンツ量産・集客強化</td>
+        <td>note週1本、X毎日投稿、パイプライン自動運用</td>
+        <td><span class="b b-ip">🔄 進行中</span></td>
+      </tr>
+      <tr>
+        <td>Phase 5<br>初受注</td>
+        <td>Coconalaで初受注・初収益</td>
+        <td>問い合わせ対応、納品、レビュー獲得</td>
+        <td><span class="b b-todo">📋 未着手</span></td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ TAB 3 ═══════════ -->
+<div class="tab-pane" id="tab3">
+
+  <div class="sec">
+    <div class="sec-title">環境制約（必読）</div>
+    <table class="tbl">
+      <tr><th>制約項目</th><th>内容</th><th>対処方針</th></tr>
+      <tr><td>OS</td><td>Windows 11、PowerShell 5.1</td><td>headコマンド不使用。Select-Object -Last Nで代替</td></tr>
+      <tr><td>Python</td><td>Python 3.14.4</td><td>sys.stdout.detach()禁止。reconfigure()を使用</td></tr>
+      <tr><td>GPU</td><td>AMD Radeon統合GPU（VRAM377MB）。CUDA不可</td><td>VC ClientはCPUモード。遅延大。購入者PC依存</td></tr>
+      <tr><td>Git管理場所</td><td>C:\Workspace\ 配下のみ</td><td>iCloud/OneDrive/Google Drive上は絶対に置かない</td></tr>
+      <tr><td>OneDrive</td><td>スタートアップ無効化済み</td><td>Git競合防止のため再有効化しない</td></tr>
+      <tr><td>文字コード</td><td>PowerShell 5.1のデフォルトはShift-JIS</td><td>PS1内に日本語文字列を直書きしない。外部ファイル参照</td></tr>
+      <tr><td>Gemini API</td><td>深夜帯に503エラーが発生しやすい</td><td>リトライ機能（最大3回・30秒間隔）で自動対処</td></tr>
+      <tr><td>Cドライブ直下</td><td>管理者権限が必要</td><td>ログ・一時ファイルはC:\Workspace\配下に統一</td></tr>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">システム構成図</div>
+    <div class="arch">
+      <svg viewBox="0 0 860 560" xmlns="http://www.w3.org/2000/svg" font-family="'IBM Plex Mono',monospace">
+        <defs>
+          <marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+            <path d="M1 2L8 5L1 8" fill="none" stroke="#00c8f0" stroke-width="1.8" stroke-linecap="round"/>
+          </marker>
+          <marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+            <path d="M1 2L8 5L1 8" fill="none" stroke="#a78bfa" stroke-width="1.8" stroke-linecap="round"/>
+          </marker>
+          <marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+            <path d="M1 2L8 5L1 8" fill="none" stroke="#10b981" stroke-width="1.8" stroke-linecap="round"/>
+          </marker>
+        </defs>
+
+        <!-- TRIGGER -->
+        <rect x="10" y="20" width="170" height="110" rx="7" fill="#0f1929" stroke="#1e3354"/>
+        <text x="95" y="40" fill="#5a7190" font-size="9" text-anchor="middle" letter-spacing="1">TRIGGER</text>
+        <rect x="22" y="50" width="146" height="28" rx="4" fill="#070d18" stroke="#1e3354"/>
+        <text x="95" y="68" fill="#8aaec8" font-size="10" text-anchor="middle">⏰ タスクスケジューラ 08:00</text>
+        <rect x="22" y="86" width="146" height="28" rx="4" fill="#070d18" stroke="#1e3354"/>
+        <text x="95" y="104" fill="#8aaec8" font-size="10" text-anchor="middle">⌨ Shift+Alt+G 手動実行</text>
+
+        <!-- Arrow: Trigger→PS1 -->
+        <line x1="180" y1="75" x2="228" y2="75" stroke="#00c8f0" stroke-width="1.5" marker-end="url(#a1)"/>
+
+        <!-- PS1 -->
+        <rect x="230" y="20" width="180" height="110" rx="7" fill="#0f1929" stroke="#00c8f0" stroke-width="1.5"/>
+        <text x="320" y="40" fill="#00c8f0" font-size="9" text-anchor="middle" letter-spacing="1">CONTROLLER</text>
+        <text x="320" y="58" fill="#7dd3fc" font-size="10" text-anchor="middle">Auto-GenerateAndPush.ps1</text>
+        <text x="320" y="74" fill="#5a7190" font-size="9" text-anchor="middle">topics.txtからトピック選択</text>
+        <text x="320" y="88" fill="#5a7190" font-size="9" text-anchor="middle">Python呼び出し</text>
+        <text x="320" y="102" fill="#5a7190" font-size="9" text-anchor="middle">Git add/commit/push・ログ管理</text>
+
+        <!-- Arrow: PS1→Python -->
+        <line x1="320" y1="130" x2="320" y2="168" stroke="#00c8f0" stroke-width="1.5" marker-end="url(#a1)"/>
+
+        <!-- Python -->
+        <rect x="230" y="170" width="180" height="100" rx="7" fill="#0f1929" stroke="#10b981" stroke-width="1.5"/>
+        <text x="320" y="190" fill="#10b981" font-size="9" text-anchor="middle" letter-spacing="1">AI GENERATOR</text>
+        <text x="320" y="208" fill="#7dd3fc" font-size="10" text-anchor="middle">generate_ai_content.py</text>
+        <text x="320" y="224" fill="#5a7190" font-size="9" text-anchor="middle">Gemini API呼び出し</text>
+        <text x="320" y="238" fill="#5a7190" font-size="9" text-anchor="middle">リトライ最大3回・Markdown生成</text>
+        <text x="320" y="252" fill="#5a7190" font-size="9" text-anchor="middle">00_Inbox/ に保存</text>
+
+        <!-- Arrow: Python→Gemini -->
+        <line x1="410" y1="220" x2="458" y2="220" stroke="#10b981" stroke-width="1.5" marker-end="url(#a3)"/>
+
+        <!-- Gemini -->
+        <rect x="460" y="185" width="150" height="70" rx="7" fill="#0f1929" stroke="#10b981"/>
+        <text x="535" y="210" fill="#10b981" font-size="9" text-anchor="middle" letter-spacing="1">GEMINI API</text>
+        <text x="535" y="228" fill="#5a7190" font-size="9" text-anchor="middle">gemini-2.5-flash</text>
+        <text x="535" y="244" fill="#5a7190" font-size="9" text-anchor="middle">Markdown生成</text>
+
+        <!-- Arrow: Python→00_Inbox -->
+        <line x1="320" y1="270" x2="320" y2="308" stroke="#00c8f0" stroke-width="1.5" marker-end="url(#a1)"/>
+
+        <!-- Local storage -->
+        <rect x="140" y="310" width="360" height="85" rx="7" fill="#0f1929" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="320" y="330" fill="#a78bfa" font-size="9" text-anchor="middle" letter-spacing="1">LOCAL STORAGE ／ C:\Workspace\hancho-kb\</text>
+        <rect x="155" y="340" width="100" height="40" rx="4" fill="#070d18" stroke="#1e3354"/>
+        <text x="205" y="365" fill="#8aaec8" font-size="10" text-anchor="middle">00_Inbox/</text>
+        <rect x="265" y="340" width="100" height="40" rx="4" fill="#070d18" stroke="#1e3354"/>
+        <text x="315" y="365" fill="#8aaec8" font-size="10" text-anchor="middle">Obsidian Vault</text>
+        <rect x="375" y="340" width="110" height="40" rx="4" fill="#070d18" stroke="#1e3354"/>
+        <text x="430" y="365" fill="#8aaec8" font-size="10" text-anchor="middle">30_Resources/</text>
+
+        <!-- Arrow: Local→GitHub -->
+        <line x1="320" y1="395" x2="320" y2="433" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#a2)"/>
+
+        <!-- GitHub -->
+        <rect x="200" y="435" width="240" height="50" rx="7" fill="#0f1929" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="320" y="456" fill="#a78bfa" font-size="9" text-anchor="middle" letter-spacing="1">GITHUB</text>
+        <text x="320" y="473" fill="#5a7190" font-size="9" text-anchor="middle">fooueen/hancho-kb ／ Markdown管理</text>
+
+        <!-- topics.txt -->
+        <rect x="540" y="310" width="150" height="45" rx="6" fill="#070d18" stroke="#1e3354"/>
+        <text x="615" y="330" fill="#8aaec8" font-size="9" text-anchor="middle">topics.txt</text>
+        <text x="615" y="346" fill="#5a7190" font-size="8" text-anchor="middle">28トピック 日付ベース選択</text>
+        <line x1="540" y1="332" x2="500" y2="250" stroke="#1e3354" stroke-width="1" stroke-dasharray="4 3"/>
+
+        <!-- logs -->
+        <rect x="540" y="365" width="150" height="45" rx="6" fill="#070d18" stroke="#1e3354"/>
+        <text x="615" y="385" fill="#8aaec8" font-size="9" text-anchor="middle">logs/</text>
+        <text x="615" y="401" fill="#5a7190" font-size="8" text-anchor="middle">RunLog_*.txt 実行記録</text>
+        <line x1="540" y1="382" x2="500" y2="270" stroke="#1e3354" stroke-width="1" stroke-dasharray="4 3"/>
+
+        <!-- Monetization -->
+        <text x="80" y="510" fill="#5a7190" font-size="9" text-anchor="middle" letter-spacing="1">MONETIZATION</text>
+        <rect x="10" y="518" width="120" height="34" rx="5" fill="#0f1929" stroke="#1e3354"/>
+        <text x="70" y="539" fill="#8aaec8" font-size="9" text-anchor="middle">X @aitsumamigui</text>
+        <rect x="140" y="518" width="120" height="34" rx="5" fill="#0f1929" stroke="#1e3354"/>
+        <text x="200" y="539" fill="#8aaec8" font-size="9" text-anchor="middle">note.com</text>
+        <rect x="270" y="518" width="120" height="34" rx="5" fill="#0f1929" stroke="#a78bfa"/>
+        <text x="330" y="539" fill="#a78bfa" font-size="9" text-anchor="middle">Coconala</text>
+        <line x1="70" y1="518" x2="70" y2="500" stroke="#1e3354" stroke-width="1"/>
+        <line x1="200" y1="518" x2="200" y2="500" stroke="#1e3354" stroke-width="1"/>
+        <line x1="330" y1="518" x2="330" y2="500" stroke="#a78bfa" stroke-width="1"/>
+        <line x1="70" y1="500" x2="330" y2="500" stroke="#1e3354" stroke-width="1"/>
+        <line x1="200" y1="500" x2="200" y2="490" stroke="#1e3354" stroke-width="1" stroke-dasharray="4 3"/>
+        <line x1="200" y1="490" x2="320" y2="485" stroke="#1e3354" stroke-width="1" stroke-dasharray="4 3"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">コンポーネント役割一覧</div>
+    <table class="tbl">
+      <tr><th>コンポーネント</th><th>役割</th><th>パス / URL</th></tr>
+      <tr><td>Auto-GenerateAndPush.ps1</td><td>制御役。トピック選択→Python起動→Git同期→ログ管理</td><td>C:\Workspace\_Shared_Scripts\</td></tr>
+      <tr><td>generate_ai_content.py</td><td>Gemini APIでMarkdown生成・00_Inboxに保存</td><td>C:\Workspace\_Shared_Scripts\</td></tr>
+      <tr><td>topics.txt</td><td>28種トピック一覧。日付%28でローテーション</td><td>C:\Workspace\_Shared_Scripts\</td></tr>
+      <tr><td>logs/</td><td>実行ログ・エラー記録</td><td>C:\Workspace\_Shared_Scripts\logs\</td></tr>
+      <tr><td>hancho-kb（ローカル）</td><td>Obsidian Vault。生成記事・ナレッジ管理</td><td>C:\Workspace\hancho-kb\</td></tr>
+      <tr><td>hancho-kb（GitHub）</td><td>バージョン管理・バックアップ</td><td>github.com/fooueen/hancho-kb</td></tr>
+      <tr><td>VC Client（w-okada版）</td><td>リアルタイム声質変換（地声→AIボイス）</td><td>start_http.bat から起動必須</td></tr>
+      <tr><td>VB-CABLE</td><td>仮想オーディオケーブル。VC Client出力→veadotube入力</td><td>Windowsオーディオ設定</td></tr>
+      <tr><td>veadotube mini</td><td>音量検知→口開閉画像切り替え（口パク）</td><td>ローカル実行</td></tr>
+      <tr><td>OBS Studio</td><td>映像合成・クロマキー・仮想カメラ出力</td><td>ローカル実行</td></tr>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">スクリプト変更履歴</div>
+    <table class="tbl">
+      <tr><th>日付</th><th>ファイル</th><th>変更内容</th></tr>
+      <tr><td>2026-05-03</td><td>generate_ai_content.py</td><td>初版作成（Gemini API・UTF-8設定・YAMLフロントマター）</td></tr>
+      <tr><td>2026-05-03</td><td>generate_ai_content.py</td><td>プロンプトをX用3行＋note用2セクション構成に変更</td></tr>
+      <tr><td>2026-05-03</td><td>generate_ai_content.py</td><td>X用プロンプトを「現場感のある文体」に強化</td></tr>
+      <tr><td>2026-05-03</td><td>generate_ai_content.py</td><td>YAMLフロントマターのコードブロック出力を修正（---形式に統一）</td></tr>
+      <tr><td>2026-05-07</td><td>Auto-GenerateAndPush.ps1</td><td>トピック固定値→topics.txt日付ベースローテーションに変更</td></tr>
+      <tr><td>2026-05-07</td><td>generate_ai_content.py</td><td>503エラー対応：最大3回・30秒間隔のリトライ機能を追加</td></tr>
+      <tr><td>2026-05-07</td><td>generate_ai_content.py</td><td>Python 3.14対応：sys.stdout.detach()→reconfigure()に変更（サイレント失敗を解消）</td></tr>
+      <tr><td>2026-05-07</td><td>topics.txt</td><td>新規作成：28種トピック一覧（DX・副業・V-Consultant・自動化・マーケ系）</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ TAB 4 ═══════════ -->
+<div class="tab-pane" id="tab4">
+  <div class="sec">
+    <div class="sec-title">作業ログ</div>
+    <table class="tbl">
+      <tr><th>日付</th><th>フェーズ</th><th>実施内容</th><th>成果・成果物</th><th>課題No</th></tr>
+      <tr>
+        <td>2026-05-03</td>
+        <td>Phase 0〜1</td>
+        <td>AI記事生成パイプライン引き継ぎ（Geminiから）。Coconala出品（梅15,000円〜）。note無料記事公開。X bio・導線設定</td>
+        <td>Coconala出品完了（ID:4200834）。note初記事公開。X→note→Coconala導線完成</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>2026-05-03</td>
+        <td>Phase 1</td>
+        <td>generate_ai_content.pyのプロンプトを「つまみぐい仕様」に改修（X用3行＋note用解説記事の2セクション構成）</td>
+        <td>generate_ai_content.py v2。YAMLフロントマター修正（---形式）</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>2026-05-05</td>
+        <td>Phase 2</td>
+        <td>V-Consultantプロジェクト引き継ぎ。veadotube mini設定手順書作成・git push。システム全体図HTML作成・git push</td>
+        <td>veadotube_setup_guide.md、V_Consultant_System_Overview.html（GitHub保存済み）</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>2026-05-06</td>
+        <td>Phase 2</td>
+        <td>差分画像（口開き）作成（Photopea挫折→Adobe Fireflyで代替）。veadotube口パク動作確認。OBSクロマキー設定。Zoom仮想カメラ出力確認。PC最適化（スタートアップ無効化10件）</td>
+        <td>V-Consultant環境完成。Zoom上でAIアバター表示確認済み。V_Consultant_Task_List.csv・Project_Definition.html更新</td>
+        <td>I-001, I-002</td>
+      </tr>
+      <tr>
+        <td>2026-05-06</td>
+        <td>Phase 3</td>
+        <td>Coconalaコンテンツ出品（500円・神設定まとめ記事）。note有料記事公開（980円・V-Consultant全手順）。X投稿・拡散</td>
+        <td>5商品体制完成（500円〜40,000円）</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>2026-05-07</td>
+        <td>Phase 1</td>
+        <td>パイプライン改善：トピックローテーション実装（topics.txt 28種）・リトライ機能追加・Python 3.14対応（sys.stdout修正）</td>
+        <td>generate_ai_content.py v3、Auto-GenerateAndPush.ps1 v2、topics.txt新規作成。動作確認完了・git push済み</td>
+        <td>I-003, I-004, I-005, I-006</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ TAB 5 ═══════════ -->
+<div class="tab-pane" id="tab5">
+  <div class="sec">
+    <div class="sec-title">課題・改善台帳</div>
+    <table class="tbl">
+      <tr><th>No</th><th>ステータス</th><th>課題内容</th><th>原因</th><th>対処</th><th>再発防止・改善案</th></tr>
+      <tr>
+        <td>I-001</td>
+        <td><span class="b b-done">✅ 解決</span></td>
+        <td>差分画像（口開き）作成でPhotopeaに難航。操作が複雑で挫折</td>
+        <td>PhotopeaのレイヤーUI・透過合成の操作難度が高い</td>
+        <td>Adobe Fireflyで口開きバージョンを再生成（same character, open mouth プロンプト）</td>
+        <td>今後のアバター作成はAdobe Fireflyを第一選択とする。Photopeaは細部修正専用</td>
+      </tr>
+      <tr>
+        <td>I-002</td>
+        <td><span class="b b-hold">⏸ 保留</span></td>
+        <td>VC Client声質変換の遅延が大きく実用困難（CPUモード）</td>
+        <td>PCがAMD統合GPU（VRAM377MB）のためCUDA不可</td>
+        <td>CPUモードで運用継続。購入者PCがNVIDIA GPUなら問題なし</td>
+        <td>出品文に「推奨環境：NVIDIA GPU搭載Windows PC」を明記済み。NVIDIA GPU購入は将来検討</td>
+      </tr>
+      <tr>
+        <td>I-003</td>
+        <td><span class="b b-done">✅ 解決</span></td>
+        <td>PS1スクリプトに日本語トピック配列を直書きしたところParsExceptionが発生</td>
+        <td>PowerShell 5.1は日本語文字列の配列リテラルでエンコーディング問題が発生しやすい</td>
+        <td>topics.txtとして外部ファイル化。Get-Contentで読み込む構成に変更</td>
+        <td>PS1スクリプトには日本語文字列を直書きしない。テキストデータは外部ファイル参照</td>
+      </tr>
+      <tr>
+        <td>I-004</td>
+        <td><span class="b b-done">✅ 解決</span></td>
+        <td>Pythonスクリプトがサイレント失敗（Exit:0・ファイル未生成・ログなし）</td>
+        <td>Python 3.14でsys.stdout.detach()の挙動変更。stdout無効化→logging含む全処理が静かに終了</td>
+        <td>sys.stdout.detach()+codecs.getwriter()→sys.stdout.reconfigure(encoding='utf-8')に変更</td>
+        <td>Pythonバージョンアップ時はstdout操作の動作確認を必ず実施。2>&1でstderrも捕捉したテストを実施</td>
+      </tr>
+      <tr>
+        <td>I-005</td>
+        <td><span class="b b-done">✅ 解決</span></td>
+        <td>ログファイルのパーミッションエラー（C:\test_log.txt）</td>
+        <td>Cドライブ直下への書き込みは管理者権限が必要</td>
+        <td>ログパスをC:\Workspace\_Shared_Scripts\logs\配下に統一</td>
+        <td>ログ・一時ファイルは必ずC:\Workspace\配下を使用する</td>
+      </tr>
+      <tr>
+        <td>I-006</td>
+        <td><span class="b b-done">✅ 対処済み</span></td>
+        <td>Gemini API 503エラー連続発生（深夜帯）</td>
+        <td>深夜0時台のAPI高負荷（一時的混雑）</td>
+        <td>リトライ機能（最大3回・30秒間隔）を実装。2〜3回目で成功</td>
+        <td>深夜の手動実行時は503が出やすいことを認識。タスクスケジューラ08:00実行は問題なし</td>
+      </tr>
+      <tr>
+        <td>I-007</td>
+        <td><span class="b b-todo">📋 改善候補</span></td>
+        <td>生成失敗時に気づけない（タスクスケジューラ実行時）</td>
+        <td>画面を見ていないため3回リトライ失敗でも気づかない</td>
+        <td>—（未対処）</td>
+        <td>n8nまたはPowerShellのSend-MailMessageで失敗通知を実装する</td>
+      </tr>
+      <tr>
+        <td>I-008</td>
+        <td><span class="b b-todo">📋 改善候補</span></td>
+        <td>プロンプト文がPythonスクリプトに直書きされており変更しにくい</td>
+        <td>設計上の問題。プロンプト変更のたびにPythonを編集する必要がある</td>
+        <td>—（未対処）</td>
+        <td>prompt_template.txtとして外部ファイル化。Pythonはロジックのみに分離</td>
+      </tr>
+      <tr>
+        <td>I-009</td>
+        <td><span class="b b-todo">📋 改善候補</span></td>
+        <td>APIキーがPS1スクリプトにフォールバック値として直書きされている</td>
+        <td>設計上の問題</td>
+        <td>—（未対処）</td>
+        <td>Windowsのシステム環境変数にGEMINI_API_KEYを登録し、スクリプトから削除する</td>
+      </tr>
+      <tr>
+        <td>I-010</td>
+        <td><span class="b b-todo">📋 改善候補</span></td>
+        <td>__pycacheフォルダがGitに含まれる可能性がある</td>
+        <td>.gitignoreに未追加</td>
+        <td>—（未対処）</td>
+        <td>.gitignoreに __pycache__/ *.pyc *.pyo を追加する</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ TAB 6 ═══════════ -->
+<div class="tab-pane" id="tab6">
+
+  <div class="sec">
+    <div class="sec-title">収益化チャネル</div>
+    <table class="tbl">
+      <tr><th>媒体</th><th>商品名</th><th>価格</th><th>URL</th></tr>
+      <tr><td>Coconala（サービス）</td><td>AIアバター×声質変換環境の構築代行（梅）</td><td>15,000円</td><td><span class="url-chip">coconala.com/services/4200834</span></td></tr>
+      <tr><td>Coconala（サービス）</td><td>同上（竹・アバター制作込み）</td><td>25,000円</td><td><span class="url-chip">coconala.com/services/4200834</span></td></tr>
+      <tr><td>Coconala（サービス）</td><td>同上（松・リモートサポート込み）</td><td>40,000円</td><td><span class="url-chip">coconala.com/services/4200834</span></td></tr>
+      <tr><td>Coconala（コンテンツ）</td><td>神設定まとめ記事</td><td>500円</td><td><span class="url-chip">coconala.com/contents_market/</span></td></tr>
+      <tr><td>note（有料記事）</td><td>V-Consultant構築全手順書</td><td>980円</td><td><span class="url-chip">note.com/quiet_knot6239</span></td></tr>
+      <tr><td>note（無料記事・導線）</td><td>量産型AI副業はもう稼げない</td><td>無料</td><td><span class="url-chip">note.com/quiet_knot6239/n/ndc134216eb16</span></td></tr>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">SNSアカウント</div>
+    <table class="tbl">
+      <tr><th>媒体</th><th>アカウント</th><th>役割</th></tr>
+      <tr><td>X（Twitter）</td><td>@aitsumamigui</td><td>集客・認知獲得。AIつまみぐい毎日3行投稿</td></tr>
+      <tr><td>note</td><td>quiet_knot6239</td><td>信頼形成・Coconala導線</td></tr>
+      <tr><td>Coconala</td><td>—</td><td>サービス・コンテンツ販売</td></tr>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">コード・ファイルリソース</div>
+    <table class="tbl">
+      <tr><th>ファイル</th><th>場所</th><th>用途</th></tr>
+      <tr><td>Auto-GenerateAndPush.ps1</td><td>C:\Workspace\_Shared_Scripts\</td><td>パイプライン制御スクリプト</td></tr>
+      <tr><td>generate_ai_content.py</td><td>C:\Workspace\_Shared_Scripts\</td><td>Gemini APIコンテンツ生成スクリプト</td></tr>
+      <tr><td>topics.txt</td><td>C:\Workspace\_Shared_Scripts\</td><td>28種トピック一覧</td></tr>
+      <tr><td>hancho-kb（GitHub）</td><td>github.com/fooueen/hancho-kb</td><td>ナレッジベース・生成記事・手順書</td></tr>
+      <tr><td>GEMINI_API_KEY</td><td>Auto-GenerateAndPush.ps1内（要環境変数化）</td><td>Gemini API認証キー</td></tr>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">外部ツール</div>
+    <table class="tbl">
+      <tr><th>ツール</th><th>用途</th><th>費用</th><th>備考</th></tr>
+      <tr><td>Google Gemini API（gemini-2.5-flash）</td><td>AI記事生成</td><td>従量課金（無料枠あり）</td><td>深夜帯503多発。リトライ実装済み</td></tr>
+      <tr><td>VC Client（w-okada版）</td><td>リアルタイム声質変換</td><td>無料</td><td>start_http.batから起動必須</td></tr>
+      <tr><td>VB-CABLE</td><td>仮想オーディオ</td><td>無料（寄付推奨）</td><td>CABLE Output→veadotube入力</td></tr>
+      <tr><td>veadotube mini</td><td>口パク同期</td><td>無料</td><td>—</td></tr>
+      <tr><td>OBS Studio 32.1.2</td><td>映像合成・仮想カメラ</td><td>無料</td><td>クロマキー設定済み</td></tr>
+      <tr><td>Adobe Firefly</td><td>アバター口開き画像生成</td><td>無料枠あり</td><td>Leonardo.aiはアニメキャラに制限あり</td></tr>
+      <tr><td>Obsidian v1.12.7</td><td>ナレッジベース管理</td><td>無料（個人利用）</td><td>Local REST API plugin稼働中</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function showTab(n){
+  document.querySelectorAll('.tab-pane').forEach((p,i)=>{p.classList.toggle('active',i===n);});
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>{b.classList.toggle('active',i===n);});
+}
+</script>
+</body>
+</html>
