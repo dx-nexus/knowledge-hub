@@ -98,7 +98,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14
     </div>
     <div class="hdr-meta">
       <span>開始：2026-05-03</span>
-      <span>更新：2026-05-07</span>
+      <span>更新：2026-05-07 v1.1</span>
       <span>ステータス：🟢 運用中</span>
     </div>
   </div>
@@ -163,8 +163,25 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14
       <tr><td>note記事（無料・導線用）</td><td><span class="b b-done">✅ 公開中</span></td><td>note.com/quiet_knot6239</td></tr>
       <tr><td>note記事（有料980円）</td><td><span class="b b-done">✅ 公開中</span></td><td>note.com/quiet_knot6239</td></tr>
       <tr><td>X（@aitsumamigui）bio・導線</td><td><span class="b b-done">✅ 設定済み</span></td><td>x.com/aitsumamigui</td></tr>
-      <tr><td>GitHubナレッジベース</td><td><span class="b b-done">✅ 稼働中</span></td><td>github.com/fooueen/hancho-kb</td></tr>
+      <tr><td>GitHubナレッジベース（プライベート）</td><td><span class="b b-done">✅ 稼働中</span></td><td>github.com/fooueen/hancho-kb</td></tr>
+      <tr><td>公開ドキュメントリポジトリ</td><td><span class="b b-done">✅ 公開中</span></td><td>github.com/fooueen/hancho-docs</td></tr>
     </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">このドキュメントの共有URL（AI引き継ぎ用）</div>
+    <div class="hl">
+      <p>📄 <strong>最新版は常にこのURLを参照してください。hancho-docsリポジトリで管理。</strong></p>
+    </div>
+    <table class="tbl">
+      <tr><th>用途</th><th>URL</th></tr>
+      <tr><td>AI引き継ぎ（Raw HTML・fetchで取得）</td><td><span class="url-chip">https://raw.githubusercontent.com/fooueen/hancho-docs/main/Project_Master_Document.html</span></td></tr>
+      <tr><td>ブラウザで表示（レンダリング済み）</td><td><span class="url-chip">https://htmlpreview.github.io/?https://github.com/fooueen/hancho-docs/blob/main/Project_Master_Document.html</span></td></tr>
+      <tr><td>GitHub（コード表示）</td><td><span class="url-chip">https://github.com/fooueen/hancho-docs/blob/main/Project_Master_Document.html</span></td></tr>
+    </table>
+    <div class="hl hl-warn" style="margin-top:12px;">
+      <p>⚠️ <strong>更新手順：</strong>hancho-kbのファイルを編集後、hancho-docsにも同ファイルをコピーしてpushする。update_docs.ps1で半自動化（Tab 06参照）。</p>
+    </div>
   </div>
 </div>
 
@@ -637,7 +654,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14
       <tr><td>Auto-GenerateAndPush.ps1</td><td>C:\Workspace\_Shared_Scripts\</td><td>パイプライン制御スクリプト</td></tr>
       <tr><td>generate_ai_content.py</td><td>C:\Workspace\_Shared_Scripts\</td><td>Gemini APIコンテンツ生成スクリプト</td></tr>
       <tr><td>topics.txt</td><td>C:\Workspace\_Shared_Scripts\</td><td>28種トピック一覧</td></tr>
-      <tr><td>hancho-kb（GitHub）</td><td>github.com/fooueen/hancho-kb</td><td>ナレッジベース・生成記事・手順書</td></tr>
+      <tr><td>hancho-kb（GitHub・プライベート）</td><td>github.com/fooueen/hancho-kb</td><td>ナレッジベース・生成記事・手順書</td></tr>
+      <tr><td>hancho-docs（GitHub・パブリック）</td><td>github.com/fooueen/hancho-docs</td><td>公開ドキュメント専用。AI引き継ぎ用URL</td></tr>
+      <tr><td>update_docs.ps1</td><td>C:\Workspace\_Shared_Scripts\</td><td>hancho-kbの更新をhancho-docsに反映するスクリプト</td></tr>
       <tr><td>GEMINI_API_KEY</td><td>Auto-GenerateAndPush.ps1内（要環境変数化）</td><td>Gemini API認証キー</td></tr>
     </table>
   </div>
