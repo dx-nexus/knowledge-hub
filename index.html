@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>はんちょー ドキュメントハブ</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070d18;--surface:#0f1929;--surface2:#162035;--border:#1e3354;--accent:#00c8f0;--green:#10b981;--yellow:#f59e0b;--purple:#a78bfa;--text:#dde6f0;--muted:#5a7190;--mono:'IBM Plex Mono',monospace;--sans:'Noto Sans JP',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;padding:40px 24px;}
+.inner{max-width:800px;margin:0 auto;}
+.hdr{margin-bottom:40px;}
+.hdr h1{font-family:var(--mono);font-size:20px;color:var(--accent);letter-spacing:.06em;}
+.hdr p{font-size:12px;color:var(--muted);margin-top:6px;}
+.section{margin-bottom:32px;}
+.sec-title{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:14px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 18px;text-decoration:none;color:var(--text);transition:.15s;display:block;}
+.card:hover{border-color:var(--accent);background:var(--surface2);}
+.card-icon{font-size:20px;margin-bottom:8px;}
+.card h3{font-size:13px;font-weight:700;margin-bottom:4px;}
+.card p{font-size:11px;color:var(--muted);}
+.badge{display:inline-block;padding:1px 7px;border-radius:10px;font-size:9px;font-family:var(--mono);margin-top:6px;}
+.badge-live{background:rgba(16,185,129,.15);color:var(--green);border:1px solid rgba(16,185,129,.3);}
+.badge-wip{background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3);}
+.footer{margin-top:48px;font-family:var(--mono);font-size:10px;color:var(--muted);text-align:center;}
+</style>
+</head>
+<body>
+<div class="inner">
+  <div class="hdr">
+    <h1>はんちょー ／ Document Hub</h1>
+    <p>AI収益化プロジェクト・学習計画・V-Consultant の共有ドキュメント置き場</p>
+  </div>
+
+  <div class="section">
+    <div class="sec-title">プロジェクト管理</div>
+    <div class="grid">
+      <a class="card" href="Project_Master_Document.html">
+        <div class="card-icon">📊</div>
+        <h3>Project Master Document</h3>
+        <p>AI収益化プロジェクト全体の計画・作業ログ・課題台帳</p>
+        <span class="badge badge-live">LIVE</span>
+      </a>
+      <a class="card" href="Pipeline_SystemReview_20260507.html">
+        <div class="card-icon">⚙️</div>
+        <h3>Pipeline System Review</h3>
+        <p>AI記事生成パイプラインのシステムレビュー</p>
+        <span class="badge badge-live">LIVE</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-title">学習計画</div>
+    <div class="grid">
+      <a class="card" href="AI_Learning_Plan.html">
+        <div class="card-icon">🎓</div>
+        <h3>AI統合学習計画</h3>
+        <p>ユニコスクール × Anthropic Academy × GitHub Courses</p>
+        <span class="badge badge-live">LIVE</span>
+      </a>
+      <a class="card" href="Unicorn_School_Plan.html">
+        <div class="card-icon">🦄</div>
+        <h3>ユニコスクール受講計画書</h3>
+        <p>AIエージェント開発コース 受講進捗管理</p>
+        <span class="badge badge-live">LIVE</span>
+      </a>
+      <a class="card" href="Anthropic_Academy_Plan.html">
+        <div class="card-icon">🤖</div>
+        <h3>Anthropic Academy 計画書</h3>
+        <p>17コース受講ロードマップ</p>
+        <span class="badge badge-live">LIVE</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-title">V-Consultant</div>
+    <div class="grid">
+      <a class="card" href="V_Consultant_System_Overview.html">
+        <div class="card-icon">🎭</div>
+        <h3>V-Consultant システム概要</h3>
+        <p>AIアバター×声質変換環境の全体構成</p>
+        <span class="badge badge-live">LIVE</span>
+      </a>
+      <a class="card" href="V_Consultant_Project_Definition.html">
+        <div class="card-icon">📋</div>
+        <h3>V-Consultant プロジェクト定義書</h3>
+        <p>プロジェクトスコープ・要件・アクション</p>
+        <span class="badge badge-live">LIVE</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="footer">
+    github.com/fooueen/hancho-docs ／ GitHubにpushすると自動更新
+  </div>
+</div>
+</body>
+</html>
