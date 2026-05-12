@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anthropic Academy 受講計画書</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070d18;--surface:#0f1929;--surface2:#162035;--border:#1e3354;--accent:#00c8f0;--green:#10b981;--yellow:#f59e0b;--red:#ef4444;--purple:#a78bfa;--text:#dde6f0;--muted:#5a7190;--mono:'IBM Plex Mono',monospace;--sans:'Noto Sans JP',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.7;}
+.hdr{background:linear-gradient(135deg,#0a1628,#0f2040);border-bottom:1px solid var(--border);padding:24px 32px;}
+.hdr-inner{max-width:960px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;}
+.hdr h1{font-family:var(--mono);font-size:17px;color:var(--accent);}
+.hdr p{font-size:11px;color:var(--muted);margin-top:4px;}
+.hdr-meta{display:flex;gap:10px;font-family:var(--mono);font-size:11px;}
+.hdr-meta span{background:var(--surface2);border:1px solid var(--border);padding:3px 10px;border-radius:4px;color:var(--accent);}
+.tab-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;display:flex;overflow-x:auto;}
+.tab-btn{font-family:var(--mono);font-size:11px;letter-spacing:.08em;padding:13px 18px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:.15s;}
+.tab-btn:hover{color:var(--text);}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab-pane{display:none;max-width:960px;margin:0 auto;padding:28px 32px;}
+.tab-pane.active{display:block;}
+.sec{margin-bottom:36px;}
+.sec-title{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;border-bottom:1px solid var(--border);padding-bottom:7px;margin-bottom:18px;}
+.tbl{width:100%;border-collapse:collapse;font-size:13px;}
+.tbl th{background:var(--surface2);color:var(--accent);font-family:var(--mono);font-size:10px;letter-spacing:.1em;padding:9px 13px;text-align:left;border-bottom:1px solid var(--border);}
+.tbl td{padding:9px 13px;border-bottom:1px solid rgba(30,51,84,.5);color:#8aaec8;vertical-align:top;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl td:first-child{color:var(--text);font-weight:500;}
+.b{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-family:var(--mono);font-weight:600;margin-right:4px;}
+.b-done{background:rgba(16,185,129,.15);color:var(--green);border:1px solid rgba(16,185,129,.3);}
+.b-ip{background:rgba(0,200,240,.15);color:var(--accent);border:1px solid rgba(0,200,240,.3);}
+.b-todo{background:rgba(167,139,250,.15);color:var(--purple);border:1px solid rgba(167,139,250,.3);}
+.b-skip{background:rgba(90,113,144,.15);color:var(--muted);border:1px solid rgba(90,113,144,.3);}
+.b-pri{background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3);}
+.hl{background:rgba(0,200,240,.05);border:1px solid rgba(0,200,240,.18);border-radius:8px;padding:13px 17px;margin:10px 0;}
+.hl p{font-size:13px;color:#7dd3fc;}
+.url-chip{display:inline-block;background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:5px 12px;font-family:var(--mono);font-size:11px;color:var(--accent);margin:3px;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-inner">
+    <div>
+      <h1>Anthropic Academy 受講計画書</h1>
+      <p>13コース完全無料・修了証あり ／ キャリア転換支援学習計画 ／ 更新：2026-05-07</p>
+    </div>
+    <div class="hdr-meta">
+      <span>開始：未着手</span>
+      <span>目標：2026年6月末</span>
+      <span>費用：無料</span>
+    </div>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab(0)">00 ／ サマリー</button>
+  <button class="tab-btn" onclick="showTab(1)">01 ／ 目的・ゴール</button>
+  <button class="tab-btn" onclick="showTab(2)">02 ／ コース一覧</button>
+  <button class="tab-btn" onclick="showTab(3)">03 ／ 受講ロードマップ</button>
+  <button class="tab-btn" onclick="showTab(4)">04 ／ 進捗管理</button>
+</div>
+
+<!-- TAB 0 -->
+<div class="tab-pane active" id="tab0">
+  <div class="sec">
+    <div class="sec-title">現在地</div>
+    <div class="hl"><p>未着手。Skilljarアカウント作成から開始。全コース無料・Claudeアカウント不要。はんちょーのキャリア転換目標（Anthropic Solutions Architect / Applied AI方向）に直結する学習機会。</p></div>
+  </div>
+  <div class="sec">
+    <div class="sec-title">受講リンク</div>
+    <table class="tbl">
+      <tr><th>リソース</th><th>URL</th></tr>
+      <tr><td>Anthropic Academy（Skilljar）</td><td><span class="url-chip">anthropic.skilljar.com</span></td></tr>
+      <tr><td>Anthropicコース一覧</td><td><span class="url-chip">anthropic.com/learn</span></td></tr>
+      <tr><td>GitHub公開コース（Jupyter）</td><td><span class="url-chip">github.com/anthropics/courses</span></td></tr>
+    </table>
+  </div>
+  <div class="sec">
+    <div class="sec-title">はんちょー向け優先コース（TOP5）</div>
+    <table class="tbl">
+      <tr><th>優先</th><th>コース名</th><th>時間</th><th>理由</th></tr>
+      <tr><td><span class="b b-pri">★1</span></td><td>Building with the Claude API</td><td>8h</td><td>Anthropic SA転換に必須の技術実装力。Python+API経験として直接活かせる</td></tr>
+      <tr><td><span class="b b-pri">★2</span></td><td>Claude Code in Action</td><td>1h</td><td>すでにClaude Code使用中。実務との最短接続</td></tr>
+      <tr><td><span class="b b-pri">★3</span></td><td>Introduction to MCP</td><td>3h</td><td>Obsidian MCP連携・n8n等の自動化拡張に必要</td></tr>
+      <tr><td><span class="b b-pri">★4</span></td><td>Claude 101</td><td>2h</td><td>体系的な基礎固め。修了証取得の足がかり</td></tr>
+      <tr><td><span class="b b-pri">★5</span></td><td>AI Fluency: Framework & Foundations</td><td>2h</td><td>DXコンサルとして組織にAIを説明する際の理論基盤</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 1 -->
+<div class="tab-pane" id="tab1">
+  <div class="sec">
+    <div class="sec-title">受講目的</div>
+    <table class="tbl">
+      <tr><th>目的</th><th>詳細</th></tr>
+      <tr><td>キャリア転換の技術的根拠獲得</td><td>Anthropic Solutions Architect / Applied AI方向への転換に向け、Claude API・MCP・Claude Codeの実装スキルをAnthropicが認定する形で証明する</td></tr>
+      <tr><td>現在の副業パイプライン強化</td><td>Gemini APIで動くパイプラインをClaude APIにも対応させる。MCPでObsidian連携を拡張する</td></tr>
+      <tr><td>DXコンサルとしての差別化</td><td>AI Fluencyコースで組織向けAI導入の理論・フレームワークを習得し、AnserParaSOL等の本業案件に活かす</td></tr>
+      <tr><td>修了証のLinkedIn登録</td><td>Anthropic発行の公式修了証をキャリアプロフィールに追加する</td></tr>
+    </table>
+  </div>
+  <div class="sec">
+    <div class="sec-title">As-Is → To-Be</div>
+    <table class="tbl">
+      <tr><th>項目</th><th>As-Is</th><th>To-Be（2026年6月末）</th></tr>
+      <tr><td>Claude API実装経験</td><td>使用経験あり・体系知識なし</td><td>APIコース修了・構造化された実装力</td></tr>
+      <tr><td>MCP知識</td><td>概念は知っている</td><td>Intro+Advanced修了・MCP Server構築可能</td></tr>
+      <tr><td>修了証</td><td>0件</td><td>5〜7コース修了証取得</td></tr>
+      <tr><td>LinkedIn AI資格</td><td>未記載</td><td>Anthropic発行修了証を登録済み</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 2 -->
+<div class="tab-pane" id="tab2">
+  <div class="sec">
+    <div class="sec-title">全13コース一覧</div>
+    <table class="tbl">
+      <tr><th>No</th><th>コース名</th><th>対象</th><th>時間</th><th>はんちょー向け優先度</th><th>ステータス</th></tr>
+      <tr><td>1</td><td>Claude 101</td><td>全員</td><td>約2h</td><td><span class="b b-pri">高</span></td><td><span class="b b-todo">未着手</span></td></tr>
+      <tr><td>2</td><td>AI Fluency: Framework & Foundations</td><td>非技術者</td><td>約2h</td><td><span class="b b-pri">高</span></td><td><span class="b b-todo">未着手</span></td></tr>
+      <tr><td>3</td><td>Introduction to Agent Skills</td><td>開発者</td><td>約2h</td><td><span class="b b-pri">高</span></td><td><span class="b b-todo">未着手</span></td></tr>
+      <tr><td>4</td><td>Claude Code in Action</td><td>開発者</td><td>約1h</td><td><span class="b b-pri">最高</span></td><td><span class="b b-todo">未着手</span></td></tr>
+      <tr><td>5</td><td>Building with the Claude API</td><td>開発者</td><td>約8h</td><td><span class="b b-pri">最高</span></td><td><span class="b b-todo">未着手</span></td></tr>
+      <tr><td>6</td><td>Introduction to Model Context Protocol</td><td>開発者</td><td>約3h</td><td><span class="b b-pri">最高</span></td><td><span class="b b-todo">未着手</span></td></tr>
+      <tr><td>7</td><td>MCP: Advanced Topics</td><td>開発者</td><td>約3h</td><td><span class="b b-pri">高</span></td><td><span class="b b-todo">未着手</span></td></tr>
+      <tr><td>8</td><td>Teaching AI Fluency</td><td>教育者</td><td>約2h</td><td><span class="b b-skip">低</span></td><td><span class="b b-skip">スキップ可</span></td></tr>
+      <tr><td>9</td><td>AI Fluency for Nonprofits</td><td>NPO</td><td>約2h</td><td><span class="b b-skip">低</span></td><td><span class="b b-skip">スキップ可</span></td></tr>
+      <tr><td>10</td><td>AI Fluency for Students</td><td>学生</td><td>約2h</td><td><span class="b b-skip">低</span></td><td><span class="b b-skip">スキップ可</span></td></tr>
+      <tr><td>11</td><td>AI Fluency for Higher Education Faculty</td><td>大学教員</td><td>約2h</td><td><span class="b b-skip">低</span></td><td><span class="b b-skip">スキップ可</span></td></tr>
+      <tr><td>12</td><td>Claude with Amazon Bedrock</td><td>AWS開発者</td><td>約3h</td><td><span class="b b-todo">中</span></td><td><span class="b b-todo">未着手</span></td></tr>
+      <tr><td>13</td><td>Claude with Google Cloud Vertex AI</td><td>GCP開発者</td><td>約3h</td><td><span class="b b-todo">中</span></td><td><span class="b b-todo">未着手</span></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 3 -->
+<div class="tab-pane" id="tab3">
+  <div class="sec">
+    <div class="sec-title">推奨受講順（はんちょー向け最短ルート）</div>
+    <table class="tbl">
+      <tr><th>週</th><th>コース</th><th>累計時間</th><th>習得内容</th></tr>
+      <tr><td>Week 1</td><td>Claude 101 → AI Fluency: Framework & Foundations</td><td>約4h</td><td>体系的基礎 + 組織向けAI説明力</td></tr>
+      <tr><td>Week 2</td><td>Claude Code in Action → Introduction to Agent Skills</td><td>約3h</td><td>Claude Code実務深化 + スキル設計</td></tr>
+      <tr><td>Week 3〜4</td><td>Building with the Claude API</td><td>約8h</td><td>APIの完全実装力（最重要）</td></tr>
+      <tr><td>Week 5</td><td>Introduction to MCP → MCP: Advanced Topics</td><td>約6h</td><td>MCP Server構築 + 本番パターン</td></tr>
+      <tr><td>Week 6以降</td><td>Bedrock / Vertex AI（任意）</td><td>各3h</td><td>クラウド連携（案件次第で優先変更）</td></tr>
+    </table>
+    <div class="hl" style="margin-top:12px;"><p>🎯 <strong>6週間・合計約21時間で主要5コースを修了可能。</strong>週3〜4時間のペースで現実的に達成できる。</p></div>
+  </div>
+  <div class="sec">
+    <div class="sec-title">修了証のLinkedIn登録手順</div>
+    <table class="tbl">
+      <tr><th>手順</th><th>内容</th></tr>
+      <tr><td>①</td><td>Skilljarで各コースの最終評価に合格→修了証PDFをダウンロード</td></tr>
+      <tr><td>②</td><td>LinkedInにログイン→プロフィール→「資格・認定証」→「追加」</td></tr>
+      <tr><td>③</td><td>発行組織：「Anthropic」、資格名：コース名、発行年月を入力</td></tr>
+      <tr><td>④</td><td>修了証PDFのURLまたは認定証番号を入力して保存</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 4 -->
+<div class="tab-pane" id="tab4">
+  <div class="sec">
+    <div class="sec-title">進捗管理（更新日：2026-05-07）</div>
+    <table class="tbl">
+      <tr><th>コース名</th><th>受講開始日</th><th>修了日</th><th>ステータス</th><th>修了証</th></tr>
+      <tr><td>Claude 101</td><td>—</td><td>—</td><td><span class="b b-todo">未着手</span></td><td>—</td></tr>
+      <tr><td>AI Fluency: Framework & Foundations</td><td>—</td><td>—</td><td><span class="b b-todo">未着手</span></td><td>—</td></tr>
+      <tr><td>Claude Code in Action</td><td>—</td><td>—</td><td><span class="b b-todo">未着手</span></td><td>—</td></tr>
+      <tr><td>Introduction to Agent Skills</td><td>—</td><td>—</td><td><span class="b b-todo">未着手</span></td><td>—</td></tr>
+      <tr><td>Building with the Claude API</td><td>—</td><td>—</td><td><span class="b b-todo">未着手</span></td><td>—</td></tr>
+      <tr><td>Introduction to MCP</td><td>—</td><td>—</td><td><span class="b b-todo">未着手</span></td><td>—</td></tr>
+      <tr><td>MCP: Advanced Topics</td><td>—</td><td>—</td><td><span class="b b-todo">未着手</span></td><td>—</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function showTab(n){
+  document.querySelectorAll('.tab-pane').forEach((p,i)=>p.classList.toggle('active',i===n));
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===n));
+}
+</script>
+</body>
+</html>

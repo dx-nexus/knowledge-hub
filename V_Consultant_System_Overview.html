@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V-Consultant システム全体図</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  body { background: #0f172a; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; margin: 0; padding: 40px 20px; box-sizing: border-box; font-family: 'Noto Sans JP', sans-serif; }
+  .card { background: #020617; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); padding: 48px; width: 100%; max-width: 1000px; position: relative; overflow: hidden; }
+  .card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 15% 15%, rgba(14,165,233,0.07) 0%, transparent 45%), radial-gradient(circle at 85% 85%, rgba(56,189,248,0.04) 0%, transparent 40%); z-index: 0; }
+  .card > * { position: relative; z-index: 1; }
+
+  h1 { font-size: 22px; font-weight: 700; color: #f1f5f9; margin: 0 0 40px; text-align: center; letter-spacing: 0.05em; }
+  h1 span { color: #38bdf8; }
+
+  .diagram { display: flex; flex-direction: column; gap: 0; }
+
+  /* ---- Sections ---- */
+  .section-label { font-size: 11px; font-weight: 500; color: #64748b; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+
+  .pipeline { display: grid; grid-template-columns: 1fr 60px 1fr; gap: 0; align-items: start; margin-bottom: 0; }
+  .col { display: flex; flex-direction: column; align-items: center; gap: 0; }
+
+  /* ---- Nodes ---- */
+  .node { border-radius: 10px; padding: 12px 20px; text-align: center; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; position: relative; width: 100%; max-width: 200px; box-sizing: border-box; }
+  .node:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+  .node .label { font-size: 14px; font-weight: 700; }
+  .node .sub { font-size: 11px; margin-top: 3px; opacity: 0.75; }
+
+  /* Colors */
+  .node.gray  { background: rgba(51,65,85,0.7); border: 1px solid rgba(100,116,139,0.4); color: #cbd5e1; }
+  .node.teal  { background: rgba(13,148,136,0.25); border: 1px solid rgba(20,184,166,0.5); color: #5eead4; }
+  .node.blue  { background: rgba(29,78,216,0.25); border: 1px solid rgba(59,130,246,0.5); color: #93c5fd; }
+  .node.purple{ background: rgba(109,40,217,0.25); border: 1px solid rgba(139,92,246,0.5); color: #c4b5fd; }
+  .node.green { background: rgba(22,101,52,0.3); border: 1px solid rgba(34,197,94,0.5); color: #86efac; }
+  .node.sky   { background: rgba(14,165,233,0.2); border: 1px solid rgba(56,189,248,0.5); color: #38bdf8; }
+
+  /* ---- Connectors ---- */
+  .arrow-v { display: flex; justify-content: center; align-items: center; height: 36px; width: 100%; }
+  .arrow-v::after { content: ''; display: block; width: 2px; height: 100%; background: linear-gradient(to bottom, transparent, rgba(100,116,139,0.6), rgba(100,116,139,0.6)); position: relative; }
+  .arrow-v-end { display: flex; justify-content: center; align-items: flex-end; height: 36px; position: relative; }
+  .arrow-v-end::before { content: ''; display: block; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 2px; height: calc(100% - 8px); background: rgba(100,116,139,0.6); }
+  .arrow-v-end::after { content: '▼'; color: #475569; font-size: 9px; line-height: 1; }
+
+  /* Cross arrow (VB-CABLE → veadotube) */
+  .cross-row { display: grid; grid-template-columns: 1fr 60px 1fr; gap: 0; align-items: center; margin: 0; }
+  .cross-line { display: flex; align-items: center; justify-content: center; height: 36px; }
+  .cross-line-left { display: flex; align-items: center; justify-content: flex-end; padding-right: 0; }
+  .cross-line-right { display: flex; align-items: center; justify-content: flex-start; padding-left: 0; }
+  .h-arrow { flex: 1; height: 2px; background: rgba(100,116,139,0.5); position: relative; }
+  .h-arrow::after { content: '▶'; color: #475569; font-size: 9px; position: absolute; right: -6px; top: 50%; transform: translateY(-50%); }
+  .h-arrow-label { font-size: 10px; color: #475569; text-align: center; white-space: nowrap; }
+
+  /* OBS merge row */
+  .merge-section { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 0; }
+  .merge-arrows { display: flex; align-items: flex-end; justify-content: center; height: 48px; width: 100%; position: relative; }
+  .merge-arrows::before { content: ''; position: absolute; bottom: 0; left: 25%; width: 50%; height: 2px; background: rgba(100,116,139,0.4); }
+  .merge-arrows::after { content: '▼'; color: #475569; font-size: 9px; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%); }
+  .merge-line-l { position: absolute; left: 25%; top: 0; width: 2px; height: 100%; background: rgba(100,116,139,0.5); }
+  .merge-line-r { position: absolute; right: 25%; top: 0; width: 2px; height: 100%; background: rgba(100,116,139,0.5); }
+
+  /* Container boxes */
+  .route-container { border: 1px dashed rgba(71,85,105,0.5); border-radius: 12px; padding: 16px 20px 20px; position: relative; }
+  .route-container .rc-label { position: absolute; top: -10px; left: 16px; background: #020617; padding: 0 6px; font-size: 11px; color: #475569; font-weight: 500; letter-spacing: 0.08em; }
+
+  /* Monetization row */
+  .mono-row { display: flex; align-items: center; justify-content: center; gap: 0; margin-top: 32px; }
+  .mono-node { border-radius: 10px; padding: 10px 24px; text-align: center; cursor: pointer; transition: transform 0.15s; }
+  .mono-node:hover { transform: translateY(-2px); }
+  .mono-node .label { font-size: 13px; font-weight: 700; }
+  .mono-node .sub { font-size: 10px; margin-top: 2px; opacity: 0.7; }
+  .mono-arrow { padding: 0 16px; color: #475569; font-size: 18px; }
+
+  .sep-line { border: none; border-top: 1px solid rgba(51,65,85,0.6); margin: 32px 0 20px; }
+  .sep-label { text-align: center; font-size: 11px; color: #475569; font-weight: 500; letter-spacing: 0.1em; margin-bottom: 20px; }
+
+  /* Two-column pipeline */
+  .dual-pipeline { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 0; }
+
+  /* Center merge */
+  .center-col { display: flex; flex-direction: column; align-items: center; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>V-Consultant <span>システム全体図</span></h1>
+
+  <!-- Dual pipeline: 音声ルート / 映像ルート -->
+  <div class="dual-pipeline">
+
+    <!-- 音声ルート -->
+    <div class="route-container">
+      <span class="rc-label">音声ルート</span>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+        <div class="node gray" style="max-width:100%;" title="物理マイクから地声を入力">
+          <div class="label">🎤 マイク</div>
+          <div class="sub">地声入力</div>
+        </div>
+        <div class="arrow-v-end" style="width:100%;"></div>
+        <div class="node teal" style="max-width:100%;" title="AIリアルタイム声質変換">
+          <div class="label">VC Client</div>
+          <div class="sub">声質変換（RVC / ONNX）</div>
+        </div>
+        <div class="arrow-v-end" style="width:100%;"></div>
+        <div class="node blue" style="max-width:100%;" title="仮想オーディオケーブル">
+          <div class="label">VB-CABLE</div>
+          <div class="sub">仮想オーディオ中継</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 映像ルート -->
+    <div class="route-container">
+      <span class="rc-label">映像ルート</span>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+        <div class="node purple" style="max-width:100%;" title="透過PNG×2枚（口開き/閉じ）">
+          <div class="label">🖼 PNG素材</div>
+          <div class="sub">Leonardo.ai / Photopea</div>
+        </div>
+        <div style="height:36px;display:flex;align-items:center;justify-content:center;width:100%;font-size:10px;color:#475569;">
+          ← VB-CABLE音量検知
+        </div>
+        <div class="node teal" style="max-width:100%;" title="音量に連動して口開閉">
+          <div class="label">veadotube mini</div>
+          <div class="sub">口パク同期</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Merge to OBS -->
+  <div style="display:flex;align-items:flex-start;justify-content:center;gap:80px;margin-top:4px;">
+    <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+      <div style="width:2px;height:32px;background:rgba(100,116,139,0.5);"></div>
+      <div style="font-size:10px;color:#475569;white-space:nowrap;">音声ソース</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+      <div style="width:2px;height:32px;background:rgba(100,116,139,0.5);"></div>
+      <div style="font-size:10px;color:#475569;white-space:nowrap;">ウィンドウキャプチャ</div>
+    </div>
+  </div>
+
+  <!-- Horizontal merge line -->
+  <div style="display:flex;align-items:center;justify-content:center;padding:0 15%;margin-bottom:0;">
+    <div style="flex:1;height:2px;background:rgba(100,116,139,0.4);"></div>
+    <div style="width:2px;height:20px;background:rgba(100,116,139,0.5);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;">
+      <span style="color:#475569;font-size:9px;">▼</span>
+    </div>
+    <div style="flex:1;height:2px;background:rgba(100,116,139,0.4);"></div>
+  </div>
+
+  <!-- OBS + Zoom -->
+  <div style="display:flex;flex-direction:column;align-items:center;gap:0;margin-top:-2px;">
+    <div class="node blue" style="width:280px;" title="映像合成・仮想カメラ出力">
+      <div class="label">OBS Studio</div>
+      <div class="sub">映像合成・仮想カメラ出力</div>
+    </div>
+    <div class="arrow-v-end" style="width:280px;"></div>
+    <div class="node green" style="width:280px;" title="Zoom / Google Meetでの配信">
+      <div class="label">Zoom / Google Meet</div>
+      <div class="sub">クライアントへ配信</div>
+    </div>
+  </div>
+
+  <!-- Monetization -->
+  <hr class="sep-line">
+  <div class="sep-label">マネタイズ導線</div>
+  <div class="mono-row">
+    <div class="node gray mono-node" title="X：集客・認知獲得">
+      <div class="label">X（集客）</div>
+      <div class="sub">@aitsumamigui</div>
+    </div>
+    <div class="mono-arrow">→</div>
+    <div class="node gray mono-node" title="note：信頼形成・導線">
+      <div class="label">note</div>
+      <div class="sub">信頼形成・導線</div>
+    </div>
+    <div class="mono-arrow">→</div>
+    <div class="node teal mono-node" title="Coconala：サービス販売">
+      <div class="label">Coconala</div>
+      <div class="sub">環境構築代行 販売</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

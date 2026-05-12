@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI統合学習計画 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070d18;--surface:#0f1929;--surface2:#162035;--border:#1e3354;--accent:#00c8f0;--green:#10b981;--yellow:#f59e0b;--red:#ef4444;--purple:#a78bfa;--text:#dde6f0;--muted:#5a7190;--mono:'IBM Plex Mono',monospace;--sans:'Noto Sans JP',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.7;}
+.hdr{background:linear-gradient(135deg,#0a1628,#0f2040);border-bottom:1px solid var(--border);padding:24px 32px;}
+.hdr-inner{max-width:1000px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;}
+.hdr h1{font-family:var(--mono);font-size:17px;color:var(--accent);}
+.hdr p{font-size:11px;color:var(--muted);margin-top:4px;}
+.hdr-meta{display:flex;gap:10px;font-family:var(--mono);font-size:11px;}
+.hdr-meta span{background:var(--surface2);border:1px solid var(--border);padding:3px 10px;border-radius:4px;color:var(--accent);}
+.tab-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;display:flex;overflow-x:auto;}
+.tab-btn{font-family:var(--mono);font-size:11px;letter-spacing:.08em;padding:13px 18px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:.15s;}
+.tab-btn:hover{color:var(--text);}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab-pane{display:none;max-width:1000px;margin:0 auto;padding:28px 32px;}
+.tab-pane.active{display:block;}
+.sec{margin-bottom:36px;}
+.sec-title{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;border-bottom:1px solid var(--border);padding-bottom:7px;margin-bottom:18px;}
+.tbl{width:100%;border-collapse:collapse;font-size:12px;}
+.tbl th{background:var(--surface2);color:var(--accent);font-family:var(--mono);font-size:10px;letter-spacing:.1em;padding:9px 13px;text-align:left;border-bottom:1px solid var(--border);}
+.tbl td{padding:9px 13px;border-bottom:1px solid rgba(30,51,84,.5);color:#8aaec8;vertical-align:top;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl td:first-child{color:var(--text);font-weight:500;}
+.b{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-family:var(--mono);font-weight:600;margin-right:4px;}
+.b-done{background:rgba(16,185,129,.15);color:var(--green);border:1px solid rgba(16,185,129,.3);}
+.b-ip{background:rgba(0,200,240,.15);color:var(--accent);border:1px solid rgba(0,200,240,.3);}
+.b-todo{background:rgba(167,139,250,.15);color:var(--purple);border:1px solid rgba(167,139,250,.3);}
+.b-skip{background:rgba(90,113,144,.15);color:var(--muted);border:1px solid rgba(90,113,144,.3);}
+.b-status{cursor:pointer;}
+.edit-mode .b-status:hover{opacity:.75;}
+.hl{background:rgba(0,200,240,.05);border:1px solid rgba(0,200,240,.18);border-radius:8px;padding:13px 17px;margin:10px 0;}
+.hl p{font-size:13px;color:#7dd3fc;}
+.hl-green{background:rgba(16,185,129,.05);border-color:rgba(16,185,129,.2);}
+.hl-green p{color:#6ee7b7;}
+.hl-purple{background:rgba(167,139,250,.05);border-color:rgba(167,139,250,.2);}
+.hl-purple p{color:#c4b5fd;}
+.track{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin-bottom:12px;}
+.track h3{font-family:var(--mono);font-size:12px;margin-bottom:8px;}
+.track p{font-size:12px;color:#8aaec8;}
+.track-a h3{color:var(--accent);}
+.track-b h3{color:var(--purple);}
+.track-c h3{color:var(--green);}
+.week{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin-bottom:10px;}
+.week-hd{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.week-num{font-family:var(--mono);font-size:10px;color:var(--accent);background:var(--surface2);border:1px solid var(--border);padding:2px 8px;border-radius:4px;}
+.week-title{font-size:13px;font-weight:700;}
+.week-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+@media(max-width:640px){.week-grid{grid-template-columns:1fr;}}
+.week-col{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;}
+.week-col-title{font-family:var(--mono);font-size:9px;letter-spacing:.1em;margin-bottom:6px;}
+.week-col-a .week-col-title{color:var(--accent);}
+.week-col-b .week-col-title{color:var(--purple);}
+.week-col-c .week-col-title{color:var(--green);}
+.week-col ul{padding-left:14px;}
+.week-col li{font-size:11px;color:#8aaec8;margin-bottom:3px;}
+.edit-bar{position:fixed;bottom:20px;right:20px;z-index:100;display:flex;gap:8px;}
+.edit-btn{font-family:var(--mono);font-size:11px;padding:7px 14px;border-radius:6px;border:1px solid var(--border);cursor:pointer;}
+.edit-btn-toggle{background:var(--surface2);color:var(--muted);}
+.edit-btn-toggle.on{background:rgba(0,200,240,.2);color:var(--accent);border-color:var(--accent);}
+.edit-btn-save{background:rgba(16,185,129,.15);color:var(--green);border-color:rgba(16,185,129,.3);display:none;}
+.edit-btn-save.show{display:inline-block;}
+.editable{outline:none;}
+.edit-mode .editable{background:rgba(0,200,240,.07);border:1px dashed rgba(0,200,240,.3);border-radius:3px;padding:1px 4px;cursor:text;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-inner">
+    <div>
+      <h1>AI統合学習計画 2026 — はんちょー</h1>
+      <p>ユニコスクール × Anthropic Academy × GitHub Courses の統合ロードマップ ／ 更新：2026-05-12</p>
+    </div>
+    <div class="hdr-meta">
+      <span>目標：エージェント設計者</span>
+      <span>期間：〜2026年末</span>
+    </div>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab(0)">00 ／ 全体方針</button>
+  <button class="tab-btn" onclick="showTab(1)">01 ／ 週次スケジュール</button>
+  <button class="tab-btn" onclick="showTab(2)">02 ／ Anthropic Academy</button>
+  <button class="tab-btn" onclick="showTab(3)">03 ／ ユニコスクール</button>
+  <button class="tab-btn" onclick="showTab(4)">04 ／ 進捗ログ</button>
+</div>
+
+<!-- TAB 0 -->
+<div class="tab-pane active" id="tab0">
+  <div class="sec">
+    <div class="sec-title">学習の軸（3トラック統合）</div>
+    <div class="track track-a">
+      <h3>TRACK A ／ Anthropic Academy（無料・修了証あり）</h3>
+      <p>2026年5月時点で17コース。全て無料。Claude Code・MCP・Subagents・APIの実装スキルを体系的に習得。はんちょー向け優先7コースに絞って進める。</p>
+    </div>
+    <div class="track track-b">
+      <h3>TRACK B ／ ユニコスクール AIエージェント開発コース（198,000円）</h3>
+      <p>Day 1完了済み。Day 2〜8まで。実務直結のエージェント設計・n8n・Vercelデプロイを習得。受講料ROI回収のため最優先で消化。</p>
+    </div>
+    <div class="track track-c">
+      <h3>TRACK C ／ GitHub anthropics/courses（Jupyter Notebook・無料）</h3>
+      <p>5コース。実際にコードを書きながら学ぶ形式。APIファンダメンタルズ・プロンプトエンジニアリング・Tool Use。Track Aの補完として活用。</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">統合の考え方</div>
+    <div class="hl"><p>📌 <strong>理論→実践の二段構え：</strong>Anthropic Academy（理論）→ユニコスクール（実践）→GitHub Courses（ハンズオン）の順で同一テーマを3回触る。例：MCP理論（Academy）→MCP実装（ユニコDay4-5）→MCPコード演習（GitHub）</p></div>
+    <div class="hl hl-green"><p>🎯 <strong>実務優先：</strong>学習は「副業収益化」と「転職実績」に直結するもの優先。Vコンサル集客LP（Next.js）・n8n自動化は学習と実務を兼ねる。</p></div>
+    <div class="hl hl-purple"><p>🏆 <strong>資格・証明：</strong>Anthropic Academy修了証（全17コース）＋ユニコスクール修了証＋GitHub実装実績の3点セットでAnthropicキャリア転換の根拠を構築。</p></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">はんちょー向け優先コース一覧</div>
+    <table class="tbl">
+      <tr><th>トラック</th><th>コース名</th><th>所要時間</th><th>優先度</th><th>ステータス</th></tr>
+      <tr><td>Anthropic Academy</td><td>Claude Code 101</td><td>〜2h</td><td><span class="b b-done">最高</span></td><td><span class="b b-ip b-status" data-id="c-cc101" data-state="ip">🔄 進行中</span></td></tr>
+      <tr><td>Anthropic Academy</td><td>Building with the Claude API</td><td>〜4h</td><td><span class="b b-done">最高</span></td><td><span class="b b-todo b-status" data-id="c-api" data-state="todo">未着手</span></td></tr>
+      <tr><td>Anthropic Academy</td><td>Introduction to MCP</td><td>〜2h</td><td><span class="b b-done">最高</span></td><td><span class="b b-done b-status" data-id="c-mcp" data-state="done">✅ 実装済</span></td></tr>
+      <tr><td>Anthropic Academy</td><td>Advanced MCP</td><td>〜3h</td><td><span class="b" style="background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3);">高</span></td><td><span class="b b-todo b-status" data-id="c-amcp" data-state="todo">未着手</span></td></tr>
+      <tr><td>Anthropic Academy</td><td>Introduction to Subagents</td><td>〜2h</td><td><span class="b" style="background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3);">高</span></td><td><span class="b b-todo b-status" data-id="c-sub" data-state="todo">未着手</span></td></tr>
+      <tr><td>Anthropic Academy</td><td>Claude Agent Skills</td><td>〜2h</td><td><span class="b" style="background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3);">高</span></td><td><span class="b b-todo b-status" data-id="c-skill" data-state="todo">未着手</span></td></tr>
+      <tr><td>Anthropic Academy</td><td>Claude Code in Action</td><td>〜3h</td><td><span class="b" style="background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3);">高</span></td><td><span class="b b-todo b-status" data-id="c-ccia" data-state="todo">未着手</span></td></tr>
+      <tr><td>ユニコスクール</td><td>Day 1 オンボーディング</td><td>—</td><td><span class="b b-done">最高</span></td><td><span class="b b-done b-status" data-id="u-d1" data-state="done">✅ 完了</span></td></tr>
+      <tr><td>ユニコスクール</td><td>Day 2〜3 プロンプト・基礎設計</td><td>—</td><td><span class="b b-done">最高</span></td><td><span class="b b-todo b-status" data-id="u-d23" data-state="todo">未着手</span></td></tr>
+      <tr><td>ユニコスクール</td><td>Day 4〜5 ツール統合・MCP</td><td>—</td><td><span class="b b-done">最高</span></td><td><span class="b b-ip b-status" data-id="u-d45" data-state="ip">🔄 一部実施</span></td></tr>
+      <tr><td>GitHub Courses</td><td>Anthropic API Fundamentals</td><td>〜3h</td><td><span class="b" style="background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3);">高</span></td><td><span class="b b-todo b-status" data-id="g-api" data-state="todo">未着手</span></td></tr>
+      <tr><td>GitHub Courses</td><td>Tool Use (Jupyter)</td><td>〜2h</td><td><span class="b" style="background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3);">高</span></td><td><span class="b b-todo b-status" data-id="g-tool" data-state="todo">未着手</span></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 1 -->
+<div class="tab-pane" id="tab1">
+  <div class="sec">
+    <div class="sec-title">週次スケジュール（推奨）</div>
+
+    <div class="week">
+      <div class="week-hd">
+        <span class="week-num">WEEK 1（5/12〜5/18）</span>
+        <span class="week-title">エージェント基礎固め</span>
+        <span class="b b-ip">現在地</span>
+      </div>
+      <div class="week-grid">
+        <div class="week-col week-col-a">
+          <div class="week-col-title">TRACK A / Academy</div>
+          <ul><li>Claude Code 101（残り）</li><li>Introduction to Subagents</li></ul>
+        </div>
+        <div class="week-col week-col-b">
+          <div class="week-col-title">TRACK B / ユニコスクール</div>
+          <ul><li>Day 2〜3 受講</li><li>課題提出</li></ul>
+        </div>
+        <div class="week-col week-col-c">
+          <div class="week-col-title">TRACK C / 実務</div>
+          <ul><li>Vコンサル LP デプロイ（A案）</li><li>note 3本目公開</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="week">
+      <div class="week-hd">
+        <span class="week-num">WEEK 2（5/19〜5/25）</span>
+        <span class="week-title">API・ツール統合</span>
+      </div>
+      <div class="week-grid">
+        <div class="week-col week-col-a">
+          <div class="week-col-title">TRACK A / Academy</div>
+          <ul><li>Building with the Claude API</li><li>Claude Agent Skills</li></ul>
+        </div>
+        <div class="week-col week-col-b">
+          <div class="week-col-title">TRACK B / ユニコスクール</div>
+          <ul><li>Day 4〜5 ツール統合</li></ul>
+        </div>
+        <div class="week-col week-col-c">
+          <div class="week-col-title">TRACK C / 実務</div>
+          <ul><li>GitHub: API Fundamentals</li><li>n8n連携構築開始</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="week">
+      <div class="week-hd">
+        <span class="week-num">WEEK 3（5/26〜6/1）</span>
+        <span class="week-title">高度なMCP・エージェント実装</span>
+      </div>
+      <div class="week-grid">
+        <div class="week-col week-col-a">
+          <div class="week-col-title">TRACK A / Academy</div>
+          <ul><li>Advanced MCP</li><li>Claude Code in Action</li></ul>
+        </div>
+        <div class="week-col week-col-b">
+          <div class="week-col-title">TRACK B / ユニコスクール</div>
+          <ul><li>Day 6〜7 実装・デプロイ</li></ul>
+        </div>
+        <div class="week-col week-col-c">
+          <div class="week-col-title">TRACK C / 実務</div>
+          <ul><li>GitHub: Tool Use</li><li>n8n本番稼働</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="week">
+      <div class="week-hd">
+        <span class="week-num">WEEK 4〜（6月〜）</span>
+        <span class="week-title">収益化・実案件適用</span>
+      </div>
+      <div class="week-grid">
+        <div class="week-col week-col-a">
+          <div class="week-col-title">TRACK A / Academy</div>
+          <ul><li>残り全コース修了証取得</li><li>Claude Certified Architect検討</li></ul>
+        </div>
+        <div class="week-col week-col-b">
+          <div class="week-col-title">TRACK B / ユニコスクール</div>
+          <ul><li>Day 8〜 収益化・実案件</li><li>修了証取得</li></ul>
+        </div>
+        <div class="week-col week-col-c">
+          <div class="week-col-title">TRACK C / 実務</div>
+          <ul><li>Coconala初受注</li><li>AIエージェント設計コンサル商品追加</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 2 -->
+<div class="tab-pane" id="tab2">
+  <div class="sec">
+    <div class="sec-title">Anthropic Academy コース一覧（2026年5月・17コース）</div>
+    <div class="hl"><p>🔗 公式URL：<strong>https://anthropic.skilljar.com/</strong>　全て無料・修了証あり</p></div>
+    <table class="tbl">
+      <tr><th>カテゴリ</th><th>コース名</th><th>対象</th><th>はんちょー優先度</th><th>ステータス</th></tr>
+      <tr><td>基礎</td><td>Claude 101</td><td>全員</td><td><span class="b b-skip">スキップ可</span></td><td><span class="b b-skip b-status" data-id="a-c101" data-state="skip">スキップ</span></td></tr>
+      <tr><td>基礎</td><td>AI Fluency: Framework & Foundations</td><td>全員</td><td><span class="b b-skip">参考程度</span></td><td><span class="b b-todo b-status" data-id="a-flu" data-state="todo">未着手</span></td></tr>
+      <tr><td>開発者</td><td>Building with the Claude API</td><td>開発者</td><td><span class="b b-done">★最高</span></td><td><span class="b b-todo b-status" data-id="a-api2" data-state="todo">未着手</span></td></tr>
+      <tr><td>開発者</td><td>Claude Code 101</td><td>開発者</td><td><span class="b b-done">★最高</span></td><td><span class="b b-ip b-status" data-id="a-cc1012" data-state="ip">🔄 進行中</span></td></tr>
+      <tr><td>開発者</td><td>Claude Code in Action</td><td>開発者</td><td><span class="b" style="background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3);">高</span></td><td><span class="b b-todo b-status" data-id="a-ccia2" data-state="todo">未着手</span></td></tr>
+      <tr><td>MCP</td><td>Introduction to MCP</td><td>開発者</td><td><span class="b b-done">★最高</span></td><td><span class="b b-done b-status" data-id="a-mcp2" data-state="done">✅ 実装済</span></td></tr>
+      <tr><td>MCP</td><td>Advanced MCP</td><td>開発者</td><td><span class="b" style="background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3);">高</span></td><td><span class="b b-todo b-status" data-id="a-amcp2" data-state="todo">未着手</span></td></tr>
+      <tr><td>エージェント</td><td>Introduction to Subagents</td><td>開発者</td><td><span class="b" style="background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3);">高</span></td><td><span class="b b-todo b-status" data-id="a-sub2" data-state="todo">未着手</span></td></tr>
+      <tr><td>エージェント</td><td>Claude Agent Skills</td><td>開発者</td><td><span class="b" style="background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3);">高</span></td><td><span class="b b-todo b-status" data-id="a-skill2" data-state="todo">未着手</span></td></tr>
+      <tr><td>ツール</td><td>Introduction to Claude Cowork</td><td>非技術者</td><td><span class="b b-skip">低</span></td><td><span class="b b-skip b-status" data-id="a-cow" data-state="skip">スキップ</span></td></tr>
+      <tr><td>クラウド</td><td>Building with Claude on Bedrock</td><td>AWS利用者</td><td><span class="b b-skip">低</span></td><td><span class="b b-skip b-status" data-id="a-bed" data-state="skip">スキップ</span></td></tr>
+      <tr><td>クラウド</td><td>Building with Claude on Vertex AI</td><td>GCP利用者</td><td><span class="b b-skip">低</span></td><td><span class="b b-skip b-status" data-id="a-vtx" data-state="skip">スキップ</span></td></tr>
+      <tr><td>教育</td><td>AI Fluency for Students / Teaching</td><td>教育者</td><td><span class="b b-skip">対象外</span></td><td><span class="b b-skip b-status" data-id="a-edu" data-state="skip">スキップ</span></td></tr>
+    </table>
+    <div class="hl" style="margin-top:16px;"><p>🏆 <strong>Claude Certified Architect, Foundations</strong>（2026年3月発表）：Anthropicパートナー向けの初の技術認定資格。Academy修了後に挑戦価値あり。Anthropicキャリア転換の際に有力な証明になる。</p></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">GitHub anthropics/courses（Jupyter Notebook・5コース）</div>
+    <div class="hl"><p>🔗 https://github.com/anthropics/courses　実際にコードを書いて学ぶ形式。APIキー必要（無料枠あり）。</p></div>
+    <table class="tbl">
+      <tr><th>コース名</th><th>内容</th><th>優先度</th><th>ステータス</th></tr>
+      <tr><td>Anthropic API Fundamentals</td><td>SDK・モデルパラメータ・マルチモーダル・ストリーミング</td><td><span class="b" style="background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3);">高</span></td><td><span class="b b-todo b-status" data-id="g-api2" data-state="todo">未着手</span></td></tr>
+      <tr><td>Prompt Engineering Interactive Tutorial</td><td>プロンプト技法の体系的な学習</td><td><span class="b" style="background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3);">高</span></td><td><span class="b b-todo b-status" data-id="g-pe" data-state="todo">未着手</span></td></tr>
+      <tr><td>Real World Prompting</td><td>複雑な実世界プロンプトへの応用</td><td><span class="b b-skip">中</span></td><td><span class="b b-todo b-status" data-id="g-rw" data-state="todo">未着手</span></td></tr>
+      <tr><td>Prompt Evaluations</td><td>プロンプト品質評価の実装</td><td><span class="b b-skip">中</span></td><td><span class="b b-todo b-status" data-id="g-ev" data-state="todo">未着手</span></td></tr>
+      <tr><td>Tool Use</td><td>Claude APIのTool Use完全実装</td><td><span class="b" style="background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3);">高</span></td><td><span class="b b-todo b-status" data-id="g-tu" data-state="todo">未着手</span></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 3 -->
+<div class="tab-pane" id="tab3">
+  <div class="sec">
+    <div class="sec-title">ユニコスクール × 他トラック 対応マップ</div>
+    <table class="tbl">
+      <tr><th>Day</th><th>ユニコスクール内容</th><th>対応Academy</th><th>対応GitHub</th><th>ステータス</th></tr>
+      <tr><td>Day 1</td><td>オンボーディング・環境構築・Claude Code入門</td><td>Claude Code 101</td><td>—</td><td><span class="b b-done b-status" data-id="u2-d1" data-state="done">✅ 完了</span></td></tr>
+      <tr><td>Day 2〜3</td><td>プロンプトエンジニアリング・エージェント基礎設計</td><td>Building with the Claude API</td><td>Prompt Engineering Tutorial</td><td><span class="b b-todo b-status" data-id="u2-d23" data-state="todo">未着手</span></td></tr>
+      <tr><td>Day 4〜5</td><td>ツール統合・MCP活用</td><td>Advanced MCP・Claude Agent Skills</td><td>Tool Use</td><td><span class="b b-ip b-status" data-id="u2-d45" data-state="ip">🔄 一部実施</span></td></tr>
+      <tr><td>Day 6〜7</td><td>エージェントの実装・テスト・デプロイ</td><td>Claude Code in Action・Subagents</td><td>API Fundamentals</td><td><span class="b b-todo b-status" data-id="u2-d67" data-state="todo">未着手</span></td></tr>
+      <tr><td>Day 8〜</td><td>収益化・実案件適用</td><td>全修了証取得フェーズ</td><td>Real World Prompting</td><td><span class="b b-todo b-status" data-id="u2-d8" data-state="todo">未着手</span></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 4 -->
+<div class="tab-pane" id="tab4">
+  <div class="sec">
+    <div class="sec-title">学習ログ</div>
+    <div id="log-list">
+      <div class="week" style="margin-bottom:10px;">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--accent);margin-bottom:6px;">2026-05-10</div>
+        <div class="editable" id="log-0510">Claude Code MCP + Obsidian接続確認（Connected）。Discord 4チャンネルMarkdown変換完了。update_master.py作成（ドキュメント更新自動化）。</div>
+      </div>
+      <div class="week" style="margin-bottom:10px;">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--accent);margin-bottom:6px;">2026-05-12</div>
+        <div class="editable" id="log-0512">Gemini引き継ぎ受信。Vコンサル集客強化方針確定（自作LP Next.js）。ユニコスクール課題は別軸で通常消化する方針決定。AI統合学習計画（本ドキュメント）作成。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="edit-bar">
+  <button class="edit-btn edit-btn-save" id="btn-save" onclick="saveAll()">💾 保存</button>
+  <button class="edit-btn edit-btn-toggle" id="btn-edit" onclick="toggleEdit()">✏️ 編集モード</button>
+</div>
+
+<script>
+const STATES=['done','ip','todo','skip'];
+const LABELS={done:'✅ 完了',ip:'🔄 進行中',todo:'未着手',skip:'スキップ'};
+const CLASSES={done:'b-done',ip:'b-ip',todo:'b-todo',skip:'b-skip'};
+let editMode=false;
+
+function showTab(n){
+  document.querySelectorAll('.tab-pane').forEach((p,i)=>p.classList.toggle('active',i===n));
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===n));
+}
+function toggleEdit(){
+  editMode=!editMode;
+  document.body.classList.toggle('edit-mode',editMode);
+  document.getElementById('btn-edit').classList.toggle('on',editMode);
+  document.getElementById('btn-edit').textContent=editMode?'👁 表示モード':'✏️ 編集モード';
+  document.getElementById('btn-save').classList.toggle('show',editMode);
+  document.querySelectorAll('.editable').forEach(el=>{el.contentEditable=editMode?'true':'false';});
+}
+document.querySelectorAll('.b-status').forEach(el=>{
+  el.addEventListener('click',function(){
+    if(!editMode)return;
+    const cur=this.dataset.state;
+    const next=STATES[(STATES.indexOf(cur)+1)%STATES.length];
+    this.dataset.state=next;this.textContent=LABELS[next];
+    this.className='b b-status '+CLASSES[next];
+  });
+});
+function saveAll(){
+  const data={};
+  document.querySelectorAll('[data-id]').forEach(el=>{data[el.dataset.id]=el.dataset.state;});
+  document.querySelectorAll('.editable[id]').forEach(el=>{data[el.id]=el.innerHTML;});
+  localStorage.setItem('ai_learn_plan',JSON.stringify(data));
+  document.getElementById('btn-save').textContent='✅ 保存済';
+  setTimeout(()=>document.getElementById('btn-save').textContent='💾 保存',2000);
+}
+function loadAll(){
+  const raw=localStorage.getItem('ai_learn_plan');if(!raw)return;
+  const data=JSON.parse(raw);
+  document.querySelectorAll('[data-id]').forEach(el=>{
+    if(data[el.dataset.id]){const s=data[el.dataset.id];el.dataset.state=s;el.textContent=LABELS[s];el.className='b b-status '+CLASSES[s];}
+  });
+  document.querySelectorAll('.editable[id]').forEach(el=>{if(data[el.id])el.innerHTML=data[el.id];});
+}
+loadAll();
+</script>
+</body>
+</html>

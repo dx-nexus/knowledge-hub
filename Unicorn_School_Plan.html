@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ユニコスクール 受講計画書</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070d18;--surface:#0f1929;--surface2:#162035;--border:#1e3354;--accent:#a78bfa;--green:#10b981;--yellow:#f59e0b;--red:#ef4444;--blue:#00c8f0;--text:#dde6f0;--muted:#5a7190;--mono:'IBM Plex Mono',monospace;--sans:'Noto Sans JP',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.7;}
+.hdr{background:linear-gradient(135deg,#0f0a28,#1a0f40);border-bottom:1px solid var(--border);padding:24px 32px;}
+.hdr-inner{max-width:960px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;}
+.hdr h1{font-family:var(--mono);font-size:17px;color:var(--accent);}
+.hdr p{font-size:11px;color:var(--muted);margin-top:4px;}
+.hdr-meta{display:flex;gap:10px;font-family:var(--mono);font-size:11px;}
+.hdr-meta span{background:var(--surface2);border:1px solid var(--border);padding:3px 10px;border-radius:4px;color:var(--accent);}
+.tab-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;display:flex;overflow-x:auto;}
+.tab-btn{font-family:var(--mono);font-size:11px;letter-spacing:.08em;padding:13px 18px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:.15s;}
+.tab-btn:hover{color:var(--text);}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab-pane{display:none;max-width:960px;margin:0 auto;padding:28px 32px;}
+.tab-pane.active{display:block;}
+.sec{margin-bottom:36px;}
+.sec-title{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;border-bottom:1px solid var(--border);padding-bottom:7px;margin-bottom:18px;}
+.tbl{width:100%;border-collapse:collapse;font-size:13px;}
+.tbl th{background:var(--surface2);color:var(--accent);font-family:var(--mono);font-size:10px;letter-spacing:.1em;padding:9px 13px;text-align:left;border-bottom:1px solid var(--border);}
+.tbl td{padding:9px 13px;border-bottom:1px solid rgba(30,51,84,.5);color:#8aaec8;vertical-align:top;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl td:first-child{color:var(--text);font-weight:500;}
+.b{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-family:var(--mono);font-weight:600;margin-right:4px;}
+.b-done{background:rgba(16,185,129,.15);color:var(--green);border:1px solid rgba(16,185,129,.3);}
+.b-ip{background:rgba(167,139,250,.15);color:var(--accent);border:1px solid rgba(167,139,250,.3);}
+.b-todo{background:rgba(90,113,144,.15);color:var(--muted);border:1px solid rgba(90,113,144,.3);}
+.b-pri{background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3);}
+.hl{background:rgba(167,139,250,.05);border:1px solid rgba(167,139,250,.18);border-radius:8px;padding:13px 17px;margin:10px 0;}
+.hl p{font-size:13px;color:#c4b5fd;}
+.hl-warn{background:rgba(245,158,11,.05);border-color:rgba(245,158,11,.2);}
+.hl-warn p{color:#fbbf24;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 22px;margin-bottom:12px;}
+.card h3{font-size:14px;font-weight:700;margin-bottom:8px;}
+.card p,.card li{font-size:13px;color:#8aaec8;}
+.card ul{padding-left:18px;}
+/* Edit mode */
+.edit-bar{position:fixed;bottom:20px;right:20px;z-index:100;display:flex;gap:8px;align-items:center;}
+.edit-btn{font-family:var(--mono);font-size:11px;padding:7px 14px;border-radius:6px;border:1px solid var(--border);cursor:pointer;transition:.15s;}
+.edit-btn-toggle{background:var(--surface2);color:var(--muted);}
+.edit-btn-toggle.on{background:rgba(167,139,250,.2);color:var(--accent);border-color:var(--accent);}
+.edit-btn-save{background:rgba(16,185,129,.15);color:var(--green);border-color:rgba(16,185,129,.3);display:none;}
+.edit-btn-save.show{display:inline-block;}
+.edit-btn-addlog{background:rgba(0,200,240,.1);color:var(--blue);border-color:rgba(0,200,240,.3);display:none;}
+.edit-btn-addlog.show{display:inline-block;}
+.editable{outline:none;border-radius:3px;transition:.1s;}
+.edit-mode .editable{background:rgba(167,139,250,.07);border:1px dashed rgba(167,139,250,.3);padding:1px 4px;cursor:text;}
+.edit-mode .b-status{cursor:pointer;}
+.edit-mode .b-status:hover{opacity:.75;transform:scale(1.05);}
+.log-entry{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:12px 16px;margin-bottom:10px;position:relative;}
+.log-entry .log-date{font-family:var(--mono);font-size:10px;color:var(--accent);margin-bottom:6px;}
+.log-entry .log-text{font-size:13px;color:#8aaec8;}
+.edit-mode .log-entry .log-text{background:rgba(167,139,250,.07);border:1px dashed rgba(167,139,250,.3);border-radius:3px;padding:4px 6px;min-height:40px;}
+.log-del{position:absolute;top:8px;right:10px;font-size:11px;color:var(--red);cursor:pointer;display:none;}
+.edit-mode .log-del{display:inline;}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-inner">
+    <div>
+      <h1>ユニコスクール AIエージェント開発コース 受講計画書</h1>
+      <p>受講料：198,000円（税別）／ Day 1完了済み ／ 更新：<span class="editable" id="hdr-date">2026-05-10</span></p>
+    </div>
+    <div class="hdr-meta">
+      <span>Day 1：✅ 完了</span>
+      <span>目標：修了＋実装</span>
+      <span>ツール：Claude Code</span>
+    </div>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab(0)">00 ／ サマリー</button>
+  <button class="tab-btn" onclick="showTab(1)">01 ／ 目的・ゴール</button>
+  <button class="tab-btn" onclick="showTab(2)">02 ／ カリキュラム管理</button>
+  <button class="tab-btn" onclick="showTab(3)">03 ／ 実装プロジェクト</button>
+  <button class="tab-btn" onclick="showTab(4)">04 ／ 進捗・課題</button>
+</div>
+
+<!-- TAB 0 -->
+<div class="tab-pane active" id="tab0">
+  <div class="sec">
+    <div class="sec-title">現在地（2026-05-10）</div>
+    <div class="hl"><p class="editable" id="summary-text">Day 1オンボーディング完了済み。Claude Codeを使った実装ワークフローを習得しながら進行中。2026-05-10：Discord 4チャンネルのMarkdown変換・Obsidian格納完了。Claude Code MCP＋Obsidian接続確認済み（Connected）。</p></div>
+  </div>
+  <div class="sec">
+    <div class="sec-title">受講状況サマリー</div>
+    <table class="tbl">
+      <tr><th>項目</th><th>内容</th></tr>
+      <tr><td>コース名</td><td>AIエージェント開発コース</td></tr>
+      <tr><td>受講料</td><td>198,000円（税別）</td></tr>
+      <tr><td>形式</td><td>オンライン・自己学習＋セッション</td></tr>
+      <tr><td>主要ツール</td><td>Claude Code（CLI）</td></tr>
+      <tr><td>完了セッション</td><td>Day 1 オンボーディング ✅</td></tr>
+      <tr><td>次のセッション</td><td><span class="editable" id="next-session">Day 2〜3：プロンプトエンジニアリング・エージェント基礎設計</span></td></tr>
+      <tr><td>並行学習</td><td>Anthropic Academy（別計画書参照）</td></tr>
+    </table>
+  </div>
+  <div class="sec">
+    <div class="sec-title">重要リンク・メモ</div>
+    <table class="tbl">
+      <tr><th>種別</th><th>内容</th></tr>
+      <tr><td>教材保存場所</td><td>iCloud Drive（PDF・録画・スライド）</td></tr>
+      <tr><td>Claude Code バージョン</td><td>v2.1.110（Qolony Claude Teamアカウント）</td></tr>
+      <tr><td>実装作業場所</td><td>C:\git\hancho-kb\（ローカル）</td></tr>
+      <tr><td>学習メモ保存先</td><td>C:\git\hancho-kb\10_Projects\</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 1 -->
+<div class="tab-pane" id="tab1">
+  <div class="sec">
+    <div class="sec-title">受講目的</div>
+    <div class="card">
+      <h3>主目的：AIエージェント設計・開発の体系的習得</h3>
+      <p>「AIの使いっ走り」から「エージェント設計者」へのシフト。DXコンサル・PMOとドラマーという異なる側面を統合した一つのAIエージェント設計として昇華させる。</p>
+    </div>
+    <div class="card">
+      <h3>副目的：副業パイプラインへの即時適用</h3>
+      <p>学んだ内容を即座にhancho-kbパイプライン改善・V-Consultant環境拡張・Coconala新商品開発に活かす。受講料（198,000円）のROIを最短で回収する。</p>
+    </div>
+    <div class="card">
+      <h3>長期目的：Anthropic SA/Applied AI転換への布石</h3>
+      <p>ユニコスクール修了 + Anthropic Academy修了証 + 実装実績の3点セットで、転職活動時の技術的根拠を構築する。</p>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sec-title">As-Is → To-Be</div>
+    <table class="tbl">
+      <tr><th>項目</th><th>As-Is</th><th>To-Be（修了時）</th></tr>
+      <tr><td>AIエージェント設計力</td><td>使用経験あり・設計知識なし</td><td>エージェント設計・実装・デプロイができる</td></tr>
+      <tr><td>Claude Code活用</td><td>基本操作のみ</td><td>CLAUDE.md管理・サブエージェント・MCPフル活用</td></tr>
+      <tr><td>n8n自動化</td><td>未実装</td><td>パイプラインの自動化・通知連携を構築済み</td></tr>
+      <tr><td>副業商品</td><td>環境構築代行（1種）</td><td>AIエージェント設計コンサル（高単価商品）追加</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 2 -->
+<div class="tab-pane" id="tab2">
+  <div class="sec">
+    <div class="sec-title">既知カリキュラム</div>
+    <div class="hl hl-warn"><p>⚠️ Day 1以降のカリキュラム詳細は教材を確認して随時更新すること。以下は既知情報ベースの推定構成。</p></div>
+    <table class="tbl">
+      <tr><th>フェーズ</th><th>推定内容</th><th>関連ツール</th><th>ステータス</th></tr>
+      <tr><td>Day 1</td><td>オンボーディング・環境構築・Claude Code入門</td><td>Claude Code</td><td><span class="b b-done b-status" data-id="s-day1" data-state="done">✅ 完了</span></td></tr>
+      <tr><td>Day 2〜3</td><td>プロンプトエンジニアリング・エージェント基礎設計</td><td>Claude Code / API</td><td><span class="b b-todo b-status" data-id="s-day23" data-state="todo">未着手</span></td></tr>
+      <tr><td>Day 4〜5</td><td>ツール統合・MCP活用</td><td>MCP / n8n</td><td><span class="b b-ip b-status" data-id="s-day45" data-state="ip">🔄 進行中</span></td></tr>
+      <tr><td>Day 6〜7</td><td>エージェントの実装・テスト・デプロイ</td><td>Vercel / API</td><td><span class="b b-todo b-status" data-id="s-day67" data-state="todo">未着手</span></td></tr>
+      <tr><td>Day 8〜</td><td>収益化・実案件適用</td><td>各種</td><td><span class="b b-todo b-status" data-id="s-day8" data-state="todo">未着手</span></td></tr>
+    </table>
+  </div>
+  <div class="sec">
+    <div class="sec-title">関連ツール習得状況</div>
+    <table class="tbl">
+      <tr><th>ツール</th><th>用途</th><th>習得優先度</th><th>ステータス</th></tr>
+      <tr><td>Claude Code</td><td>メインのAIエージェント実装環境</td><td><span class="b b-pri">最高</span></td><td><span class="b b-ip b-status" data-id="s-claude" data-state="ip">🔄 進行中</span></td></tr>
+      <tr><td>MCP（Model Context Protocol）</td><td>外部ツール連携・Obsidian連携</td><td><span class="b b-pri">高</span></td><td><span class="b b-done b-status" data-id="s-mcp" data-state="done">✅ 接続済</span></td></tr>
+      <tr><td>n8n</td><td>ノーコード自動化・エージェントオーケストレーション</td><td><span class="b b-pri">高</span></td><td><span class="b b-todo b-status" data-id="s-n8n" data-state="todo">未着手</span></td></tr>
+      <tr><td>Vercel</td><td>エージェントのデプロイ・公開</td><td><span class="b b-pri">中</span></td><td><span class="b b-todo b-status" data-id="s-vercel" data-state="todo">未着手</span></td></tr>
+      <tr><td>fal.ai</td><td>画像生成AIとの連携</td><td><span class="b b-todo">低</span></td><td><span class="b b-todo b-status" data-id="s-fal" data-state="todo">未着手</span></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 3 -->
+<div class="tab-pane" id="tab3">
+  <div class="sec">
+    <div class="sec-title">実装プロジェクト（受講内容の即時適用先）</div>
+    <table class="tbl">
+      <tr><th>プロジェクト</th><th>概要</th><th>受講内容との接続</th><th>ステータス</th></tr>
+      <tr>
+        <td>Discord → Obsidian 変換</td>
+        <td>Discord 4チャンネルHTMLをMarkdown変換。30_Resources/discord-archive/に格納。</td>
+        <td>Claude Codeファイル処理</td>
+        <td><span class="b b-done b-status" data-id="s-discord" data-state="done">✅ 完了</span></td>
+      </tr>
+      <tr>
+        <td>Obsidian MCP連携</td>
+        <td>Claude CodeからObsidian Vaultを直接参照・更新できるMCP接続を確認済み。</td>
+        <td>MCP Server実装</td>
+        <td><span class="b b-done b-status" data-id="s-obsmcp" data-state="done">✅ 完了</span></td>
+      </tr>
+      <tr>
+        <td>パイプライン改善（n8n連携）</td>
+        <td>AI記事生成パイプラインにn8nを追加。失敗通知・Blogger自動投稿を実現</td>
+        <td>n8n・エージェント自動化</td>
+        <td><span class="b b-todo b-status" data-id="s-pipe" data-state="todo">未着手</span></td>
+      </tr>
+      <tr>
+        <td>ChatGPT 273件アーカイブ処理</td>
+        <td>ChatGPT会話履歴のインテーク・感度スクリーニング・Obsidian格納</td>
+        <td>Claude Codeファイル処理</td>
+        <td><span class="b b-todo b-status" data-id="s-chatgpt" data-state="todo">未着手</span></td>
+      </tr>
+      <tr>
+        <td>AIエージェント設計コンサル商品</td>
+        <td>ユニコスクール修了後にCoconalaの高単価商品として追加</td>
+        <td>エージェント設計・収益化</td>
+        <td><span class="b b-todo b-status" data-id="s-consult" data-state="todo">未着手</span></td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 4 -->
+<div class="tab-pane" id="tab4">
+  <div class="sec">
+    <div class="sec-title">学習ログ</div>
+    <div id="log-list">
+      <div class="log-entry" data-lid="log-1">
+        <div class="log-date">2026-05-10</div>
+        <div class="log-text editable">Discord 4チャンネル（コトノート・ユニコノウハウ・普通のお知らせ・最初に見る）をHTMLからMarkdownに変換し30_Resources/discord-archive/へ格納。Claude Code MCP + Obsidian接続をConnected確認。scripts/discord_to_md.py作成・GitHub push済み。</div>
+        <span class="log-del" onclick="delLog(this)">✕</span>
+      </div>
+      <div class="log-entry" data-lid="log-0">
+        <div class="log-date">2026-05-07頃</div>
+        <div class="log-text editable">Day 1オンボーディング完了。Claude Code実装ワークフロー習得。hancho-kb環境構築・パイプライン基盤整備。</div>
+        <span class="log-del" onclick="delLog(this)">✕</span>
+      </div>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sec-title">課題・懸念事項</div>
+    <table class="tbl">
+      <tr><th>課題</th><th>内容</th><th>対処方針</th></tr>
+      <tr><td>受講ペースの維持</td><td>本業・副業・ユニコスクールの並走でペースが落ちやすい</td><td>週1セッション最低ラインとして設定。土日の2時間ブロックを確保</td></tr>
+      <tr><td>カリキュラム詳細の把握</td><td>Day 2以降の内容が未確認のため計画が曖昧</td><td>次セッション後に本タブを更新する</td></tr>
+      <tr><td>社内展開提案（約150名）</td><td>会社の経営層への提案を検討中</td><td>自身の受講経験を積んでから提案タイミングを判断</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- Edit bar -->
+<div class="edit-bar">
+  <button class="edit-btn edit-btn-addlog" id="btn-addlog" onclick="addLog()">＋ ログ追加</button>
+  <button class="edit-btn edit-btn-save" id="btn-save" onclick="saveAll()">💾 保存</button>
+  <button class="edit-btn edit-btn-toggle" id="btn-edit" onclick="toggleEdit()">✏️ 編集モード</button>
+</div>
+
+<script>
+const STATES=['done','ip','todo'];
+const LABELS={done:'✅ 完了',ip:'🔄 進行中',todo:'未着手'};
+const CLASSES={done:'b-done',ip:'b-ip',todo:'b-todo'};
+let editMode=false, logCount=100;
+
+function showTab(n){
+  document.querySelectorAll('.tab-pane').forEach((p,i)=>p.classList.toggle('active',i===n));
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===n));
+}
+
+function toggleEdit(){
+  editMode=!editMode;
+  document.body.classList.toggle('edit-mode',editMode);
+  document.getElementById('btn-edit').classList.toggle('on',editMode);
+  document.getElementById('btn-edit').textContent=editMode?'👁 表示モード':'✏️ 編集モード';
+  document.getElementById('btn-save').classList.toggle('show',editMode);
+  document.getElementById('btn-addlog').classList.toggle('show',editMode);
+  document.querySelectorAll('.editable').forEach(el=>{
+    el.contentEditable=editMode?'true':'false';
+  });
+}
+
+document.querySelectorAll('.b-status').forEach(el=>{
+  el.addEventListener('click',function(){
+    if(!editMode)return;
+    const cur=this.dataset.state;
+    const next=STATES[(STATES.indexOf(cur)+1)%STATES.length];
+    this.dataset.state=next;
+    this.textContent=LABELS[next];
+    this.className='b b-status '+CLASSES[next];
+  });
+});
+
+function addLog(){
+  const today=new Date().toISOString().slice(0,10);
+  logCount++;
+  const lid='log-'+logCount;
+  const div=document.createElement('div');
+  div.className='log-entry';
+  div.dataset.lid=lid;
+  div.innerHTML=`<div class="log-date">${today}</div><div class="log-text editable" contenteditable="true">ここに学習内容を入力...</div><span class="log-del" onclick="delLog(this)">✕</span>`;
+  document.getElementById('log-list').prepend(div);
+}
+
+function delLog(el){
+  if(confirm('このログを削除しますか？'))el.closest('.log-entry').remove();
+}
+
+function saveAll(){
+  const data={};
+  document.querySelectorAll('[data-id]').forEach(el=>{data[el.dataset.id]=el.dataset.state;});
+  document.querySelectorAll('.editable[id]').forEach(el=>{data[el.id]=el.innerHTML;});
+  const logs=[];
+  document.querySelectorAll('.log-entry').forEach(el=>{
+    logs.push({lid:el.dataset.lid,date:el.querySelector('.log-date').textContent,text:el.querySelector('.log-text').innerHTML});
+  });
+  data['__logs']=JSON.stringify(logs);
+  localStorage.setItem('uniko_plan',JSON.stringify(data));
+  document.getElementById('btn-save').textContent='✅ 保存済';
+  setTimeout(()=>document.getElementById('btn-save').textContent='💾 保存',2000);
+}
+
+function loadAll(){
+  const raw=localStorage.getItem('uniko_plan');
+  if(!raw)return;
+  const data=JSON.parse(raw);
+  document.querySelectorAll('[data-id]').forEach(el=>{
+    if(data[el.dataset.id]){
+      const s=data[el.dataset.id];
+      el.dataset.state=s;el.textContent=LABELS[s];
+      el.className='b b-status '+CLASSES[s];
+    }
+  });
+  document.querySelectorAll('.editable[id]').forEach(el=>{
+    if(data[el.id])el.innerHTML=data[el.id];
+  });
+  if(data['__logs']){
+    const logs=JSON.parse(data['__logs']);
+    const list=document.getElementById('log-list');
+    list.innerHTML='';
+    logs.forEach(l=>{
+      const div=document.createElement('div');
+      div.className='log-entry';div.dataset.lid=l.lid;
+      div.innerHTML=`<div class="log-date">${l.date}</div><div class="log-text editable">${l.text}</div><span class="log-del" onclick="delLog(this)">✕</span>`;
+      list.appendChild(div);
+    });
+  }
+}
+
+loadAll();
+</script>
+</body>
+</html>
