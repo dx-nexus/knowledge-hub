@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anthropic Academy 受講計画書</title>
+<title>Anthropic Academy 学習計画書 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#070d18;--surface:#0f1929;--surface2:#162035;--border:#1e3354;--accent:#00c8f0;--green:#10b981;--yellow:#f59e0b;--red:#ef4444;--purple:#a78bfa;--text:#dde6f0;--muted:#5a7190;--mono:'IBM Plex Mono',monospace;--sans:'Noto Sans JP',sans-serif;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.7;}
 .hdr{background:linear-gradient(135deg,#0a1628,#0f2040);border-bottom:1px solid var(--border);padding:24px 32px;}
-.hdr-inner{max-width:960px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;}
+.hdr-inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;}
 .hdr h1{font-family:var(--mono);font-size:17px;color:var(--accent);}
 .hdr p{font-size:11px;color:var(--muted);margin-top:4px;}
 .hdr-meta{display:flex;gap:10px;font-family:var(--mono);font-size:11px;}
@@ -19,163 +19,418 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14
 .tab-btn{font-family:var(--mono);font-size:11px;letter-spacing:.08em;padding:13px 18px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:.15s;}
 .tab-btn:hover{color:var(--text);}
 .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
-.tab-pane{display:none;max-width:960px;margin:0 auto;padding:28px 32px;}
+.tab-pane{display:none;max-width:1100px;margin:0 auto;padding:28px 32px;}
 .tab-pane.active{display:block;}
 .sec{margin-bottom:36px;}
 .sec-title{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;border-bottom:1px solid var(--border);padding-bottom:7px;margin-bottom:18px;}
-.tbl{width:100%;border-collapse:collapse;font-size:13px;}
-.tbl th{background:var(--surface2);color:var(--accent);font-family:var(--mono);font-size:10px;letter-spacing:.1em;padding:9px 13px;text-align:left;border-bottom:1px solid var(--border);}
-.tbl td{padding:9px 13px;border-bottom:1px solid rgba(30,51,84,.5);color:#8aaec8;vertical-align:top;}
-.tbl tr:last-child td{border-bottom:none;}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:14px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 18px;}
+.card-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
+.card-icon{width:36px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;}
+.card-title{font-size:13px;font-weight:700;color:var(--text);line-height:1.4;}
+.card-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.card-body{font-size:12px;color:#8aaec8;line-height:1.7;margin-bottom:10px;}
+.card-foot{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.tag{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600;}
+.tag-dev{background:rgba(0,200,240,.15);color:var(--accent);border:1px solid rgba(0,200,240,.3);}
+.tag-biz{background:rgba(16,185,129,.15);color:var(--green);border:1px solid rgba(16,185,129,.3);}
+.tag-cloud{background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3);}
+.tag-edu{background:rgba(167,139,250,.15);color:var(--purple);border:1px solid rgba(167,139,250,.3);}
+.star{font-size:11px;color:var(--yellow);font-weight:700;}
+.term-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin-bottom:10px;}
+.term-head{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;}
+.term-name{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--accent);}
+.term-en{font-size:11px;color:var(--muted);}
+.term-cat{font-size:10px;padding:2px 7px;border-radius:20px;margin-left:auto;}
+.term-body{font-size:12px;color:#8aaec8;line-height:1.7;}
+.term-tip{margin-top:6px;font-size:11px;color:var(--green);background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:4px;padding:4px 10px;}
+.search-box{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px 14px;color:var(--text);font-family:var(--sans);font-size:13px;margin-bottom:18px;outline:none;}
+.search-box:focus{border-color:var(--accent);}
+.sys-diagram{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:20px;overflow-x:auto;}
+.sys-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;align-items:flex-start;}
+.sys-box{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:12px 14px;min-width:140px;flex:1;}
+.sys-box-title{font-family:var(--mono);font-size:11px;margin-bottom:6px;}
+.sys-box-body{font-size:11px;color:var(--muted);line-height:1.6;}
+.sys-arrow{display:flex;align-items:center;color:var(--muted);font-size:18px;flex-shrink:0;}
+.hl{background:rgba(0,200,240,.05);border:1px solid rgba(0,200,240,.18);border-radius:8px;padding:12px 16px;margin:10px 0;}
+.hl p{font-size:12px;color:#7dd3fc;}
+.hl-green{background:rgba(16,185,129,.05);border-color:rgba(16,185,129,.2);}
+.hl-green p{color:#6ee7b7;}
+.hl-purple{background:rgba(167,139,250,.05);border-color:rgba(167,139,250,.2);}
+.hl-purple p{color:#c4b5fd;}
+.tbl{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:16px;}
+.tbl th{background:var(--surface2);color:var(--accent);font-family:var(--mono);font-size:10px;letter-spacing:.1em;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);}
+.tbl td{padding:8px 12px;border-bottom:1px solid rgba(30,51,84,.5);color:#8aaec8;vertical-align:top;}
 .tbl td:first-child{color:var(--text);font-weight:500;}
-.b{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-family:var(--mono);font-weight:600;margin-right:4px;}
-.b-done{background:rgba(16,185,129,.15);color:var(--green);border:1px solid rgba(16,185,129,.3);}
-.b-ip{background:rgba(0,200,240,.15);color:var(--accent);border:1px solid rgba(0,200,240,.3);}
-.b-todo{background:rgba(167,139,250,.15);color:var(--purple);border:1px solid rgba(167,139,250,.3);}
-.b-skip{background:rgba(90,113,144,.15);color:var(--muted);border:1px solid rgba(90,113,144,.3);}
-.b-pri{background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3);}
-.hl{background:rgba(0,200,240,.05);border:1px solid rgba(0,200,240,.18);border-radius:8px;padding:13px 17px;margin:10px 0;}
-.hl p{font-size:13px;color:#7dd3fc;}
-.url-chip{display:inline-block;background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:5px 12px;font-family:var(--mono);font-size:11px;color:var(--accent);margin:3px;}
+.filter-btns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.filter-btn{font-family:var(--mono);font-size:10px;padding:4px 12px;border-radius:20px;border:1px solid var(--border);background:none;color:var(--muted);cursor:pointer;}
+.filter-btn.active{background:rgba(0,200,240,.15);color:var(--accent);border-color:rgba(0,200,240,.3);}
+.hidden{display:none;}
 </style>
 </head>
 <body>
 <div class="hdr">
   <div class="hdr-inner">
     <div>
-      <h1>Anthropic Academy 受講計画書</h1>
-      <p>13コース完全無料・修了証あり ／ キャリア転換支援学習計画 ／ 更新：2026-05-07</p>
+      <h1>Anthropic Academy 学習計画書 2026 — はんちょー</h1>
+      <p>全コース概要 ／ 用語集 ／ システム連携概要 ／ 更新：2026-05-13</p>
     </div>
-    <div class="hdr-meta">
-      <span>開始：未着手</span>
-      <span>目標：2026年6月末</span>
-      <span>費用：無料</span>
-    </div>
+    <div class="hdr-meta"><span>全17コース</span><span>無料・修了証あり</span><span>anthropic.skilljar.com</span></div>
   </div>
 </div>
-
 <div class="tab-bar">
-  <button class="tab-btn active" onclick="showTab(0)">00 ／ サマリー</button>
-  <button class="tab-btn" onclick="showTab(1)">01 ／ 目的・ゴール</button>
-  <button class="tab-btn" onclick="showTab(2)">02 ／ コース一覧</button>
-  <button class="tab-btn" onclick="showTab(3)">03 ／ 受講ロードマップ</button>
-  <button class="tab-btn" onclick="showTab(4)">04 ／ 進捗管理</button>
+  <button class="tab-btn active" onclick="showTab(0)">00 ／ コース一覧</button>
+  <button class="tab-btn" onclick="showTab(1)">01 ／ 用語集</button>
+  <button class="tab-btn" onclick="showTab(2)">02 ／ システム連携図</button>
+  <button class="tab-btn" onclick="showTab(3)">03 ／ 学習ロードマップ</button>
 </div>
 
-<!-- TAB 0 -->
+<!-- TAB 0: コース一覧 -->
 <div class="tab-pane active" id="tab0">
   <div class="sec">
-    <div class="sec-title">現在地</div>
-    <div class="hl"><p>未着手。Skilljarアカウント作成から開始。全コース無料・Claudeアカウント不要。はんちょーのキャリア転換目標（Anthropic Solutions Architect / Applied AI方向）に直結する学習機会。</p></div>
-  </div>
-  <div class="sec">
-    <div class="sec-title">受講リンク</div>
-    <table class="tbl">
-      <tr><th>リソース</th><th>URL</th></tr>
-      <tr><td>Anthropic Academy（Skilljar）</td><td><span class="url-chip">anthropic.skilljar.com</span></td></tr>
-      <tr><td>Anthropicコース一覧</td><td><span class="url-chip">anthropic.com/learn</span></td></tr>
-      <tr><td>GitHub公開コース（Jupyter）</td><td><span class="url-chip">github.com/anthropics/courses</span></td></tr>
-    </table>
-  </div>
-  <div class="sec">
-    <div class="sec-title">はんちょー向け優先コース（TOP5）</div>
-    <table class="tbl">
-      <tr><th>優先</th><th>コース名</th><th>時間</th><th>理由</th></tr>
-      <tr><td><span class="b b-pri">★1</span></td><td>Building with the Claude API</td><td>8h</td><td>Anthropic SA転換に必須の技術実装力。Python+API経験として直接活かせる</td></tr>
-      <tr><td><span class="b b-pri">★2</span></td><td>Claude Code in Action</td><td>1h</td><td>すでにClaude Code使用中。実務との最短接続</td></tr>
-      <tr><td><span class="b b-pri">★3</span></td><td>Introduction to MCP</td><td>3h</td><td>Obsidian MCP連携・n8n等の自動化拡張に必要</td></tr>
-      <tr><td><span class="b b-pri">★4</span></td><td>Claude 101</td><td>2h</td><td>体系的な基礎固め。修了証取得の足がかり</td></tr>
-      <tr><td><span class="b b-pri">★5</span></td><td>AI Fluency: Framework & Foundations</td><td>2h</td><td>DXコンサルとして組織にAIを説明する際の理論基盤</td></tr>
-    </table>
+    <div class="sec-title">フィルター</div>
+    <div class="filter-btns">
+      <button class="filter-btn active" onclick="filterCourse('all',this)">全て</button>
+      <button class="filter-btn" onclick="filterCourse('dev',this)">開発者</button>
+      <button class="filter-btn" onclick="filterCourse('biz',this)">ビジネス</button>
+      <button class="filter-btn" onclick="filterCourse('cloud',this)">クラウド</button>
+      <button class="filter-btn" onclick="filterCourse('edu',this)">教育</button>
+    </div>
+    <div class="grid-3" id="course-grid">
+
+      <div class="card" data-cat="biz">
+        <div class="card-head"><div class="card-icon" style="background:rgba(16,185,129,.15)">🌱</div>
+          <div><div class="card-title">Claude 101</div><div class="card-sub">〜1時間 ／ 全員対象</div></div></div>
+        <div class="card-body">Claudeの基本操作・プロンプトの書き方・日常業務への活用。AIが初めての人向けの入口コース。はんちょーはスキップ可。</div>
+        <div class="card-foot"><span class="tag tag-biz">非技術者</span><span style="font-size:11px;color:var(--muted)">AI Fluency</span></div>
+      </div>
+
+      <div class="card" data-cat="biz">
+        <div class="card-head"><div class="card-icon" style="background:rgba(0,200,240,.15)">🧭</div>
+          <div><div class="card-title">AI Fluency: Framework & Foundations</div><div class="card-sub">2〜3時間 ／ PMO・マネージャー推奨</div></div></div>
+        <div class="card-body">4D AIフレームワークでAI思考モデルを体系的に習得。組織へのAI導入設計・DXコンサル提案に直結。本業でのAI価値共創にも使える。</div>
+        <div class="card-foot"><span class="tag tag-biz">PMO向け</span><span class="star">★ はんちょー推奨</span></div>
+      </div>
+
+      <div class="card" data-cat="dev">
+        <div class="card-head"><div class="card-icon" style="background:rgba(167,139,250,.15)">⚡</div>
+          <div><div class="card-title">Building with the Claude API</div><div class="card-sub">8時間以上 ／ 最重要コース</div></div></div>
+        <div class="card-body">APIの全機能：システムプロンプト・ツールユース・コンテキスト管理・アーキテクチャパターン・ストリーミング。AIプロダクト開発の根幹。</div>
+        <div class="card-foot"><span class="tag tag-dev">開発者</span><span class="star">★★ 最重要</span></div>
+      </div>
+
+      <div class="card" data-cat="dev">
+        <div class="card-head"><div class="card-icon" style="background:rgba(16,185,129,.15)">💻</div>
+          <div><div class="card-title">Claude Code 101</div><div class="card-sub">〜2時間 ／ 進行中</div></div></div>
+        <div class="card-body">Claude Code CLI入門：インストール・承認モード・Plan Mode・CLAUDE.md・サブエージェント・Skills・MCP・Hooks。体系的な理解を補完する。</div>
+        <div class="card-foot"><span class="tag tag-dev">開発者</span><span class="star">★ 進行中</span></div>
+      </div>
+
+      <div class="card" data-cat="dev">
+        <div class="card-head"><div class="card-icon" style="background:rgba(16,185,129,.15)">🔧</div>
+          <div><div class="card-title">Claude Code in Action</div><div class="card-sub">〜3時間 ／ 高優先</div></div></div>
+        <div class="card-body">実務ワークフロー統合：コーディングアーキテクチャ・ビジュアル入力・カスタムコマンド・MCPサーバー・GitHubワークフロー・Hooks・SDK。</div>
+        <div class="card-foot"><span class="tag tag-dev">開発者</span><span class="star">★ 高優先</span></div>
+      </div>
+
+      <div class="card" data-cat="dev">
+        <div class="card-head"><div class="card-icon" style="background:rgba(239,68,68,.15)">🔌</div>
+          <div><div class="card-title">Introduction to MCP</div><div class="card-sub">〜2時間 ／ 実装済み</div></div></div>
+        <div class="card-body">Model Context Protocolの3コアプリミティブ（tools・resources・prompts）。Obsidian MCP接続済みの実体験と照合しながら体系化できる。</div>
+        <div class="card-foot"><span class="tag tag-dev">開発者</span><span class="star">★ 実装済</span></div>
+      </div>
+
+      <div class="card" data-cat="dev">
+        <div class="card-head"><div class="card-icon" style="background:rgba(239,68,68,.15)">🕸️</div>
+          <div><div class="card-title">Advanced MCP</div><div class="card-sub">〜3時間 ／ 高優先</div></div></div>
+        <div class="card-body">本番MCPサーバー開発：サンプリング・通知・ファイルシステムアクセス・トランスポート機構。n8n連携・エージェント自動化の実装に直結する。</div>
+        <div class="card-foot"><span class="tag tag-dev">開発者</span><span class="star">★ 高優先</span></div>
+      </div>
+
+      <div class="card" data-cat="dev">
+        <div class="card-head"><div class="card-icon" style="background:rgba(245,158,11,.15)">🤖</div>
+          <div><div class="card-title">Introduction to Subagents</div><div class="card-sub">〜2時間 ／ 高優先</div></div></div>
+        <div class="card-body">Claude Code上でのサブエージェント設計：コンテキスト分離・タスク委任・特化ワークフロー構築。エージェントオーケストレーターへの転換に必須。</div>
+        <div class="card-foot"><span class="tag tag-dev">開発者</span><span class="star">★ 高優先</span></div>
+      </div>
+
+      <div class="card" data-cat="dev">
+        <div class="card-head"><div class="card-icon" style="background:rgba(245,158,11,.15)">🪄</div>
+          <div><div class="card-title">Claude Agent Skills</div><div class="card-sub">〜2時間 ／ 高優先</div></div></div>
+        <div class="card-body">再利用可能なMarkdown指示書（Skills）の設計・配布・チーム展開。Coconala代行サービスや自社エージェント設計への応用が見込める。</div>
+        <div class="card-foot"><span class="tag tag-dev">開発者</span><span class="star">★ 高優先</span></div>
+      </div>
+
+      <div class="card" data-cat="biz">
+        <div class="card-head"><div class="card-icon" style="background:rgba(16,185,129,.15)">🏢</div>
+          <div><div class="card-title">Introduction to Claude Cowork</div><div class="card-sub">〜1時間 ／ 参考</div></div></div>
+        <div class="card-body">デスクトップアプリでローカルファイル管理・継続タスク自動化。非技術者向けだがCowork概念の理解はDXコンサルの提案ネタになる。</div>
+        <div class="card-foot"><span class="tag tag-biz">非技術者</span><span style="font-size:11px;color:var(--muted)">Product</span></div>
+      </div>
+
+      <div class="card" data-cat="cloud">
+        <div class="card-head"><div class="card-icon" style="background:rgba(245,158,11,.15)">☁️</div>
+          <div><div class="card-title">Building with Claude on AWS Bedrock</div><div class="card-sub">〜3時間 ／ 本業活用</div></div></div>
+        <div class="card-body">AWSエコシステムでClaudeをデプロイする全工程。NTT Data AnserParaSOLのAWS環境と照合でき、IPO準備フェーズのAI導入提案に使える。</div>
+        <div class="card-foot"><span class="tag tag-cloud">AWS</span><span style="font-size:11px;color:var(--muted)">Cloud</span></div>
+      </div>
+
+      <div class="card" data-cat="cloud">
+        <div class="card-head"><div class="card-icon" style="background:rgba(0,200,240,.15)">☁️</div>
+          <div><div class="card-title">Building with Claude on Google Vertex AI</div><div class="card-sub">〜3時間 ／ Gemini連携</div></div></div>
+        <div class="card-body">GCPのVertex AI上でClaudeをフル活用する実装パターン。Claude設計・Vertex AI実行というGemini連携の理解に役立つ。</div>
+        <div class="card-foot"><span class="tag tag-cloud">GCP</span><span style="font-size:11px;color:var(--muted)">Cloud</span></div>
+      </div>
+
+      <div class="card" data-cat="edu">
+        <div class="card-head"><div class="card-icon" style="background:rgba(167,139,250,.15)">📚</div>
+          <div><div class="card-title">AI Fluency for Educators / Students / Nonprofits</div><div class="card-sub">各〜2時間 ／ Creative Commons</div></div></div>
+        <div class="card-body">教育者・学生・非営利向けAI活用コース。娘向けRoblox×AIコンテンツや教育系副業に転用可。CC提供で二次利用・カスタマイズ可能。</div>
+        <div class="card-foot"><span class="tag tag-edu">教育者</span><span style="font-size:11px;color:var(--muted)">Education</span></div>
+      </div>
+
+    </div>
   </div>
 </div>
 
-<!-- TAB 1 -->
+<!-- TAB 1: 用語集 -->
 <div class="tab-pane" id="tab1">
   <div class="sec">
-    <div class="sec-title">受講目的</div>
-    <table class="tbl">
-      <tr><th>目的</th><th>詳細</th></tr>
-      <tr><td>キャリア転換の技術的根拠獲得</td><td>Anthropic Solutions Architect / Applied AI方向への転換に向け、Claude API・MCP・Claude Codeの実装スキルをAnthropicが認定する形で証明する</td></tr>
-      <tr><td>現在の副業パイプライン強化</td><td>Gemini APIで動くパイプラインをClaude APIにも対応させる。MCPでObsidian連携を拡張する</td></tr>
-      <tr><td>DXコンサルとしての差別化</td><td>AI Fluencyコースで組織向けAI導入の理論・フレームワークを習得し、AnserParaSOL等の本業案件に活かす</td></tr>
-      <tr><td>修了証のLinkedIn登録</td><td>Anthropic発行の公式修了証をキャリアプロフィールに追加する</td></tr>
-    </table>
-  </div>
-  <div class="sec">
-    <div class="sec-title">As-Is → To-Be</div>
-    <table class="tbl">
-      <tr><th>項目</th><th>As-Is</th><th>To-Be（2026年6月末）</th></tr>
-      <tr><td>Claude API実装経験</td><td>使用経験あり・体系知識なし</td><td>APIコース修了・構造化された実装力</td></tr>
-      <tr><td>MCP知識</td><td>概念は知っている</td><td>Intro+Advanced修了・MCP Server構築可能</td></tr>
-      <tr><td>修了証</td><td>0件</td><td>5〜7コース修了証取得</td></tr>
-      <tr><td>LinkedIn AI資格</td><td>未記載</td><td>Anthropic発行修了証を登録済み</td></tr>
-    </table>
+    <div class="sec-title">用語検索</div>
+    <input class="search-box" id="term-search" placeholder="用語を検索..." oninput="searchTerms(this.value)">
+    <div id="term-list">
+
+      <div class="term-card" data-term="claude api">
+        <div class="term-head"><span class="term-name">Claude API</span><span class="term-en">Application Programming Interface</span><span class="term-cat tag tag-dev">開発者</span></div>
+        <div class="term-body">AnthropicのClaudeモデルをプログラムから呼び出すためのインターフェース。HTTPリクエストでClaudeに指示を送り、応答を受け取る。Claudeの全機能の根幹。料金はトークン単位で発生する。</div>
+        <div class="term-tip">はんちょー環境：generate_ai_content.pyがGemini API経由で呼び出している。Claude版に切り替えるにはAnthropicのAPIキーが必要。</div>
+      </div>
+
+      <div class="term-card" data-term="claude code cli コマンドライン">
+        <div class="term-head"><span class="term-name">Claude Code</span><span class="term-en">CLI Agent Tool</span><span class="term-cat tag tag-dev">開発者</span></div>
+        <div class="term-body">ターミナル（PowerShell）から`claude`コマンドで使うAIエージェントツール。ローカルファイルの読み書き・Git操作・コード実行を直接行える。MCPサーバーと接続してObsidianなど外部ツールとも連携できる。</div>
+        <div class="term-tip">はんちょー環境：`C:\git\hancho-kb`でclaude MCPを起動してObsidianと接続済み。</div>
+      </div>
+
+      <div class="term-card" data-term="cowork コワーク デスクトップ">
+        <div class="term-head"><span class="term-name">Claude Cowork</span><span class="term-en">Desktop Automation Agent</span><span class="term-cat tag tag-biz">ビジネス</span></div>
+        <div class="term-body">デスクトップアプリとして動作するClaudeエージェント。ローカルフォルダ・プラグイン・サブエージェントを使って複雑な継続タスクを処理する。ファイル整理・完全ドキュメント作成・スケジュールタスクの自動実行が得意。非技術者でも使える。</div>
+        <div class="term-tip">はんちょーへの活用提案：update_master.pyで手動実行している同期処理をCoworkで自動スケジュール化できる可能性がある。</div>
+      </div>
+
+      <div class="term-card" data-term="mcp model context protocol モデルコンテキストプロトコル">
+        <div class="term-head"><span class="term-name">MCP（Model Context Protocol）</span><span class="term-en">Open Standard for Tool Integration</span><span class="term-cat tag tag-dev">開発者</span></div>
+        <div class="term-body">AnthropicがオープンソースとしてリリースしたAIとツールの接続規格。Claude（AI）とObsidian・Slack・GitHub・データベースなどの外部サービスを標準化された方法で繋ぐ。USB規格のようなもの。MCPサーバーとMCPクライアントの2役で構成される。</div>
+        <div class="term-tip">はんちょー環境：`mcp-obsidian`と`Local REST API`でObsidian接続済み（port 27123）。microsoft365 MCPも接続設定あり。</div>
+      </div>
+
+      <div class="term-card" data-term="artifact アーティファクト 成果物">
+        <div class="term-head"><span class="term-name">Artifact（アーティファクト）</span><span class="term-en">Generated Standalone Content</span><span class="term-cat tag tag-biz">全般</span></div>
+        <div class="term-body">claude.aiのチャット内でClaudeが生成するHTML・React・コード・Markdownなどの独立したコンテンツ。サイドパネルに表示されプレビューやダウンロードができる。本会話でも多数使用している（HTMLダッシュボード・スクリプトなど）。</div>
+        <div class="term-tip">本セッションで生成したAI_Learning_Plan.html・dashboard.css等はすべてArtifactとして生成された。</div>
+      </div>
+
+      <div class="term-card" data-term="subagent サブエージェント">
+        <div class="term-head"><span class="term-name">Subagent（サブエージェント）</span><span class="term-en">Specialized Delegated Agent</span><span class="term-cat tag tag-dev">開発者</span></div>
+        <div class="term-body">メインのClaudeエージェントが特定タスクを委任する子エージェント。コンテキストを分離して並列実行したり、特化ワークフローを独立して管理したりできる。大規模な自動化パイプラインの構成要素。</div>
+        <div class="term-tip">応用例：「記事生成（Gemini）→チェック（Claude Subagent）→Git push（Claude）」の自動パイプライン設計に使える。</div>
+      </div>
+
+      <div class="term-card" data-term="skills スキル claude code">
+        <div class="term-head"><span class="term-name">Skills（Claude Code Skills）</span><span class="term-en">Reusable Instruction Sets</span><span class="term-cat tag tag-dev">開発者</span></div>
+        <div class="term-body">Claude Codeが特定タスクに自動適用する再利用可能なMarkdown指示書。プロジェクト横断で共有でき、チームメンバーも同じ操作品質を得られる。CLAUDE.mdと組み合わせてプロジェクト固有のルールを定義する。</div>
+        <div class="term-tip">活用例：`hancho-kb`専用のSkillを作成し「update_master.py実行→push→Netlify確認」を一発指示で完結させられる。</div>
+      </div>
+
+      <div class="term-card" data-term="hooks フック claude code">
+        <div class="term-head"><span class="term-name">Hooks（Claude Code Hooks）</span><span class="term-en">Event-Triggered Automation</span><span class="term-cat tag tag-dev">開発者</span></div>
+        <div class="term-body">Claude Codeの特定イベント（ファイル保存・コマンド実行前後など）をトリガーにして自動処理を実行する仕組み。コードレビューの自動化・テスト実行・通知送信などに使える。</div>
+        <div class="term-tip">活用例：Obsidianのファイル更新をHookで検知→update_master.pyを自動実行→Netlify反映まで完全自動化。</div>
+      </div>
+
+      <div class="term-card" data-term="claude.md プロジェクト設定">
+        <div class="term-head"><span class="term-name">CLAUDE.md</span><span class="term-en">Project Configuration File</span><span class="term-cat tag tag-dev">開発者</span></div>
+        <div class="term-body">Claude Codeがプロジェクト開始時に自動読み込むMarkdownファイル。プロジェクト固有のルール・コンテキスト・指示を記述しておく。「このリポジトリではPython 3.14を使う」「日本語で応答する」などを一度設定すれば毎回指示不要になる。</div>
+        <div class="term-tip">はんちょー推奨：`C:\git\hancho-kb\CLAUDE.md`を作成してAI_System_Policyの内容を参照させると、Claude Codeが常に規範に従って動作する。</div>
+      </div>
+
+      <div class="term-card" data-term="plan mode プランモード">
+        <div class="term-head"><span class="term-name">Plan Mode（プランモード）</span><span class="term-en">Review-Before-Execute Mode</span><span class="term-cat tag tag-dev">開発者</span></div>
+        <div class="term-body">Claude Codeが実行前に計画を提示し、確認を待つモード。ファイル削除・大規模変更など取り消せない操作を安全に行える。`--plan`フラグか設定で有効化する。</div>
+        <div class="term-tip">リスク管理の観点から、hancho-kbへの大規模変更時は常にPlan Modeを使うことを推奨。</div>
+      </div>
+
+      <div class="term-card" data-term="tool use ツールユース function calling">
+        <div class="term-head"><span class="term-name">Tool Use（ツールユース）</span><span class="term-en">Function Calling</span><span class="term-cat tag tag-dev">開発者</span></div>
+        <div class="term-body">ClaudeがAPIを通じて外部ツールや関数を呼び出す機能。「検索する」「計算する」「ファイルを読む」などをClaudeが自律的に実行できる。エージェント化の核心機能。OpenAIのFunction Callingに相当。</div>
+        <div class="term-tip">generate_ai_content.pyを拡張してTool Useを追加すると、記事生成→Web検索→事実確認→push の完全自動パイプラインが作れる。</div>
+      </div>
+
+      <div class="term-card" data-term="system prompt システムプロンプト">
+        <div class="term-head"><span class="term-name">System Prompt（システムプロンプト）</span><span class="term-en">Persistent Instructions</span><span class="term-cat tag tag-dev">開発者</span></div>
+        <div class="term-body">API経由でClaudeに事前設定する永続的な指示。「あなたはDXコンサルタントです」「常に日本語で応答してください」など。ユーザーの入力より優先される。AI_System_Policy.mdはシステムプロンプトの設計に直結する概念。</div>
+      </div>
+
+      <div class="term-card" data-term="context window コンテキストウィンドウ トークン">
+        <div class="term-head"><span class="term-name">Context Window（コンテキストウィンドウ）</span><span class="term-en">Active Memory Limit</span><span class="term-cat tag tag-dev">開発者</span></div>
+        <div class="term-body">Claudeが一度に処理できるテキストの最大量（トークン数）。現在Claude Sonnet 4.6は200Kトークン（約15万字程度）。長い会話・大きなファイルはコンテキストを消費する。本セッションも終盤でコンテキスト圧迫が起きている。</div>
+        <div class="term-tip">長期プロジェクトでは、Project_Master_DocumentのURL（Netlify）をGeminiやClaudeに読み込ませることでコンテキストを節約できる。</div>
+      </div>
+
+      <div class="term-card" data-term="dreaming ドリーミング 自己改善">
+        <div class="term-head"><span class="term-name">Dreaming（ドリーミング）</span><span class="term-en">Self-Improving Agent Memory</span><span class="term-cat tag tag-dev">開発者</span></div>
+        <div class="term-body">2026年5月発表のClaude Managed Agents新機能。過去のエージェントセッションをバックグラウンドで定期レビューし、パターンを抽出・記憶を整理して自己改善する仕組み。人間の睡眠中の記憶整理をAIで再現した概念。Harvey社では導入後タスク完了率が6倍に向上。</div>
+        <div class="term-tip">現時点ではClaude Managed Agents（API）経由のみ。ユニコスクールDay 6〜8でAPIを学んだ後に自エージェントへ組み込むのが目標。</div>
+      </div>
+
+      <div class="term-card" data-term="rag retrieval augmented generation 検索拡張生成">
+        <div class="term-head"><span class="term-name">RAG（検索拡張生成）</span><span class="term-en">Retrieval Augmented Generation</span><span class="term-cat tag tag-dev">開発者</span></div>
+        <div class="term-body">AIが回答する前に外部知識ベースを検索し、その情報を参照して回答する手法。NotebookLMにhancho-docsのURLを登録しているのはRAGの一形態。Obsidian + MCP + Claudeの連携もRAGと捉えられる。</div>
+        <div class="term-tip">はんちょー環境：NotebookLMがhancho-docsを参照する仕組みがRAGの実践例。</div>
+      </div>
+
+      <div class="term-card" data-term="streaming ストリーミング">
+        <div class="term-head"><span class="term-name">Streaming（ストリーミング）</span><span class="term-en">Real-time Token Output</span><span class="term-cat tag tag-dev">開発者</span></div>
+        <div class="term-body">Claudeが応答を最後まで生成し終わってから返すのではなく、生成しながらリアルタイムで文字を流す方式。チャット画面で文字が順番に表示されるのはStreaming。API開発でもStream対応にすると体験が大幅に向上する。</div>
+      </div>
+
+      <div class="term-card" data-term="vertex ai vert gcp google cloud">
+        <div class="term-head"><span class="term-name">Vertex AI</span><span class="term-en">Google Cloud AI Platform</span><span class="term-cat tag tag-cloud">クラウド</span></div>
+        <div class="term-body">GoogleのAI開発・デプロイプラットフォーム。GeminiモデルをはじめClaudeも利用可能。エンタープライズ向けのセキュリティ・スケーラビリティ・監視機能を備える。GeminiがVertex AI上で動いていることも多い。</div>
+        <div class="term-tip">Claude+Geminiのオーケストレーション設計において、Geminiの実行基盤を理解するためにVertex AI courseは有益。</div>
+      </div>
+
+      <div class="term-card" data-term="bedrock aws amazon">
+        <div class="term-head"><span class="term-name">AWS Bedrock</span><span class="term-en">Amazon AI Service Platform</span><span class="term-cat tag tag-cloud">クラウド</span></div>
+        <div class="term-body">AmazonのフルマネージドAIサービス。ClaudeをはじめTitan・Llama等複数モデルを統一APIで利用できる。NTT Data AnserParaSOL等のエンタープライズAWS環境へのClaude導入提案に直結する。</div>
+        <div class="term-tip">本業活用の観点から優先度高。AnserParaSOLのAWS環境でClaudeを活用する提案書作成に役立てられる。</div>
+      </div>
+
+      <div class="term-card" data-term="4d ai fluency framework フレームワーク">
+        <div class="term-head"><span class="term-name">4D AI Fluencyフレームワーク</span><span class="term-en">Discover, Define, Design, Deploy</span><span class="term-cat tag tag-biz">ビジネス</span></div>
+        <div class="term-body">Anthropic AcademyのAI Fluencyコースで教えるAI活用の4段階モデル：Discover（発見）→Define（定義）→Design（設計）→Deploy（展開）。組織のAI導入戦略設計に使える体系的な思考フレームワーク。</div>
+        <div class="term-tip">DXコンサルとしての提案資料・クライアントへのAI導入ロードマップ作成に直接応用できる。</div>
+      </div>
+
+      <div class="term-card" data-term="cca claude certified architect 資格">
+        <div class="term-head"><span class="term-name">Claude Certified Architect（CCA）</span><span class="term-en">Anthropic Partner Certification</span><span class="term-cat tag tag-dev">開発者</span></div>
+        <div class="term-body">Anthropicパートナー向けの初の技術認定資格（2026年3月発表）。本番アプリケーション構築のソリューションアーキテクト向け。Academy修了証とは別の正式資格。AIエージェント設計コンサルのキャリア転換において有力な証明になる。</div>
+        <div class="term-tip">長期目標（2026年末）として設定済み。Academy 7コース修了後に挑戦予定。</div>
+      </div>
+
+    </div>
   </div>
 </div>
 
-<!-- TAB 2 -->
+<!-- TAB 2: システム連携図 -->
 <div class="tab-pane" id="tab2">
   <div class="sec">
-    <div class="sec-title">全13コース一覧</div>
+    <div class="sec-title">Anthropic製品エコシステム — GUIとエンジンの関係</div>
+    <div class="hl"><p>📌 「GUI」は人間が操作する画面。「エンジン」はその裏で動くClaudeのAPIコア。同じClaudeエンジンをさまざまなGUIで包んでいる構造。</p></div>
+
     <table class="tbl">
-      <tr><th>No</th><th>コース名</th><th>対象</th><th>時間</th><th>はんちょー向け優先度</th><th>ステータス</th></tr>
-      <tr><td>1</td><td>Claude 101</td><td>全員</td><td>約2h</td><td><span class="b b-pri">高</span></td><td><span class="b b-todo">未着手</span></td></tr>
-      <tr><td>2</td><td>AI Fluency: Framework & Foundations</td><td>非技術者</td><td>約2h</td><td><span class="b b-pri">高</span></td><td><span class="b b-todo">未着手</span></td></tr>
-      <tr><td>3</td><td>Introduction to Agent Skills</td><td>開発者</td><td>約2h</td><td><span class="b b-pri">高</span></td><td><span class="b b-todo">未着手</span></td></tr>
-      <tr><td>4</td><td>Claude Code in Action</td><td>開発者</td><td>約1h</td><td><span class="b b-pri">最高</span></td><td><span class="b b-todo">未着手</span></td></tr>
-      <tr><td>5</td><td>Building with the Claude API</td><td>開発者</td><td>約8h</td><td><span class="b b-pri">最高</span></td><td><span class="b b-todo">未着手</span></td></tr>
-      <tr><td>6</td><td>Introduction to Model Context Protocol</td><td>開発者</td><td>約3h</td><td><span class="b b-pri">最高</span></td><td><span class="b b-todo">未着手</span></td></tr>
-      <tr><td>7</td><td>MCP: Advanced Topics</td><td>開発者</td><td>約3h</td><td><span class="b b-pri">高</span></td><td><span class="b b-todo">未着手</span></td></tr>
-      <tr><td>8</td><td>Teaching AI Fluency</td><td>教育者</td><td>約2h</td><td><span class="b b-skip">低</span></td><td><span class="b b-skip">スキップ可</span></td></tr>
-      <tr><td>9</td><td>AI Fluency for Nonprofits</td><td>NPO</td><td>約2h</td><td><span class="b b-skip">低</span></td><td><span class="b b-skip">スキップ可</span></td></tr>
-      <tr><td>10</td><td>AI Fluency for Students</td><td>学生</td><td>約2h</td><td><span class="b b-skip">低</span></td><td><span class="b b-skip">スキップ可</span></td></tr>
-      <tr><td>11</td><td>AI Fluency for Higher Education Faculty</td><td>大学教員</td><td>約2h</td><td><span class="b b-skip">低</span></td><td><span class="b b-skip">スキップ可</span></td></tr>
-      <tr><td>12</td><td>Claude with Amazon Bedrock</td><td>AWS開発者</td><td>約3h</td><td><span class="b b-todo">中</span></td><td><span class="b b-todo">未着手</span></td></tr>
-      <tr><td>13</td><td>Claude with Google Cloud Vertex AI</td><td>GCP開発者</td><td>約3h</td><td><span class="b b-todo">中</span></td><td><span class="b b-todo">未着手</span></td></tr>
+      <tr><th>GUI / インターフェース</th><th>エンジン</th><th>得意な用途</th><th>はんちょー活用状況</th></tr>
+      <tr><td>claude.ai（ブラウザ）</td><td>Claude API（Sonnet/Opus等）</td><td>チャット・壁打ち・Artifact生成</td><td>✅ メイン使用中（本会話）</td></tr>
+      <tr><td>Claude Code CLI</td><td>Claude API + ローカルツール</td><td>ファイル操作・Git・スクリプト実行</td><td>✅ MCP+Obsidian接続済み</td></tr>
+      <tr><td>Claude Cowork（Desktop）</td><td>Claude API + ローカルファイル</td><td>継続タスク・ドキュメント自動化</td><td>❌ 未導入</td></tr>
+      <tr><td>Claude in Chrome</td><td>Claude API + ブラウザDOM</td><td>Webブラウジング自動化</td><td>❌ 未導入</td></tr>
+      <tr><td>Claude for Excel</td><td>Claude API + Excel VSTO</td><td>スプレッドシート分析・タスク管理</td><td>❌ 未導入（タスク管理候補）</td></tr>
+      <tr><td>Slack / Teams統合</td><td>Claude API + Webhooks</td><td>チームコミュニケーション自動化</td><td>❌ 未導入（本業活用候補）</td></tr>
+      <tr><td>AWS Bedrock</td><td>Claude API（エンタープライズ）</td><td>企業システムへの組み込み</td><td>❌ 提案候補（NTT Data）</td></tr>
+      <tr><td>Google Vertex AI</td><td>Claude API（GCPマネージド）</td><td>GCP環境でのAI開発</td><td>△ Gemini実行基盤として間接利用</td></tr>
     </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">はんちょー現在の連携マップ</div>
+    <div class="sys-diagram">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:14px;letter-spacing:.1em;">INPUT LAYER（人間の操作）</div>
+      <div class="sys-row">
+        <div class="sys-box" style="border-color:var(--accent)"><div class="sys-box-title" style="color:var(--accent)">claude.ai（本会話）</div><div class="sys-box-body">チャット・戦略・設計・Artifact生成<br>→ Claude Sonnet 4.6</div></div>
+        <div class="sys-arrow">→</div>
+        <div class="sys-box" style="border-color:#10b981"><div class="sys-box-title" style="color:#10b981">Claude Code CLI</div><div class="sys-box-body">PowerShellから`claude`<br>→ ファイル操作・Git</div></div>
+        <div class="sys-arrow">→</div>
+        <div class="sys-box" style="border-color:#a78bfa"><div class="sys-box-title" style="color:#a78bfa">Gemini（AI Studio）</div><div class="sys-box-body">記事生成・コンテンツ・検索<br>→ Vertex AI経由</div></div>
+      </div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin:14px 0 8px;letter-spacing:.1em;">KNOWLEDGE LAYER（知識・タスク管理）</div>
+      <div class="sys-row">
+        <div class="sys-box" style="border-color:#a78bfa"><div class="sys-box-title" style="color:#a78bfa">Obsidian Vault<br>hancho-kb</div><div class="sys-box-body">タスクMD・ドキュメント・アーカイブ<br>MCP経由でClaude Codeと連携</div></div>
+        <div class="sys-arrow">→</div>
+        <div class="sys-box"><div class="sys-box-title" style="color:var(--yellow)">NotebookLM</div><div class="sys-box-body">Netlify URL登録<br>Claude＋Gemini共通知識ベース</div></div>
+        <div class="sys-arrow">→</div>
+        <div class="sys-box" style="border-color:#10b981"><div class="sys-box-title" style="color:#10b981">AI_System_Policy.md</div><div class="sys-box-body">Claude・Gemini共通行動規範<br>hancho-kb/docs/に保存</div></div>
+      </div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin:14px 0 8px;letter-spacing:.1em;">AUTOMATION LAYER（自動化・スクリプト）</div>
+      <div class="sys-row">
+        <div class="sys-box"><div class="sys-box-title" style="color:var(--accent)">update_master.py v2.1</div><div class="sys-box-body">ログ追記→hancho-kb push<br>→hancho-docs同期→Netlify反映</div></div>
+        <div class="sys-arrow">→</div>
+        <div class="sys-box"><div class="sys-box-title" style="color:var(--yellow)">タスクスケジューラ<br>08:00自動実行</div><div class="sys-box-body">Auto-GenerateAndPush.ps1<br>→ Gemini API→記事生成→push</div></div>
+        <div class="sys-arrow">→</div>
+        <div class="sys-box" style="border-color:#10b981"><div class="sys-box-title" style="color:#10b981">GitHub（fooueen）</div><div class="sys-box-body">hancho-kb / hancho-docs<br>v-consultant-lp / その他</div></div>
+      </div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin:14px 0 8px;letter-spacing:.1em;">OUTPUT LAYER（公開・収益化）</div>
+      <div class="sys-row">
+        <div class="sys-box" style="border-color:#a78bfa"><div class="sys-box-title" style="color:#a78bfa">Netlify<br>hancho-docs.netlify.app</div><div class="sys-box-body">ドキュメントHub・AI引き継ぎ用<br>update_master.pyで自動更新</div></div>
+        <div class="sys-arrow">→</div>
+        <div class="sys-box" style="border-color:#10b981"><div class="sys-box-title" style="color:#10b981">Vercel<br>v-consultant-lp</div><div class="sys-box-body">V-Consultant LP<br>push→自動デプロイ</div></div>
+        <div class="sys-arrow">→</div>
+        <div class="sys-box"><div class="sys-box-title" style="color:var(--yellow)">Coconala（2サービス）<br>note ／ X</div><div class="sys-box-body">AI記事生成代行<br>V-Consultant構築代行</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">未導入・導入検討中</div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-head"><div class="card-icon" style="background:rgba(245,158,11,.15)">📊</div>
+          <div><div class="card-title">Claude for Excel</div><div class="card-sub">タスク管理のExcel化に最適</div></div></div>
+        <div class="card-body">Excelサイドバーでタスクを直接編集できる。Obsidian Dataviewの「Excel的操作ができない」問題を解決できる可能性がある。Microsoft 365が必要。</div>
+        <div class="card-foot"><span class="tag tag-biz">検討中</span></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-icon" style="background:rgba(0,200,240,.15)">🌐</div>
+          <div><div class="card-title">Claude in Chrome</div><div class="card-sub">Webブラウジング自動化</div></div></div>
+        <div class="card-body">Chromeブラウザ上でClaudeがWebを操作できる。Coconalaの状況確認・note投稿・リサーチ自動化に活用できる可能性がある。</div>
+        <div class="card-foot"><span class="tag tag-dev">検討中</span></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-icon" style="background:rgba(16,185,129,.15)">⚙️</div>
+          <div><div class="card-title">n8n連携</div><div class="card-sub">ワークフロー自動化</div></div></div>
+        <div class="card-body">Claude API + n8nで失敗通知・Blogger自動投稿・タスク更新の自動化を実現する。generate_ai_content.pyの503エラー問題もn8nリトライで解決できる。</div>
+        <div class="card-foot"><span class="tag tag-dev">未着手</span></div>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- TAB 3 -->
+<!-- TAB 3: 学習ロードマップ -->
 <div class="tab-pane" id="tab3">
   <div class="sec">
-    <div class="sec-title">推奨受講順（はんちょー向け最短ルート）</div>
-    <table class="tbl">
-      <tr><th>週</th><th>コース</th><th>累計時間</th><th>習得内容</th></tr>
-      <tr><td>Week 1</td><td>Claude 101 → AI Fluency: Framework & Foundations</td><td>約4h</td><td>体系的基礎 + 組織向けAI説明力</td></tr>
-      <tr><td>Week 2</td><td>Claude Code in Action → Introduction to Agent Skills</td><td>約3h</td><td>Claude Code実務深化 + スキル設計</td></tr>
-      <tr><td>Week 3〜4</td><td>Building with the Claude API</td><td>約8h</td><td>APIの完全実装力（最重要）</td></tr>
-      <tr><td>Week 5</td><td>Introduction to MCP → MCP: Advanced Topics</td><td>約6h</td><td>MCP Server構築 + 本番パターン</td></tr>
-      <tr><td>Week 6以降</td><td>Bedrock / Vertex AI（任意）</td><td>各3h</td><td>クラウド連携（案件次第で優先変更）</td></tr>
-    </table>
-    <div class="hl" style="margin-top:12px;"><p>🎯 <strong>6週間・合計約21時間で主要5コースを修了可能。</strong>週3〜4時間のペースで現実的に達成できる。</p></div>
-  </div>
-  <div class="sec">
-    <div class="sec-title">修了証のLinkedIn登録手順</div>
-    <table class="tbl">
-      <tr><th>手順</th><th>内容</th></tr>
-      <tr><td>①</td><td>Skilljarで各コースの最終評価に合格→修了証PDFをダウンロード</td></tr>
-      <tr><td>②</td><td>LinkedInにログイン→プロフィール→「資格・認定証」→「追加」</td></tr>
-      <tr><td>③</td><td>発行組織：「Anthropic」、資格名：コース名、発行年月を入力</td></tr>
-      <tr><td>④</td><td>修了証PDFのURLまたは認定証番号を入力して保存</td></tr>
-    </table>
-  </div>
-</div>
+    <div class="sec-title">推奨学習順序（はんちょー専用）</div>
+    <div class="hl hl-purple"><p>🎯 目標：2026年末までに「エージェント設計者」として修了証3点セット（Academy×7 ＋ ユニコスクール ＋ GitHub Courses×3）を揃えてCCA受験資格を確立する。</p></div>
 
-<!-- TAB 4 -->
-<div class="tab-pane" id="tab4">
-  <div class="sec">
-    <div class="sec-title">進捗管理（更新日：2026-05-07）</div>
     <table class="tbl">
-      <tr><th>コース名</th><th>受講開始日</th><th>修了日</th><th>ステータス</th><th>修了証</th></tr>
-      <tr><td>Claude 101</td><td>—</td><td>—</td><td><span class="b b-todo">未着手</span></td><td>—</td></tr>
-      <tr><td>AI Fluency: Framework & Foundations</td><td>—</td><td>—</td><td><span class="b b-todo">未着手</span></td><td>—</td></tr>
-      <tr><td>Claude Code in Action</td><td>—</td><td>—</td><td><span class="b b-todo">未着手</span></td><td>—</td></tr>
-      <tr><td>Introduction to Agent Skills</td><td>—</td><td>—</td><td><span class="b b-todo">未着手</span></td><td>—</td></tr>
-      <tr><td>Building with the Claude API</td><td>—</td><td>—</td><td><span class="b b-todo">未着手</span></td><td>—</td></tr>
-      <tr><td>Introduction to MCP</td><td>—</td><td>—</td><td><span class="b b-todo">未着手</span></td><td>—</td></tr>
-      <tr><td>MCP: Advanced Topics</td><td>—</td><td>—</td><td><span class="b b-todo">未着手</span></td><td>—</td></tr>
+      <tr><th>フェーズ</th><th>期間</th><th>コース</th><th>目的</th><th>所要時間</th></tr>
+      <tr><td>Phase 1（今週）</td><td>5/13〜5/18</td><td>Claude Code 101（残り）＋ Intro to Subagents</td><td>Claude Code体系化・エージェント基礎</td><td>〜3h</td></tr>
+      <tr><td>Phase 2（Week2）</td><td>5/19〜5/25</td><td>Building with the Claude API</td><td>API実装の根幹理解（最重要）</td><td>8h+</td></tr>
+      <tr><td>Phase 3（Week3）</td><td>5/26〜6/1</td><td>Claude Code in Action ＋ Claude Agent Skills</td><td>実務ワークフロー強化</td><td>〜5h</td></tr>
+      <tr><td>Phase 4（6月）</td><td>6/1〜6/30</td><td>Advanced MCP ＋ AI Fluency Foundations</td><td>本番MCP設計＋本業提案力強化</td><td>〜6h</td></tr>
+      <tr><td>Phase 5（7〜9月）</td><td>7/1〜9/30</td><td>AWS Bedrock ＋ Vertex AI ＋ GitHub Courses×3</td><td>クラウド実装力＋修了証取得</td><td>〜15h</td></tr>
+      <tr><td>Phase 6（10〜12月）</td><td>10/1〜12/31</td><td>CCA-F受験準備 ＋ 残りコース一掃</td><td>Claude Certified Architect取得</td><td>TBD</td></tr>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">ユニコスクール × Academy 対応マップ</div>
+    <table class="tbl">
+      <tr><th>ユニコスクール Day</th><th>内容</th><th>対応Academyコース</th><th>相乗効果</th></tr>
+      <tr><td>Day 1（完了）</td><td>環境構築・Claude Code入門</td><td>Claude Code 101</td><td>体系理解の補完</td></tr>
+      <tr><td>Day 2〜3</td><td>プロンプト・エージェント基礎設計</td><td>Building with the Claude API</td><td>API実装理論の事前習得</td></tr>
+      <tr><td>Day 4〜5</td><td>ツール統合・MCP活用</td><td>Advanced MCP ＋ Agent Skills</td><td>MCP設計パターンの深化</td></tr>
+      <tr><td>Day 6〜7</td><td>エージェント実装・テスト・デプロイ</td><td>Claude Code in Action ＋ Subagents</td><td>実践ワークフローの確立</td></tr>
+      <tr><td>Day 8〜</td><td>収益化・実案件適用</td><td>AI Fluency Foundations ＋ CCA準備</td><td>本業提案＋資格取得</td></tr>
     </table>
   </div>
 </div>
@@ -184,6 +439,19 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14
 function showTab(n){
   document.querySelectorAll('.tab-pane').forEach((p,i)=>p.classList.toggle('active',i===n));
   document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===n));
+}
+function filterCourse(cat, btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#course-grid .card').forEach(c=>{
+    c.classList.toggle('hidden', cat!=='all' && c.dataset.cat!==cat);
+  });
+}
+function searchTerms(q){
+  const kw = q.toLowerCase();
+  document.querySelectorAll('#term-list .term-card').forEach(c=>{
+    c.classList.toggle('hidden', kw && !c.dataset.term.includes(kw) && !c.textContent.toLowerCase().includes(kw));
+  });
 }
 </script>
 </body>
