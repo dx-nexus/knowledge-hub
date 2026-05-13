@@ -118,40 +118,48 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
 
 /* Footer */
 .doc-footer{text-align:center;padding:24px;font-size:11px;color:var(--text3);border-top:1px solid var(--border);margin-top:20px;}
-.btn-enroll{display:inline-block;margin-top:10px;padding:7px 16px;background:#1a2a4a;color:#fff!important;border-radius:5px;font-size:12px;font-weight:bold;text-decoration:none;transition:background .2s;}
-.btn-enroll:hover{background:#2a4a7a;}
 
-/* fix-card-layout-v1 */
 
-/* カードボタン下部固定 */
+
+/* ===== fix-card-layout-v2 ===== */
+#course-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  align-items: stretch !important;
+}
 #course-grid .card {
   display: flex !important;
   flex-direction: column !important;
+  height: 100% !important;
+}
+#course-grid .card-head {
+  flex-shrink: 0 !important;
 }
 #course-grid .card-body {
   flex: 1 !important;
+  margin-bottom: 0 !important;
 }
 #course-grid .card-foot {
-  margin-top: auto !important;
-  padding-top: 10px !important;
+  flex-shrink: 0 !important;
+  margin-top: 10px !important;
 }
 .btn-enroll {
-  display: block !important;
-  width: 100% !important;
-  text-align: center !important;
+  display: inline-block !important;
+  width: auto !important;
   margin-top: 10px !important;
-  padding: 9px 0 !important;
+  padding: 6px 18px !important;
   background: #1a2a4a !important;
   color: #fff !important;
-  border-radius: 6px !important;
-  font-size: 13px !important;
+  border-radius: 5px !important;
+  font-size: 12px !important;
   font-weight: bold !important;
   text-decoration: none !important;
+  text-align: center !important;
   transition: background .2s !important;
-  box-sizing: border-box !important;
+  white-space: nowrap !important;
 }
 .btn-enroll:hover { background: #2a4a7a !important; }
-
+/* ============================= */
 </style>
 </head>
 <body>
@@ -198,131 +206,131 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
       <div class="card" data-cat="biz">
         <div class="card-head">
           <div class="card-icon" style="background:#ecfdf5">🌱</div>
-          <div><div class="card-title">Claude 101</div><div class="card-sub">〜1時間 ／ 全員対象
-        <a href="https://anthropic.skilljar.com/claude-101" target="_blank" rel="noopener" class="btn-enroll">受講する →</a></div></div>
+          <div><div class="card-title">Claude 101</div><div class="card-sub">〜1時間 ／ 全員対象</div></div>
         </div>
         <div class="card-body">Claudeの基本操作・プロンプトの書き方・日常業務への活用方法を網羅した入門コースです。AIツールを初めて使う方に最適です。</div>
         <div class="card-foot"><span class="tag tag-biz">非技術者</span><span class="tag tag-dev">開発者</span></div>
+        <a href="https://anthropic.skilljar.com/claude-101" target="_blank" rel="noopener" class="btn-enroll">受講する →</a>
       </div>
 
       <div class="card" data-cat="biz">
         <div class="card-head">
           <div class="card-icon" style="background:#eff6ff">🧭</div>
-          <div><div class="card-title">AI Fluency: Framework & Foundations</div><div class="card-sub">2〜3時間 ／ マネージャー・PMO推奨
-        <a href="https://anthropic.skilljar.com/ai-fluency-framework-foundations" target="_blank" rel="noopener" class="btn-enroll">受講する →</a></div></div>
+          <div><div class="card-title">AI Fluency: Framework & Foundations</div><div class="card-sub">2〜3時間 ／ マネージャー・PMO推奨</div></div>
         </div>
         <div class="card-body">4D AIフレームワーク（Discover・Define・Design・Deploy）でAI思考モデルを体系的に習得します。組織へのAI導入設計・DXコンサル提案に直結するコンテンツです。</div>
         <div class="card-foot"><span class="tag tag-biz">PMO向け</span><span class="priority">推奨</span></div>
+        <a href="https://anthropic.skilljar.com/ai-fluency-framework-foundations" target="_blank" rel="noopener" class="btn-enroll">受講する →</a>
       </div>
 
       <div class="card" data-cat="dev">
         <div class="card-head">
           <div class="card-icon" style="background:#f5f3ff">⚡</div>
-          <div><div class="card-title">Building with the Claude API</div><div class="card-sub">8時間以上 ／ 開発者必修
-        <a href="https://anthropic.skilljar.com/building-with-the-claude-api" target="_blank" rel="noopener" class="btn-enroll">受講する →</a></div></div>
+          <div><div class="card-title">Building with the Claude API</div><div class="card-sub">8時間以上 ／ 開発者必修</div></div>
         </div>
         <div class="card-body">システムプロンプト・ツールユース・コンテキスト管理・アーキテクチャパターン・ストリーミングなど、APIの全機能を体系的に習得します。AIプロダクト開発の根幹となるコースです。</div>
         <div class="card-foot"><span class="tag tag-dev">開発者</span><span class="priority">最重要</span></div>
+        <a href="https://anthropic.skilljar.com/building-with-the-claude-api" target="_blank" rel="noopener" class="btn-enroll">受講する →</a>
       </div>
 
       <div class="card" data-cat="dev">
         <div class="card-head">
           <div class="card-icon" style="background:#ecfdf5">💻</div>
-          <div><div class="card-title">Claude Code 101</div><div class="card-sub">〜2時間 ／ 開発者向け
-        <a href="https://anthropic.skilljar.com/claude-code-101" target="_blank" rel="noopener" class="btn-enroll">受講する →</a></div></div>
+          <div><div class="card-title">Claude Code 101</div><div class="card-sub">〜2時間 ／ 開発者向け</div></div>
         </div>
         <div class="card-body">Claude Code CLIの入門コースです。インストール・承認モード・Plan Mode・CLAUDE.md・サブエージェント・Skills・MCP・Hooksを体系的に習得します。</div>
         <div class="card-foot"><span class="tag tag-dev">開発者</span></div>
+        <a href="https://anthropic.skilljar.com/claude-code-101" target="_blank" rel="noopener" class="btn-enroll">受講する →</a>
       </div>
 
       <div class="card" data-cat="dev">
         <div class="card-head">
           <div class="card-icon" style="background:#ecfdf5">🔧</div>
-          <div><div class="card-title">Claude Code in Action</div><div class="card-sub">〜3時間 ／ 開発者向け
-        <a href="https://anthropic.skilljar.com/claude-code-in-action" target="_blank" rel="noopener" class="btn-enroll">受講する →</a></div></div>
+          <div><div class="card-title">Claude Code in Action</div><div class="card-sub">〜3時間 ／ 開発者向け</div></div>
         </div>
         <div class="card-body">実務ワークフロー統合を学ぶコースです。コーディングアーキテクチャ・ビジュアル入力・カスタムコマンド・MCPサーバー・GitHubワークフロー・HooksおよびSDKを扱います。</div>
         <div class="card-foot"><span class="tag tag-dev">開発者</span><span class="priority">推奨</span></div>
+        <a href="https://anthropic.skilljar.com/claude-code-in-action" target="_blank" rel="noopener" class="btn-enroll">受講する →</a>
       </div>
 
       <div class="card" data-cat="dev">
         <div class="card-head">
           <div class="card-icon" style="background:#fef2f2">🔌</div>
-          <div><div class="card-title">Introduction to MCP</div><div class="card-sub">〜2時間 ／ 開発者向け
-        <a href="https://anthropic.skilljar.com/introduction-to-mcp" target="_blank" rel="noopener" class="btn-enroll">受講する →</a></div></div>
+          <div><div class="card-title">Introduction to MCP</div><div class="card-sub">〜2時間 ／ 開発者向け</div></div>
         </div>
         <div class="card-body">Model Context Protocolの3コアプリミティブ（tools・resources・prompts）を学びます。ClaudeとSlack・GitHub・データベースなど外部サービスとの接続を標準化する規格です。</div>
         <div class="card-foot"><span class="tag tag-dev">開発者</span></div>
+        <a href="https://anthropic.skilljar.com/introduction-to-mcp" target="_blank" rel="noopener" class="btn-enroll">受講する →</a>
       </div>
 
       <div class="card" data-cat="dev">
         <div class="card-head">
           <div class="card-icon" style="background:#fef2f2">🕸️</div>
-          <div><div class="card-title">Advanced MCP</div><div class="card-sub">〜3時間 ／ 開発者向け
-        <a href="https://anthropic.skilljar.com/advanced-mcp" target="_blank" rel="noopener" class="btn-enroll">受講する →</a></div></div>
+          <div><div class="card-title">Advanced MCP</div><div class="card-sub">〜3時間 ／ 開発者向け</div></div>
         </div>
         <div class="card-body">本番MCPサーバー開発の応用コースです。サンプリング・通知・ファイルシステムアクセス・トランスポート機構など、エンタープライズ環境への実装パターンを学びます。</div>
         <div class="card-foot"><span class="tag tag-dev">開発者</span><span class="priority">推奨</span></div>
+        <a href="https://anthropic.skilljar.com/advanced-mcp" target="_blank" rel="noopener" class="btn-enroll">受講する →</a>
       </div>
 
       <div class="card" data-cat="dev">
         <div class="card-head">
           <div class="card-icon" style="background:#fffbeb">🤖</div>
-          <div><div class="card-title">Introduction to Subagents</div><div class="card-sub">〜2時間 ／ 開発者向け
-        <a href="https://anthropic.skilljar.com/introduction-to-subagents" target="_blank" rel="noopener" class="btn-enroll">受講する →</a></div></div>
+          <div><div class="card-title">Introduction to Subagents</div><div class="card-sub">〜2時間 ／ 開発者向け</div></div>
         </div>
         <div class="card-body">Claude Code上でのサブエージェント設計を学びます。コンテキスト分離・タスク委任・特化ワークフロー構築など、マルチエージェントシステムの構成要素を習得します。</div>
         <div class="card-foot"><span class="tag tag-dev">開発者</span><span class="priority">推奨</span></div>
+        <a href="https://anthropic.skilljar.com/introduction-to-subagents" target="_blank" rel="noopener" class="btn-enroll">受講する →</a>
       </div>
 
       <div class="card" data-cat="dev">
         <div class="card-head">
           <div class="card-icon" style="background:#fffbeb">🪄</div>
-          <div><div class="card-title">Claude Agent Skills</div><div class="card-sub">〜2時間 ／ 開発者向け
-        <a href="https://anthropic.skilljar.com/introduction-to-agent-skills" target="_blank" rel="noopener" class="btn-enroll">受講する →</a></div></div>
+          <div><div class="card-title">Claude Agent Skills</div><div class="card-sub">〜2時間 ／ 開発者向け</div></div>
         </div>
         <div class="card-body">再利用可能なMarkdown指示書（Skills）の設計・配布・チーム展開を学びます。チーム全員が同一品質のエージェント操作を実現するための仕組みです。</div>
         <div class="card-foot"><span class="tag tag-dev">開発者</span></div>
+        <a href="https://anthropic.skilljar.com/introduction-to-agent-skills" target="_blank" rel="noopener" class="btn-enroll">受講する →</a>
       </div>
 
       <div class="card" data-cat="biz">
         <div class="card-head">
           <div class="card-icon" style="background:#ecfdf5">🏢</div>
-          <div><div class="card-title">Introduction to Claude Cowork</div><div class="card-sub">〜1時間 ／ 非技術者向け
-        <a href="https://anthropic.skilljar.com/introduction-to-claude-cowork" target="_blank" rel="noopener" class="btn-enroll">受講する →</a></div></div>
+          <div><div class="card-title">Introduction to Claude Cowork</div><div class="card-sub">〜1時間 ／ 非技術者向け</div></div>
         </div>
         <div class="card-body">デスクトップアプリとして動作するClaudeエージェントの入門コースです。ローカルフォルダ管理・ドキュメント自動作成・継続タスクの処理など、プログラミング不要のAI活用を学びます。</div>
         <div class="card-foot"><span class="tag tag-biz">非技術者</span></div>
+        <a href="https://anthropic.skilljar.com/introduction-to-claude-cowork" target="_blank" rel="noopener" class="btn-enroll">受講する →</a>
       </div>
 
       <div class="card" data-cat="cloud">
         <div class="card-head">
           <div class="card-icon" style="background:#fffbeb">☁️</div>
-          <div><div class="card-title">Building with Claude on AWS Bedrock</div><div class="card-sub">〜3時間 ／ クラウド開発者向け
-        <a href="https://anthropic.skilljar.com/building-with-claude-on-aws-bedrock" target="_blank" rel="noopener" class="btn-enroll">受講する →</a></div></div>
+          <div><div class="card-title">Building with Claude on AWS Bedrock</div><div class="card-sub">〜3時間 ／ クラウド開発者向け</div></div>
         </div>
         <div class="card-body">AWSエコシステムでClaudeをデプロイする全工程を学びます。エンタープライズ向けのセキュリティ・スケーラビリティ・監視機能を備えたAI導入の実装パターンです。</div>
         <div class="card-foot"><span class="tag tag-cloud">AWS</span></div>
+        <a href="https://anthropic.skilljar.com/building-with-claude-on-aws-bedrock" target="_blank" rel="noopener" class="btn-enroll">受講する →</a>
       </div>
 
       <div class="card" data-cat="cloud">
         <div class="card-head">
           <div class="card-icon" style="background:#eff6ff">☁️</div>
-          <div><div class="card-title">Building with Claude on Google Vertex AI</div><div class="card-sub">〜3時間 ／ クラウド開発者向け
-        <a href="https://anthropic.skilljar.com/building-with-claude-on-google-vertex-ai" target="_blank" rel="noopener" class="btn-enroll">受講する →</a></div></div>
+          <div><div class="card-title">Building with Claude on Google Vertex AI</div><div class="card-sub">〜3時間 ／ クラウド開発者向け</div></div>
         </div>
         <div class="card-body">GCPのVertex AI上でClaudeをフル活用する実装パターンを学びます。GeminiとClaudeを組み合わせたマルチAIアーキテクチャの設計にも応用できます。</div>
         <div class="card-foot"><span class="tag tag-cloud">GCP</span></div>
+        <a href="https://anthropic.skilljar.com/building-with-claude-on-google-vertex-ai" target="_blank" rel="noopener" class="btn-enroll">受講する →</a>
       </div>
 
       <div class="card" data-cat="edu">
         <div class="card-head">
           <div class="card-icon" style="background:#f5f3ff">📚</div>
-          <div><div class="card-title">AI Fluency for Educators / Students / Nonprofits</div><div class="card-sub">各〜2時間 ／ Creative Commons
-        <a href="https://anthropic.skilljar.com/ai-fluency-for-educators" target="_blank" rel="noopener" class="btn-enroll">受講する →</a></div></div>
+          <div><div class="card-title">AI Fluency for Educators / Students / Nonprofits</div><div class="card-sub">各〜2時間 ／ Creative Commons</div></div>
         </div>
         <div class="card-body">教育者・学生・非営利向けのAI活用コースです。Creative Commonsライセンスで提供されており、研修資料や教材として二次利用・カスタマイズが可能です。</div>
         <div class="card-foot"><span class="tag tag-edu">教育者</span><span class="tag tag-edu">学生</span></div>
+        <a href="https://anthropic.skilljar.com/ai-fluency-for-educators" target="_blank" rel="noopener" class="btn-enroll">受講する →</a>
       </div>
 
     </div>
