@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>トラブルシュート &amp; QA一覧 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070d18;--surface:#0f1929;--surface2:#162035;--border:#1e3354;--accent:#00c8f0;--green:#10b981;--yellow:#f59e0b;--red:#ef4444;--purple:#a78bfa;--text:#dde6f0;--muted:#5a7190;--mono:'IBM Plex Mono',monospace;--sans:'Noto Sans JP',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.7;}
+.hdr{background:linear-gradient(135deg,#0a1628,#0f2040);border-bottom:1px solid var(--border);padding:24px 32px;}
+.hdr-inner{max-width:1000px;margin:0 auto;}
+.hdr h1{font-family:var(--mono);font-size:17px;color:var(--accent);}
+.hdr p{font-size:11px;color:var(--muted);margin-top:4px;}
+.hdr-note{margin-top:12px;background:rgba(0,200,240,.07);border:1px solid rgba(0,200,240,.2);border-radius:6px;padding:10px 14px;font-size:12px;color:#7dd3fc;}
+.tab-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;display:flex;overflow-x:auto;}
+.tab-btn{font-family:var(--mono);font-size:11px;letter-spacing:.08em;padding:13px 18px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:.15s;}
+.tab-btn:hover{color:var(--text);}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab-pane{display:none;max-width:1000px;margin:0 auto;padding:28px 32px;}
+.tab-pane.active{display:block;}
+.search-box{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px 14px;color:var(--text);font-family:var(--sans);font-size:13px;margin-bottom:20px;outline:none;}
+.search-box:focus{border-color:var(--accent);}
+.sec-title{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;border-bottom:1px solid var(--border);padding-bottom:7px;margin-bottom:16px;margin-top:28px;}
+.qa-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:12px;overflow:hidden;}
+.qa-head{padding:13px 18px;cursor:pointer;display:flex;align-items:flex-start;gap:12px;}
+.qa-head:hover{background:var(--surface2);}
+.qa-sev{font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:20px;flex-shrink:0;margin-top:2px;}
+.sev-high{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+.sev-med{background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3);}
+.sev-low{background:rgba(16,185,129,.15);color:var(--green);border:1px solid rgba(16,185,129,.3);}
+.qa-q{font-size:13px;font-weight:700;color:var(--text);flex:1;}
+.qa-tag{font-size:10px;color:var(--muted);font-family:var(--mono);flex-shrink:0;}
+.qa-body{padding:0 18px 16px 18px;border-top:1px solid var(--border);display:none;}
+.qa-body.open{display:block;}
+.qa-cause{margin-top:12px;}
+.qa-cause-title{font-family:var(--mono);font-size:10px;color:var(--yellow);letter-spacing:.1em;margin-bottom:4px;}
+.qa-cause-body{font-size:12px;color:#8aaec8;line-height:1.7;}
+.qa-fix{margin-top:10px;}
+.qa-fix-title{font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.1em;margin-bottom:4px;}
+.qa-fix-body{font-size:12px;color:#8aaec8;line-height:1.7;}
+.code{background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:8px 12px;font-family:var(--mono);font-size:11px;color:var(--accent);margin:6px 0;white-space:pre-wrap;word-break:break-all;}
+.ai-note{margin-top:10px;background:rgba(167,139,250,.07);border:1px solid rgba(167,139,250,.2);border-radius:4px;padding:7px 12px;font-size:11px;color:#c4b5fd;}
+.chevron{color:var(--muted);font-size:14px;flex-shrink:0;transition:.2s;}
+.open-chevron{transform:rotate(90deg);}
+.hidden{display:none;}
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.filter-btn{font-family:var(--mono);font-size:10px;padding:4px 12px;border-radius:20px;border:1px solid var(--border);background:none;color:var(--muted);cursor:pointer;}
+.filter-btn.active{background:rgba(0,200,240,.15);color:var(--accent);border-color:rgba(0,200,240,.3);}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="hdr-inner">
+    <h1>トラブルシュート &amp; QA一覧 2026</h1>
+    <p>はんちょープロジェクト ／ 人間が介入してハマりやすい問題と対処法</p>
+    <div class="hdr-note">
+      💡 このドキュメントに記載された問題の多くは、<strong>AIエージェントが自動で検知・修正できるようにすること</strong>が中長期的な目標です。
+      現時点での暫定対処法を記載しています。Dreaming（Anthropic）や継続的な改善により自動化を進めます。
+    </div>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab(0)">全QA一覧</button>
+  <button class="tab-btn" onclick="showTab(1)">PowerShell / Python</button>
+  <button class="tab-btn" onclick="showTab(2)">Git / Netlify</button>
+  <button class="tab-btn" onclick="showTab(3)">Obsidian / MCP</button>
+  <button class="tab-btn" onclick="showTab(4)">AI連携</button>
+</div>
+
+<!-- TAB 0: 全QA -->
+<div class="tab-pane active" id="tab0">
+  <input class="search-box" id="qa-search" placeholder="キーワードで検索..." oninput="searchQA(this.value)">
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="filterQA('all',this)">全て</button>
+    <button class="filter-btn" onclick="filterQA('ps',this)">PowerShell/Python</button>
+    <button class="filter-btn" onclick="filterQA('git',this)">Git/Netlify</button>
+    <button class="filter-btn" onclick="filterQA('obs',this)">Obsidian/MCP</button>
+    <button class="filter-btn" onclick="filterQA('ai',this)">AI連携</button>
+  </div>
+  <div id="qa-list">
+
+    <div class="qa-card" data-cat="ps">
+      <div class="qa-head" onclick="toggleQA(this)">
+        <span class="qa-sev sev-high">高頻度</span>
+        <span class="qa-q">PowerShellにPythonコードを直書きするとSyntaxErrorが出る</span>
+        <span class="qa-tag">PS/Python</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="qa-body">
+        <div class="qa-cause"><div class="qa-cause-title">原因</div>
+        <div class="qa-cause-body">PowerShellのヒアストリング（@"..."@）内でダブルクォートやバックスラッシュ、日本語が混在するとエスケープ処理が衝突する。特にf文字列・トリプルクォートは壊滅的に相性が悪い。</div></div>
+        <div class="qa-fix"><div class="qa-fix-title">対処法</div>
+        <div class="qa-fix-body">Claudeにスクリプトファイル（.py）として生成・ダウンロードしてもらい、PowerShellからファイルを実行する形にする。インライン実行は原則禁止。</div>
+        <div class="code">python "$env:USERPROFILE\Downloads\script.py"</div></div>
+        <div class="ai-note">🤖 AIの自動改善目標：Claudeが常にスクリプトファイル形式で出力し、インライン実行コードを生成しない運用を徹底する。</div>
+      </div>
+    </div>
+
+    <div class="qa-card" data-cat="ps">
+      <div class="qa-head" onclick="toggleQA(this)">
+        <span class="qa-sev sev-high">高頻度</span>
+        <span class="qa-q">Gitコマンドで日本語を含む出力がUnicodeDecodeErrorになる</span>
+        <span class="qa-tag">PS/Python</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="qa-body">
+        <div class="qa-cause"><div class="qa-cause-title">原因</div>
+        <div class="qa-cause-body">Windows環境のデフォルトエンコードがcp932（Shift-JIS系）のため、subprocess.run()でcapture_output=True、text=Trueにすると日本語が含まれるgit出力でデコードエラーが発生する。</div></div>
+        <div class="qa-fix"><div class="qa-fix-title">対処法</div>
+        <div class="qa-fix-body">subprocessはバイトで受け取り、utf-8でデコードする（errors='replace'付き）。update_master.py v2.1で修正済み。</div>
+        <div class="code">r = subprocess.run(cmd, capture_output=True)
+out = (r.stdout or b'').decode('utf-8', errors='replace')</div></div>
+        <div class="ai-note">🤖 AIの自動改善目標：update_master.pyのrun()関数が常にこのパターンを使うよう標準化済み。新規スクリプトにも同パターンを適用する。</div>
+      </div>
+    </div>
+
+    <div class="qa-card" data-cat="ps">
+      <div class="qa-head" onclick="toggleQA(this)">
+        <span class="qa-sev sev-med">中頻度</span>
+        <span class="qa-q">Python 3.14で日本語が文字化けする / print()が通らない</span>
+        <span class="qa-tag">PS/Python</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="qa-body">
+        <div class="qa-cause"><div class="qa-cause-title">原因</div>
+        <div class="qa-cause-body">Python 3.14でstdoutのデフォルトエンコードがcp932になるケースがある。PowerShellターミナルがShift-JISを期待するため衝突する。</div></div>
+        <div class="qa-fix"><div class="qa-fix-title">対処法</div>
+        <div class="qa-fix-body">スクリプト冒頭にreconfigure()を追加する。</div>
+        <div class="code">import sys
+sys.stdout.reconfigure(encoding='utf-8')
+sys.stderr.reconfigure(encoding='utf-8')</div></div>
+        <div class="ai-note">🤖 AIの自動改善目標：Claudeが生成する全Pythonスクリプトにこの記述を自動挿入する。</div>
+      </div>
+    </div>
+
+    <div class="qa-card" data-cat="git">
+      <div class="qa-head" onclick="toggleQA(this)">
+        <span class="qa-sev sev-high">高頻度</span>
+        <span class="qa-q">Netlifyに新規ファイルが反映されない</span>
+        <span class="qa-tag">Git/Netlify</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="qa-body">
+        <div class="qa-cause"><div class="qa-cause-title">原因</div>
+        <div class="qa-cause-body">2つの原因が複合することが多い。①update_master.pyのSYNC_FILESに新ファイルが未登録、②hancho-docs/index.htmlにカードが未追加。どちらか一方だけでは不完全。</div></div>
+        <div class="qa-fix"><div class="qa-fix-title">対処法</div>
+        <div class="qa-fix-body">新しいHTMLを追加した際は以下の2点をセットで対応する：<br>
+        1. update_master.pyのSYNC_FILESに追記<br>
+        2. hancho-docs/index.htmlにカード追加（fix_index.pyを使用）<br>
+        その後 update_master.py を実行すれば自動同期・Netlify反映される。</div></div>
+        <div class="ai-note">🤖 AIの自動改善目標：新規HTMLファイル作成時にClaude CodeがSYNC_FILESへの追記とindex.htmlへのカード追加を自動実行するHookを設定する。</div>
+      </div>
+    </div>
+
+    <div class="qa-card" data-cat="git">
+      <div class="qa-head" onclick="toggleQA(this)">
+        <span class="qa-sev sev-high">高頻度</span>
+        <span class="qa-q">fix_index.pyを複数回実行するとNetlifyのカードが重複する</span>
+        <span class="qa-tag">Git/Netlify</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="qa-body">
+        <div class="qa-cause"><div class="qa-cause-title">原因</div>
+        <div class="qa-cause-body">fix_index.pyに重複チェックが実装されていなかったため、実行するたびにカードが追記された。</div></div>
+        <div class="qa-fix"><div class="qa-fix-title">対処法</div>
+        <div class="qa-fix-body">fix_duplicate.pyを実行して重複を一括除去・1つに統一する。fix_index.pyは重複チェック付きバージョンに差し替え済み。</div>
+        <div class="code">python "$env:USERPROFILE\Downloads\fix_duplicate.py"</div></div>
+        <div class="ai-note">🤖 AIの自動改善目標：index.htmlを操作するスクリプトは常に「既存チェック→削除→1件挿入」のべき等パターンで実装する。</div>
+      </div>
+    </div>
+
+    <div class="qa-card" data-cat="git">
+      <div class="qa-head" onclick="toggleQA(this)">
+        <span class="qa-sev sev-med">中頻度</span>
+        <span class="qa-q">git commit で "nothing to commit" になる</span>
+        <span class="qa-tag">Git/Netlify</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="qa-body">
+        <div class="qa-cause"><div class="qa-cause-title">原因</div>
+        <div class="qa-cause-body">①ファイルが実際には変更されていない（同内容の上書き）②git addの対象ファイルパスが間違っている③別ディレクトリで実行している。</div></div>
+        <div class="qa-fix"><div class="qa-fix-title">対処法</div>
+        <div class="qa-fix-body">git statusで変更ファイルを確認してからaddする。update_master.pyはこの問題を自動でハンドリングしている（rc!=0でスキップ）。</div>
+        <div class="code">git -C C:\git\hancho-docs status</div></div>
+      </div>
+    </div>
+
+    <div class="qa-card" data-cat="git">
+      <div class="qa-head" onclick="toggleQA(this)">
+        <span class="qa-sev sev-med">中頻度</span>
+        <span class="qa-q">タスクスケジューラの更新で "アクセスが拒否されました" が出る</span>
+        <span class="qa-tag">Git/環境</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="qa-body">
+        <div class="qa-cause"><div class="qa-cause-title">原因</div>
+        <div class="qa-cause-body">Set-ScheduledTaskは管理者権限が必要。通常のPowerShellウィンドウでは実行できない。</div></div>
+        <div class="qa-fix"><div class="qa-fix-title">対処法</div>
+        <div class="qa-fix-body">スタートメニュー → PowerShell を右クリック → 「管理者として実行」で起動してから実行する。</div></div>
+        <div class="ai-note">🤖 AIの自動改善目標：タスクスケジューラ操作コマンドには「管理者PowerShellで実行」の注記を必ず付ける。</div>
+      </div>
+    </div>
+
+    <div class="qa-card" data-cat="obs">
+      <div class="qa-head" onclick="toggleQA(this)">
+        <span class="qa-sev sev-high">高頻度</span>
+        <span class="qa-q">ObsidianのDataviewで "No results to show" になる</span>
+        <span class="qa-tag">Obsidian</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="qa-body">
+        <div class="qa-cause"><div class="qa-cause-title">原因</div>
+        <div class="qa-cause-body">①FROMで指定したパスにタスクファイルが存在しない②日付フィルターのフォーマットが合っていない（Dataviewは日付をオブジェクトとして処理するためstring()変換が必要）③インラインフィールドのスペルが違う。</div></div>
+        <div class="qa-fix"><div class="qa-fix-title">対処法</div>
+        <div class="qa-fix-body">日付フィルターはstring()を使ってバイパスする。</div>
+        <div class="code">WHERE string(t.期限) >= "2026-05-12" AND string(t.期限) &lt;= "2026-05-18"</div></div>
+        <div class="ai-note">🤖 AIの自動改善目標：Dataviewクエリ生成時に日付フィルターは常にstring()形式を使用する。</div>
+      </div>
+    </div>
+
+    <div class="qa-card" data-cat="obs">
+      <div class="qa-head" onclick="toggleQA(this)">
+        <span class="qa-sev sev-med">中頻度</span>
+        <span class="qa-q">Tasks プラグインのCtrl+Enterが効かない</span>
+        <span class="qa-tag">Obsidian</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="qa-body">
+        <div class="qa-cause"><div class="qa-cause-title">原因</div>
+        <div class="qa-cause-body">①プレビューモードで開いている（編集モードに切替必要）②タスクファイルではなくDataviewテーブル上で実行しようとしている（DataviewはReadOnly）③サクラエディタ等の外部エディタで開いている。</div></div>
+        <div class="qa-fix"><div class="qa-fix-title">対処法</div>
+        <div class="qa-fix-body">20_Areas/tasks/配下のファイルをObsidianで開き、Ctrl+Eで編集モードに切り替えてからCtrl+Enterを実行する。</div></div>
+      </div>
+    </div>
+
+    <div class="qa-card" data-cat="obs">
+      <div class="qa-head" onclick="toggleQA(this)">
+        <span class="qa-sev sev-med">中頻度</span>
+        <span class="qa-q">C:\Workspaceと C:\git が混在していてどちらが正しいかわからない</span>
+        <span class="qa-tag">環境</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="qa-body">
+        <div class="qa-cause"><div class="qa-cause-title">原因</div>
+        <div class="qa-cause-body">2026年5月に全リポジトリをC:\WorkspaceからC:\gitに移行した。古いスクリプト・タスクスケジューラにC:\Workspaceパスが残っているケースがある。</div></div>
+        <div class="qa-fix"><div class="qa-fix-title">対処法</div>
+        <div class="qa-fix-body">正解はC:\git配下のみ。C:\Workspaceは移行後に空になっている（削除済み）。スクリプトにC:\Workspaceが残っている場合はC:\gitに置換する。</div>
+        <div class="code"># 確認コマンド
+Get-ChildItem C:\git\ -Directory | Select-Object Name</div></div>
+        <div class="ai-note">🤖 AIの自動改善目標：新規スクリプト生成時にC:\Workspaceを使用しない。AI_System_PolicyのEnvironment Factsを参照する。</div>
+      </div>
+    </div>
+
+    <div class="qa-card" data-cat="ai">
+      <div class="qa-head" onclick="toggleQA(this)">
+        <span class="qa-sev sev-med">中頻度</span>
+        <span class="qa-q">ClaudeとGeminiで認識・方針がズレる</span>
+        <span class="qa-tag">AI連携</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="qa-body">
+        <div class="qa-cause"><div class="qa-cause-title">原因</div>
+        <div class="qa-cause-body">AIはセッションをまたいで記憶を持たないため、前回の会話内容・作業ディレクトリ・方針変更が共有されていない。特に環境変更（C:\Workspace→C:\git移行など）はAI側に伝わらない。</div></div>
+        <div class="qa-fix"><div class="qa-fix-title">対処法</div>
+        <div class="qa-fix-body">①NotebookLMにhancho-docs URLを登録してClaudeとGeminiの共通知識ベースとする②セッション開始時にProject_Master_DocumentのURLを共有する③AI_System_Policy.mdを参照させる。</div>
+        <div class="code">https://hancho-docs.netlify.app/Project_Master_Document.html
+https://raw.githubusercontent.com/fooueen/hancho-kb/main/docs/AI_System_Policy.md</div></div>
+        <div class="ai-note">🤖 AIの自動改善目標：Dreaming機能（Claude Managed Agents）で過去セッションのパターンを自動学習。NotebookLMのRAGで常時最新状態を参照。</div>
+      </div>
+    </div>
+
+    <div class="qa-card" data-cat="ai">
+      <div class="qa-head" onclick="toggleQA(this)">
+        <span class="qa-sev sev-med">中頻度</span>
+        <span class="qa-q">Geminiが「作成済み」と言ったファイルがローカルに存在しない</span>
+        <span class="qa-tag">AI連携</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="qa-body">
+        <div class="qa-cause"><div class="qa-cause-title">原因</div>
+        <div class="qa-cause-body">GeminiはチャットUIでコードを「出力」するだけで、ローカルファイルへの保存は行わない。「作成した」という表現はチャット内での出力を指す。AI_System_Policyの「推測の禁止」ルール参照。</div></div>
+        <div class="qa-fix"><div class="qa-fix-title">対処法</div>
+        <div class="qa-fix-body">①Geminiにコードを再出力してもらい、ローカルに手動保存する②「ローカルのどのパスに保存したか」を毎回確認する③ファイルの存在確認はGet-ChildItemで行う。</div>
+        <div class="code">Get-ChildItem C:\git\ -Recurse -Filter "*.tsx" | Select-Object FullName</div></div>
+        <div class="ai-note">🤖 AIの自動改善目標：ClaudeがGemini作成ファイルを引き継ぐ際は必ずファイル存在確認を行ってから作業を開始する（AI_System_Policy準拠）。</div>
+      </div>
+    </div>
+
+    <div class="qa-card" data-cat="ai">
+      <div class="qa-head" onclick="toggleQA(this)">
+        <span class="qa-sev sev-low">低頻度</span>
+        <span class="qa-q">Claudeの週間利用制限（75%使用）に達しそう</span>
+        <span class="qa-tag">AI連携</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="qa-body">
+        <div class="qa-cause"><div class="qa-cause-title">原因</div>
+        <div class="qa-cause-body">長時間の作業セッションやコンテキストが大きいファイル（HTML・スクリプト）の生成が多いと制限に達しやすい。</div></div>
+        <div class="qa-fix"><div class="qa-fix-title">対処法</div>
+        <div class="qa-fix-body">①大量生成タスクはGeminiに委任する（Claude=設計・管理、Gemini=生成・実行）②引き継ぎ前にProject_Master_DocumentをNetlify経由でGeminiに共有する③制限リセットは毎週。</div></div>
+        <div class="ai-note">🤖 AIの自動改善目標：AI_System_PolicyのAI役割分担を徹底し、コンテンツ生成はGeminiに振り向けることで制限を節約する。</div>
+      </div>
+    </div>
+
+    <div class="qa-card" data-cat="obs">
+      <div class="qa-head" onclick="toggleQA(this)">
+        <span class="qa-sev sev-low">低頻度</span>
+        <span class="qa-q">Obsidianプラグインが見つからない（DB Folder等）</span>
+        <span class="qa-tag">Obsidian</span>
+        <span class="chevron">▶</span>
+      </div>
+      <div class="qa-body">
+        <div class="qa-cause"><div class="qa-cause-title">原因</div>
+        <div class="qa-cause-body">プラグインが廃止・リネームされているケースがある（DB Folderは廃止）。Obsidianのバージョンによって利用可能なプラグインが異なる。</div></div>
+        <div class="qa-fix"><div class="qa-fix-title">対処法</div>
+        <div class="qa-fix-body">代替プラグインを探す前にClaudeに確認する。代替手段：DB Folder→Kanbanプラグイン+Dataview、Bases（Obsidian新機能・将来対応）。</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TAB 1〜4: カテゴリ別（同内容をフィルタ表示） -->
+<div class="tab-pane" id="tab1">
+  <p style="color:var(--muted);font-size:13px;">「全QA一覧」タブで「PowerShell/Python」フィルターを選択してください。</p>
+</div>
+<div class="tab-pane" id="tab2">
+  <p style="color:var(--muted);font-size:13px;">「全QA一覧」タブで「Git/Netlify」フィルターを選択してください。</p>
+</div>
+<div class="tab-pane" id="tab3">
+  <p style="color:var(--muted);font-size:13px;">「全QA一覧」タブで「Obsidian/MCP」フィルターを選択してください。</p>
+</div>
+<div class="tab-pane" id="tab4">
+  <p style="color:var(--muted);font-size:13px;">「全QA一覧」タブで「AI連携」フィルターを選択してください。</p>
+</div>
+
+<script>
+function showTab(n){
+  document.querySelectorAll('.tab-pane').forEach((p,i)=>p.classList.toggle('active',i===n));
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===n));
+}
+function toggleQA(head){
+  const body = head.nextElementSibling;
+  const chev = head.querySelector('.chevron');
+  const open = body.classList.toggle('open');
+  chev.classList.toggle('open-chevron', open);
+}
+function filterQA(cat, btn){
+  document.querySelectorAll('.filter-row .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.qa-card').forEach(c=>{
+    c.classList.toggle('hidden', cat!=='all' && c.dataset.cat!==cat);
+  });
+}
+function searchQA(q){
+  const kw = q.toLowerCase();
+  document.querySelectorAll('.qa-card').forEach(c=>{
+    c.classList.toggle('hidden', kw && !c.textContent.toLowerCase().includes(kw));
+  });
+}
+</script>
+</body>
+</html>
