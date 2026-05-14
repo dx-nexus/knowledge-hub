@@ -339,7 +339,6 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
 
 <!-- TAB 1: 学習ロードマップ -->
 <div class="tab-pane" id="tab1">
-<div class="tab-pane" id="tab3">
   <div class="sec">
     <div class="sec-title">役割別推奨受講順序</div>
     <div class="notice notice-green"><p>✅ まずは自分の役割に最も近いパスを選択してください。各コースは独立しているため、途中から始めることも可能です。</p></div>
@@ -399,7 +398,7 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
   </div>
 </div>
 
-<div class="doc-footer">Anthropic Academy 活用ガイド 2026 ― 社内配布版 ／ Qolony株式会社 ／ 更新：2026-05-13</div>
+<div class="doc-footer">Anthropic Academy 活用ガイド 2026 ― 社内配布版 ／ 更新：2026-05-13</div>
 
 <script>
 function showTab(n){
@@ -421,59 +420,9 @@ function searchTerms(q){
 }
 </script>
 
-<!-- dx-nexus-nav -->
-<style>
-  #dx-nav {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    z-index: 9999;
-    font-family: 'Meiryo', 'メイリオ', sans-serif;
-  }
-  #dx-nav .nav-btn {
-    display: inline-block;
-    padding: 8px 14px;
-    background: #1a2a4a;
-    color: #ffffff !important;
-    border: 1px solid #3a5a8a;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 12px;
-    font-weight: bold;
-    white-space: nowrap;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    transition: background 0.2s;
-    text-align: center;
-  }
-  #dx-nav .nav-btn:hover {
-    background: #2a4a7a;
-  }
-  #dx-nav .nav-home {
-    background: #0d3060;
-    border-color: #4a8aff;
-    font-size: 13px;
-    padding: 9px 16px;
-  }
-  #dx-nav .nav-home:hover {
-    background: #1a4a80;
-  }
-</style>
-<div id="dx-nav">
-  <a href="index.html" class="nav-btn nav-home">🏠 ホーム</a>
-  <a href="Anthropic_Academy_Plan.html" class="nav-btn">◀ Anthropic Academy</a>
-  <a href="V_Consultant_System_Overview.html" class="nav-btn">Vコンサル概要 ▶</a>
-</div>
-
-<!-- <!-- patch-academy-v1 --> -->
-</body>
-</html>
-</div>
 
 <!-- TAB 2: 用語集 -->
-<div class="tab-pane" id="tab1">
+<div class="tab-pane" id="tab2">
   <div class="sec">
     <div class="sec-title">用語検索</div>
     <input class="search-box" id="term-search" placeholder="キーワードで検索（例：MCP、API、エージェント...）" oninput="searchTerms(this.value)">
@@ -575,7 +524,7 @@ function searchTerms(q){
 </div>
 
 <!-- TAB 3: システム連携概要 -->
-<div class="tab-pane" id="tab2">
+<div class="tab-pane" id="tab3">
   
 <div class="sec">
   <div class="sec-title">社内AI活用アーキテクチャ 全体像</div>
@@ -722,24 +671,6 @@ function searchTerms(q){
 
 <div class="doc-footer">Anthropic Academy 活用ガイド 2026 ― 社内配布版 ／ 更新：2026-05-13</div>
 
-<script>
-function showTab(n){
-  document.querySelectorAll('.tab-pane').forEach((p,i)=>p.classList.toggle('active',i===n));
-  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===n));
-}
-function filterCourse(cat, btn){
-  document.querySelectorAll('.filter-row .filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('#course-grid .card').forEach(c=>{
-    c.classList.toggle('hidden', cat!=='all' && c.dataset.cat!==cat);
-  });
-}
-function searchTerms(q){
-  const kw = q.toLowerCase();
-  document.querySelectorAll('#term-list .term-card').forEach(c=>{
-    c.classList.toggle('hidden', kw && !c.dataset.term.includes(kw) && !c.textContent.toLowerCase().includes(kw));
-  });
-}
-</script>
+
 </body>
 </html>
