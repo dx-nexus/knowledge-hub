@@ -19,7 +19,7 @@
   --serif:'Noto Serif JP',serif;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.7;}
+body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.8;word-break:keep-all;overflow-wrap:break-word;}
 
 /* Header */
 .hdr{background:var(--navy);color:#fff;padding:0;}
@@ -36,7 +36,7 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
 .tab-btn:hover{color:var(--text2);}
 .tab-btn.active{color:var(--blue);border-bottom-color:var(--blue);}
 
-.tab-pane{display:none;max-width:1080px;margin:0 auto;padding:32px 40px;}
+.tab-pane{display:none;max-width:1200px;margin:0 auto;padding:32px 40px;}
 .tab-pane.active{display:block;}
 
 /* Sections */
@@ -64,9 +64,9 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
 .priority{font-size:11px;font-weight:700;color:var(--blue);background:var(--blue-lt);padding:2px 8px;border-radius:4px;}
 
 /* Table */
-.tbl{width:100%;border-collapse:collapse;font-size:13px;background:var(--white);border-radius:8px;overflow:hidden;border:1px solid var(--border);}
+.tbl{width:100%;border-collapse:collapse;font-size:13px;background:var(--white);border-radius:8px;overflow:hidden;border:1px solid var(--border);word-break:keep-all;line-break:strict;overflow-wrap:break-word;}
 .tbl th{background:var(--navy);color:#fff;font-size:11px;font-weight:700;letter-spacing:.08em;padding:10px 14px;text-align:left;}
-.tbl td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top;}
+.tbl td{padding:12px 16px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top;line-height:1.8;}
 .tbl td:first-child{color:var(--text);font-weight:500;}
 .tbl tr:last-child td{border-bottom:none;}
 .tbl tr:hover td{background:var(--gray);}
@@ -76,7 +76,7 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
 .notice-blue{background:var(--blue-lt);border-left:3px solid var(--blue);}
 .notice-green{background:var(--green-lt);border-left:3px solid var(--green);}
 .notice-amber{background:var(--amber-lt);border-left:3px solid var(--amber);}
-.notice p{font-size:13px;line-height:1.7;}
+.notice p{font-size:13px;line-height:1.9;word-break:keep-all;overflow-wrap:break-word;}
 .notice-blue p{color:#1e40af;}
 .notice-green p{color:#065f46;}
 .notice-amber p{color:#92400e;}
@@ -251,38 +251,49 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
 
   <div class="sec">
     <div class="sec-title">本資料の使い方（各タブ説明）</div>
-    <table class="tbl">
+    <style>
+      .tab-guide-table td:first-child{white-space:nowrap;}
+      @media (max-width:900px){.tab-guide-table td:first-child{white-space:normal;}}
+      .tab-guide-table strong{display:inline-block;}
+    </style>
+    <table class="tbl tab-guide-table" style="table-layout:auto;">
+      <colgroup>
+        <col style="width:auto;">
+        <col style="width:22%;">
+        <col style="width:28%;">
+        <col style="width:32%;">
+      </colgroup>
       <thead><tr><th>タブ</th><th>目的</th><th>得られるもの</th><th>活用例</th></tr></thead>
       <tbody>
         <tr>
           <td><strong>コース一覧</strong></td>
-          <td>全17コースを役割別に把握する</td>
-          <td>受講すべきコースの選定基準</td>
-          <td>新規参加メンバーへの案内、研修計画の立案</td>
+          <td>全17コースを<br>役割別に把握する</td>
+          <td>受講すべきコースの<br>選定基準</td>
+          <td>新規参加メンバーへの案内、<br>研修計画の立案</td>
         </tr>
         <tr>
           <td><strong>学習ロードマップ</strong></td>
-          <td>役割別の受講順序を確認する</td>
-          <td>ビジネス／開発者／クラウド別の最短受講ルート</td>
-          <td>自分のパスを決めて体系的に受講を進める</td>
+          <td>役割別の受講順序を<br>確認する</td>
+          <td>ビジネス／開発者／クラウド別の<br>最短受講ルート</td>
+          <td>自分のパスを決めて<br>体系的に受講を進める</td>
         </tr>
         <tr>
           <td><strong>（参考）用語集</strong></td>
-          <td>AI・Claude関連用語を理解する</td>
-          <td>コース受講・社内説明・提案書作成で使える語彙</td>
-          <td>クライアントへの説明資料作成、社内勉強会の事前学習</td>
+          <td>AI・Claude関連用語を<br>理解する</td>
+          <td>コース受講・社内説明・<br>提案書作成で使える語彙</td>
+          <td>クライアントへの説明資料作成、<br>社内勉強会の事前学習</td>
         </tr>
         <tr>
           <td><strong>（参考）システム連携概要</strong></td>
-          <td>Claudeの全体アーキテクチャを把握する</td>
-          <td>claude.ai〜API〜MCP〜クラウドの5層構造の理解</td>
-          <td>システム提案・要件定義・技術検証の下地として活用</td>
+          <td>Claudeの全体アーキテクチャを<br>把握する</td>
+          <td>claude.ai〜API〜MCP〜クラウドの<br>5層構造の理解</td>
+          <td>システム提案・要件定義・<br>技術検証の下地として活用</td>
         </tr>
         <tr>
           <td><strong>（参考）本資料作成手順</strong></td>
-          <td>本資料の再現・改修方法を知る</td>
-          <td>一撃プロンプト・GitHub公開手順・Geminiレビュー運用</td>
-          <td>社内ポータル・他案件向け類似資料の展開</td>
+          <td>本資料の再現・<br>改修方法を知る</td>
+          <td>一撃プロンプト・GitHub公開手順・<br>Geminiレビュー運用</td>
+          <td>社内ポータル・<br>他案件向け類似資料の展開</td>
         </tr>
       </tbody>
     </table>
@@ -333,7 +344,12 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
   <div class="sec">
     <div class="sec-title">資格取得の価値</div>
     <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;margin-bottom:16px;">
-      <table class="tbl">
+      <table class="tbl" style="table-layout:fixed;">
+        <colgroup>
+          <col style="width:25%;">
+          <col style="width:35%;">
+          <col style="width:40%;">
+        </colgroup>
         <thead>
           <tr><th>観点</th><th>資格なし</th><th>Anthropic認定あり</th></tr>
         </thead>
