@@ -985,7 +985,7 @@ function searchTerms(q){
     <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
       <div class="sys-box accent">
         <div class="sys-box-title">update_master.py</div>
-        <div class="sys-box-body">作業ログ記録 → hancho-kb push → knowledge-hub同期push を一括実行。日次更新の主力スクリプト。</div>
+        <div class="sys-box-body">作業ログ記録 → vault（ナレッジ管理リポジトリ）push → 公開リポジトリ同期push を一括実行。日次更新の主力スクリプト。</div>
       </div>
       <div class="sys-box accent">
         <div class="sys-box-title">add_navigation.py</div>
@@ -1251,8 +1251,10 @@ tone: </div>
   "output_path": "/mnt/user-data/outputs/navigator.html",
   "deploy": {
     "enabled": true,
-    "target_repo": "C:/git/hancho-docs",
-    "github_pages_url": "https://dx-nexus.github.io/knowledge-hub/"
+    "vault_repo_name": "your-vault",
+    "docs_repo_name": "your-docs",
+    "target_repo": "C:/git/{{docs_repo_name}}",
+    "github_pages_url": "https://your-org.github.io/your-pages/"
   }
 }</div>
     </div>
@@ -1273,6 +1275,8 @@ tone: </div>
   * tab_count: 5
   * tone: "業務文書・敬体・穏やか"
   * date: 今日の日付（ISO形式）
+  * vault_repo_name: "your-vault"（個人ナレッジ管理リポジトリ名）
+  * docs_repo_name: "your-docs"（公開用リポジトリ名）
 
 【STEP 2】HTML資料を生成
 - config.jsonの仕様に基づき、既存の `Anthropic_Academy_Plan_Internal.html` を構造のテンプレートとして参照し、新しいHTML資料を生成する
@@ -1310,12 +1314,12 @@ tone: </div>
     <div class="code-block-wrap">
       <button class="copy-btn" onclick="copyCode(this)">📋 コピー</button>
       <div class="code-content"># Claude Codeのセッションで実行
-cd C:\git\hancho-kb\scripts
+cd C:\git\{{vault_repo_name}}\scripts
 # config.jsonを編集してから↓を実行
 claude "$(cat instruction.md)"
 
 # あるいはワンライナーで
-claude "config.jsonを読んで学習コースナビゲーターHTMLを生成、hancho-docsにコピーしてpush"</div>
+claude "config.jsonを読んで学習コースナビゲーターHTMLを生成、{{docs_repo_name}}にコピーしてpush"</div>
     </div>
 
     <div class="notice notice-amber">
