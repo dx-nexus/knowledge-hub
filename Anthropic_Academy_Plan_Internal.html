@@ -1200,8 +1200,143 @@ tone: </div>
     </div>
   </div>
 
-<div class="sec">
-    <div class="sec-title">STEP 5｜Claude Codeで一撃自動生成（実行可能フロー）</div>
+
+  <div class="sec">
+    <div class="sec-title">自動化フローの構造</div>
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:24px;overflow-x:auto;">
+    <svg viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;font-family:'Noto Sans JP',sans-serif;">
+      <defs>
+        <marker id="arr-flow" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto">
+          <path d="M0,0 L0,10 L12,5 z" fill="#475569"/>
+        </marker>
+        <linearGradient id="grad-human" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#3b82f6"/>
+          <stop offset="100%" style="stop-color:#2563eb"/>
+        </linearGradient>
+        <linearGradient id="grad-ai" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#d97706"/>
+          <stop offset="100%" style="stop-color:#b45309"/>
+        </linearGradient>
+        <linearGradient id="grad-output" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#059669"/>
+          <stop offset="100%" style="stop-color:#047857"/>
+        </linearGradient>
+      </defs>
+
+      <!-- ステージラベル -->
+      <text x="120" y="30" font-size="11" font-weight="700" fill="#475569" text-anchor="middle" letter-spacing="2">① 人間のInput</text>
+      <text x="450" y="30" font-size="11" font-weight="700" fill="#475569" text-anchor="middle" letter-spacing="2">② AIによる自動化</text>
+      <text x="780" y="30" font-size="11" font-weight="700" fill="#475569" text-anchor="middle" letter-spacing="2">③ 成果物</text>
+
+      <!-- ① 人間のInput -->
+      <rect x="20" y="50" width="200" height="240" rx="12" fill="url(#grad-human)" opacity="0.95"/>
+      <text x="120" y="90" font-size="32" text-anchor="middle">👤</text>
+      <text x="120" y="125" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">人間が決めること</text>
+      <text x="120" y="155" font-size="11" fill="#dbeafe" text-anchor="middle">📝 タイトル</text>
+      <text x="120" y="175" font-size="11" fill="#dbeafe" text-anchor="middle">🎯 目的・対象</text>
+      <text x="120" y="195" font-size="11" fill="#dbeafe" text-anchor="middle">🎨 カラー・フォント</text>
+      <text x="120" y="215" font-size="11" fill="#dbeafe" text-anchor="middle">📑 タブ構成</text>
+      <text x="120" y="235" font-size="11" fill="#dbeafe" text-anchor="middle">📂 出力先リポジトリ</text>
+      <text x="120" y="270" font-size="10" fill="#bfdbfe" text-anchor="middle">→ config.json に書く</text>
+
+      <!-- 矢印 1→2 -->
+      <line x1="230" y1="170" x2="335" y2="170" stroke="#475569" stroke-width="2.5" marker-end="url(#arr-flow)"/>
+      <text x="282" y="160" font-size="10" fill="#64748b" text-anchor="middle" font-weight="700">投げる</text>
+
+      <!-- ② AI自動化 -->
+      <rect x="350" y="50" width="200" height="240" rx="12" fill="url(#grad-ai)" opacity="0.95"/>
+      <text x="450" y="90" font-size="32" text-anchor="middle">🤖</text>
+      <text x="450" y="125" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">Claude Code</text>
+      <text x="450" y="155" font-size="11" fill="#fef3c7" text-anchor="middle">⚙️ config読み込み</text>
+      <text x="450" y="175" font-size="11" fill="#fef3c7" text-anchor="middle">📐 構造テンプレ参照</text>
+      <text x="450" y="195" font-size="11" fill="#fef3c7" text-anchor="middle">✍️ HTML生成</text>
+      <text x="450" y="215" font-size="11" fill="#fef3c7" text-anchor="middle">🔍 セルフチェック</text>
+      <text x="450" y="235" font-size="11" fill="#fef3c7" text-anchor="middle">🚀 git push実行</text>
+      <text x="450" y="270" font-size="10" fill="#fde68a" text-anchor="middle">→ 全自動で実行</text>
+
+      <!-- 矢印 2→3 -->
+      <line x1="560" y1="170" x2="665" y2="170" stroke="#475569" stroke-width="2.5" marker-end="url(#arr-flow)"/>
+      <text x="612" y="160" font-size="10" fill="#64748b" text-anchor="middle" font-weight="700">生成</text>
+
+      <!-- ③ 成果物 -->
+      <rect x="680" y="50" width="200" height="240" rx="12" fill="url(#grad-output)" opacity="0.95"/>
+      <text x="780" y="90" font-size="32" text-anchor="middle">🎁</text>
+      <text x="780" y="125" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">公開ドキュメント</text>
+      <text x="780" y="155" font-size="11" fill="#d1fae5" text-anchor="middle">📄 HTMLファイル</text>
+      <text x="780" y="175" font-size="11" fill="#d1fae5" text-anchor="middle">🌐 GitHub Pages公開</text>
+      <text x="780" y="195" font-size="11" fill="#d1fae5" text-anchor="middle">🔗 共有URL発行</text>
+      <text x="780" y="215" font-size="11" fill="#d1fae5" text-anchor="middle">📊 セルフチェック結果</text>
+      <text x="780" y="235" font-size="11" fill="#d1fae5" text-anchor="middle">📋 Geminiレビュー依頼文</text>
+      <text x="780" y="270" font-size="10" fill="#a7f3d0" text-anchor="middle">→ ブラウザで即確認</text>
+
+      <!-- 下部の補足 -->
+      <text x="450" y="330" font-size="11" fill="#94a3b8" text-anchor="middle" font-style="italic">人間は「何を作るか」だけ決めれば、「どう作るか」はAIが完結する</text>
+    </svg>
+    </div>
+  </div>
+
+  
+  <div class="sec">
+    <div class="sec-title">あなたが何をInputすればいいか（新規作成 vs 更新）</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;">
+      <div style="background:#eff6ff;border-left:4px solid #2563eb;border-radius:8px;padding:18px;">
+        <div style="font-size:14px;font-weight:700;color:#1e40af;margin-bottom:10px;">🆕 新規作成パターン</div>
+        <div style="font-size:12px;color:#475569;line-height:1.9;">
+          <strong>場面：</strong>別テーマで新しいナビゲーターを作りたいとき<br>
+          （例：MCPガイド、DXハンドブック）<br><br>
+          <strong>必要なInput：</strong><br>
+          ① <code style="background:#fff;padding:2px 6px;border-radius:4px;">config.json</code> を書く<br>
+          ② Claude Codeに「config.jsonを読んで生成」と投げる<br><br>
+          <strong>必要時間：</strong>10〜15分<br>
+          <strong>結果：</strong>ゼロから新しいHTML資料が完成・公開
+        </div>
+      </div>
+
+      <div style="background:#f0fdf4;border-left:4px solid #059669;border-radius:8px;padding:18px;">
+        <div style="font-size:14px;font-weight:700;color:#065f46;margin-bottom:10px;">🔄 既存資料の更新パターン</div>
+        <div style="font-size:12px;color:#475569;line-height:1.9;">
+          <strong>場面：</strong>既存のナビゲーターを部分的に修正したいとき<br>
+          （例：コース追加、文言修正、デザイン変更）<br><br>
+          <strong>必要なInput：</strong><br>
+          ① 対象ファイルのパスを指定<br>
+          ② 修正内容を自然言語で指示<br>
+          （「冒頭のSVG図を変更」「タブ追加」など）<br><br>
+          <strong>必要時間：</strong>1〜5分<br>
+          <strong>結果：</strong>該当箇所のみ修正・差分push
+        </div>
+      </div>
+    </div>
+
+    <div style="font-size:13px;font-weight:700;color:#1a2744;margin:18px 0 8px;">📋 実際にこのHTMLを更新するためのInput例</div>
+    <div class="code-block-wrap">
+      <button class="copy-btn" onclick="copyCode(this)">📋 コピー</button>
+      <div class="code-content">@C:/git/{{vault_repo_name}}/30_Resources/Anthropic_Academy_Plan_Internal.html を以下の通り修正してください。
+
+【修正内容】
+- 〇〇タブの△△を××に変更
+- コース一覧に新しいカード「□□」を追加（カテゴリ：dev）
+- フッターの日付を更新
+
+【セルフチェック】
+- タブid整合性
+- doc-footer重複なし
+- 社名・個人情報残存なし
+
+【完了後】
+- {{docs_repo_name}}にコピー
+- git add . && git commit -m "..." && git push
+- GitHub Pages反映確認URL報告
+- 変更箇所が大きい場合はGemini向けレビュー依頼コメントを生成</div>
+    </div>
+
+    <div class="notice notice-amber" style="margin-top:14px;">
+      <p>💡 <strong>Claude Codeとの違い：</strong>「Claude.ai（このチャット）」だと修正のたびにファイルダウンロード→コピー→pushの手作業が発生。「Claude Code」だとローカルファイルを直接読み書きできるので、ファイル受け渡しの手間がゼロ。エンジニア寄りの作業なら断然 Claude Code が効率的です。</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">完全自動化フロー（Claude Code活用）</div>
     <div class="notice notice-green" style="margin-bottom:14px;">
       <p>🚀 <strong>config.jsonに変数を書く → Claude Codeに投げる → HTMLが生成・push される</strong>という完全自動化フローです。未指定の変数はデフォルト値が適用されます。</p>
     </div>
