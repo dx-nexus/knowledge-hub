@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ナビゲーター・ジェネレーター 構想ドラフト</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1a2744;--blue:#2563eb;--blue-lt:#eff6ff;
+  --gray:#f8f9fb;--gray2:#f1f3f7;
+  --text:#1e293b;--text2:#475569;--text3:#94a3b8;
+  --border:#e2e8f0;--white:#fff;
+  --green:#059669;--green-lt:#ecfdf5;
+  --amber:#d97706;--amber-lt:#fffbeb;
+  --red:#dc2626;--red-lt:#fef2f2;
+  --purple:#7c3aed;--purple-lt:#f5f3ff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{overflow-x:hidden;}
+body{background:var(--gray);color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:14px;line-height:1.8;word-break:keep-all;overflow-wrap:break-word;}
+
+.hdr{background:linear-gradient(135deg,#1a2744 0%,#2d3d6b 100%);color:#fff;padding:36px 40px;}
+.hdr .badge{display:inline-block;background:rgba(255,255,255,.15);padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.08em;margin-bottom:10px;}
+.hdr h1{font-size:26px;font-weight:700;letter-spacing:.02em;}
+.hdr p{font-size:13px;color:rgba(255,255,255,.7);margin-top:8px;line-height:1.7;}
+
+.container{max-width:1080px;margin:0 auto;padding:32px 40px;}
+
+.sec{margin-bottom:36px;}
+.sec-title{font-size:12px;font-weight:700;color:var(--text3);letter-spacing:.15em;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--border);}
+
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px 22px;transition:.15s;}
+.card:hover{box-shadow:0 2px 12px rgba(30,41,59,.08);}
+.card-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+.card-icon{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;}
+.card-title{font-size:14px;font-weight:700;color:var(--text);line-height:1.4;}
+.card-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+.card-body{font-size:12px;color:var(--text2);line-height:1.9;}
+.card-status{display:inline-block;font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;margin-top:8px;}
+.status-draft{background:#fef2f2;color:#dc2626;border:1px solid #fecaca;}
+.status-progress{background:#fffbeb;color:#92400e;border:1px solid #fde68a;}
+.status-research{background:#f5f3ff;color:#4c1d95;border:1px solid #ddd6fe;}
+.status-prototype{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;}
+
+.notice{border-radius:10px;padding:18px 22px;margin:16px 0;}
+.notice-blue{background:var(--blue-lt);border-left:4px solid var(--blue);}
+.notice-amber{background:var(--amber-lt);border-left:4px solid var(--amber);}
+.notice-red{background:var(--red-lt);border-left:4px solid var(--red);}
+.notice p{font-size:13px;line-height:1.9;}
+.notice-blue p{color:#1e40af;}
+.notice-amber p{color:#92400e;}
+.notice-red p{color:#991b1b;}
+
+.tbl{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--border);word-break:keep-all;}
+.tbl th{background:var(--navy);color:#fff;font-size:11px;font-weight:700;letter-spacing:.08em;padding:12px 16px;text-align:left;}
+.tbl td{padding:12px 16px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top;line-height:1.8;}
+.tbl td:first-child{color:var(--text);font-weight:600;}
+
+.flow-diagram{background:#fff;border:1px solid var(--border);border-radius:10px;padding:24px;margin-bottom:16px;overflow-x:auto;}
+
+.btn-link{display:inline-block;padding:8px 18px;background:var(--navy);color:#fff;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;margin-top:10px;transition:.15s;}
+.btn-link:hover{background:#2d3d6b;}
+
+.doc-footer{text-align:center;padding:24px;font-size:11px;color:var(--text3);border-top:1px solid var(--border);margin-top:20px;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <span class="badge">🚧 ドラフト構想 ／ Work In Progress</span>
+  <h1>🚀 ナビゲーター・ジェネレーター 構想</h1>
+  <p>HTML資料を「テーマ指定だけ」で自動量産する仕組みの設計検討メモ。<br>
+     現状はプロトタイプv1まで実装済み。本格運用には認証フロー等の課題を解決する必要がある。</p>
+</div>
+
+<div class="container">
+
+  <div class="sec">
+    <div class="sec-title">💡 構想の目的</div>
+    <div class="notice notice-blue">
+      <p>📌 <strong>ゴール：</strong>誰でもブラウザでフォームを開き、最小限の情報（タイトル・目的）を入力するだけで、AIが構造・コンテンツ・デザインを補完し、GitHub Pagesに公開済みのHTML資料が手元に届く仕組み。<br>
+      <strong>イメージ：</strong>「人間Input → AI自動化 → 成果物リンク」が一気通貫で完結。コンサル・営業・教育担当が、技術知識ゼロで資料を量産できる。</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">🗺️ 全体フロー（理想形）</div>
+    <div class="flow-diagram">
+      <svg viewBox="0 0 900 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;font-family:'Noto Sans JP',sans-serif;">
+        <defs>
+          <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+            <path d="M0,0 L0,8 L10,4 z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- レーンラベル -->
+        <text x="100" y="22" font-size="11" font-weight="700" fill="#1d4ed8" text-anchor="middle" letter-spacing="2">人間Input</text>
+        <text x="320" y="22" font-size="11" font-weight="700" fill="#7c3aed" text-anchor="middle" letter-spacing="2">認証・連携</text>
+        <text x="540" y="22" font-size="11" font-weight="700" fill="#d97706" text-anchor="middle" letter-spacing="2">AI自動化</text>
+        <text x="760" y="22" font-size="11" font-weight="700" fill="#059669" text-anchor="middle" letter-spacing="2">成果物</text>
+
+        <!-- ① 人間Input -->
+        <rect x="20" y="40" width="160" height="180" rx="12" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+        <text x="100" y="70" font-size="24" text-anchor="middle">📝</text>
+        <text x="100" y="100" font-size="12" font-weight="700" fill="#1d4ed8" text-anchor="middle">基本情報</text>
+        <text x="100" y="125" font-size="10" fill="#475569" text-anchor="middle">・タイトル</text>
+        <text x="100" y="143" font-size="10" fill="#475569" text-anchor="middle">・目的</text>
+        <text x="100" y="161" font-size="10" fill="#475569" text-anchor="middle">・対象</text>
+        <text x="100" y="179" font-size="10" fill="#475569" text-anchor="middle">・カラー（任意）</text>
+        <text x="100" y="205" font-size="9" fill="#94a3b8" text-anchor="middle" font-style="italic">3〜4項目だけ</text>
+
+        <line x1="190" y1="130" x2="225" y2="130" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- ② 認証・連携 -->
+        <rect x="235" y="40" width="170" height="180" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+        <text x="320" y="70" font-size="24" text-anchor="middle">🔑</text>
+        <text x="320" y="100" font-size="12" font-weight="700" fill="#7c3aed" text-anchor="middle">アカウント連携</text>
+        <text x="320" y="125" font-size="10" fill="#475569" text-anchor="middle">・GitHub OAuth</text>
+        <text x="320" y="143" font-size="10" fill="#475569" text-anchor="middle">・Anthropic APIキー</text>
+        <text x="320" y="161" font-size="10" fill="#475569" text-anchor="middle">・(将来) SSO連携</text>
+        <text x="320" y="179" font-size="10" fill="#dc2626" text-anchor="middle" font-weight="700">⚠️ 検討中</text>
+        <text x="320" y="205" font-size="9" fill="#94a3b8" text-anchor="middle" font-style="italic">初回のみ</text>
+
+        <line x1="415" y1="130" x2="450" y2="130" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- ③ AI自動化 -->
+        <rect x="460" y="40" width="160" height="180" rx="12" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+        <text x="540" y="70" font-size="24" text-anchor="middle">🤖</text>
+        <text x="540" y="100" font-size="12" font-weight="700" fill="#d97706" text-anchor="middle">AI自動補完</text>
+        <text x="540" y="125" font-size="10" fill="#475569" text-anchor="middle">・タブ構成推測</text>
+        <text x="540" y="143" font-size="10" fill="#475569" text-anchor="middle">・コンテンツ生成</text>
+        <text x="540" y="161" font-size="10" fill="#475569" text-anchor="middle">・セルフチェック</text>
+        <text x="540" y="179" font-size="10" fill="#475569" text-anchor="middle">・git commit/push</text>
+        <text x="540" y="205" font-size="9" fill="#94a3b8" text-anchor="middle" font-style="italic">Claude API直接呼出</text>
+
+        <line x1="630" y1="130" x2="665" y2="130" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- ④ 成果物 -->
+        <rect x="675" y="40" width="160" height="180" rx="12" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+        <text x="755" y="70" font-size="24" text-anchor="middle">🎁</text>
+        <text x="755" y="100" font-size="12" font-weight="700" fill="#059669" text-anchor="middle">公開ドキュメント</text>
+        <text x="755" y="125" font-size="10" fill="#475569" text-anchor="middle">・HTMLファイル</text>
+        <text x="755" y="143" font-size="10" fill="#475569" text-anchor="middle">・GitHub Pages URL</text>
+        <text x="755" y="161" font-size="10" fill="#475569" text-anchor="middle">・セルフチェック結果</text>
+        <text x="755" y="179" font-size="10" fill="#475569" text-anchor="middle">・Geminiレビュー文</text>
+        <text x="755" y="205" font-size="9" fill="#94a3b8" text-anchor="middle" font-style="italic">ブラウザで即確認</text>
+
+        <text x="425" y="260" font-size="11" fill="#94a3b8" text-anchor="middle" font-style="italic">人間は「何を作るか」だけ決めれば、「どう作るか」「どう公開するか」は全自動</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">📦 検討中の構成要素（カード一覧）</div>
+    <div class="card-grid">
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#eff6ff;">🎨</div>
+          <div>
+            <div class="card-title">入力フォーム UI</div>
+            <div class="card-sub">基本情報のみのシンプル版</div>
+          </div>
+        </div>
+        <div class="card-body">タイトル・目的・対象・カラーの最小4項目。タブ構成・コンテンツ詳細はAI側で補完。</div>
+        <span class="card-status status-prototype">プロトタイプ v1 完成</span>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#f5f3ff;">🔑</div>
+          <div>
+            <div class="card-title">GitHubアカウント連携</div>
+            <div class="card-sub">OAuth or Personal Access Token</div>
+          </div>
+        </div>
+        <div class="card-body">ユーザーが各自のGitHubアカウントでログインし、自分のリポジトリにpushできる仕組み。OAuth Appの登録が必要。</div>
+        <span class="card-status status-research">要検討・調査中</span>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#fffbeb;">🤖</div>
+          <div>
+            <div class="card-title">Anthropic APIキー連携</div>
+            <div class="card-sub">ブラウザから直接Claude呼出</div>
+          </div>
+        </div>
+        <div class="card-body">ユーザー各自のAPIキーで Claude を呼び出してHTMLを生成。利用量とコストは各自負担。ブラウザのlocalStorage保管。</div>
+        <span class="card-status status-research">要検討・調査中</span>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#f0fdf4;">📐</div>
+          <div>
+            <div class="card-title">HTMLテンプレート参照</div>
+            <div class="card-sub">構造の雛形指定</div>
+          </div>
+        </div>
+        <div class="card-body">既存の Anthropic_Academy_Plan_Internal.html を構造テンプレートとして参照する仕組み。新規生成時の品質を担保。</div>
+        <span class="card-status status-prototype">v1 で実装済み</span>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#fef2f2;">✅</div>
+          <div>
+            <div class="card-title">セルフチェック自動化</div>
+            <div class="card-sub">生成品質のガード</div>
+          </div>
+        </div>
+        <div class="card-body">タブid整合性・doc-footer重複・除外語残存・script重複を自動チェック。Gemini外部レビューも組込候補。</div>
+        <span class="card-status status-prototype">プロンプト内で指示済み</span>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#fffbeb;">🚀</div>
+          <div>
+            <div class="card-title">git push自動化</div>
+            <div class="card-sub">ブラウザからの直接push</div>
+          </div>
+        </div>
+        <div class="card-body">生成HTMLをGitHubに自動push。GitHub API + 認証Tokenでブラウザから直接実装可能だが、安全な保管が課題。</div>
+        <span class="card-status status-research">要検討・調査中</span>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#f5f3ff;">📊</div>
+          <div>
+            <div class="card-title">テンプレート切替</div>
+            <div class="card-sub">用途別の雛形選択</div>
+          </div>
+        </div>
+        <div class="card-body">ナビゲーター型・レポート型・カタログ型などの雛形を選択可能にする。ユーザーごとに使い分けを支援。</div>
+        <span class="card-status status-draft">構想段階</span>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#ecfdf5;">📜</div>
+          <div>
+            <div class="card-title">生成履歴管理</div>
+            <div class="card-sub">過去の生成物の一覧</div>
+          </div>
+        </div>
+        <div class="card-body">ユーザーが過去に生成した資料を一覧で参照・複製・改修できる仕組み。GitHubリポジトリと連動。</div>
+        <span class="card-status status-draft">構想段階</span>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#fef2f2;">🛡️</div>
+          <div>
+            <div class="card-title">セキュリティ要件整理</div>
+            <div class="card-sub">トークン・APIキー保管</div>
+          </div>
+        </div>
+        <div class="card-body">localStorage / Secure Cookie / Encrypted Storage の選択。XSS対策・トークンリーク防止。最も重要な検討事項。</div>
+        <span class="card-status status-progress">優先度：高</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">⚠️ 解決すべき検討事項</div>
+    <table class="tbl">
+      <thead><tr><th>カテゴリ</th><th>論点</th><th>現在の方針</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>認証フロー</td>
+          <td>GitHubトークンをブラウザのどこに保管するか</td>
+          <td>GitHub OAuth App で短命トークン取得・セッション保管が安全</td>
+        </tr>
+        <tr>
+          <td>API呼出</td>
+          <td>Anthropic APIキーをユーザー側で持つか、サーバー経由か</td>
+          <td>初期段階：各自のAPIキーをlocalStorage（自己責任モデル）</td>
+        </tr>
+        <tr>
+          <td>セキュリティ</td>
+          <td>キー漏洩・XSS攻撃対策</td>
+          <td>CSP / SubResource Integrity / 入力サニタイズ徹底</td>
+        </tr>
+        <tr>
+          <td>運用</td>
+          <td>サーバーレスで完結可能か / バックエンド必要か</td>
+          <td>第一段階はサーバーレス（GitHub Pages＋ブラウザJS）で実現可能</td>
+        </tr>
+        <tr>
+          <td>UX</td>
+          <td>未認証ユーザーへのデモ提供</td>
+          <td>「プロンプト生成までは無料」「pushは認証必要」の段階設計</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">🛠️ 現在の実装状況</div>
+    <div class="notice notice-amber">
+      <p>📌 <strong>プロトタイプ v1 完成：</strong>localStorageベースのアカウント設定 + プロンプト自動生成までは動作可能。Claude Codeに投入することで生成・publishまで実行可能。<br>
+      <strong>次のステップ：</strong>GitHub OAuth連携の調査、Anthropic API直接呼出のセキュリティ検証、UX/UIの磨き込み。</p>
+    </div>
+    <a href="Navigator_Generator.html" class="btn-link" target="_blank">プロトタイプ v1 を見る →</a>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">📅 次のアクション</div>
+    <table class="tbl">
+      <thead><tr><th>アクション</th><th>目的</th><th>状態</th></tr></thead>
+      <tbody>
+        <tr><td>GitHub OAuth App 調査</td><td>ブラウザからの安全なpush実現</td><td>未着手</td></tr>
+        <tr><td>Anthropic API ブラウザ呼出検証</td><td>CORS等の挙動確認</td><td>未着手</td></tr>
+        <tr><td>セキュリティ要件定義書作成</td><td>運用前のリスク洗い出し</td><td>未着手</td></tr>
+        <tr><td>UI再デザイン</td><td>シンプル化と分かりやすさ両立</td><td>v1段階</td></tr>
+        <tr><td>テンプレート切替機能</td><td>用途別の雛形対応</td><td>構想のみ</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<div class="doc-footer">ナビゲーター・ジェネレーター 構想ドラフト ／ Work In Progress ／ 更新：2026-05-14</div>
+
+</body>
+</html>
