@@ -205,8 +205,12 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
         📘 Anthropic社学習コースナビゲーター
       </div>
       <div style="font-size:13px;color:rgba(255,255,255,.85);line-height:1.9;">
-        Anthropic社から、Claudeを使いこなすための公式無料コース（17種）が公開されています。<br>
-        「どれから見ればいい？」を解決するため、役割別・目的別に整理した実践ガイドです。
+        Anthropic社から、Claudeを使いこなすための<a href="https://anthropic.skilljar.com/" target="_blank" rel="noopener" style="color:#a0c4ff;text-decoration:underline;font-weight:bold;">公式無料コース（17種）</a>が公開されています。<br>
+        「どれから見ればいい？」を解決するため、役割別・目的別に整理した実践ガイドです。<br>
+        <a href="https://anthropic.skilljar.com/" target="_blank" rel="noopener"
+           style="display:inline-block;margin-top:14px;padding:8px 22px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;">
+          🎓 Anthropic Academy 公式トップへ
+        </a>
       </div>
     </div>
 
@@ -1099,6 +1103,130 @@ tone: </div>
 
     <div class="notice notice-amber">
       <p>💡 <strong>使い方の流れ：</strong>①入力テンプレートを埋める → ②テンプレート本文の <span style="background:rgba(253,224,71,.3);padding:1px 5px;border-radius:3px;font-family:monospace;font-weight:700;">{{変数}}</span> を実際の値に置換 → ③Claudeに投げる → ④出力されたHTMLをGitHub Pagesにpush → ⑤Geminiでレビュー</p>
+    </div>
+  </div>
+
+  
+  <div class="sec">
+    <div class="sec-title">STEP 5｜Claude Codeで一撃自動生成（実行可能フロー）</div>
+    <div class="notice notice-green" style="margin-bottom:14px;">
+      <p>🚀 <strong>config.jsonに変数を書く → Claude Codeに投げる → HTMLが生成・push される</strong>という完全自動化フローです。未指定の変数はデフォルト値が適用されます。</p>
+    </div>
+
+    <div style="font-size:13px;font-weight:700;color:#1a2744;margin:14px 0 8px;">① config.json（変数指定ファイル・デフォルト値付き）</div>
+    <div class="code-block-wrap">
+      <button class="copy-btn" onclick="copyCode(this)">📋 コピー</button>
+      <div class="code-content">{
+  "title": "Anthropic社学習コースナビゲーター",
+  "audience": "社員・関係者",
+  "purpose": "Anthropic Academy受講の動機づけと役割別ガイド",
+  "date": "2026-05-13",
+
+  "primary_color": "#1a2744",
+  "accent_color": "#2563eb",
+  "font": "Noto Sans JP",
+
+  "tab_count": 6,
+  "tab_list": [
+    {"name": "はじめに", "purpose": "受講動機・資格価値・LinkedIn連携フロー"},
+    {"name": "コース一覧", "purpose": "全17コースをカードグリッド表示・フィルター付き"},
+    {"name": "学習ロードマップ", "purpose": "役割別の受講順序（ビジネス/開発/クラウド）"},
+    {"name": "（参考）用語集", "purpose": "AI関連用語と検索機能"},
+    {"name": "（参考）システム連携概要", "purpose": "SVGアーキテクチャ図と製品一覧"},
+    {"name": "（参考）本資料作成手順", "purpose": "再現・改修方法・一撃プロンプト"}
+  ],
+
+  "key_content": [
+    "比較表（資格あり/なし）",
+    "SVG 5層アーキテクチャ図",
+    "カードグリッド + 受講するボタン",
+    "用語集 + 検索ボックス"
+  ],
+
+  "include": [
+    "anthropic.skilljar.com への受講リンク",
+    "docs.anthropic.com への参照リンク",
+    "modelcontextprotocol.io への参照リンク"
+  ],
+  "exclude": [
+    "社名・個人情報",
+    "断定的な未確認情報",
+    "煽り表現"
+  ],
+  "tone": "業務文書・敬体・穏やか",
+
+  "output_path": "/mnt/user-data/outputs/navigator.html",
+  "deploy": {
+    "enabled": true,
+    "target_repo": "C:/git/hancho-docs",
+    "github_pages_url": "https://dx-nexus.github.io/knowledge-hub/"
+  }
+}</div>
+    </div>
+
+    <div style="font-size:13px;font-weight:700;color:#1a2744;margin:18px 0 8px;">② Claude Codeへの実行指示（このまま貼り付ければOK）</div>
+    <div class="code-block-wrap">
+      <button class="copy-btn" onclick="copyCode(this)">📋 コピー</button>
+      <div class="code-content">あなたはHTML資料の自動生成エージェントです。以下の手順を順番に実行してください。
+
+【STEP 1】config.jsonを読み込む
+- パス: ./config.json
+- 未指定の変数があれば下記デフォルトを適用：
+  * title: "学習コースナビゲーター"
+  * audience: "社員・関係者"
+  * primary_color: "#1a2744"
+  * accent_color: "#2563eb"
+  * font: "Noto Sans JP"
+  * tab_count: 5
+  * tone: "業務文書・敬体・穏やか"
+  * date: 今日の日付（ISO形式）
+
+【STEP 2】HTML資料を生成
+- config.jsonの仕様に基づき、Anthropic社学習コースナビゲーターと同等の構造でHTML資料を生成する
+- タブ切り替え型UI（showTab関数使用）
+- レスポンシブ対応・max-width:1080px中央寄せ
+- カードグリッド・テーブル・notice・SVGアーキテクチャ図のスタイルを統一CSS変数で実装
+- 各コードブロックにコピペボタン（copyCode関数）を実装
+- タブidはtab0〜tab(N-1)で連番統一
+
+【STEP 3】セルフチェック実施
+完成後、以下6項目を実施し結果を報告：
+- タブid整合性
+- doc-footer重複なし
+- exclude指定情報の残存なし
+- 角の立つ表現なし
+- 事実と異なる記述なし
+- script重複なし
+
+【STEP 4】ファイル配置
+- output_pathに保存
+- deploy.enabled=trueの場合：
+  1. target_repoにコピー
+  2. git add . && git commit -m "auto: ${title} 自動生成"
+  3. git push
+  4. GitHub Pages URLを報告
+
+【STEP 5】完了報告
+- 生成ファイル数・サイズ
+- セルフチェック結果
+- 公開URL
+- 次のステップ（Geminiレビュー依頼コメントを生成）</div>
+    </div>
+
+    <div style="font-size:13px;font-weight:700;color:#1a2744;margin:18px 0 8px;">③ ローカル実行コマンド</div>
+    <div class="code-block-wrap">
+      <button class="copy-btn" onclick="copyCode(this)">📋 コピー</button>
+      <div class="code-content"># Claude Codeのセッションで実行
+cd C:\git\hancho-kb\scripts
+# config.jsonを編集してから↓を実行
+claude "$(cat instruction.md)"
+
+# あるいはワンライナーで
+claude "config.jsonを読んで学習コースナビゲーターHTMLを生成、hancho-docsにコピーしてpush"</div>
+    </div>
+
+    <div class="notice notice-amber">
+      <p>💡 <strong>このフローの利点：</strong>config.jsonを書き換えるだけで「Claude学習コース」「MCP活用ガイド」「社内DXハンドブック」など、他テーマのナビゲーター資料を一撃で量産できます。デフォルト値が用意されているため、最小指定（titleだけ）でも動作します。</p>
     </div>
   </div>
 
