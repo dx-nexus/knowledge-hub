@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anthropic Academy 活用ガイド 2026 — 社内配布版</title>
+<title>Anthropic社学習コースナビゲーター</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -160,13 +160,28 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
 }
 .btn-enroll:hover { background: #2a4a7a !important; }
 /* ============================= */
+
+/* コピペ機能 */
+.code-block-wrap{position:relative;background:#1e293b;border-radius:8px;padding:0;margin-bottom:14px;}
+.code-block-wrap .copy-btn{position:absolute;top:10px;right:10px;background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:5px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:.2s;z-index:2;}
+.code-block-wrap .copy-btn:hover{background:rgba(255,255,255,.18);}
+.code-block-wrap .copy-btn.copied{background:#059669;border-color:#059669;}
+.code-block-wrap .code-content{padding:24px;color:#e2e8f0;font-size:12px;line-height:1.9;font-family:'Courier New',monospace;white-space:pre-wrap;overflow-x:auto;}
+.code-block-wrap .var{background:rgba(253,224,71,.15);color:#fde047;padding:1px 5px;border-radius:3px;font-weight:700;}
+.template-input-table{width:100%;border-collapse:collapse;font-size:12px;background:#fff;border:1px solid #e2e8f0;border-radius:6px;overflow:hidden;margin-bottom:14px;}
+.template-input-table th{background:#f8f9fb;color:#1a2744;font-size:11px;font-weight:700;letter-spacing:.05em;padding:8px 12px;text-align:left;border-bottom:1px solid #e2e8f0;}
+.template-input-table td{padding:8px 12px;border-bottom:1px solid #e2e8f0;color:#475569;vertical-align:top;}
+.template-input-table td:first-child{font-weight:600;color:#1a2744;white-space:nowrap;}
+.template-input-table tr:last-child td{border-bottom:none;}
+.template-input-table .var-name{color:#d97706;font-family:'Courier New',monospace;font-size:11px;}
+
 </style>
 </head>
 <body>
 
 <div class="hdr">
   <div class="hdr-top">
-    <h1>Anthropic Academy 活用ガイド 2026</h1>
+    <h1>Anthropic社学習コースナビゲーター</h1>
     <p style="font-size:12px;color:rgba(255,255,255,.6);margin-top:4px;">作成：2026-05-13　／　対象：社内向け</p>
   </div>
 </div>
@@ -175,8 +190,8 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
   <button class="tab-btn active" onclick="showTab(0)">はじめに</button>
   <button class="tab-btn" onclick="showTab(1)">コース一覧</button>
   <button class="tab-btn" onclick="showTab(2)">学習ロードマップ</button>
-  <button class="tab-btn" onclick="showTab(3)">用語集</button>
-  <button class="tab-btn" onclick="showTab(4)">システム連携概要</button>
+  <button class="tab-btn" onclick="showTab(3)">（参考）用語集</button>
+  <button class="tab-btn" onclick="showTab(4)">（参考）システム連携概要</button>
   <button class="tab-btn" onclick="showTab(5)">（参考）本資料作成手順</button>
 </div>
 
@@ -187,7 +202,7 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
     <div class="sec-title">このガイドについて</div>
     <div style="background:linear-gradient(135deg,#1a2744 0%,#2d3d6b 100%);border-radius:12px;padding:28px 32px;margin-bottom:20px;color:#fff;">
       <div style="font-size:18px;font-weight:700;margin-bottom:10px;letter-spacing:.02em;">
-        📘 Anthropic社公式　Claude学習コース「Anthropic Academy」活用ガイド
+        📘 Anthropic社学習コースナビゲーター
       </div>
       <div style="font-size:13px;color:rgba(255,255,255,.85);line-height:1.9;">
         Anthropic社から、Claudeを使いこなすための公式無料コース（17種）が公開されています。<br>
@@ -248,13 +263,13 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
           <td>自分のパスを決めて体系的に受講を進める</td>
         </tr>
         <tr>
-          <td><strong>用語集</strong></td>
+          <td><strong>（参考）用語集</strong></td>
           <td>AI・Claude関連用語を理解する</td>
           <td>コース受講・社内説明・提案書作成で使える語彙</td>
           <td>クライアントへの説明資料作成、社内勉強会の事前学習</td>
         </tr>
         <tr>
-          <td><strong>システム連携概要</strong></td>
+          <td><strong>（参考）システム連携概要</strong></td>
           <td>Claudeの全体アーキテクチャを把握する</td>
           <td>claude.ai〜API〜MCP〜クラウドの5層構造の理解</td>
           <td>システム提案・要件定義・技術検証の下地として活用</td>
@@ -602,6 +617,18 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
 
 
 <script>
+function copyCode(btn){
+  const block = btn.parentElement.querySelector('.code-content');
+  const text = block.innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent = '✅ コピーしました';
+    btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='📋 コピー';btn.classList.remove('copied');}, 2000);
+  }).catch(err=>{
+    btn.textContent = '❌ 失敗';
+    setTimeout(()=>{btn.textContent='📋 コピー';}, 2000);
+  });
+}
 function showTab(n){
   document.querySelectorAll('.tab-pane').forEach((p,i)=>p.classList.toggle('active',i===n));
   document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===n));
@@ -728,7 +755,7 @@ function searchTerms(q){
 <div class="tab-pane" id="tab4">
   
 <div class="sec">
-  <div class="sec-title">社内AI活用アーキテクチャ 全体像</div>
+  <div class="sec-title">本ドキュメントAI活用アーキテクチャ 全体像</div>
   <div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px;overflow-x:auto;">
   <svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;font-family:'Noto Sans JP',sans-serif;">
     <defs>
@@ -822,7 +849,7 @@ function searchTerms(q){
   </div>
 
   <div class="sec">
-    <div class="sec-title">典型的な社内AI活用アーキテクチャ</div>
+    <div class="sec-title">典型的なAI活用アーキテクチャ</div>
 
     <div class="sys-block">
       <div class="sys-label">入力層 ― 人間とAIの接点</div>
@@ -933,7 +960,9 @@ function searchTerms(q){
     <div class="notice notice-amber" style="margin-bottom:16px;">
       <p>⚡ 以下のプロンプトをClaudeに貼り付けると、本資料と同等のHTMLをゼロから生成できます。GitHub環境が整っていれば、あとはupdate_master.pyで即公開まで完結します。</p>
     </div>
-    <div style="background:#1e293b;border-radius:8px;padding:24px;color:#e2e8f0;font-size:12px;line-height:1.9;font-family:monospace;white-space:pre-wrap;overflow-x:auto;">以下の仕様でAnthropicAcademy社内向け活用ガイドHTMLを作成してください。
+    <div class="code-block-wrap">
+      <button class="copy-btn" onclick="copyCode(this)">📋 コピー</button>
+      <div class="code-content">以下の仕様でAnthropicAcademy社内向け活用ガイドHTMLを作成してください。
 
 【デザイン仕様】
 - カラー：ネイビー(#1a2744)×ホワイト、アクセントにblue(#2563eb)
@@ -952,7 +981,7 @@ function searchTerms(q){
 - 対象：社内向け（社名・個人情報は入れない）
 - skilljar URL形式：https://anthropic.skilljar.com/[コース名]
 - 外部リンク：anthropic.com・docs.anthropic.com・modelcontextprotocol.io等を積極的に付与
-- フッター：「Anthropic Academy 活用ガイド 2026 ― 社内配布版 ／ 更新：YYYY-MM-DD」のみ
+- フッター：「Anthropic社学習コースナビゲーター ／ 更新：YYYY-MM-DD」のみ
 
 【UX要件】
 - 右下ナビゲーションボタンなし（社内向けページのため）
@@ -960,7 +989,117 @@ function searchTerms(q){
 - 新規登録ボタンは水色枠内中央配置
 - 社名・個人情報が一切含まれないこと
 
-完成後、Geminiに生ファイルを渡して構造・動作・リンクのコードレビューを依頼してください。</div>
+完成後、Geminiに生ファイルを渡して構造・動作・リンクのコードレビューを依頼してください。</div></div>
+  </div>
+
+  
+  <div class="sec">
+    <div class="sec-title">STEP 4｜汎用一撃プロンプトテンプレート（変数指定型）</div>
+    <div class="notice notice-blue" style="margin-bottom:14px;">
+      <p>📌 本資料以外のテーマでも使える汎用テンプレートです。下の入力項目を埋めて、テンプレートに当てはめてClaudeに投げれば、同等のクオリティのHTML資料が生成できます。</p>
+    </div>
+
+    <div style="font-size:13px;font-weight:700;color:#1a2744;margin:14px 0 8px;">① 入力すべき項目（{{変数名}}に対応）</div>
+    <table class="template-input-table">
+      <thead>
+        <tr><th>区分</th><th>変数名</th><th>説明</th><th>例</th></tr>
+      </thead>
+      <tbody>
+        <tr><td rowspan="4">基本情報</td><td><span class="var-name">{{title}}</span></td><td>資料タイトル</td><td>Anthropic社学習コースナビゲーター</td></tr>
+        <tr><td><span class="var-name">{{audience}}</span></td><td>対象読者</td><td>社内向け／顧客向け／一般公開</td></tr>
+        <tr><td><span class="var-name">{{purpose}}</span></td><td>資料の目的</td><td>社員のAI研修・受講動機づけ</td></tr>
+        <tr><td><span class="var-name">{{date}}</span></td><td>作成日</td><td>2026-05-13</td></tr>
+
+        <tr><td rowspan="3">デザイン</td><td><span class="var-name">{{primary_color}}</span></td><td>メインカラー（HEX）</td><td>#1a2744（ネイビー）</td></tr>
+        <tr><td><span class="var-name">{{accent_color}}</span></td><td>アクセントカラー（HEX）</td><td>#2563eb（ブルー）</td></tr>
+        <tr><td><span class="var-name">{{font}}</span></td><td>フォント</td><td>Noto Sans JP（日本語）／Inter（英語）</td></tr>
+
+        <tr><td rowspan="3">構成</td><td><span class="var-name">{{tab_count}}</span></td><td>タブ数</td><td>5</td></tr>
+        <tr><td><span class="var-name">{{tab_list}}</span></td><td>各タブの名前と目的（番号付きリストで列挙）</td><td>1.はじめに：受講動機<br>2.コース一覧：全コース一覧<br>...</td></tr>
+        <tr><td><span class="var-name">{{key_content}}</span></td><td>必ず含めるコンテンツ要素</td><td>比較表・SVG図・カードグリッド・検索機能</td></tr>
+
+        <tr><td rowspan="3">条件</td><td><span class="var-name">{{include}}</span></td><td>外部リンク・参考情報</td><td>公式ドキュメントURL・関連ニュース</td></tr>
+        <tr><td><span class="var-name">{{exclude}}</span></td><td>除外すべき情報</td><td>社名・個人情報・断定的な未確認情報</td></tr>
+        <tr><td><span class="var-name">{{tone}}</span></td><td>文体・トーン</td><td>業務文書・敬体・穏やか</td></tr>
+      </tbody>
+    </table>
+
+    <div style="font-size:13px;font-weight:700;color:#1a2744;margin:18px 0 8px;">② テンプレート本文（Claude向け）</div>
+    <div class="code-block-wrap">
+      <button class="copy-btn" onclick="copyCode(this)">📋 コピー</button>
+      <div class="code-content">以下の仕様で「<span class="var">{{title}}</span>」というHTML資料を作成してください。
+
+【目的・対象】
+- 目的：<span class="var">{{purpose}}</span>
+- 対象読者：<span class="var">{{audience}}</span>
+- 文体・トーン：<span class="var">{{tone}}</span>
+- 作成日：<span class="var">{{date}}</span>
+
+【デザイン仕様】
+- メインカラー：<span class="var">{{primary_color}}</span>×ホワイト
+- アクセントカラー：<span class="var">{{accent_color}}</span>
+- フォント：<span class="var">{{font}}</span>（Googleフォントから読み込み）
+- タブ切り替え型UI（JavaScriptのshowTab関数で実装）
+- レスポンシブ対応・max-width:1080px中央寄せ
+- カードグリッド・テーブル・notice（情報ボックス）スタイルを統一CSS変数で定義
+
+【タブ構成（<span class="var">{{tab_count}}</span>タブ）】
+<span class="var">{{tab_list}}</span>
+
+【必須コンテンツ要素】
+<span class="var">{{key_content}}</span>
+
+【インクルード要件】
+- 外部リンク・参考情報：<span class="var">{{include}}</span>
+- 公式ソースへのリンクを積極的に付与
+
+【除外要件】
+- 含めない情報：<span class="var">{{exclude}}</span>
+
+【UX要件】
+- タブidは tab0〜tab(N-1) で連番統一すること
+- doc-footerは最下部に1個のみ配置すること
+- 各タブのコンテンツが他タブに混入しないこと
+- script重複を避けること
+
+【セルフチェック実施】
+完成後、以下の観点でセルフチェックを実施し結果を報告してください：
+1. タブid整合性（tab0〜連番）
+2. doc-footer重複なし
+3. 除外情報の残存なし
+4. 角の立つ表現なし
+5. 事実と異なる記述なし
+6. script重複なし
+
+【外部レビュー推奨】
+複数パッチ積み重ね・タブ構造変更などのメジャーアップデート時は、生ファイルをGeminiに渡してコードレビューを依頼すること。</div>
+    </div>
+
+    <div style="font-size:13px;font-weight:700;color:#1a2744;margin:18px 0 8px;">③ 入力テンプレート（記入用）</div>
+    <div class="code-block-wrap">
+      <button class="copy-btn" onclick="copyCode(this)">📋 コピー</button>
+      <div class="code-content">【入力項目記入欄】
+title: 
+audience: 
+purpose: 
+date: 
+primary_color: 
+accent_color: 
+font: 
+tab_count: 
+tab_list: 
+  1. 
+  2. 
+  3. 
+key_content: 
+include: 
+exclude: 
+tone: </div>
+    </div>
+
+    <div class="notice notice-amber">
+      <p>💡 <strong>使い方の流れ：</strong>①入力テンプレートを埋める → ②テンプレート本文の <span style="background:rgba(253,224,71,.3);padding:1px 5px;border-radius:3px;font-family:monospace;font-weight:700;">{{変数}}</span> を実際の値に置換 → ③Claudeに投げる → ④出力されたHTMLをGitHub Pagesにpush → ⑤Geminiでレビュー</p>
+    </div>
   </div>
 
   <div class="sec">
@@ -1000,7 +1139,7 @@ function searchTerms(q){
   </div>
 </div>
 
-<div class="doc-footer">Anthropic Academy 活用ガイド 2026 ― 社内配布版 ／ 更新：2026-05-13</div>
+<div class="doc-footer">Anthropic社学習コースナビゲーター ／ 更新：2026-05-13</div>
 
 
 </body>
