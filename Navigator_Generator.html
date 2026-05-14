@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ナビゲーター・ジェネレーター</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1a2744;--blue:#2563eb;--blue-lt:#eff6ff;
+  --gray:#f8f9fb;--gray2:#f1f3f7;
+  --text:#1e293b;--text2:#475569;--text3:#94a3b8;
+  --border:#e2e8f0;--white:#fff;
+  --green:#059669;--green-lt:#ecfdf5;
+  --amber:#d97706;--amber-lt:#fffbeb;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{overflow-x:hidden;}
+body{background:var(--gray);color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:14px;line-height:1.8;}
+
+.hdr{background:linear-gradient(135deg,#1a2744 0%,#2d3d6b 100%);color:#fff;padding:32px 40px;}
+.hdr h1{font-size:24px;font-weight:700;letter-spacing:.02em;}
+.hdr p{font-size:13px;color:rgba(255,255,255,.7);margin-top:8px;line-height:1.7;}
+
+.container{max-width:840px;margin:0 auto;padding:32px 40px;}
+
+.account-status{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px 18px;margin-bottom:18px;font-size:12px;}
+.account-status.ok{border-left:4px solid var(--green);background:var(--green-lt);}
+.account-status.warn{border-left:4px solid var(--amber);background:var(--amber-lt);}
+.account-status .status-icon{font-size:18px;}
+.account-status .status-text{flex:1;color:var(--text2);}
+.account-status .status-text strong{color:var(--text);}
+.account-status button{background:transparent;border:1px solid currentColor;color:inherit;padding:5px 14px;border-radius:5px;cursor:pointer;font-size:11px;font-weight:700;font-family:inherit;}
+
+.sec{background:#fff;border:1px solid var(--border);border-radius:10px;padding:24px 28px;margin-bottom:18px;}
+.sec-title{font-size:12px;font-weight:700;color:var(--text3);letter-spacing:.15em;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--border);}
+
+.form-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.form-field label{font-size:12px;font-weight:600;color:var(--text);}
+.form-field label .hint{font-size:10px;color:var(--text3);font-weight:400;margin-left:4px;}
+.form-field input[type=text],.form-field input[type=color],.form-field textarea,.form-field select{
+  width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:14px;color:var(--text);background:#fff;
+}
+.form-field input:focus,.form-field textarea:focus,.form-field select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1);}
+.form-field textarea{resize:vertical;min-height:70px;font-family:inherit;}
+.form-field input[type=color]{height:42px;padding:3px 6px;cursor:pointer;}
+
+.row-2col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:600px){.row-2col{grid-template-columns:1fr;}}
+
+.action-bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;}
+.btn{padding:13px 28px;border-radius:6px;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:.15s;font-family:inherit;}
+.btn-primary{background:var(--navy);color:#fff;flex:1;min-width:200px;}
+.btn-primary:hover{background:#2d3d6b;}
+.btn-primary:disabled{background:#cbd5e1;cursor:not-allowed;}
+.btn-secondary{background:#fff;color:var(--text);border:1px solid var(--border);}
+.btn-secondary:hover{background:var(--gray);}
+
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center;padding:20px;}
+.modal-bg.open{display:flex;}
+.modal{background:#fff;border-radius:12px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto;}
+.modal-head{padding:20px 28px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.modal-head h2{font-size:16px;font-weight:700;}
+.modal-head .close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--text3);}
+.modal-body{padding:24px 28px;}
+.modal-foot{padding:16px 28px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;}
+
+.output{margin-top:20px;display:none;}
+.output.active{display:block;}
+.output-block{background:#1e293b;border-radius:8px;padding:0;margin-bottom:14px;}
+.output-block .label{padding:10px 16px;color:#94a3b8;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center;}
+.output-block .label-actions{display:flex;gap:6px;}
+.output-block .copy-btn{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:4px;padding:5px 14px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;}
+.output-block .copy-btn:hover{background:rgba(255,255,255,.18);}
+.output-block .copy-btn.copied{background:var(--green);border-color:var(--green);}
+.output-block pre{padding:20px;color:#e2e8f0;font-size:12px;line-height:1.8;font-family:'Courier New',monospace;white-space:pre-wrap;word-break:break-all;overflow-wrap:anywhere;}
+
+.notice{border-radius:8px;padding:14px 18px;margin:12px 0;}
+.notice-blue{background:var(--blue-lt);border-left:3px solid var(--blue);}
+.notice-amber{background:var(--amber-lt);border-left:3px solid var(--amber);}
+.notice-green{background:var(--green-lt);border-left:3px solid var(--green);}
+.notice p{font-size:13px;line-height:1.9;}
+.notice-blue p{color:#1e40af;}
+.notice-amber p{color:#92400e;}
+.notice-green p{color:#065f46;}
+
+.steps{display:flex;gap:0;align-items:center;flex-wrap:wrap;margin-bottom:8px;}
+.step{flex:1;min-width:120px;background:var(--gray);border:1px solid var(--border);padding:12px;text-align:center;}
+.step:first-child{border-radius:8px 0 0 8px;}
+.step:last-child{border-radius:0 8px 8px 0;}
+.step-num{display:inline-block;width:22px;height:22px;line-height:22px;background:var(--navy);color:#fff;border-radius:50%;font-size:11px;font-weight:700;margin-bottom:4px;}
+.step-title{font-size:11px;font-weight:700;color:var(--navy);}
+.arrow{color:var(--text3);font-size:16px;padding:0 4px;}
+
+.doc-footer{text-align:center;padding:24px;font-size:11px;color:var(--text3);border-top:1px solid var(--border);margin-top:20px;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>🚀 ナビゲーター・ジェネレーター</h1>
+  <p>基本情報を入力するだけで、Claude Code投入用プロンプトが自動生成されます。<br>
+     Claude Code が config.json 生成 → HTML資料作成 → GitHub Pages公開まで全自動で実行します。</p>
+</div>
+
+<div class="container">
+
+  <div class="account-status" id="account-status">
+    <span class="status-icon">⚠️</span>
+    <span class="status-text">アカウント未設定です。初回のみ設定が必要です。</span>
+    <button onclick="openAccountModal()">設定する</button>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">🗺️ 利用フロー</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-title">基本情報入力</div></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="step-num">2</div><div class="step-title">プロンプト生成</div></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="step-num">3</div><div class="step-title">Claude Code実行</div></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="step-num">4</div><div class="step-title">公開URL受領</div></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">📝 基本情報（これだけ入力）</div>
+
+    <form id="gen-form">
+      <div class="form-field">
+        <label>タイトル <span class="hint">必須</span></label>
+        <input type="text" name="title" placeholder="例：MCP活用完全ガイド" required>
+      </div>
+
+      <div class="form-field">
+        <label>資料の目的 <span class="hint">何のための資料か、1〜2文で</span></label>
+        <textarea name="purpose" placeholder="例：開発チームにMCPを導入し、Claude Codeとの連携で開発速度を上げる" required></textarea>
+      </div>
+
+      <div class="row-2col">
+        <div class="form-field">
+          <label>対象読者</label>
+          <input type="text" name="audience" value="社員・関係者">
+        </div>
+        <div class="form-field">
+          <label>メインカラー <span class="hint">任意</span></label>
+          <input type="color" name="primary_color" value="#1a2744">
+        </div>
+      </div>
+
+      <div class="notice notice-blue">
+        <p>💡 タブ構成・デザイン詳細・コンテンツ要件などは <strong>AIがデフォルト構成で自動補完</strong>します。特殊な要件があれば「資料の目的」欄に書いてください。</p>
+      </div>
+
+      <div class="action-bar">
+        <button type="button" class="btn btn-primary" id="generate-btn" onclick="generate()">🤖 生成する</button>
+        <button type="button" class="btn btn-secondary" onclick="resetForm()">リセット</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="output" id="output">
+    <div class="sec">
+      <div class="sec-title">✅ 生成完了</div>
+      <div class="notice notice-green">
+        <p>🎉 下記のプロンプトを <strong>Claude Code に貼り付けるだけ</strong>で、HTML資料の生成・公開まで全自動で完結します。</p>
+      </div>
+
+      <div class="output-block">
+        <div class="label">
+          <span>Claude Codeに投入するプロンプト</span>
+          <div class="label-actions">
+            <button type="button" class="copy-btn" onclick="copyOutput('prompt-out',this)">📋 コピー</button>
+          </div>
+        </div>
+        <pre id="prompt-out"></pre>
+      </div>
+
+      <div class="notice notice-amber">
+        <p>📌 <strong>次のアクション：</strong>上のプロンプトをコピー → Claude Code を開いて貼り付けて実行 → HTML生成・push・公開URL報告まで全自動で実行されます。</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="modal-bg" id="account-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>🔑 アカウント設定（1回だけ）</h2>
+      <button class="close" onclick="closeAccountModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="notice notice-blue">
+        <p>📌 一度設定すれば、ブラウザに保存され次回以降は入力不要です。サーバーには送信されず、ご自身のブラウザのみに保存されます。</p>
+      </div>
+
+      <div class="form-field">
+        <label>GitHub Organization 名 <span class="hint">例：dx-nexus</span></label>
+        <input type="text" id="acc-org" placeholder="your-org">
+      </div>
+      <div class="form-field">
+        <label>vault リポジトリ名 <span class="hint">ナレッジ管理用</span></label>
+        <input type="text" id="acc-vault" placeholder="your-vault">
+      </div>
+      <div class="form-field">
+        <label>docs リポジトリ名 <span class="hint">公開用 / GitHub Pages</span></label>
+        <input type="text" id="acc-docs" placeholder="your-docs">
+      </div>
+      <div class="form-field">
+        <label>GitHub Pages URL <span class="hint">空欄なら自動推定</span></label>
+        <input type="text" id="acc-pages" placeholder="https://your-org.github.io/your-docs/">
+      </div>
+      <div class="form-field">
+        <label>ローカルリポジトリのパス <span class="hint">例：C:/git</span></label>
+        <input type="text" id="acc-localpath" value="C:/git" placeholder="C:/git">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeAccountModal()">キャンセル</button>
+      <button class="btn btn-primary" style="min-width:auto;flex:none;" onclick="saveAccount()">保存</button>
+    </div>
+  </div>
+</div>
+
+<div class="doc-footer">ナビゲーター・ジェネレーター ／ Powered by Claude Code</div>
+
+<script>
+const STORAGE_KEY = 'navigator-generator-account-v1';
+
+function loadAccount(){
+  try {
+    const s = localStorage.getItem(STORAGE_KEY);
+    return s ? JSON.parse(s) : null;
+  } catch(e) {
+    return null;
+  }
+}
+
+function saveAccount(){
+  const org = document.getElementById('acc-org').value.trim();
+  const vault = document.getElementById('acc-vault').value.trim();
+  const docs = document.getElementById('acc-docs').value.trim();
+  let pages = document.getElementById('acc-pages').value.trim();
+  const localpath = document.getElementById('acc-localpath').value.trim() || 'C:/git';
+
+  if(!org || !vault || !docs){
+    alert('Organization名・vault名・docs名は必須です');
+    return;
+  }
+
+  if(!pages){
+    pages = 'https://' + org + '.github.io/' + docs + '/';
+  }
+
+  const account = {org, vault, docs, pages, localpath};
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(account));
+  closeAccountModal();
+  updateAccountStatus();
+}
+
+function openAccountModal(){
+  const acc = loadAccount();
+  if(acc){
+    document.getElementById('acc-org').value = acc.org || '';
+    document.getElementById('acc-vault').value = acc.vault || '';
+    document.getElementById('acc-docs').value = acc.docs || '';
+    document.getElementById('acc-pages').value = acc.pages || '';
+    document.getElementById('acc-localpath').value = acc.localpath || 'C:/git';
+  }
+  document.getElementById('account-modal').classList.add('open');
+}
+
+function closeAccountModal(){
+  document.getElementById('account-modal').classList.remove('open');
+}
+
+function updateAccountStatus(){
+  const acc = loadAccount();
+  const el = document.getElementById('account-status');
+  const btn = document.getElementById('generate-btn');
+  if(acc){
+    el.className = 'account-status ok';
+    el.querySelector('.status-icon').textContent = '✅';
+    el.querySelector('.status-text').innerHTML = '<strong>' + acc.org + '</strong> / vault: <strong>' + acc.vault + '</strong> / docs: <strong>' + acc.docs + '</strong>';
+    el.querySelector('button').textContent = '変更';
+    btn.disabled = false;
+  } else {
+    el.className = 'account-status warn';
+    el.querySelector('.status-icon').textContent = '⚠️';
+    el.querySelector('.status-text').textContent = 'アカウント未設定です。初回のみ設定が必要です。';
+    el.querySelector('button').textContent = '設定する';
+    btn.disabled = true;
+  }
+}
+
+function buildPrompt(input, account){
+  const safeName = input.title.replace(/[^a-zA-Z0-9一-龯ぁ-んァ-ン]/g,'_').substring(0,40);
+  const filename = safeName + '.html';
+
+  return 'あなたはHTML資料の自動生成エージェントです。以下の指示に従って実行してください。\n\n' +
+    '【入力（基本情報）】\n' +
+    '- タイトル：' + input.title + '\n' +
+    '- 資料の目的：' + input.purpose + '\n' +
+    '- 対象読者：' + input.audience + '\n' +
+    '- メインカラー：' + input.primary_color + '\n\n' +
+    '【アカウント情報】\n' +
+    '- GitHub Org：' + account.org + '\n' +
+    '- vault リポジトリ：' + account.vault + '（ローカル：' + account.localpath + '/' + account.vault + '）\n' +
+    '- docs リポジトリ：' + account.docs + '（ローカル：' + account.localpath + '/' + account.docs + '）\n' +
+    '- GitHub Pages URL：' + account.pages + '\n\n' +
+    '【AIによる自動補完（デフォルト構成）】\n' +
+    '以下はAIが「資料の目的」から推測して適切に設定すること：\n' +
+    '- タブ構成（4〜6タブが標準。「はじめに」「主要コンテンツ」「（参考）用語集」「🚀 次のステップ」など、目的に応じて構成）\n' +
+    '- 各タブのコンテンツ詳細\n' +
+    '- カラースキーム（メインカラーから派生してアクセントカラー等を決定）\n' +
+    '- フォント（日本語ならNoto Sans JP）\n' +
+    '- 含めるべき要素（カードグリッド・比較表・SVG図など、目的に応じて選択）\n' +
+    '- 除外要件（社名・個人情報・断定的な未確認情報・煽り表現は常に除外）\n' +
+    '- 文体・トーン（業務文書・敬体・穏やか）\n\n' +
+    '【作業ステップ】\n\n' +
+    '■ STEP 1：HTML資料を生成\n' +
+    '- 既存の `Anthropic_Academy_Plan_Internal.html` を構造のテンプレートとして参照\n' +
+    '- 上記入力＋自動補完に基づきHTML資料を生成\n' +
+    '- レスポンシブ対応・max-width:1200px中央寄せ\n' +
+    '- overflow-x:hidden で横スクロール抑止\n' +
+    '- タブ切り替え型UI（showTab関数）\n' +
+    '- タブidは tab0 から連番統一\n' +
+    '- doc-footerは最下部に1個のみ\n' +
+    '- script重複なし\n' +
+    '- コードブロックがあればコピペボタン実装\n\n' +
+    '■ STEP 2：セルフチェック実施\n' +
+    '完成後、以下を確認・報告：\n' +
+    '- タブid整合性\n' +
+    '- doc-footer重複なし\n' +
+    '- 社名・個人情報残存なし\n' +
+    '- 角の立つ表現なし\n' +
+    '- 事実と異なる記述なし\n' +
+    '- script重複なし\n\n' +
+    '■ STEP 3：ファイル配置・git push\n' +
+    '- 出力先：' + account.localpath + '/' + account.docs + '/' + filename + '\n' +
+    '- 実行：\n' +
+    '  cd ' + account.localpath + '/' + account.docs + '\n' +
+    '  git add ' + filename + '\n' +
+    '  git commit -m "auto: ' + input.title + ' 自動生成"\n' +
+    '  git push\n\n' +
+    '■ STEP 4：完了報告\n' +
+    '- 生成ファイル名・サイズ\n' +
+    '- セルフチェック結果\n' +
+    '- 公開URL：' + account.pages + filename + '\n' +
+    '- 必要に応じてGeminiレビュー依頼コメント（背景・チェックリスト・URLを含む）を生成\n\n' +
+    '以上、よろしくお願いします。';
+}
+
+function generate(){
+  const acc = loadAccount();
+  if(!acc){
+    alert('先にアカウント設定を行ってください');
+    openAccountModal();
+    return;
+  }
+
+  const f = document.forms['gen-form'];
+  const input = {
+    title: f.title.value.trim(),
+    purpose: f.purpose.value.trim(),
+    audience: f.audience.value.trim() || '社員・関係者',
+    primary_color: f.primary_color.value
+  };
+
+  if(!input.title || !input.purpose){
+    alert('タイトルと目的は必須です');
+    return;
+  }
+
+  const prompt = buildPrompt(input, acc);
+  document.getElementById('prompt-out').textContent = prompt;
+  document.getElementById('output').classList.add('active');
+  document.getElementById('output').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function copyOutput(id, btn){
+  const text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    const orig = btn.textContent;
+    btn.textContent = '✅ コピー完了';
+    btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent = orig; btn.classList.remove('copied');}, 2000);
+  });
+}
+
+function resetForm(){
+  if(!confirm('入力をリセットしますか？')) return;
+  document.forms['gen-form'].reset();
+  document.getElementById('output').classList.remove('active');
+}
+
+updateAccountStatus();
+</script>
+
+</body>
+</html>
