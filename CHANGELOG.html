@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHANGELOG ／ はんちょー Document Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070d18;--surface:#0f1929;--surface2:#162035;--border:#1e3354;
+  --accent:#00c8f0;--green:#10b981;--yellow:#f59e0b;--purple:#a78bfa;--red:#ef4444;--blue:#3b82f6;
+  --text:#dde6f0;--muted:#5a7190;
+  --mono:'IBM Plex Mono',monospace;--sans:'Noto Sans JP',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{overflow-x:hidden;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;padding:40px 24px;}
+.inner{max-width:960px;margin:0 auto;}
+
+.hdr{margin-bottom:28px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;}
+.hdr-left h1{font-family:var(--mono);font-size:22px;color:var(--accent);letter-spacing:.06em;}
+.hdr-left p{font-size:12px;color:var(--muted);margin-top:6px;}
+.hdr-actions{display:flex;gap:8px;}
+.btn-add{background:var(--accent);color:#000;border:none;border-radius:6px;padding:10px 20px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s;}
+.btn-add:hover{background:#33d4f6;}
+.btn-back{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:10px 16px;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;font-family:inherit;transition:.15s;display:inline-block;}
+.btn-back:hover{background:var(--surface);color:var(--text);}
+
+.section{margin-bottom:28px;}
+.sec-title{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:14px;}
+
+.guide{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px 22px;font-size:12px;color:var(--text);line-height:1.9;}
+.guide strong{color:var(--accent);}
+.guide ul{margin-top:6px;padding-left:18px;}
+
+.filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.filter-btn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:20px;padding:5px 14px;font-size:11px;font-family:var(--mono);cursor:pointer;transition:.15s;}
+.filter-btn:hover{color:var(--text);}
+.filter-btn.active{background:var(--accent);color:#000;border-color:var(--accent);}
+
+.timeline{display:flex;flex-direction:column;gap:10px;}
+.entry{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 20px;transition:.15s;}
+.entry:hover{border-color:var(--accent);}
+.entry-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+.entry-date{font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:600;}
+.entry-actor{font-size:10px;font-family:var(--mono);padding:2px 8px;border-radius:10px;letter-spacing:.05em;}
+.actor-claude{background:rgba(0,200,240,.15);color:var(--accent);border:1px solid rgba(0,200,240,.3);}
+.actor-gemini{background:rgba(167,139,250,.15);color:var(--purple);border:1px solid rgba(167,139,250,.3);}
+.actor-human{background:rgba(16,185,129,.15);color:var(--green);border:1px solid rgba(16,185,129,.3);}
+.actor-other{background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3);}
+.entry-cat{font-size:10px;font-family:var(--mono);padding:2px 8px;border-radius:10px;letter-spacing:.05em;background:rgba(59,130,246,.12);color:var(--blue);border:1px solid rgba(59,130,246,.3);}
+.cat-add{background:rgba(16,185,129,.12);color:var(--green);border:1px solid rgba(16,185,129,.3);}
+.cat-change{background:rgba(59,130,246,.12);color:var(--blue);border:1px solid rgba(59,130,246,.3);}
+.cat-fix{background:rgba(245,158,11,.12);color:var(--yellow);border:1px solid rgba(245,158,11,.3);}
+.cat-remove{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+.cat-discuss{background:rgba(167,139,250,.12);color:var(--purple);border:1px solid rgba(167,139,250,.3);}
+.entry-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.entry-body{font-size:12px;color:var(--muted);line-height:1.8;}
+.entry-files{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;}
+.entry-file{font-family:var(--mono);font-size:10px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:2px 8px;border-radius:4px;text-decoration:none;}
+.entry-file:hover{color:var(--accent);border-color:var(--accent);}
+
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:12px;max-width:680px;width:100%;}
+.modal-head{padding:20px 28px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.modal-head h2{font-size:16px;font-weight:700;color:var(--text);}
+.modal-head .close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted);}
+.modal-body{padding:24px 28px;}
+.modal-foot{padding:16px 28px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;}
+
+.form-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.form-field label{font-size:11px;font-weight:600;color:var(--text);font-family:var(--mono);letter-spacing:.05em;}
+.form-field label .hint{font-size:10px;color:var(--muted);font-weight:400;margin-left:6px;}
+.form-field input,.form-field textarea,.form-field select{
+  width:100%;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:13px;color:var(--text);
+}
+.form-field input:focus,.form-field textarea:focus,.form-field select:focus{outline:none;border-color:var(--accent);}
+.form-field textarea{resize:vertical;min-height:80px;}
+.row-2col{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:600px){.row-2col{grid-template-columns:1fr;}}
+
+.btn{padding:10px 20px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;border:none;font-family:inherit;transition:.15s;}
+.btn-primary{background:var(--accent);color:#000;}
+.btn-primary:hover{background:#33d4f6;}
+.btn-secondary{background:transparent;color:var(--muted);border:1px solid var(--border);}
+.btn-secondary:hover{background:var(--bg);color:var(--text);}
+
+.output-block{background:var(--bg);border-radius:8px;border:1px solid var(--border);position:relative;margin-top:14px;}
+.output-block .label{padding:10px 16px;color:var(--muted);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.output-block .copy-btn{background:transparent;border:1px solid var(--border);color:var(--text);border-radius:4px;padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;}
+.output-block .copy-btn:hover{background:var(--surface);}
+.output-block .copy-btn.copied{background:var(--green);border-color:var(--green);color:#000;}
+.output-block pre{padding:16px;color:var(--text);font-size:11px;line-height:1.8;font-family:var(--mono);white-space:pre-wrap;word-break:break-all;overflow-wrap:anywhere;max-height:300px;overflow-y:auto;}
+
+.footer{margin-top:48px;font-family:var(--mono);font-size:10px;color:var(--muted);text-align:center;border-top:1px solid var(--border);padding-top:20px;}
+</style>
+</head>
+<body>
+<div class="inner">
+
+  <div class="hdr">
+    <div class="hdr-left">
+      <h1>📜 CHANGELOG</h1>
+      <p>Claude・Gemini・人間 の共同編集履歴 ／ AI間情報共有のサマリ層</p>
+    </div>
+    <div class="hdr-actions">
+      <a class="btn-back" href="index.html">← Hub</a>
+      <button class="btn-add" onclick="openModal()">+ 変更を追加</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-title">📘 運用ガイド</div>
+    <div class="guide">
+      <strong>このページは何？</strong><br>
+      Claude・Gemini・人間が共同で更新する変更履歴のサマリです。AI間で「今何が起きているか」を共有するための入り口として機能します。<br><br>
+      <strong>更新ルール：</strong>
+      <ul>
+        <li>変更を加えた人（AI/人間）が <strong>「+ 変更を追加」ボタン</strong> から履歴を生成・コピーして本ファイルに追記</li>
+        <li>1日複数件はOK、時系列降順（新しいものが上）</li>
+        <li>詳細ログは各ファイル本体・GitHubのコミット履歴を参照（このページは要約のみ）</li>
+        <li>AI に作業を依頼する際は本ページの URL を伝えれば現在状況を共有可能</li>
+      </ul>
+      <strong>関連URL：</strong>
+      <ul>
+        <li>ハブ：<code>https://dx-nexus.github.io/knowledge-hub/</code></li>
+        <li>リポジトリ：<code>https://github.com/dx-nexus/knowledge-hub</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-title">🔍 フィルター</div>
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="filterEntries('all',this)">All</button>
+      <button class="filter-btn" onclick="filterEntries('claude',this)">Claude</button>
+      <button class="filter-btn" onclick="filterEntries('gemini',this)">Gemini</button>
+      <button class="filter-btn" onclick="filterEntries('human',this)">Human</button>
+      <button class="filter-btn" onclick="filterEntries('add',this)">追加</button>
+      <button class="filter-btn" onclick="filterEntries('change',this)">変更</button>
+      <button class="filter-btn" onclick="filterEntries('fix',this)">修正</button>
+      <button class="filter-btn" onclick="filterEntries('discuss',this)">議論</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-title">📅 変更履歴（時系列降順）</div>
+    <div class="timeline" id="timeline">
+
+      <!-- ▼ ここから履歴エントリ。新しいものを上に追加してください ▼ -->
+
+      <div class="entry" data-actor="claude" data-cat="add">
+        <div class="entry-head">
+          <span class="entry-date">2026-05-14</span>
+          <span class="entry-actor actor-claude">Claude</span>
+          <span class="entry-cat cat-add">追加</span>
+        </div>
+        <div class="entry-title">CHANGELOG.html を新規作成</div>
+        <div class="entry-body">
+          AI・人間相互更新可能な変更履歴サマリページを作成。フィルター機能・更新モードボタン・履歴生成スニペット出力に対応。index.html のツール・自動化セクションにカード追加。
+        </div>
+        <div class="entry-files">
+          <a class="entry-file" href="CHANGELOG.html">CHANGELOG.html</a>
+          <a class="entry-file" href="index.html">index.html</a>
+        </div>
+      </div>
+
+      <div class="entry" data-actor="claude" data-cat="add">
+        <div class="entry-head">
+          <span class="entry-date">2026-05-14</span>
+          <span class="entry-actor actor-claude">Claude</span>
+          <span class="entry-cat cat-add">追加</span>
+        </div>
+        <div class="entry-title">ナビゲーター・ジェネレーター系を追加</div>
+        <div class="entry-body">
+          Navigator_Generator.html（プロトタイプv1：アカウント連携付きシンプル版）と Generator_Concept_Draft.html（認証連携・セキュリティ要件等を整理した構想ドラフト）を新規作成。index.html に「ツール・自動化」カテゴリを追加。
+        </div>
+        <div class="entry-files">
+          <a class="entry-file" href="Navigator_Generator.html">Navigator_Generator.html</a>
+          <a class="entry-file" href="Generator_Concept_Draft.html">Generator_Concept_Draft.html</a>
+        </div>
+      </div>
+
+      <div class="entry" data-actor="claude" data-cat="change">
+        <div class="entry-head">
+          <span class="entry-date">2026-05-14</span>
+          <span class="entry-actor actor-claude">Claude</span>
+          <span class="entry-cat cat-change">変更</span>
+        </div>
+        <div class="entry-title">Anthropic_Academy_Plan_Internal.html を7タブ構成に拡張</div>
+        <div class="entry-body">
+          「はじめに」「コース一覧」「学習ロードマップ」「（参考）用語集」「（参考）システム連携概要」「（参考）本資料作成手順」「🚀 次のステップ」の7タブ構成に整理。受講するボタン・新規登録ボタン・SVGアーキテクチャ図・自動化フロー図を追加。Gemini レビュー反映済み。
+        </div>
+        <div class="entry-files">
+          <a class="entry-file" href="Anthropic_Academy_Plan_Internal.html">Anthropic_Academy_Plan_Internal.html</a>
+        </div>
+      </div>
+
+      <div class="entry" data-actor="claude" data-cat="change">
+        <div class="entry-head">
+          <span class="entry-date">2026-05-14</span>
+          <span class="entry-actor actor-claude">Claude</span>
+          <span class="entry-cat cat-change">変更</span>
+        </div>
+        <div class="entry-title">GitHub Organization dx-nexus に移行</div>
+        <div class="entry-body">
+          fooueen/hancho-docs → dx-nexus/knowledge-hub、fooueen/hancho-kb → dx-nexus/vault にリポジトリ転送。GitHub Pages 有効化、update_master.py の URL 更新、全 HTML ファイルへのナビゲーション一括追加（その後、社内向けページからは削除）。
+        </div>
+        <div class="entry-files">
+          <a class="entry-file" href="Project_Master_Document.html">Project_Master_Document.html</a>
+        </div>
+      </div>
+
+      <!-- ▲ 新しいエントリは上に追加 ▲ -->
+
+    </div>
+  </div>
+
+  <div class="footer">
+    github.com/dx-nexus/knowledge-hub ／ CHANGELOG は手動更新（コピペ運用）
+  </div>
+</div>
+
+<!-- 追加モーダル -->
+<div class="modal-bg" id="add-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>📝 変更を追加</h2>
+      <button class="close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="row-2col">
+        <div class="form-field">
+          <label>日付</label>
+          <input type="date" id="ent-date">
+        </div>
+        <div class="form-field">
+          <label>変更者</label>
+          <select id="ent-actor">
+            <option value="human">人間</option>
+            <option value="claude">Claude</option>
+            <option value="gemini">Gemini</option>
+            <option value="other">その他</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label>カテゴリ</label>
+        <select id="ent-cat">
+          <option value="add">追加（新規ファイル・機能）</option>
+          <option value="change">変更（既存機能の更新）</option>
+          <option value="fix">修正（バグ・誤り訂正）</option>
+          <option value="remove">削除</option>
+          <option value="discuss">議論・意思決定</option>
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label>タイトル <span class="hint">1行サマリ</span></label>
+        <input type="text" id="ent-title" placeholder="例：用語集の表記揺れを統一">
+      </div>
+
+      <div class="form-field">
+        <label>本文 <span class="hint">詳細</span></label>
+        <textarea id="ent-body" placeholder="変更内容を1〜3文で。詳細は関連ファイルに任せる"></textarea>
+      </div>
+
+      <div class="form-field">
+        <label>関連ファイル <span class="hint">改行区切り、相対パス可</span></label>
+        <textarea id="ent-files" placeholder="例：Anthropic_Academy_Plan_Internal.html"></textarea>
+      </div>
+
+      <div class="output-block" id="ent-output" style="display:none;">
+        <div class="label">
+          <span>生成された履歴HTMLスニペット（このコードを CHANGELOG.html の `▼ ここから履歴エントリ ▼` 直下に貼り付け）</span>
+          <button type="button" class="copy-btn" onclick="copySnippet(this)">📋 コピー</button>
+        </div>
+        <pre id="ent-snippet"></pre>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal()">キャンセル</button>
+      <button class="btn btn-primary" onclick="generateSnippet()">🤖 スニペット生成</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function openModal(){
+  document.getElementById('ent-date').value = new Date().toISOString().slice(0,10);
+  document.getElementById('add-modal').classList.add('open');
+}
+function closeModal(){
+  document.getElementById('add-modal').classList.remove('open');
+  document.getElementById('ent-output').style.display = 'none';
+}
+
+function escapeHTML(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function generateSnippet(){
+  const date = document.getElementById('ent-date').value;
+  const actor = document.getElementById('ent-actor').value;
+  const cat = document.getElementById('ent-cat').value;
+  const title = document.getElementById('ent-title').value.trim();
+  const body = document.getElementById('ent-body').value.trim();
+  const files = document.getElementById('ent-files').value.split('\n').map(s=>s.trim()).filter(Boolean);
+
+  if(!date || !title || !body){
+    alert('日付・タイトル・本文は必須です');
+    return;
+  }
+
+  const actorLabels = {claude:'Claude', gemini:'Gemini', human:'人間', other:'その他'};
+  const catLabels = {add:'追加', change:'変更', fix:'修正', remove:'削除', discuss:'議論'};
+
+  const filesHTML = files.map(f=>{
+    const isURL = f.startsWith('http');
+    return '          <a class="entry-file" href="'+escapeHTML(f)+'"'+(isURL?' target="_blank" rel="noopener"':'')+'>'+escapeHTML(f)+'</a>';
+  }).join('\n');
+
+  const snippet =
+    '      <div class="entry" data-actor="'+actor+'" data-cat="'+cat+'">\n' +
+    '        <div class="entry-head">\n' +
+    '          <span class="entry-date">'+date+'</span>\n' +
+    '          <span class="entry-actor actor-'+actor+'">'+actorLabels[actor]+'</span>\n' +
+    '          <span class="entry-cat cat-'+cat+'">'+catLabels[cat]+'</span>\n' +
+    '        </div>\n' +
+    '        <div class="entry-title">'+escapeHTML(title)+'</div>\n' +
+    '        <div class="entry-body">\n' +
+    '          '+escapeHTML(body).replace(/\n/g,'<br>')+'\n' +
+    '        </div>\n' +
+    (files.length>0?'        <div class="entry-files">\n'+filesHTML+'\n        </div>\n':'') +
+    '      </div>';
+
+  document.getElementById('ent-snippet').textContent = snippet;
+  document.getElementById('ent-output').style.display = 'block';
+}
+
+function copySnippet(btn){
+  const text = document.getElementById('ent-snippet').textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    const orig = btn.textContent;
+    btn.textContent = '✅ コピー完了';
+    btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent=orig;btn.classList.remove('copied');}, 2000);
+  });
+}
+
+function filterEntries(filter, btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.entry').forEach(e=>{
+    if(filter==='all'){
+      e.style.display = '';
+    } else if(['claude','gemini','human','other'].includes(filter)){
+      e.style.display = e.dataset.actor === filter ? '' : 'none';
+    } else {
+      e.style.display = e.dataset.cat === filter ? '' : 'none';
+    }
+  });
+}
+</script>
+
+</body>
+</html>
