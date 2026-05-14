@@ -177,6 +177,7 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
   <button class="tab-btn" onclick="showTab(2)">学習ロードマップ</button>
   <button class="tab-btn" onclick="showTab(3)">用語集</button>
   <button class="tab-btn" onclick="showTab(4)">システム連携概要</button>
+  <button class="tab-btn" onclick="showTab(5)">（参考）本資料作成手順</button>
 </div>
 
 <!-- TAB 0: はじめに -->
@@ -809,6 +810,136 @@ function searchTerms(q){
         <div class="sys-arrow">→</div>
         <div class="sys-box"><div class="sys-box-title">Claude Team / Enterprise</div><div class="sys-box-body">チーム・組織向けプラン・管理コンソール</div></div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 5: 本資料作成手順 -->
+<div class="tab-pane" id="tab5">
+  <div class="sec">
+    <div class="sec-title">本資料について</div>
+    <div class="notice notice-blue">
+      <p>📌 このタブは、本資料をゼロから再現するための手順書です。Claude（AI）との対話のみで作成しており、再現・改修・社内展開の参考にしてください。</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">作成環境・前提</div>
+    <table class="tbl">
+      <thead><tr><th>項目</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td>AIツール</td><td>Claude Sonnet 4.6（claude.ai / Claude MAX プラン）</td></tr>
+        <tr><td>レビュー</td><td>Gemini 2.5 Pro（生ファイル渡しでコードレビュー）</td></tr>
+        <tr><td>公開基盤</td><td>GitHub Organization（dx-nexus）+ GitHub Pages</td></tr>
+        <tr><td>ローカル環境</td><td>Windows 11 / PowerShell / Python 3.x / Git</td></tr>
+        <tr><td>所要時間</td><td>初回ゼロから約3〜4時間（GitHub設定込み）</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">STEP 1｜GitHub Organization作成 → Pages公開</div>
+    <div class="sys-block">
+      <div class="sys-label">手順</div>
+      <ol style="font-size:13px;color:#475569;line-height:2;padding-left:20px;">
+        <li><a href="https://github.com/organizations/new" target="_blank" rel="noopener" style="color:#2563eb;">github.com/organizations/new</a> でOrganization作成（例：dx-nexus）</li>
+        <li>既存リポジトリを Settings → Danger Zone → Transfer でOrganization配下に移動</li>
+        <li>転送後、Settings → Pages → Branch: main / root → Save</li>
+        <li>公開URL：<code style="background:#f1f3f7;padding:2px 6px;border-radius:4px;">https://[org名].github.io/[リポジトリ名]/</code></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">STEP 2｜ローカル環境の整備スクリプト群</div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
+      <div class="sys-box accent">
+        <div class="sys-box-title">update_master.py</div>
+        <div class="sys-box-body">作業ログ記録 → hancho-kb push → knowledge-hub同期push を一括実行。日次更新の主力スクリプト。</div>
+      </div>
+      <div class="sys-box accent">
+        <div class="sys-box-title">add_navigation.py</div>
+        <div class="sys-box-body">全HTMLファイルに右下フローティングナビゲーション（ホーム・前後ページ）を一括追加。</div>
+      </div>
+      <div class="sys-box accent">
+        <div class="sys-box-title">patch_academy.py</div>
+        <div class="sys-box-body">Academyページに受講ボタン・skilljarリンク・概要改行を追加するパッチスクリプト。</div>
+      </div>
+      <div class="sys-box accent">
+        <div class="sys-box-title">fix_card_layout_v2.py</div>
+        <div class="sys-box-body">カードをflex-columnにしてボタンをカード下部に統一固定するCSSパッチ。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">STEP 3｜一撃再現プロンプト（Claude向け）</div>
+    <div class="notice notice-amber" style="margin-bottom:16px;">
+      <p>⚡ 以下のプロンプトをClaudeに貼り付けると、本資料と同等のHTMLをゼロから生成できます。GitHub環境が整っていれば、あとはupdate_master.pyで即公開まで完結します。</p>
+    </div>
+    <div style="background:#1e293b;border-radius:8px;padding:24px;color:#e2e8f0;font-size:12px;line-height:1.9;font-family:monospace;white-space:pre-wrap;overflow-x:auto;">以下の仕様でAnthropicAcademy社内向け活用ガイドHTMLを作成してください。
+
+【デザイン仕様】
+- カラー：ネイビー(#1a2744)×ホワイト、アクセントにblue(#2563eb)
+- フォント：Noto Sans JP（Googleフォント）
+- タブ切り替え型UI（JavaScriptのshowTab関数）
+- レスポンシブ対応・max-width:1080px中央寄せ
+
+【タブ構成（5タブ）】
+1. はじめに：受講動機・Anthropic企業概要・資格価値・LinkedIn連携フロー・CTAボタン
+2. コース一覧：全17コースをカードグリッド表示。カテゴリフィルター付き。各カードに受講するボタン（skilljar URLリンク）
+3. 学習ロードマップ：パスA（ビジネス）・パスB（開発者）・パスC（クラウド）・修了証活用の4セクション
+4. 用語集：AI関連用語15件以上。検索ボックス付き
+5. システム連携概要：SVGアーキテクチャ図（ユーザー層→MCP→AIコア→知識層→インフラ層の5層構造）＋製品一覧表
+
+【コンテンツ要件】
+- 対象：社内向け（社名・個人情報は入れない）
+- skilljar URL形式：https://anthropic.skilljar.com/[コース名]
+- 外部リンク：anthropic.com・docs.anthropic.com・modelcontextprotocol.io等を積極的に付与
+- フッター：「Anthropic Academy 活用ガイド 2026 ― 社内配布版 ／ 更新：YYYY-MM-DD」のみ
+
+【UX要件】
+- 右下ナビゲーションボタンなし（社内向けページのため）
+- 受講ボタンはカード下部に統一（flex-column + margin-top:auto）
+- 新規登録ボタンは水色枠内中央配置
+- 社名・個人情報が一切含まれないこと
+
+完成後、Geminiに生ファイルを渡して構造・動作・リンクのコードレビューを依頼してください。</div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">作成の振り返り・ポイント</div>
+    <table class="tbl">
+      <thead><tr><th>工程</th><th>ポイント・落とし穴</th></tr></thead>
+      <tbody>
+        <tr><td>タブ順変更</td><td>showTab(n)はDOM順依存。タブコメント・pane・ボタンの3点を必ず同時に変更する</td></tr>
+        <tr><td>複数パッチ積み重ね</td><td>CSS競合・重複タグが発生しやすい。メジャーアップデート後は必ずGeminiコードレビューを挟む</td></tr>
+        <tr><td>文字化け</td><td>PowerShellの表示はShift-JIS/UTF-8不一致で化けるが実ファイルは正常。ブラウザで確認する</td></tr>
+        <tr><td>GitHub Pages反映</td><td>push後1〜2分かかる。キャッシュが残る場合はCtrl+Shift+Rでハード再読込</td></tr>
+        <tr><td>役割分担</td><td>Claude＝設計・実装・修正の実行役 / Gemini＝完成後の構造チェック・コードレビュー役</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">参考リンク</div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;">
+      <a href="https://anthropic.skilljar.com/" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px 16px;text-decoration:none;">
+        <div style="font-size:12px;font-weight:700;color:#1a2744;">🎓 Anthropic Academy</div>
+        <div style="font-size:11px;color:#94a3b8;margin-top:2px;">anthropic.skilljar.com</div>
+      </a>
+      <a href="https://docs.anthropic.com/ja/" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px 16px;text-decoration:none;">
+        <div style="font-size:12px;font-weight:700;color:#1a2744;">📖 Anthropic 公式ドキュメント</div>
+        <div style="font-size:11px;color:#94a3b8;margin-top:2px;">docs.anthropic.com/ja</div>
+      </a>
+      <a href="https://www.anthropic.com/news" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px 16px;text-decoration:none;">
+        <div style="font-size:12px;font-weight:700;color:#1a2744;">📰 Anthropic 最新ニュース</div>
+        <div style="font-size:11px;color:#94a3b8;margin-top:2px;">anthropic.com/news</div>
+      </a>
+      <a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px 16px;text-decoration:none;">
+        <div style="font-size:12px;font-weight:700;color:#1a2744;">🔗 Model Context Protocol</div>
+        <div style="font-size:11px;color:#94a3b8;margin-top:2px;">modelcontextprotocol.io</div>
+      </a>
     </div>
   </div>
 </div>
