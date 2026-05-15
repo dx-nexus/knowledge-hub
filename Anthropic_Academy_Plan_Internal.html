@@ -36,11 +36,11 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
 .tab-btn:hover{color:var(--text2);}
 .tab-btn.active{color:var(--blue);border-bottom-color:var(--blue);}
 
-.tab-pane{display:none;max-width:1200px;margin:0 auto;padding:32px 40px;}
+.tab-pane{display:none;padding:24px 32px;}
 .tab-pane.active{display:block;}
 
 /* Sections */
-.sec{margin-bottom:40px;}
+.sec{margin-bottom:32px;}
 .sec-title{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.15em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
 .sec-title::after{content:'';flex:1;height:1px;background:var(--border);}
 .sec-lead{font-size:14px;color:var(--text2);margin-bottom:20px;line-height:1.8;}
@@ -178,9 +178,9 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
 
 /* レイアウト統一・横スクロール抑止 */
 html,body{overflow-x:hidden;}
-.tab-pane{padding:32px max(20px,5vw);}
+.tab-pane{}
 svg{max-width:100%;height:auto;}
-#course-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;align-items:stretch;}
+#course-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;align-items:stretch;width:100%;}
 #course-grid .card{display:flex;flex-direction:column;height:100%;min-height:280px;}
 #course-grid .card-head{flex-shrink:0;}
 #course-grid .card-body{flex:1;margin-bottom:10px;}
@@ -191,7 +191,7 @@ svg{max-width:100%;height:auto;}
 
 
 /* レイアウト中央寄せ強化 */
-.hdr-inner,.tab-bar-inner{max-width:1200px;margin:0 auto;padding:0 max(20px,5vw);}
+.hdr-inner,.tab-bar-inner{max-width:none;padding:0 32px;}
 .tab-bar{padding:0;}
 .tab-bar-inner{display:flex;gap:2px;overflow-x:auto;}
 
@@ -794,20 +794,15 @@ function showTab(n){
   document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===n));
 }
 function filterCourse(cat, btn){
-  try {
-    document.querySelectorAll('.filter-row .filter-btn').forEach(b=>b.classList.remove('active'));
-    if(btn) btn.classList.add('active');
-    const cards = document.querySelectorAll('#course-grid .card');
-    cards.forEach(c=>{
-      const match = cat==='all' || c.dataset.cat===cat;
-      if(match){
-        c.style.display = '';
-        c.classList.remove('hidden');
-      } else {
-        c.style.display = 'none';
-        c.classList.add('hidden');
-      }
-    });
+  document.querySelectorAll('.filter-row .filter-btn').forEach(function(b){
+    b.classList.remove('active');
+  });
+  if(btn){ btn.classList.add('active'); }
+  document.querySelectorAll('#course-grid .card').forEach(function(c){
+    var match = (cat === 'all') || (c.getAttribute('data-cat') === cat);
+    c.style.display = match ? '' : 'none';
+  });
+});
   } catch(e) {
     console.error('filterCourse error:', e);
   }
