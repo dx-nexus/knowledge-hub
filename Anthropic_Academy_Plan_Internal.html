@@ -176,8 +176,14 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
 .template-input-table .var-name{color:#d97706;font-family:'Courier New',monospace;font-size:11px;}
 
 
-/* ===== 追加：カード左寄せ・学習内容リスト ===== */
-.tab-pane{padding-left:20px!important;padding-right:20px!important;}
+/* ===== 追加：左寄せ全幅・学習内容リスト ===== */
+.hdr-top, .hdr-meta, .tab-bar, .tab-pane {
+  max-width: none !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 32px !important;
+  padding-right: 32px !important;
+}
 .card-learn{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);}
 .card-learn-title{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;}
 .card-learn ul{list-style:none;padding:0;margin:0;}
