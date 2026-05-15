@@ -208,6 +208,7 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
   <button class="tab-btn" onclick="showTab(3)">（参考）用語集</button>
   <button class="tab-btn" onclick="showTab(4)">（参考）システム連携概要</button>
   <button class="tab-btn" onclick="showTab(5)">（参考）本資料作成手順</button>
+  <button class="tab-btn" onclick="showTab(6)">🚀 次のステップ</button>
 </div>
 
 <!-- TAB 0: はじめに -->
@@ -1158,7 +1159,7 @@ function searchTerms(q){
       </tbody>
     </table>
 
-    <div style="font-size:13px;font-weight:700;color:#1a2744;margin:18px 0 8px;">② テンプレート本文（Claude向け）</div>
+    <div style="font-size:13px;font-weight:700;color:#1a2744;margin:18px 0 8px;">② 汎用テンプレート（Claude向け）</div>
     <div class="code-block-wrap">
       <button class="copy-btn" onclick="copyCode(this)">📋 コピー</button>
       <div class="code-content">以下の仕様で「<span class="var">{{title}}</span>」というHTML資料を作成してください。
@@ -1238,7 +1239,54 @@ tone: </div>
 
   
   <div class="sec">
-    <div class="sec-title">STEP 5｜Claude Codeで一撃自動生成（実行可能フロー）</div>
+    <div class="sec-title">作成の振り返り・ポイント</div>
+    <table class="tbl">
+      <thead><tr><th>工程</th><th>ポイント・落とし穴</th></tr></thead>
+      <tbody>
+        <tr><td>タブ順変更</td><td>showTab(n)はDOM順依存。タブコメント・pane・ボタンの3点を必ず同時に変更する</td></tr>
+        <tr><td>複数パッチ積み重ね</td><td>CSS競合・重複タグが発生しやすい。メジャーアップデート後は必ずGeminiコードレビューを挟む</td></tr>
+        <tr><td>文字化け</td><td>PowerShellの表示はShift-JIS/UTF-8不一致で化けるが実ファイルは正常。ブラウザで確認する</td></tr>
+        <tr><td>GitHub Pages反映</td><td>push後1〜2分かかる。キャッシュが残る場合はCtrl+Shift+Rでハード再読込</td></tr>
+        <tr><td>役割分担</td><td>Claude＝設計・実装・修正の実行役 / Gemini＝完成後の構造チェック・コードレビュー役</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">参考リンク</div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;">
+      <a href="https://anthropic.skilljar.com/" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px 16px;text-decoration:none;">
+        <div style="font-size:12px;font-weight:700;color:#1a2744;">🎓 Anthropic Academy</div>
+        <div style="font-size:11px;color:#94a3b8;margin-top:2px;">anthropic.skilljar.com</div>
+      </a>
+      <a href="https://docs.anthropic.com/ja/" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px 16px;text-decoration:none;">
+        <div style="font-size:12px;font-weight:700;color:#1a2744;">📖 Anthropic 公式ドキュメント</div>
+        <div style="font-size:11px;color:#94a3b8;margin-top:2px;">docs.anthropic.com/ja</div>
+      </a>
+      <a href="https://www.anthropic.com/news" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px 16px;text-decoration:none;">
+        <div style="font-size:12px;font-weight:700;color:#1a2744;">📰 Anthropic 最新ニュース</div>
+        <div style="font-size:11px;color:#94a3b8;margin-top:2px;">anthropic.com/news</div>
+      </a>
+      <a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px 16px;text-decoration:none;">
+        <div style="font-size:12px;font-weight:700;color:#1a2744;">🔗 Model Context Protocol</div>
+        <div style="font-size:11px;color:#94a3b8;margin-top:2px;">modelcontextprotocol.io</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 6: 次のステップ -->
+<div class="tab-pane" id="tab6">
+
+  <div class="sec">
+    <div class="sec-title">🚀 Claude Codeで一撃自動生成への道</div>
+    <div class="notice notice-blue" style="margin-bottom:14px;">
+      <p>📌 本資料の構造を「config.json + Claude Code」で他テーマに展開・量産する自動化フローです。理論上はワンコマンドで完結します。</p>
+    </div>
+  </div>
+
+<div class="sec">
+    <div class="sec-title">🚀 Claude Codeで一撃自動生成への道</div>
     <div class="notice notice-green" style="margin-bottom:14px;">
       <p>🚀 <strong>config.jsonに変数を書く → Claude Codeに投げる → HTMLが生成・push される</strong>という完全自動化フローです。未指定の変数はデフォルト値が適用されます。</p>
     </div>
@@ -1360,41 +1408,7 @@ claude "config.jsonを読んで学習コースナビゲーターHTMLを生成、
     </div>
   </div>
 
-  <div class="sec">
-    <div class="sec-title">作成の振り返り・ポイント</div>
-    <table class="tbl">
-      <thead><tr><th>工程</th><th>ポイント・落とし穴</th></tr></thead>
-      <tbody>
-        <tr><td>タブ順変更</td><td>showTab(n)はDOM順依存。タブコメント・pane・ボタンの3点を必ず同時に変更する</td></tr>
-        <tr><td>複数パッチ積み重ね</td><td>CSS競合・重複タグが発生しやすい。メジャーアップデート後は必ずGeminiコードレビューを挟む</td></tr>
-        <tr><td>文字化け</td><td>PowerShellの表示はShift-JIS/UTF-8不一致で化けるが実ファイルは正常。ブラウザで確認する</td></tr>
-        <tr><td>GitHub Pages反映</td><td>push後1〜2分かかる。キャッシュが残る場合はCtrl+Shift+Rでハード再読込</td></tr>
-        <tr><td>役割分担</td><td>Claude＝設計・実装・修正の実行役 / Gemini＝完成後の構造チェック・コードレビュー役</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="sec">
-    <div class="sec-title">参考リンク</div>
-    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;">
-      <a href="https://anthropic.skilljar.com/" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px 16px;text-decoration:none;">
-        <div style="font-size:12px;font-weight:700;color:#1a2744;">🎓 Anthropic Academy</div>
-        <div style="font-size:11px;color:#94a3b8;margin-top:2px;">anthropic.skilljar.com</div>
-      </a>
-      <a href="https://docs.anthropic.com/ja/" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px 16px;text-decoration:none;">
-        <div style="font-size:12px;font-weight:700;color:#1a2744;">📖 Anthropic 公式ドキュメント</div>
-        <div style="font-size:11px;color:#94a3b8;margin-top:2px;">docs.anthropic.com/ja</div>
-      </a>
-      <a href="https://www.anthropic.com/news" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px 16px;text-decoration:none;">
-        <div style="font-size:12px;font-weight:700;color:#1a2744;">📰 Anthropic 最新ニュース</div>
-        <div style="font-size:11px;color:#94a3b8;margin-top:2px;">anthropic.com/news</div>
-      </a>
-      <a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener" style="display:block;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px 16px;text-decoration:none;">
-        <div style="font-size:12px;font-weight:700;color:#1a2744;">🔗 Model Context Protocol</div>
-        <div style="font-size:11px;color:#94a3b8;margin-top:2px;">modelcontextprotocol.io</div>
-      </a>
-    </div>
-  </div>
+  
 </div>
 
 <div class="doc-footer">Anthropic社学習コースナビゲーター ／ 更新：2026-05-13</div>
