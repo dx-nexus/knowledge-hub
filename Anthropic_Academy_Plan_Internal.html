@@ -202,16 +202,16 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
 </div>
 
 <div class="tab-bar">
-  <button class="tab-btn" onclick="showTab(0)">はじめに</button>
+  <button class="tab-btn active" onclick="showTab(0)">はじめに</button>
   <button class="tab-btn" onclick="showTab(1)">コース一覧</button>
   <button class="tab-btn" onclick="showTab(2)">学習ロードマップ</button>
   <button class="tab-btn" onclick="showTab(3)">（参考）用語集</button>
   <button class="tab-btn" onclick="showTab(4)">（参考）システム連携概要</button>
-  <button class="tab-btn active" onclick="showTab(5)">（参考）本資料作成手順</button>
+  <button class="tab-btn" onclick="showTab(5)">（参考）本資料作成手順</button>
 </div>
 
 <!-- TAB 0: はじめに -->
-<div class="tab-pane" id="tab0">
+<div class="tab-pane active" id="tab0">
 
   <div class="sec">
     <div class="sec-title">このガイドについて</div>
@@ -1032,7 +1032,7 @@ function searchTerms(q){
 </div>
 
 <!-- TAB 5: 本資料作成手順 -->
-<div class="tab-pane active" id="tab5">
+<div class="tab-pane" id="tab5">
   <div class="sec">
     <div class="sec-title">本資料について</div>
     <div class="notice notice-blue">
