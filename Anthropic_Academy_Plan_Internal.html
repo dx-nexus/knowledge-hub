@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0014)about:internet -->
+<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Anthropic社学習コースナビゲーター</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+<link href="./Anthropic社学習コースナビゲーター_files/css2" rel="stylesheet">
 <style>
 :root{
   --navy:#1a2744;--navy2:#243156;--navy3:#2d3d6b;
@@ -175,6 +175,15 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
 .template-input-table tr:last-child td{border-bottom:none;}
 .template-input-table .var-name{color:#d97706;font-family:'Courier New',monospace;font-size:11px;}
 
+
+/* ===== 追加：カード左寄せ・学習内容リスト ===== */
+.tab-pane{padding-left:20px!important;padding-right:20px!important;}
+.card-learn{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);}
+.card-learn-title{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;}
+.card-learn ul{list-style:none;padding:0;margin:0;}
+.card-learn li{font-size:11px;color:var(--text2);line-height:1.7;padding-left:14px;position:relative;margin-bottom:2px;}
+.card-learn li::before{content:'✓';position:absolute;left:0;top:0;color:var(--green);font-weight:700;font-size:10px;}
+
 </style>
 </head>
 <body>
@@ -187,16 +196,16 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
 </div>
 
 <div class="tab-bar">
-  <button class="tab-btn active" onclick="showTab(0)">はじめに</button>
+  <button class="tab-btn" onclick="showTab(0)">はじめに</button>
   <button class="tab-btn" onclick="showTab(1)">コース一覧</button>
   <button class="tab-btn" onclick="showTab(2)">学習ロードマップ</button>
   <button class="tab-btn" onclick="showTab(3)">（参考）用語集</button>
   <button class="tab-btn" onclick="showTab(4)">（参考）システム連携概要</button>
-  <button class="tab-btn" onclick="showTab(5)">（参考）本資料作成手順</button>
+  <button class="tab-btn active" onclick="showTab(5)">（参考）本資料作成手順</button>
 </div>
 
 <!-- TAB 0: はじめに -->
-<div class="tab-pane active" id="tab0">
+<div class="tab-pane" id="tab0">
 
   <div class="sec">
     <div class="sec-title">このガイドについて</div>
@@ -207,8 +216,7 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
       <div style="font-size:13px;color:rgba(255,255,255,.85);line-height:1.9;">
         Anthropic社から、Claudeを使いこなすための<a href="https://anthropic.skilljar.com/" target="_blank" rel="noopener" style="color:#a0c4ff;text-decoration:underline;font-weight:bold;">公式無料コース（17種）</a>が公開されています。<br>
         「どれから見ればいい？」を解決するため、役割別・目的別に整理した実践ガイドです。<br>
-        <a href="https://anthropic.skilljar.com/" target="_blank" rel="noopener"
-           style="display:inline-block;margin-top:14px;padding:8px 22px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;">
+        <a href="https://anthropic.skilljar.com/" target="_blank" rel="noopener" style="display:inline-block;margin-top:14px;padding:8px 22px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;">
           🎓 Anthropic Academy 公式トップへ
         </a>
       </div>
@@ -397,16 +405,13 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
     <div style="text-align:center;padding:24px;background:#1a2744;border-radius:10px;">
       <div style="color:#fff;font-size:14px;font-weight:700;margin-bottom:16px;">まず Claude 101 から始めてみましょう</div>
       <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-        <a href="https://anthropic.skilljar.com/claude-101" target="_blank" rel="noopener"
-           style="display:inline-block;padding:10px 28px;background:#2563eb;color:#fff;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">
+        <a href="https://anthropic.skilljar.com/claude-101" target="_blank" rel="noopener" style="display:inline-block;padding:10px 28px;background:#2563eb;color:#fff;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">
           🎓 Claude 101 を受講する
         </a>
-        <a href="https://anthropic.skilljar.com/" target="_blank" rel="noopener"
-           style="display:inline-block;padding:10px 28px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">
+        <a href="https://anthropic.skilljar.com/" target="_blank" rel="noopener" style="display:inline-block;padding:10px 28px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">
           📚 全コース一覧を見る
         </a>
-        <a href="https://www.anthropic.com/news" target="_blank" rel="noopener"
-           style="display:inline-block;padding:10px 28px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">
+        <a href="https://www.anthropic.com/news" target="_blank" rel="noopener" style="display:inline-block;padding:10px 28px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">
           📰 Anthropic最新ニュース
         </a>
       </div>
@@ -421,8 +426,7 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
     <p class="sec-lead">Anthropicが提供するAnthropicAcademyは、2026年3月に開設された公式学習プラットフォームです。<br><br>全17コース（2026年5月時点）が無料で受講でき、修了後はLinkedInに掲載可能な修了証が発行されます。<br>本ガイドでは業務活用の観点から各コースのエッセンスを整理しています。</p>
     <div class="notice notice-blue" style="text-align:center;">
     <p>📌 受講に必要なものはメールアドレスのみです。下の新規登録ボタンからSkilljarアカウントを作成して受講を開始してください。</p>
-    <a href="https://anthropic.skilljar.com/" target="_blank" rel="noopener"
-       style="display:inline-block;margin-top:10px;padding:7px 24px;background:#1a2744;color:#fff;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;">
+    <a href="https://anthropic.skilljar.com/" target="_blank" rel="noopener" style="display:inline-block;margin-top:10px;padding:7px 24px;background:#1a2744;color:#fff;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;">
       📝 新規登録
     </a>
   </div>
@@ -431,11 +435,11 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
   <div class="sec">
     <div class="sec-title">コース一覧</div>
     <div class="filter-row">
-      <button class="filter-btn active" onclick="filterCourse('all',this)">全て</button>
-      <button class="filter-btn" onclick="filterCourse('dev',this)">開発者向け</button>
-      <button class="filter-btn" onclick="filterCourse('biz',this)">ビジネス向け</button>
-      <button class="filter-btn" onclick="filterCourse('cloud',this)">クラウド</button>
-      <button class="filter-btn" onclick="filterCourse('edu',this)">教育・非営利</button>
+      <button class="filter-btn active" onclick="filterCourse(&#39;all&#39;,this)">全て</button>
+      <button class="filter-btn" onclick="filterCourse(&#39;dev&#39;,this)">開発者向け</button>
+      <button class="filter-btn" onclick="filterCourse(&#39;biz&#39;,this)">ビジネス向け</button>
+      <button class="filter-btn" onclick="filterCourse(&#39;cloud&#39;,this)">クラウド</button>
+      <button class="filter-btn" onclick="filterCourse(&#39;edu&#39;,this)">教育・非営利</button>
     </div>
     <div class="grid-3" id="course-grid">
 
@@ -446,16 +450,32 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
         </div>
         <div class="card-body">Claudeの基本操作・プロンプトの書き方・日常業務への活用方法を網羅した入門コースです。AIツールを初めて使う方に最適です。</div>
         <div class="card-foot"><span class="tag tag-biz">非技術者</span><span class="tag tag-dev">開発者</span></div>
+        <div class="card-learn">
+          <div class="card-learn-title">📌 習得できる内容</div>
+          <ul>
+            <li>Claudeの基本UI操作とアカウント設定</li>
+            <li>プロンプトの基本構造と書き方</li>
+            <li>日常業務（要約・翻訳・文書作成）への活用</li>
+          </ul>
+        </div>
         <a href="https://anthropic.skilljar.com/claude-101" target="_blank" rel="noopener" class="btn-enroll">受講する</a>
       </div>
 
       <div class="card" data-cat="biz">
         <div class="card-head">
           <div class="card-icon" style="background:#eff6ff">🧭</div>
-          <div><div class="card-title">AI Fluency: Framework & Foundations</div><div class="card-sub">2〜3時間 ／ マネージャー・PMO推奨</div></div>
+          <div><div class="card-title">AI Fluency: Framework &amp; Foundations</div><div class="card-sub">2〜3時間 ／ マネージャー・PMO推奨</div></div>
         </div>
         <div class="card-body">4D AIフレームワーク（Discover・Define・Design・Deploy）でAI思考モデルを体系的に習得します。組織へのAI導入設計・DXコンサル提案に直結するコンテンツです。</div>
         <div class="card-foot"><span class="tag tag-biz">PMO向け</span><span class="priority">推奨</span></div>
+        <div class="card-learn">
+          <div class="card-learn-title">📌 習得できる内容</div>
+          <ul>
+            <li>4D AIフレームワーク（Discover/Define/Design/Deploy）</li>
+            <li>AI思考モデルの体系的理解</li>
+            <li>組織へのAI導入設計とガバナンス</li>
+          </ul>
+        </div>
         <a href="https://anthropic.skilljar.com/ai-fluency-framework-foundations" target="_blank" rel="noopener" class="btn-enroll">受講する</a>
       </div>
 
@@ -466,6 +486,14 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
         </div>
         <div class="card-body">システムプロンプト・ツールユース・コンテキスト管理・アーキテクチャパターン・ストリーミングなど、APIの全機能を体系的に習得します。AIプロダクト開発の根幹となるコースです。</div>
         <div class="card-foot"><span class="tag tag-dev">開発者</span><span class="priority">最重要</span></div>
+        <div class="card-learn">
+          <div class="card-learn-title">📌 習得できる内容</div>
+          <ul>
+            <li>API認証・基本呼び出し方法</li>
+            <li>ツールユース・関数呼び出し（Tool Use）</li>
+            <li>ストリーミング・コンテキスト管理</li>
+          </ul>
+        </div>
         <a href="https://anthropic.skilljar.com/building-with-the-claude-api" target="_blank" rel="noopener" class="btn-enroll">受講する</a>
       </div>
 
@@ -476,6 +504,14 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
         </div>
         <div class="card-body">Claude Code CLIの入門コースです。インストール・承認モード・Plan Mode・CLAUDE.md・サブエージェント・Skills・MCP・Hooksを体系的に習得します。</div>
         <div class="card-foot"><span class="tag tag-dev">開発者</span></div>
+        <div class="card-learn">
+          <div class="card-learn-title">📌 習得できる内容</div>
+          <ul>
+            <li>Claude Codeのインストール・初期設定</li>
+            <li>基本コマンドとワークフロー</li>
+            <li>リポジトリ・MCPとの連携</li>
+          </ul>
+        </div>
         <a href="https://anthropic.skilljar.com/claude-code-101" target="_blank" rel="noopener" class="btn-enroll">受講する</a>
       </div>
 
@@ -486,6 +522,14 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
         </div>
         <div class="card-body">実務ワークフロー統合を学ぶコースです。コーディングアーキテクチャ・ビジュアル入力・カスタムコマンド・MCPサーバー・GitHubワークフロー・HooksおよびSDKを扱います。</div>
         <div class="card-foot"><span class="tag tag-dev">開発者</span><span class="priority">推奨</span></div>
+        <div class="card-learn">
+          <div class="card-learn-title">📌 習得できる内容</div>
+          <ul>
+            <li>実践的なコーディングタスクの委任</li>
+            <li>複数ファイル編集・大規模リファクタリング</li>
+            <li>デバッグ・テスト・コードレビュー自動化</li>
+          </ul>
+        </div>
         <a href="https://anthropic.skilljar.com/claude-code-in-action" target="_blank" rel="noopener" class="btn-enroll">受講する</a>
       </div>
 
@@ -496,6 +540,14 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
         </div>
         <div class="card-body">Model Context Protocolの3コアプリミティブ（tools・resources・prompts）を学びます。ClaudeとSlack・GitHub・データベースなど外部サービスとの接続を標準化する規格です。</div>
         <div class="card-foot"><span class="tag tag-dev">開発者</span></div>
+        <div class="card-learn">
+          <div class="card-learn-title">📌 習得できる内容</div>
+          <ul>
+            <li>MCP（Model Context Protocol）の基本概念</li>
+            <li>サーバー・クライアントモデルの理解</li>
+            <li>既存ツール（GitHub・Slack等）との統合</li>
+          </ul>
+        </div>
         <a href="https://anthropic.skilljar.com/introduction-to-mcp" target="_blank" rel="noopener" class="btn-enroll">受講する</a>
       </div>
 
@@ -506,6 +558,14 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
         </div>
         <div class="card-body">本番MCPサーバー開発の応用コースです。サンプリング・通知・ファイルシステムアクセス・トランスポート機構など、エンタープライズ環境への実装パターンを学びます。</div>
         <div class="card-foot"><span class="tag tag-dev">開発者</span><span class="priority">推奨</span></div>
+        <div class="card-learn">
+          <div class="card-learn-title">📌 習得できる内容</div>
+          <ul>
+            <li>カスタムMCPサーバーの実装</li>
+            <li>認証・セキュリティ・権限管理</li>
+            <li>大規模システム連携パターン</li>
+          </ul>
+        </div>
         <a href="https://anthropic.skilljar.com/advanced-mcp" target="_blank" rel="noopener" class="btn-enroll">受講する</a>
       </div>
 
@@ -516,6 +576,14 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
         </div>
         <div class="card-body">Claude Code上でのサブエージェント設計を学びます。コンテキスト分離・タスク委任・特化ワークフロー構築など、マルチエージェントシステムの構成要素を習得します。</div>
         <div class="card-foot"><span class="tag tag-dev">開発者</span><span class="priority">推奨</span></div>
+        <div class="card-learn">
+          <div class="card-learn-title">📌 習得できる内容</div>
+          <ul>
+            <li>Subagentsの基本概念と設計思想</li>
+            <li>タスク分解と並列実行</li>
+            <li>専門エージェント設計パターン</li>
+          </ul>
+        </div>
         <a href="https://anthropic.skilljar.com/introduction-to-subagents" target="_blank" rel="noopener" class="btn-enroll">受講する</a>
       </div>
 
@@ -526,6 +594,14 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
         </div>
         <div class="card-body">再利用可能なMarkdown指示書（Skills）の設計・配布・チーム展開を学びます。チーム全員が同一品質のエージェント操作を実現するための仕組みです。</div>
         <div class="card-foot"><span class="tag tag-dev">開発者</span></div>
+        <div class="card-learn">
+          <div class="card-learn-title">📌 習得できる内容</div>
+          <ul>
+            <li>エージェントのスキル定義方法</li>
+            <li>再利用可能なスキル設計パターン</li>
+            <li>拡張性とメンテナンス戦略</li>
+          </ul>
+        </div>
         <a href="https://anthropic.skilljar.com/introduction-to-agent-skills" target="_blank" rel="noopener" class="btn-enroll">受講する</a>
       </div>
 
@@ -536,6 +612,14 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
         </div>
         <div class="card-body">デスクトップアプリとして動作するClaudeエージェントの入門コースです。ローカルフォルダ管理・ドキュメント自動作成・継続タスクの処理など、プログラミング不要のAI活用を学びます。</div>
         <div class="card-foot"><span class="tag tag-biz">非技術者</span></div>
+        <div class="card-learn">
+          <div class="card-learn-title">📌 習得できる内容</div>
+          <ul>
+            <li>Cowork機能の基本操作</li>
+            <li>チーム共有・コラボレーション運用</li>
+            <li>業務ワークフローへの統合</li>
+          </ul>
+        </div>
         <a href="https://anthropic.skilljar.com/introduction-to-claude-cowork" target="_blank" rel="noopener" class="btn-enroll">受講する</a>
       </div>
 
@@ -546,6 +630,14 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
         </div>
         <div class="card-body">AWSエコシステムでClaudeをデプロイする全工程を学びます。エンタープライズ向けのセキュリティ・スケーラビリティ・監視機能を備えたAI導入の実装パターンです。</div>
         <div class="card-foot"><span class="tag tag-cloud">AWS</span></div>
+        <div class="card-learn">
+          <div class="card-learn-title">📌 習得できる内容</div>
+          <ul>
+            <li>AWS Bedrockでの環境構築</li>
+            <li>インフラ設計・IAM権限管理</li>
+            <li>スケーラビリティ・コスト最適化</li>
+          </ul>
+        </div>
         <a href="https://anthropic.skilljar.com/building-with-claude-on-aws-bedrock" target="_blank" rel="noopener" class="btn-enroll">受講する</a>
       </div>
 
@@ -556,6 +648,14 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
         </div>
         <div class="card-body">GCPのVertex AI上でClaudeをフル活用する実装パターンを学びます。GeminiとClaudeを組み合わせたマルチAIアーキテクチャの設計にも応用できます。</div>
         <div class="card-foot"><span class="tag tag-cloud">GCP</span></div>
+        <div class="card-learn">
+          <div class="card-learn-title">📌 習得できる内容</div>
+          <ul>
+            <li>Vertex AIでのデプロイ手順</li>
+            <li>GCP統合・モニタリング</li>
+            <li>エンタープライズ運用ベストプラクティス</li>
+          </ul>
+        </div>
         <a href="https://anthropic.skilljar.com/building-with-claude-on-google-vertex-ai" target="_blank" rel="noopener" class="btn-enroll">受講する</a>
       </div>
 
@@ -566,6 +666,14 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
         </div>
         <div class="card-body">教育者・学生・非営利向けのAI活用コースです。Creative Commonsライセンスで提供されており、研修資料や教材として二次利用・カスタマイズが可能です。</div>
         <div class="card-foot"><span class="tag tag-edu">教育者</span><span class="tag tag-edu">学生</span></div>
+        <div class="card-learn">
+          <div class="card-learn-title">📌 習得できる内容</div>
+          <ul>
+            <li>教育現場でのAI活用ユースケース</li>
+            <li>学習者向けプロンプト設計</li>
+            <li>非営利分野での倫理・運用方針</li>
+          </ul>
+        </div>
         <a href="https://anthropic.skilljar.com/ai-fluency-for-educators" target="_blank" rel="noopener" class="btn-enroll">受講する</a>
       </div>
 
@@ -583,34 +691,34 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
   <div class="sec">
     <div class="sec-title">パスA ― ビジネス・管理職向け</div>
     <table class="tbl">
-      <tr><th>ステップ</th><th>コース</th><th>習得内容</th><th>所要時間</th></tr>
+      <tbody><tr><th>ステップ</th><th>コース</th><th>習得内容</th><th>所要時間</th></tr>
       <tr><td><span class="phase">Step 1</span>入門</td><td>Claude 101</td><td>基本操作・日常業務への活用</td><td>〜1h</td></tr>
-      <tr><td><span class="phase">Step 2</span>戦略</td><td>AI Fluency: Framework & Foundations</td><td>4D AIフレームワーク・組織導入設計</td><td>2〜3h</td></tr>
+      <tr><td><span class="phase">Step 2</span>戦略</td><td>AI Fluency: Framework &amp; Foundations</td><td>4D AIフレームワーク・組織導入設計</td><td>2〜3h</td></tr>
       <tr><td><span class="phase">Step 3</span>実務</td><td>Introduction to Claude Cowork</td><td>デスクトップ自動化・継続タスク管理</td><td>〜1h</td></tr>
       <tr><td><span class="phase">Step 4</span>応用</td><td>AI Fluency for Educators（研修設計者向け）</td><td>AI研修プログラムの設計・展開</td><td>〜2h</td></tr>
-    </table>
+    </tbody></table>
   </div>
 
   <div class="sec">
     <div class="sec-title">パスB ― 開発者・エンジニア向け</div>
     <table class="tbl">
-      <tr><th>ステップ</th><th>コース</th><th>習得内容</th><th>所要時間</th></tr>
+      <tbody><tr><th>ステップ</th><th>コース</th><th>習得内容</th><th>所要時間</th></tr>
       <tr><td><span class="phase">Step 1</span>基礎</td><td>Claude Code 101</td><td>Claude Code CLI・MCP・Hooks・Skills</td><td>〜2h</td></tr>
       <tr><td><span class="phase">Step 2</span>実装</td><td>Building with the Claude API</td><td>API全機能・アーキテクチャパターン</td><td>8h+</td></tr>
       <tr><td><span class="phase">Step 3</span>応用</td><td>Introduction to MCP ＋ Introduction to Subagents</td><td>外部連携・マルチエージェント設計</td><td>〜4h</td></tr>
       <tr><td><span class="phase">Step 4</span>深化</td><td>Advanced MCP ＋ Claude Code in Action</td><td>本番環境対応・実務ワークフロー</td><td>〜6h</td></tr>
       <tr><td><span class="phase">Step 5</span>資格</td><td>CCA-F受験準備</td><td>Claude Certified Architect取得</td><td>TBD</td></tr>
-    </table>
+    </tbody></table>
   </div>
 
   <div class="sec">
     <div class="sec-title">パスC ― クラウド・インフラ担当向け</div>
     <table class="tbl">
-      <tr><th>ステップ</th><th>コース</th><th>習得内容</th><th>所要時間</th></tr>
+      <tbody><tr><th>ステップ</th><th>コース</th><th>習得内容</th><th>所要時間</th></tr>
       <tr><td><span class="phase">Step 1</span>基礎</td><td>Building with the Claude API</td><td>API基礎・アーキテクチャ理解</td><td>8h+</td></tr>
       <tr><td><span class="phase">Step 2</span>AWS</td><td>Building with Claude on AWS Bedrock</td><td>AWSエンタープライズデプロイ</td><td>〜3h</td></tr>
       <tr><td><span class="phase">Step 3</span>GCP</td><td>Building with Claude on Google Vertex AI</td><td>GCPマネージドAI実装</td><td>〜3h</td></tr>
-    </table>
+    </tbody></table>
   </div>
 
   <div class="sec">
@@ -777,74 +885,74 @@ function searchTerms(q){
 <div class="sec">
   <div class="sec-title">本ドキュメントAI活用アーキテクチャ 全体像</div>
   <div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px;overflow-x:auto;">
-  <svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;font-family:'Noto Sans JP',sans-serif;">
+  <svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;font-family:&#39;Noto Sans JP&#39;,sans-serif;">
     <defs>
       <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-        <path d="M0,0 L0,6 L8,3 z" fill="#94a3b8"/>
+        <path d="M0,0 L0,6 L8,3 z" fill="#94a3b8"></path>
       </marker>
     </defs>
-    <rect x="10" y="10" width="880" height="100" rx="8" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
-    <rect x="10" y="120" width="880" height="80" rx="8" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
-    <rect x="10" y="210" width="880" height="80" rx="8" fill="#fffbeb" stroke="#fde68a" stroke-width="1"/>
-    <rect x="10" y="300" width="880" height="80" rx="8" fill="#f5f3ff" stroke="#ddd6fe" stroke-width="1"/>
-    <rect x="10" y="390" width="880" height="80" rx="8" fill="#fef2f2" stroke="#fecaca" stroke-width="1"/>
+    <rect x="10" y="10" width="880" height="100" rx="8" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"></rect>
+    <rect x="10" y="120" width="880" height="80" rx="8" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"></rect>
+    <rect x="10" y="210" width="880" height="80" rx="8" fill="#fffbeb" stroke="#fde68a" stroke-width="1"></rect>
+    <rect x="10" y="300" width="880" height="80" rx="8" fill="#f5f3ff" stroke="#ddd6fe" stroke-width="1"></rect>
+    <rect x="10" y="390" width="880" height="80" rx="8" fill="#fef2f2" stroke="#fecaca" stroke-width="1"></rect>
     <text x="22" y="30" font-size="9" font-weight="700" fill="#1d4ed8" letter-spacing="1">👤 ユーザー層</text>
     <text x="22" y="142" font-size="9" font-weight="700" fill="#065f46" letter-spacing="1">🔗 接続層（MCP）</text>
     <text x="22" y="232" font-size="9" font-weight="700" fill="#92400e" letter-spacing="1">🤖 AI コアエンジン</text>
     <text x="22" y="322" font-size="9" font-weight="700" fill="#4c1d95" letter-spacing="1">🧠 知識・自動化層</text>
     <text x="22" y="412" font-size="9" font-weight="700" fill="#991b1b" letter-spacing="1">☁️ インフラ層</text>
-    <rect x="40" y="40" width="110" height="56" rx="6" fill="#1a2744"/>
+    <rect x="40" y="40" width="110" height="56" rx="6" fill="#1a2744"></rect>
     <text x="95" y="62" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">claude.ai</text>
     <text x="95" y="76" font-size="9" fill="#a0c4ff" text-anchor="middle">チャット・Artifact</text>
-    <rect x="170" y="40" width="110" height="56" rx="6" fill="#1a2744"/>
+    <rect x="170" y="40" width="110" height="56" rx="6" fill="#1a2744"></rect>
     <text x="225" y="62" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">Claude Code</text>
     <text x="225" y="76" font-size="9" fill="#a0c4ff" text-anchor="middle">CLI・Git・MCP</text>
-    <rect x="300" y="40" width="110" height="56" rx="6" fill="#1a2744"/>
+    <rect x="300" y="40" width="110" height="56" rx="6" fill="#1a2744"></rect>
     <text x="355" y="62" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">Claude Cowork</text>
     <text x="355" y="76" font-size="9" fill="#a0c4ff" text-anchor="middle">ローカル自動化</text>
-    <rect x="430" y="40" width="110" height="56" rx="6" fill="#1a2744"/>
+    <rect x="430" y="40" width="110" height="56" rx="6" fill="#1a2744"></rect>
     <text x="485" y="62" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">Excel / Slack</text>
     <text x="485" y="76" font-size="9" fill="#a0c4ff" text-anchor="middle">チーム連携</text>
-    <rect x="560" y="40" width="110" height="56" rx="6" fill="#1a2744"/>
+    <rect x="560" y="40" width="110" height="56" rx="6" fill="#1a2744"></rect>
     <text x="615" y="62" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">Claude in Chrome</text>
     <text x="615" y="76" font-size="9" fill="#a0c4ff" text-anchor="middle">Web自動化</text>
-    <line x1="95" y1="96" x2="95" y2="128" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
-    <line x1="225" y1="96" x2="225" y2="128" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
-    <line x1="355" y1="96" x2="355" y2="128" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
-    <line x1="485" y1="96" x2="485" y2="128" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
-    <line x1="615" y1="96" x2="615" y2="128" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
-    <rect x="40" y="128" width="770" height="56" rx="6" fill="#059669"/>
+    <line x1="95" y1="96" x2="95" y2="128" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"></line>
+    <line x1="225" y1="96" x2="225" y2="128" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"></line>
+    <line x1="355" y1="96" x2="355" y2="128" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"></line>
+    <line x1="485" y1="96" x2="485" y2="128" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"></line>
+    <line x1="615" y1="96" x2="615" y2="128" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"></line>
+    <rect x="40" y="128" width="770" height="56" rx="6" fill="#059669"></rect>
     <text x="425" y="152" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">🔗 MCP / API Gateway ― すべてのクライアントが同一のClaude APIコアに接続</text>
     <text x="425" y="170" font-size="9" fill="#d1fae5" text-anchor="middle">Model Context Protocol による外部サービス・社内システム接続の標準化レイヤー</text>
-    <line x1="425" y1="184" x2="425" y2="218" stroke="#94a3b8" stroke-width="2" marker-end="url(#arr)"/>
-    <rect x="200" y="220" width="450" height="56" rx="6" fill="#d97706"/>
+    <line x1="425" y1="184" x2="425" y2="218" stroke="#94a3b8" stroke-width="2" marker-end="url(#arr)"></line>
+    <rect x="200" y="220" width="450" height="56" rx="6" fill="#d97706"></rect>
     <text x="425" y="244" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">🤖 Claude API コアエンジン</text>
     <text x="425" y="262" font-size="9" fill="#fffbeb" text-anchor="middle">Claude Opus / Sonnet / Haiku ― Anthropicが管理・提供するLLMエンジン</text>
-    <line x1="300" y1="276" x2="300" y2="308" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
-    <line x1="425" y1="276" x2="425" y2="308" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
-    <line x1="550" y1="276" x2="550" y2="308" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
-    <rect x="40" y="310" width="200" height="56" rx="6" fill="#4c1d95"/>
+    <line x1="300" y1="276" x2="300" y2="308" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"></line>
+    <line x1="425" y1="276" x2="425" y2="308" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"></line>
+    <line x1="550" y1="276" x2="550" y2="308" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"></line>
+    <rect x="40" y="310" width="200" height="56" rx="6" fill="#4c1d95"></rect>
     <text x="140" y="332" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">🧠 RAG・ナレッジベース</text>
     <text x="140" y="348" font-size="9" fill="#ede9fe" text-anchor="middle">社内DB・ドキュメント検索</text>
-    <rect x="260" y="310" width="200" height="56" rx="6" fill="#4c1d95"/>
+    <rect x="260" y="310" width="200" height="56" rx="6" fill="#4c1d95"></rect>
     <text x="360" y="332" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">🔄 Subagents / Hooks</text>
     <text x="360" y="348" font-size="9" fill="#ede9fe" text-anchor="middle">マルチエージェント並列処理</text>
-    <rect x="480" y="310" width="200" height="56" rx="6" fill="#4c1d95"/>
+    <rect x="480" y="310" width="200" height="56" rx="6" fill="#4c1d95"></rect>
     <text x="580" y="332" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">✨ Dreaming（自己学習）</text>
     <text x="580" y="348" font-size="9" fill="#ede9fe" text-anchor="middle">過去セッション分析・改善</text>
-    <line x1="140" y1="366" x2="140" y2="398" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
-    <line x1="360" y1="366" x2="360" y2="398" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
-    <line x1="580" y1="366" x2="580" y2="398" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
-    <rect x="40" y="400" width="180" height="56" rx="6" fill="#991b1b"/>
+    <line x1="140" y1="366" x2="140" y2="398" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"></line>
+    <line x1="360" y1="366" x2="360" y2="398" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"></line>
+    <line x1="580" y1="366" x2="580" y2="398" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"></line>
+    <rect x="40" y="400" width="180" height="56" rx="6" fill="#991b1b"></rect>
     <text x="130" y="422" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">☁️ AWS Bedrock</text>
     <text x="130" y="438" font-size="9" fill="#fecaca" text-anchor="middle">エンタープライズ展開</text>
-    <rect x="240" y="400" width="180" height="56" rx="6" fill="#991b1b"/>
+    <rect x="240" y="400" width="180" height="56" rx="6" fill="#991b1b"></rect>
     <text x="330" y="422" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">☁️ Google Vertex AI</text>
     <text x="330" y="438" font-size="9" fill="#fecaca" text-anchor="middle">GCPマネージドAI</text>
-    <rect x="440" y="400" width="180" height="56" rx="6" fill="#991b1b"/>
+    <rect x="440" y="400" width="180" height="56" rx="6" fill="#991b1b"></rect>
     <text x="530" y="422" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">🏢 Claude Team/Enterprise</text>
     <text x="530" y="438" font-size="9" fill="#fecaca" text-anchor="middle">組織向けプラン</text>
-    <rect x="640" y="400" width="200" height="56" rx="6" fill="#7f1d1d"/>
+    <rect x="640" y="400" width="200" height="56" rx="6" fill="#7f1d1d"></rect>
     <text x="740" y="422" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">🔒 オンプレミス / VPC</text>
     <text x="740" y="438" font-size="9" fill="#fecaca" text-anchor="middle">プライベートデプロイ</text>
   </svg>
@@ -856,7 +964,7 @@ function searchTerms(q){
     <div class="notice notice-blue"><p>📌 すべてのAnthropicクライアントは同一のClaude APIコアエンジンに接続しています。異なるGUI（インターフェース）が異なる用途に最適化された形で提供されています。</p></div>
 
     <table class="tbl" style="margin-top:16px;">
-      <tr><th>インターフェース（GUI）</th><th>エンジン</th><th>主な用途</th><th>対象ユーザー</th></tr>
+      <tbody><tr><th>インターフェース（GUI）</th><th>エンジン</th><th>主な用途</th><th>対象ユーザー</th></tr>
       <tr><td>claude.ai（ブラウザ・モバイル）</td><td>Claude API</td><td>チャット・Artifact生成・日常業務支援</td><td>全員</td></tr>
       <tr><td>Claude Code CLI</td><td>Claude API + ローカルツール</td><td>ファイル操作・Git・スクリプト・MCP連携</td><td>開発者</td></tr>
       <tr><td>Claude Cowork（デスクトップ）</td><td>Claude API + ローカルファイル</td><td>継続タスク・ドキュメント自動化</td><td>全員（非技術者も可）</td></tr>
@@ -865,7 +973,7 @@ function searchTerms(q){
       <tr><td>Claude / Slack統合</td><td>Claude API + Webhooks</td><td>チームコミュニケーション自動化</td><td>チーム全体</td></tr>
       <tr><td>AWS Bedrock</td><td>Claude API（エンタープライズ）</td><td>企業システムへのAI組み込み</td><td>クラウド開発者</td></tr>
       <tr><td>Google Vertex AI</td><td>Claude API（GCPマネージド）</td><td>GCP環境でのAI開発・デプロイ</td><td>クラウド開発者</td></tr>
-    </table>
+    </tbody></table>
   </div>
 
   <div class="sec">
@@ -918,7 +1026,7 @@ function searchTerms(q){
 </div>
 
 <!-- TAB 5: 本資料作成手順 -->
-<div class="tab-pane" id="tab5">
+<div class="tab-pane active" id="tab5">
   <div class="sec">
     <div class="sec-title">本資料について</div>
     <div class="notice notice-blue">
@@ -1218,7 +1326,7 @@ tone: </div>
 - output_pathに保存
 - deploy.enabled=trueの場合：
   1. target_repoにコピー
-  2. git add . && git commit -m "auto: ${title} 自動生成"
+  2. git add . &amp;&amp; git commit -m "auto: ${title} 自動生成"
   3. git push
   4. GitHub Pages URLを報告
 
@@ -1286,5 +1394,5 @@ claude "config.jsonを読んで学習コースナビゲーターHTMLを生成、
 <div class="doc-footer">Anthropic社学習コースナビゲーター ／ 更新：2026-05-13</div>
 
 
-</body>
-</html>
+
+</body></html>
