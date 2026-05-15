@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code 実践運用ガイド v1</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1a2744;--navy2:#243156;--navy3:#2d3d6b;
+  --accent:#7c3aed;--accent2:#9333ea;--accent-lt:#f5f3ff;--accent-border:#ddd6fe;
+  --blue:#2563eb;--blue2:#3b82f6;--blue-lt:#eff6ff;--blue-border:#bfdbfe;
+  --gray:#f8f9fb;--gray2:#f1f3f7;--gray3:#e2e8f0;
+  --text:#1e293b;--text2:#475569;--text3:#94a3b8;
+  --border:#e2e8f0;--white:#ffffff;
+  --green:#059669;--green-lt:#ecfdf5;--green-border:#a7f3d0;
+  --amber:#d97706;--amber-lt:#fffbeb;--amber-border:#fde68a;
+  --red:#dc2626;--red-lt:#fef2f2;--red-border:#fecaca;
+  --sans:'Noto Sans JP',sans-serif;
+  --serif:'Noto Serif JP',serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{overflow-x:hidden;}
+body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.8;word-break:keep-all;overflow-wrap:break-word;}
+
+/* Header */
+.hdr{background:var(--navy);color:#fff;padding:0;}
+.hdr-top{padding:28px 32px 20px;border-bottom:1px solid rgba(255,255,255,.1);}
+.hdr-top h1{font-size:20px;font-weight:700;letter-spacing:.03em;margin-bottom:4px;}
+.hdr-top p{font-size:12px;color:rgba(255,255,255,.55);}
+.hdr-meta{padding:12px 32px;display:flex;gap:20px;font-size:11px;color:rgba(255,255,255,.5);flex-wrap:wrap;}
+.hdr-meta span{display:flex;align-items:center;gap:5px;}
+.hdr-meta span::before{content:'';width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.4);}
+
+/* Tabs */
+.tab-bar{background:var(--white);border-bottom:2px solid var(--border);padding:0 32px;display:flex;overflow-x:auto;gap:2px;}
+.tab-btn{font-size:12px;font-weight:500;padding:14px 18px;border:none;background:none;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:.15s;letter-spacing:.03em;}
+.tab-btn:hover{color:var(--text2);}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+
+.tab-pane{display:none;max-width:1100px;margin:0 auto;padding:32px;}
+.tab-pane.active{display:block;}
+
+/* Sections */
+.sec{margin-bottom:40px;}
+.sec-title{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.15em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--border);}
+.sec-lead{font-size:14px;color:var(--text2);margin-bottom:20px;line-height:1.8;}
+
+/* Cards */
+.grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:14px;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:18px 20px;transition:.15s;}
+.card:hover{box-shadow:0 2px 12px rgba(30,41,59,.08);}
+.card-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;}
+.card-icon{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;}
+.card-title{font-size:14px;font-weight:700;color:var(--text);line-height:1.4;}
+.card-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+.card-body{font-size:12px;color:var(--text2);line-height:1.8;margin-bottom:12px;}
+.card-foot{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+
+/* Tags */
+.tag{font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;}
+.tag-code{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;}
+.tag-doc{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0;}
+.tag-ops{background:#fffbeb;color:#92400e;border:1px solid #fde68a;}
+.tag-warn{background:#fef2f2;color:#991b1b;border:1px solid #fecaca;}
+.tag-accent{background:var(--accent-lt);color:#5b21b6;border:1px solid var(--accent-border);}
+.priority{font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-lt);padding:2px 8px;border-radius:4px;}
+
+/* Table */
+.tbl{width:100%;border-collapse:collapse;font-size:13px;background:var(--white);border-radius:8px;overflow:hidden;border:1px solid var(--border);}
+.tbl th{background:var(--navy);color:#fff;font-size:11px;font-weight:700;letter-spacing:.08em;padding:10px 14px;text-align:left;}
+.tbl td{padding:12px 16px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top;line-height:1.8;}
+.tbl td:first-child{color:var(--text);font-weight:500;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:var(--gray);}
+
+/* Notice box */
+.notice{border-radius:8px;padding:14px 18px;margin:12px 0;}
+.notice-blue{background:var(--blue-lt);border-left:3px solid var(--blue);}
+.notice-green{background:var(--green-lt);border-left:3px solid var(--green);}
+.notice-amber{background:var(--amber-lt);border-left:3px solid var(--amber);}
+.notice-red{background:var(--red-lt);border-left:3px solid var(--red);}
+.notice-accent{background:var(--accent-lt);border-left:3px solid var(--accent);}
+.notice p{font-size:13px;line-height:1.9;word-break:keep-all;overflow-wrap:break-word;}
+.notice-blue p{color:#1e40af;}
+.notice-green p{color:#065f46;}
+.notice-amber p{color:#92400e;}
+.notice-red p{color:#991b1b;}
+.notice-accent p{color:#5b21b6;}
+
+/* Code block */
+.code-block-wrap{position:relative;background:#1e293b;border-radius:8px;padding:0;margin-bottom:14px;}
+.code-block-wrap .copy-btn{position:absolute;top:10px;right:10px;background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:5px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--sans);transition:.2s;z-index:2;}
+.code-block-wrap .copy-btn:hover{background:rgba(255,255,255,.18);}
+.code-block-wrap .copy-btn.copied{background:#059669;border-color:#059669;}
+.code-block-wrap .code-content{padding:20px 24px;color:#e2e8f0;font-size:12px;line-height:1.9;font-family:'Courier New',monospace;white-space:pre-wrap;overflow-x:auto;}
+.code-label{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
+
+/* Step list */
+.step-list{list-style:none;padding:0;margin:0;}
+.step-list li{display:flex;gap:14px;align-items:flex-start;margin-bottom:16px;}
+.step-num{width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.step-body{flex:1;}
+.step-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.step-desc{font-size:12px;color:var(--text2);line-height:1.8;}
+
+/* Pattern card */
+.pattern-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:20px 24px;margin-bottom:16px;}
+.pattern-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.pattern-icon{font-size:22px;}
+.pattern-title{font-size:15px;font-weight:700;color:var(--navy);}
+.pattern-cat{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:var(--accent-lt);color:#5b21b6;}
+.pattern-body{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:12px;}
+.pattern-prompt{background:#f8fafc;border:1px dashed var(--border);border-radius:6px;padding:12px 16px;font-size:12px;color:#334155;line-height:1.8;margin-bottom:10px;font-style:italic;}
+.pattern-prompt::before{content:'プロンプト例：';display:block;font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.08em;margin-bottom:6px;font-style:normal;}
+
+/* Pitfall card */
+.pitfall-card{background:var(--white);border:1px solid var(--red-border);border-radius:8px;padding:18px 20px;margin-bottom:14px;}
+.pitfall-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.pitfall-icon{font-size:20px;}
+.pitfall-title{font-size:14px;font-weight:700;color:var(--red);}
+.pitfall-body{font-size:12px;color:var(--text2);line-height:1.8;margin-bottom:10px;}
+.pitfall-fix{background:var(--green-lt);border-left:3px solid var(--green);border-radius:0 6px 6px 0;padding:10px 14px;font-size:12px;color:#065f46;line-height:1.8;}
+.pitfall-fix::before{content:'✅ 対処法：';font-weight:700;display:block;margin-bottom:4px;}
+
+/* Footer */
+.doc-footer{text-align:center;padding:24px 32px;font-size:11px;color:var(--text3);border-top:1px solid var(--border);margin-top:20px;}
+
+/* Responsive */
+@media(max-width:768px){
+  .hdr-top{padding:20px 16px 14px;}
+  .hdr-meta{padding:10px 16px;}
+  .tab-bar{padding:0 16px;}
+  .tab-pane{padding:20px 16px;}
+  .grid-3,.grid-2{grid-template-columns:1fr;}
+  .tbl{font-size:11px;}
+  .tbl th,.tbl td{padding:8px 10px;}
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="hdr">
+  <div class="hdr-top">
+    <h1>Claude Code 実践運用ガイド v1</h1>
+    <p>DXコンサル業務での日常活用ノウハウ</p>
+  </div>
+  <div class="hdr-meta">
+    <span>作成日：2026-05-15</span>
+    <span>対象：社内メンバー向け</span>
+    <span>Claude Codeを業務に取り入れて開発・文書・運用作業を加速するための実践ガイド</span>
+  </div>
+</div>
+
+<!-- Tab bar -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab(0)">はじめに</button>
+  <button class="tab-btn" onclick="showTab(1)">セットアップ</button>
+  <button class="tab-btn" onclick="showTab(2)">実践パターン</button>
+  <button class="tab-btn" onclick="showTab(3)">（参考）落とし穴</button>
+  <button class="tab-btn" onclick="showTab(4)">🚀 次のステップ</button>
+</div>
+
+<!-- TAB 0: はじめに -->
+<div class="tab-pane active" id="tab0">
+
+  <div class="sec">
+    <div class="sec-title">Claude Code とは何か</div>
+
+    <div style="background:linear-gradient(135deg,#1a2744 0%,#2d3d6b 100%);border-radius:12px;padding:28px 32px;margin-bottom:20px;color:#fff;">
+      <div style="font-size:18px;font-weight:700;margin-bottom:10px;letter-spacing:.02em;">
+        ⌨️ Claude Code — ターミナルで動く AI ペアプログラマー
+      </div>
+      <div style="font-size:13px;color:rgba(255,255,255,.85);line-height:1.9;">
+        Claude Code は Anthropic が提供する CLI ツールです。コードの読み書き・ファイル操作・Git・シェル実行を Claude が直接行います。<br>
+        「チャットで指示を貼り付ける」のではなく、プロジェクトのコンテキストを丸ごと把握した状態で作業を進められます。<br>
+        <span style="display:inline-block;margin-top:12px;padding:6px 18px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);border-radius:6px;font-size:12px;font-weight:700;">
+          DX コンサル業務における「実装力の底上げ」に直結するツールです
+        </span>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:24px;">
+      <div style="background:var(--accent-lt);border:1px solid var(--accent-border);border-radius:8px;padding:18px;text-align:center;">
+        <div style="font-size:26px;font-weight:800;color:#5b21b6;">CLI</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:4px;">ターミナルから直接操作<br><span style="font-size:10px;color:var(--text3);">IDE 不要・どこでも動作</span></div>
+      </div>
+      <div style="background:var(--green-lt);border:1px solid var(--green-border);border-radius:8px;padding:18px;text-align:center;">
+        <div style="font-size:26px;font-weight:800;color:#059669;">自律</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:4px;">ファイル・Git・シェルを操作<br><span style="font-size:10px;color:var(--text3);">承認ステップで安全管理</span></div>
+      </div>
+      <div style="background:#eff6ff;border:1px solid var(--blue-border);border-radius:8px;padding:18px;text-align:center;">
+        <div style="font-size:26px;font-weight:800;color:#1d4ed8;">文脈</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:4px;">プロジェクト全体を把握<br><span style="font-size:10px;color:var(--text3);">巨大コンテキスト対応</span></div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-bottom:8px;">
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:18px;">
+        <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:10px;">📋 何ができる？</div>
+        <ul style="list-style:none;padding:0;font-size:12px;color:var(--text2);line-height:2;">
+          <li>✅ コード生成・リファクタリング・バグ修正</li>
+          <li>✅ HTML・Markdown・ドキュメント作成</li>
+          <li>✅ Git コマンド実行（commit / push）</li>
+          <li>✅ ファイル検索・一括編集</li>
+          <li>✅ スクリプト・自動化ワークフロー構築</li>
+          <li>✅ テスト実行・ログ解析</li>
+        </ul>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:18px;">
+        <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:10px;">🎯 なぜ DX コンサルに向いているか</div>
+        <ul style="list-style:none;padding:0;font-size:12px;color:var(--text2);line-height:2;">
+          <li>✅ プロトタイプを素早く形にできる</li>
+          <li>✅ 資料作成（HTML）を自動化できる</li>
+          <li>✅ 技術検証スピードが大幅に上がる</li>
+          <li>✅ 既存コードへのキャッチアップが速い</li>
+          <li>✅ 反復作業を Claude に委譲できる</li>
+          <li>✅ ドキュメント整備・ナレッジ化が楽になる</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">Claude Code の位置づけ</div>
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:20px 24px;margin-bottom:16px;">
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:stretch;">
+        <div style="flex:1;min-width:140px;background:var(--gray);border:1px solid var(--border);border-radius:6px;padding:14px;text-align:center;">
+          <div style="font-size:18px;margin-bottom:6px;">💬</div>
+          <div style="font-size:12px;font-weight:700;color:var(--navy);">Claude.ai（Web）</div>
+          <div style="font-size:11px;color:var(--text2);margin-top:4px;">対話・調査・アイデア出し</div>
+        </div>
+        <div style="display:flex;align-items:center;font-size:20px;color:var(--text3);">→</div>
+        <div style="flex:1;min-width:140px;background:var(--accent-lt);border:1px solid var(--accent-border);border-radius:6px;padding:14px;text-align:center;">
+          <div style="font-size:18px;margin-bottom:6px;">⌨️</div>
+          <div style="font-size:12px;font-weight:700;color:#5b21b6;">Claude Code（CLI）</div>
+          <div style="font-size:11px;color:#6d28d9;margin-top:4px;">実装・ファイル操作・自動化</div>
+        </div>
+        <div style="display:flex;align-items:center;font-size:20px;color:var(--text3);">→</div>
+        <div style="flex:1;min-width:140px;background:var(--green-lt);border:1px solid var(--green-border);border-radius:6px;padding:14px;text-align:center;">
+          <div style="font-size:18px;margin-bottom:6px;">🌐</div>
+          <div style="font-size:12px;font-weight:700;color:#065f46;">GitHub Pages</div>
+          <div style="font-size:11px;color:#059669;margin-top:4px;">成果物の即時公開</div>
+        </div>
+      </div>
+    </div>
+    <div class="notice notice-accent">
+      <p>Claude Code は「コードを書く作業」そのものを Claude に委譲するツールです。Claude.ai でアイデアを固め、Claude Code で実装・デプロイまで一気通貫で進めるのが最も効率的なフローです。</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">このガイドの使い方</div>
+    <table class="tbl">
+      <thead>
+        <tr><th>タブ</th><th>内容</th><th>読むべき人</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>セットアップ</td><td>インストール・初期設定・基本コマンド一覧</td><td>初めて使う方</td></tr>
+        <tr><td>実践パターン</td><td>コード・文書・運用の具体的な活用例</td><td>すぐに業務に使いたい方</td></tr>
+        <tr><td>（参考）落とし穴</td><td>よくある失敗パターンと対処法</td><td>うまくいかなかった方</td></tr>
+        <tr><td>🚀 次のステップ</td><td>応用展開・自動化との接続方法</td><td>さらに深く活用したい方</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- /tab0 -->
+
+<!-- TAB 1: セットアップ -->
+<div class="tab-pane" id="tab1">
+
+  <div class="sec">
+    <div class="sec-title">インストール</div>
+    <div class="notice notice-blue">
+      <p>Claude Code は npm 経由でインストールします。Node.js（v18 以上）が必要です。Anthropic アカウントと API キーの準備もあわせて行ってください。</p>
+    </div>
+
+    <ul class="step-list" style="margin-top:16px;">
+      <li>
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Node.js のインストール確認</div>
+          <div class="step-desc">ターミナルで <code>node -v</code> を実行し、v18 以上であることを確認します。古い場合は nodejs.org から最新 LTS を取得してください。</div>
+          <div class="code-block-wrap" style="margin-top:8px;">
+            <button class="copy-btn" onclick="copyCode(this)">📋 コピー</button>
+            <div class="code-content">node -v
+# → v20.x.x 以上であればOK</div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Claude Code のインストール</div>
+          <div class="step-desc">npm でグローバルインストールします。</div>
+          <div class="code-block-wrap" style="margin-top:8px;">
+            <button class="copy-btn" onclick="copyCode(this)">📋 コピー</button>
+            <div class="code-content">npm install -g @anthropic-ai/claude-code</div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">API キーの設定</div>
+          <div class="step-desc">Anthropic Console（console.anthropic.com）で API キーを発行し、環境変数に設定します。</div>
+          <div class="code-block-wrap" style="margin-top:8px;">
+            <button class="copy-btn" onclick="copyCode(this)">📋 コピー</button>
+            <div class="code-content"># macOS / Linux
+export ANTHROPIC_API_KEY="sk-ant-..."
+
+# Windows PowerShell
+$env:ANTHROPIC_API_KEY = "sk-ant-..."
+
+# 永続化（.bashrc / .zshrc に追記）
+echo 'export ANTHROPIC_API_KEY="sk-ant-..."' >> ~/.zshrc</div>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">動作確認</div>
+          <div class="step-desc">プロジェクトディレクトリで <code>claude</code> を実行し、対話が始まれば成功です。</div>
+          <div class="code-block-wrap" style="margin-top:8px;">
+            <button class="copy-btn" onclick="copyCode(this)">📋 コピー</button>
+            <div class="code-content">cd /your/project
+claude
+# → プロンプトが表示されればOK</div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">基本コマンド一覧</div>
+    <table class="tbl">
+      <thead>
+        <tr><th>コマンド・操作</th><th>説明</th><th>使用場面</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>claude</code></td><td>対話モードで起動（プロジェクトのコンテキストを自動読み込み）</td><td>日常的な作業全般</td></tr>
+        <tr><td><code>claude "指示文"</code></td><td>ワンライナーで指示を渡して即実行</td><td>簡単なタスクの自動化</td></tr>
+        <tr><td><code>claude -p "指示"</code></td><td>プロンプトモード（承認なしで自律実行）</td><td>スクリプトへの組み込み</td></tr>
+        <tr><td><code>/help</code></td><td>利用可能なコマンド一覧を表示</td><td>不明なコマンドを調べたいとき</td></tr>
+        <tr><td><code>/clear</code></td><td>会話履歴をリセット</td><td>新しいタスクを始めるとき</td></tr>
+        <tr><td><code>/compact</code></td><td>コンテキストを圧縮してトークンを節約</td><td>長い作業セッション中</td></tr>
+        <tr><td><code>/config</code></td><td>設定を確認・変更</td><td>モデル選択・動作調整</td></tr>
+        <tr><td><code>/init</code></td><td>CLAUDE.md（プロジェクト定義）を自動生成</td><td>新規プロジェクト開始時</td></tr>
+        <tr><td><code>Ctrl+C</code></td><td>実行中の操作を中断</td><td>操作を止めたいとき</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">CLAUDE.md — プロジェクト定義ファイル</div>
+    <div class="notice notice-accent">
+      <p>CLAUDE.md はプロジェクトルートに置くマークダウンファイルです。Claude が毎回読み込み、プロジェクトのルール・構成・禁止事項を把握します。書くほど Claude の精度が上がります。</p>
+    </div>
+    <div class="code-block-wrap" style="margin-top:12px;">
+      <button class="copy-btn" onclick="copyCode(this)">📋 コピー</button>
+      <div class="code-content"># CLAUDE.md サンプル
+
+## プロジェクト概要
+このリポジトリは〇〇業務の自動化スクリプト群です。
+
+## ディレクトリ構成
+- scripts/  : Python スクリプト
+- docs/     : HTML 成果物（GitHub Pages 公開）
+- data/     : 入力データ（git 管理外）
+
+## コーディングルール
+- Python 3.10+ を使用すること
+- 文字コードは UTF-8
+- コメントは日本語で記述
+
+## 禁止事項
+- data/ 以下のファイルをコミットしないこと
+- API キーをハードコードしないこと
+
+## デプロイ手順
+cd docs && git add . && git commit -m "deploy" && git push</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">権限モードの使い分け</div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#ecfdf5;">🟢</div>
+          <div>
+            <div class="card-title">通常モード（デフォルト）</div>
+            <div class="card-sub">危険操作は確認ステップあり</div>
+          </div>
+        </div>
+        <div class="card-body">ファイル操作・Git などの重要な操作は Claude が「実行してよいか」を確認してから進みます。初めて使う段階はこのモードが安全です。</div>
+        <div class="card-foot"><span class="tag tag-doc">推奨：入門期</span></div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#fffbeb;">🟡</div>
+          <div>
+            <div class="card-title">--dangerously-skip-permissions</div>
+            <div class="card-sub">全操作を自動承認</div>
+          </div>
+        </div>
+        <div class="card-body">承認ダイアログを省略して自律実行します。スクリプト組み込みや大量処理に便利ですが、意図しない変更のリスクがあります。Git 管理下で使用してください。</div>
+        <div class="card-foot"><span class="tag tag-ops">熟練者向け</span></div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#eff6ff;">🔵</div>
+          <div>
+            <div class="card-title">settings.json による細粒度制御</div>
+            <div class="card-sub">コマンド単位で許可リストを設定</div>
+          </div>
+        </div>
+        <div class="card-body">.claude/settings.json に許可コマンドを列挙することで、「git は自動承認・rm は確認必須」のような設定が可能です。</div>
+        <div class="card-foot"><span class="tag tag-code">中級者向け</span></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /tab1 -->
+
+<!-- TAB 2: 実践パターン -->
+<div class="tab-pane" id="tab2">
+
+  <div class="sec">
+    <div class="sec-title">コード関連パターン</div>
+
+    <div class="pattern-card">
+      <div class="pattern-head">
+        <span class="pattern-icon">🛠️</span>
+        <div>
+          <span class="pattern-title">バグ調査 → 修正 → コミット（ワンショット）</span>
+          <span class="pattern-cat" style="margin-left:8px;">コード</span>
+        </div>
+      </div>
+      <div class="pattern-body">エラーメッセージをそのまま貼り付けると、Claude がファイルを探し・原因を特定し・修正し・テストし・コミットまで完了します。</div>
+      <div class="pattern-prompt">「TypeError: Cannot read properties of undefined (reading 'map') が api/users.js で発生しています。原因を調べて修正し、コミットしてください。」</div>
+      <div class="card-foot">
+        <span class="tag tag-code">バグ修正</span>
+        <span class="tag tag-doc">自動コミット</span>
+        <span class="priority">時間削減 ★★★</span>
+      </div>
+    </div>
+
+    <div class="pattern-card">
+      <div class="pattern-head">
+        <span class="pattern-icon">♻️</span>
+        <div>
+          <span class="pattern-title">レガシーコードのリファクタリング</span>
+          <span class="pattern-cat" style="margin-left:8px;">コード</span>
+        </div>
+      </div>
+      <div class="pattern-body">「このファイルを読んで、Python 3.10 の型ヒントを付けて、関数を分割してください」という指示で、大規模なリファクタリングを安全に進められます。差分確認の承認ステップで内容を確認できます。</div>
+      <div class="pattern-prompt">「legacy_processor.py を読んで、関数を 20 行以内に分割し、型ヒントを追加してください。既存のテストが通ることを確認してからコミットしてください。」</div>
+      <div class="card-foot">
+        <span class="tag tag-code">リファクタリング</span>
+        <span class="priority">品質向上 ★★★</span>
+      </div>
+    </div>
+
+    <div class="pattern-card">
+      <div class="pattern-head">
+        <span class="pattern-icon">🧪</span>
+        <div>
+          <span class="pattern-title">テストコードの自動生成</span>
+          <span class="pattern-cat" style="margin-left:8px;">コード</span>
+        </div>
+      </div>
+      <div class="pattern-body">実装コードを渡すだけで、pytest / Jest / JUnit 等のテストを自動生成します。エッジケースまで考慮した網羅的なテストを短時間で揃えられます。</div>
+      <div class="pattern-prompt">「utils/formatter.py の各関数に対して pytest のテストを作成してください。正常系・異常系・境界値を含めてください。」</div>
+      <div class="card-foot">
+        <span class="tag tag-code">テスト生成</span>
+        <span class="priority">工数削減 ★★</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">文書・資料作成パターン</div>
+
+    <div class="pattern-card">
+      <div class="pattern-head">
+        <span class="pattern-icon">📄</span>
+        <div>
+          <span class="pattern-title">HTML 成果物の一撃生成</span>
+          <span class="pattern-cat" style="margin-left:8px;">文書</span>
+        </div>
+      </div>
+      <div class="pattern-body">config.json に仕様を書き、既存の HTML をテンプレートとして渡すと、Claude がタブ構成・色設定・コンテンツを自動生成します。本ガイド自体もこの手法で生成しました。</div>
+      <div class="pattern-prompt">「@config.json を読み込み、@template.html の構造を参考に、指定された仕様の新しい HTML 資料を生成してください。タブ ID は tab0 から連番、doc-footer は最下部に 1 個のみ。」</div>
+      <div class="card-foot">
+        <span class="tag tag-doc">HTML生成</span>
+        <span class="tag tag-accent">config駆動</span>
+        <span class="priority">時間削減 ★★★</span>
+      </div>
+    </div>
+
+    <div class="pattern-card">
+      <div class="pattern-head">
+        <span class="pattern-icon">📝</span>
+        <div>
+          <span class="pattern-title">議事録 → 構造化ドキュメント変換</span>
+          <span class="pattern-cat" style="margin-left:8px;">文書</span>
+        </div>
+      </div>
+      <div class="pattern-body">テキスト形式の議事録・メモを渡すと、Markdown や HTML の構造化ドキュメントに変換します。決定事項・TODO・担当者を自動的に分類・整理します。</div>
+      <div class="pattern-prompt">「meeting_notes.txt を読んで、決定事項・TODO（担当者・期限付き）・継続検討事項に分類した議事録 Markdown を作成してください。」</div>
+      <div class="card-foot">
+        <span class="tag tag-doc">議事録整理</span>
+        <span class="priority">工数削減 ★★</span>
+      </div>
+    </div>
+
+    <div class="pattern-card">
+      <div class="pattern-head">
+        <span class="pattern-icon">🔍</span>
+        <div>
+          <span class="pattern-title">コードベース説明ドキュメントの自動生成</span>
+          <span class="pattern-cat" style="margin-left:8px;">文書</span>
+        </div>
+      </div>
+      <div class="pattern-body">引き継ぎや初参者向けに、既存コードを解析してアーキテクチャ説明・ディレクトリ構成図・主要クラス/関数の説明を自動生成します。</div>
+      <div class="pattern-prompt">「このプロジェクト全体を読んで、新メンバー向けの README.md を生成してください。ディレクトリ構成・主要モジュールの役割・起動手順を含めてください。」</div>
+      <div class="card-foot">
+        <span class="tag tag-doc">ドキュメント自動化</span>
+        <span class="priority">品質向上 ★★★</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">運用・自動化パターン</div>
+
+    <div class="pattern-card">
+      <div class="pattern-head">
+        <span class="pattern-icon">🚀</span>
+        <div>
+          <span class="pattern-title">ビルド → コミット → デプロイの連鎖実行</span>
+          <span class="pattern-cat" style="margin-left:8px;">運用</span>
+        </div>
+      </div>
+      <div class="pattern-body">「ファイルを生成して git push まで」という指示を一度出すだけで、Claude が連続したシェルコマンドを順番に実行します。承認ステップで各操作を確認できます。</div>
+      <div class="pattern-prompt">「output.html を生成したら、C:/git/hancho-docs/ にコピーし、git add → commit → push まで実行してください。」</div>
+      <div class="card-foot">
+        <span class="tag tag-ops">デプロイ自動化</span>
+        <span class="priority">時間削減 ★★★</span>
+      </div>
+    </div>
+
+    <div class="pattern-card">
+      <div class="pattern-head">
+        <span class="pattern-icon">📊</span>
+        <div>
+          <span class="pattern-title">ログ解析・異常検知レポート生成</span>
+          <span class="pattern-cat" style="margin-left:8px;">運用</span>
+        </div>
+      </div>
+      <div class="pattern-body">大量のログファイルを渡すと、エラーパターンを抽出・集計し、問題箇所を特定したレポートを生成します。定期的なログレビューを大幅に効率化できます。</div>
+      <div class="pattern-prompt">「logs/ ディレクトリ内の全ログファイルを読んで、ERROR・WARN 件数をサービス別に集計し、頻出エラーパターン TOP5 をまとめてください。」</div>
+      <div class="card-foot">
+        <span class="tag tag-ops">ログ解析</span>
+        <span class="priority">工数削減 ★★</span>
+      </div>
+    </div>
+
+    <div class="pattern-card">
+      <div class="pattern-head">
+        <span class="pattern-icon">🔄</span>
+        <div>
+          <span class="pattern-title">設定ファイルの一括マイグレーション</span>
+          <span class="pattern-cat" style="margin-left:8px;">運用</span>
+        </div>
+      </div>
+      <div class="pattern-body">複数の設定ファイルの書式変更・バージョンアップ対応・フィールド名変更などを一括で行います。手作業での漏れを防ぎ、変更ログも自動生成します。</div>
+      <div class="pattern-prompt">「configs/ 以下の全 YAML ファイルで、旧フィールド名 'db_host' を 'database_host' に変更してください。変更したファイル一覧も出力してください。」</div>
+      <div class="card-foot">
+        <span class="tag tag-ops">一括変更</span>
+        <span class="priority">ミス防止 ★★★</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /tab2 -->
+
+<!-- TAB 3: 落とし穴 -->
+<div class="tab-pane" id="tab3">
+
+  <div class="sec">
+    <div class="sec-title">よくある失敗パターンと対処法</div>
+    <div class="notice notice-amber">
+      <p>Claude Code は強力ですが、使い方を誤ると意図しない変更や情報漏洩のリスクがあります。以下のパターンを事前に把握しておくことで、安全・快適に使い続けられます。</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">プロンプト設計の落とし穴</div>
+
+    <div class="pitfall-card">
+      <div class="pitfall-head">
+        <span class="pitfall-icon">⚠️</span>
+        <div class="pitfall-title">指示があいまいすぎて意図と違う結果が出る</div>
+      </div>
+      <div class="pitfall-body">「これを直して」「いい感じにして」のような抽象的な指示は、Claude の解釈が発散しやすく、想定外の変更が加わることがあります。</div>
+      <div class="pitfall-fix">「〇〇という問題を解決するために、△△ファイルの□□関数を修正してください。変更範囲は該当関数のみ」のように、対象・目的・範囲を明示します。</div>
+    </div>
+
+    <div class="pitfall-card">
+      <div class="pitfall-head">
+        <span class="pitfall-icon">⚠️</span>
+        <div class="pitfall-title">コンテキストが長くなりすぎて精度が落ちる</div>
+      </div>
+      <div class="pitfall-body">1 つのセッションで複数の無関係なタスクを続けると、会話履歴が積み重なり、後半の指示の精度が低下することがあります。</div>
+      <div class="pitfall-fix">/clear でコンテキストをリセットするか、/compact でコンテキストを圧縮します。タスクが変わったら新しいセッションを始める習慣をつけましょう。</div>
+    </div>
+
+    <div class="pitfall-card">
+      <div class="pitfall-head">
+        <span class="pitfall-icon">⚠️</span>
+        <div class="pitfall-title">日本語と英語が混在した指示でブレが生じる</div>
+      </div>
+      <div class="pitfall-body">コメントは日本語・コードは英語・指示は混在、という状態では Claude の出力品質がばらつきやすくなります。</div>
+      <div class="pitfall-fix">CLAUDE.md に「コメントは日本語・変数名は英語・指示は日本語で記述する」と明記してください。指示言語を統一することで再現性が上がります。</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">セキュリティ・情報管理の落とし穴</div>
+
+    <div class="pitfall-card">
+      <div class="pitfall-head">
+        <span class="pitfall-icon">🔒</span>
+        <div class="pitfall-title">機密情報・API キーをそのまま渡してしまう</div>
+      </div>
+      <div class="pitfall-body">本番 API キー・パスワード・個人情報が含まれたファイルを Claude に直接読ませると、会話ログに残るリスクがあります。</div>
+      <div class="pitfall-fix">.gitignore / .claudeignore で機密ファイルを除外します。環境変数（.env）はサンプル（.env.example）に差し替えて渡しましょう。API キーは必ず環境変数経由で管理します。</div>
+    </div>
+
+    <div class="pitfall-card">
+      <div class="pitfall-head">
+        <span class="pitfall-icon">🔒</span>
+        <div class="pitfall-title">--dangerously-skip-permissions を本番環境で使う</div>
+      </div>
+      <div class="pitfall-body">承認ダイアログをスキップするオプションを本番サーバーで使うと、誤った rm・上書き・デプロイが承認なしで実行されてしまいます。</div>
+      <div class="pitfall-fix">--dangerously-skip-permissions はローカル開発環境・ステージング環境のみで使用します。本番環境では必ず通常モードを使い、重要操作は手動で確認してください。</div>
+    </div>
+
+    <div class="pitfall-card">
+      <div class="pitfall-head">
+        <span class="pitfall-icon">🔒</span>
+        <div class="pitfall-title">社名・個人名・顧客情報が資料に残る</div>
+      </div>
+      <div class="pitfall-body">内部資料を元にドキュメントを生成させると、具体的な顧客名・担当者名・社内コードが出力に含まれる場合があります。</div>
+      <div class="pitfall-fix">公開資料を生成する際は「社名・個人名・顧客情報を含めないこと」を指示に明記します。生成後は必ず人目でレビューを行ってください。</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">作業効率の落とし穴</div>
+
+    <div class="pitfall-card">
+      <div class="pitfall-head">
+        <span class="pitfall-icon">💡</span>
+        <div class="pitfall-title">承認ダイアログを惰性でOKして意図しない変更を取り込む</div>
+      </div>
+      <div class="pitfall-body">「どうせ合っているだろう」と内容を確認せずに承認を続けると、不要なファイル削除・誤ったリファクタリングに気づかないまま進んでしまいます。</div>
+      <div class="pitfall-fix">承認ダイアログでは必ず diff を確認します。大規模変更は git stash で退避してから実行し、問題があれば git checkout で戻せる状態を維持しましょう。</div>
+    </div>
+
+    <div class="pitfall-card">
+      <div class="pitfall-head">
+        <span class="pitfall-icon">💡</span>
+        <div class="pitfall-title">巨大なタスクを一度に投げてしまう</div>
+      </div>
+      <div class="pitfall-body">「このシステム全体をリファクタリングして」のような巨大タスクは途中で迷走したり、部分的に未完了で終わることがあります。</div>
+      <div class="pitfall-fix">タスクを「ファイル単位」「機能単位」に分割して段階的に指示します。Claude に「まず計画を立ててから実装してください」と前置きするのも効果的です。</div>
+    </div>
+  </div>
+
+</div><!-- /tab3 -->
+
+<!-- TAB 4: 次のステップ -->
+<div class="tab-pane" id="tab4">
+
+  <div class="sec">
+    <div class="sec-title">応用展開のロードマップ</div>
+
+    <div style="background:linear-gradient(135deg,#5b21b6 0%,#7c3aed 100%);border-radius:12px;padding:28px 32px;margin-bottom:20px;color:#fff;">
+      <div style="font-size:18px;font-weight:700;margin-bottom:10px;letter-spacing:.02em;">
+        🚀 Claude Code を「仕組み」に変える
+      </div>
+      <div style="font-size:13px;color:rgba(255,255,255,.88);line-height:1.9;">
+        日常的な手作業を Claude Code に委譲したら、次は「自動化パイプライン」として組み込むフェーズです。<br>
+        スケジュール実行・CI/CD 連携・MCP サーバーとの組み合わせで、反復コストをゼロに近づけられます。
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:24px;">
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:18px;">
+        <div style="font-size:22px;margin-bottom:8px;">📅</div>
+        <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:8px;">フェーズ 1：手作業の置き換え</div>
+        <ul style="list-style:none;padding:0;font-size:12px;color:var(--text2);line-height:1.9;">
+          <li>✅ バグ修正・レビューを Claude に委譲</li>
+          <li>✅ 定型ドキュメント生成の自動化</li>
+          <li>✅ git 操作の Claude 経由実行</li>
+        </ul>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--accent-border);border-radius:8px;padding:18px;">
+        <div style="font-size:22px;margin-bottom:8px;">⚙️</div>
+        <div style="font-size:13px;font-weight:700;color:#5b21b6;margin-bottom:8px;">フェーズ 2：スクリプト化</div>
+        <ul style="list-style:none;padding:0;font-size:12px;color:var(--text2);line-height:1.9;">
+          <li>✅ claude -p "指示" でシェルから呼び出し</li>
+          <li>✅ config.json 駆動の資料生成</li>
+          <li>✅ 定期スクリプトへの組み込み</li>
+        </ul>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:18px;">
+        <div style="font-size:22px;margin-bottom:8px;">🔗</div>
+        <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:8px;">フェーズ 3：パイプライン統合</div>
+        <ul style="list-style:none;padding:0;font-size:12px;color:var(--text2);line-height:1.9;">
+          <li>✅ GitHub Actions から Claude Code を呼び出し</li>
+          <li>✅ MCP サーバーでデータソース拡張</li>
+          <li>✅ 定期実行レポートの自動配信</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">スクリプト化パターン</div>
+
+    <div class="code-label">PowerShell — 資料生成 + デプロイの自動化例</div>
+    <div class="code-block-wrap">
+      <button class="copy-btn" onclick="copyCode(this)">📋 コピー</button>
+      <div class="code-content"># deploy.ps1 — Claude Code で HTML 生成 → git push まで自動化
+
+param(
+  [string]$ConfigFile = "config.json",
+  [string]$TargetRepo = "C:/git/hancho-docs"
+)
+
+Write-Host "=== Claude Code 自動デプロイ開始 ===" -ForegroundColor Cyan
+
+# Claude Code でファイル生成
+claude -p "@$ConfigFile を読み込み、仕様に基づいて HTML 資料を生成してください。出力先は $TargetRepo にしてください。"
+
+# git push
+Set-Location $TargetRepo
+git add .
+git commit -m "auto: Claude Code 生成 $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
+git push
+
+Write-Host "=== デプロイ完了 ===" -ForegroundColor Green</div>
+    </div>
+
+    <div class="code-label">Bash — ログ解析レポートの定期生成例</div>
+    <div class="code-block-wrap">
+      <button class="copy-btn" onclick="copyCode(this)">📋 コピー</button>
+      <div class="code-content">#!/bin/bash
+# weekly_report.sh — 週次ログレポートを Claude Code で自動生成
+
+REPORT_DIR="./reports"
+DATE=$(date +%Y%m%d)
+
+# Claude Code でレポート生成（自律モード）
+claude -p "
+logs/ ディレクトリの今週のログを解析してください。
+・ERROR / WARN を件数集計（サービス別）
+・頻出エラーパターン TOP5 を抽出
+・前週比の増減コメントを付与
+結果を ${REPORT_DIR}/report_${DATE}.md として保存してください。
+"
+
+echo "レポート生成完了: ${REPORT_DIR}/report_${DATE}.md"</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">MCP サーバーとの連携</div>
+    <div class="notice notice-accent">
+      <p>MCP（Model Context Protocol）は Claude Code の拡張機能です。Slack・GitHub・データベース・社内 API などのデータソースを Claude が直接参照できるようになり、コンテキストの幅が大幅に広がります。</p>
+    </div>
+    <table class="tbl" style="margin-top:14px;">
+      <thead>
+        <tr><th>MCP サーバー</th><th>できること</th><th>活用例</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>GitHub MCP</td><td>PR・Issue・コードを直接参照</td><td>「今週の PR レビューまとめて」</td></tr>
+        <tr><td>Slack MCP</td><td>チャンネル投稿・検索</td><td>「このバグ報告を dev チャンネルに投稿して」</td></tr>
+        <tr><td>Filesystem MCP</td><td>任意のディレクトリへのアクセス</td><td>「NAS の設計書フォルダを読んで要約して」</td></tr>
+        <tr><td>Database MCP</td><td>SQL 実行・スキーマ参照</td><td>「先月の売上集計クエリを書いて実行して」</td></tr>
+        <tr><td>Custom MCP</td><td>社内 API や独自データソース</td><td>自社システムとのシームレスな連携</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">学習リソース</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:var(--accent-lt);">📚</div>
+          <div>
+            <div class="card-title">Claude Code 公式ドキュメント</div>
+            <div class="card-sub">Anthropic / docs.anthropic.com</div>
+          </div>
+        </div>
+        <div class="card-body">インストール・設定・MCP・hooks・SDK の詳細が網羅されています。困ったときの第一の参照先です。</div>
+        <div class="card-foot"><span class="tag tag-accent">公式</span></div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:var(--green-lt);">🎓</div>
+          <div>
+            <div class="card-title">Anthropic Academy</div>
+            <div class="card-sub">anthropic.skilljar.com</div>
+          </div>
+        </div>
+        <div class="card-body">Claude API・プロンプトエンジニアリング・ツール活用の公式無料コースが 17 種類揃っています。修了証も取得可能です。</div>
+        <div class="card-foot"><span class="tag tag-doc">無料</span></div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#eff6ff;">🔧</div>
+          <div>
+            <div class="card-title">hooks / settings.json 活用</div>
+            <div class="card-sub">自動化の第一歩</div>
+          </div>
+        </div>
+        <div class="card-body">/update-config スキルを使うと、「Claude が停止したとき通知する」「特定コマンドを自動承認する」などの自動化設定を対話で構築できます。</div>
+        <div class="card-foot"><span class="tag tag-code">設定</span></div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:var(--amber-lt);">💬</div>
+          <div>
+            <div class="card-title">社内ナレッジ共有</div>
+            <div class="card-sub">活用事例の横展開</div>
+          </div>
+        </div>
+        <div class="card-body">うまくいったプロンプトパターン・CLAUDE.md テンプレートを社内で共有することで、チーム全体の活用レベルが底上げされます。</div>
+        <div class="card-foot"><span class="tag tag-doc">推奨</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">アクションチェックリスト</div>
+    <table class="tbl">
+      <thead>
+        <tr><th>#</th><th>アクション</th><th>目安時間</th><th>期待効果</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Claude Code をインストールして動作確認する</td><td>15 分</td><td>環境構築完了</td></tr>
+        <tr><td>2</td><td>手元の小さなバグを Claude Code に直させる</td><td>30 分</td><td>基本操作習得</td></tr>
+        <tr><td>3</td><td>既存プロジェクトに CLAUDE.md を作成する</td><td>30 分</td><td>精度向上</td></tr>
+        <tr><td>4</td><td>定型ドキュメントを config.json 駆動で生成する</td><td>1 時間</td><td>文書作成の自動化</td></tr>
+        <tr><td>5</td><td>バッチスクリプトに claude -p を組み込む</td><td>2 時間</td><td>反復タスクの自動化</td></tr>
+        <tr><td>6</td><td>GitHub Actions / MCP と連携する</td><td>半日</td><td>CI/CD・外部連携</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- /tab4 -->
+
+<!-- Footer (1個のみ) -->
+<div class="doc-footer">
+  Claude Code 実践運用ガイド v1 &nbsp;|&nbsp; 作成日：2026-05-15 &nbsp;|&nbsp; 対象：社内メンバー向け
+</div>
+
+<script>
+function showTab(n){
+  document.querySelectorAll('.tab-pane').forEach(function(p,i){p.classList.toggle('active',i===n);});
+  document.querySelectorAll('.tab-btn').forEach(function(b,i){b.classList.toggle('active',i===n);});
+}
+function copyCode(btn){
+  var block = btn.parentElement.querySelector('.code-content');
+  var text = block.innerText;
+  navigator.clipboard.writeText(text).then(function(){
+    btn.textContent = '✅ コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){btn.textContent='📋 コピー';btn.classList.remove('copied');}, 2000);
+  }).catch(function(){
+    btn.textContent = '❌ 失敗';
+    setTimeout(function(){btn.textContent='📋 コピー';}, 2000);
+  });
+}
+</script>
+
+</body>
+</html>

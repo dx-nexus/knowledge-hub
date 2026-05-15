@@ -310,6 +310,12 @@ body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:
           <td>一撃プロンプト・GitHub公開手順・<br>Geminiレビュー運用</td>
           <td>社内ポータル・<br>他案件向け類似資料の展開</td>
         </tr>
+        <tr>
+          <td><strong>🚀 次のステップ</strong></td>
+          <td>本資料を起点に<br>「Claude Code 一撃自動生成」へ展開</td>
+          <td>config.json 標準化・<br>段階的自動化のロードマップ</td>
+          <td>他テーマの量産、<br>GitHub Actions による<br>完全自動化への発展</td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -1233,7 +1239,7 @@ tone: </div>
     </div>
 
     <div class="notice notice-amber">
-      <p>💡 <strong>使い方の流れ：</strong>①入力テンプレートを埋める → ②テンプレート本文の <span style="background:rgba(253,224,71,.3);padding:1px 5px;border-radius:3px;font-family:monospace;font-weight:700;">{{変数}}</span> を実際の値に置換 → ③Claudeに投げる → ④出力されたHTMLをGitHub Pagesにpush → ⑤Geminiでレビュー</p>
+      <p>💡 <strong>使い方の流れ：</strong>①入力テンプレートを埋める → ②汎用テンプレートの <span style="background:rgba(253,224,71,.3);padding:1px 5px;border-radius:3px;font-family:monospace;font-weight:700;">{{変数}}</span> を実際の値に置換 → ③Claudeに投げる → ④出力されたHTMLをGitHub Pagesにpush → ⑤Geminiでレビュー</p>
     </div>
   </div>
 
@@ -1500,6 +1506,105 @@ tone: </div>
       <p>📌 <strong>「コマンド実行までやる」とは：</strong>JSONをClaude Codeに渡した瞬間から、Claude Codeがローカルファイル操作・git操作までを内部で完結します。人間が個別にgit add / commit / push を打つ必要はありません。</p>
     </div>
   </div>
+
+  <div class="sec">
+    <div class="sec-title">🛤️ 段階的自動化ロードマップ（最終形＝完全手放し運用）</div>
+
+    <div class="notice notice-purple" style="margin-bottom:14px;">
+      <p>🎯 <strong>最終目標：</strong>「ファイア・アンド・フォーゲット」運用。<br>
+      人間は意図（テーマ・要件）を与えるだけ、AIが生成・公開・ログ記録まで完結。<br>
+      何かあれば成果物URLとログで事後確認すればよい状態に。</p>
+    </div>
+
+    <div class="roadmap" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0;">
+      <div class="phase" style="background:#fff;border:1px solid #e2e8f0;padding:18px 16px;border-radius:8px 0 0 8px;">
+        <div class="phase-num" style="background:#2563eb;color:#fff;width:28px;height:28px;line-height:28px;border-radius:50%;display:inline-block;text-align:center;font-weight:700;font-size:12px;">1</div>
+        <div style="font-size:10px;color:#94a3b8;font-weight:600;letter-spacing:.05em;margin-top:6px;">現状・今すぐ着手</div>
+        <div style="font-size:14px;font-weight:700;color:#1a2744;margin:4px 0 8px;">半自動の安定化</div>
+        <div style="font-size:11px;color:#475569;line-height:1.7;">
+          <strong>状態：</strong>Claude Codeに指示を投げる運用<br>
+          <strong>やる：</strong>テンプレ整備・config.json標準化・<br>deploy.ps1運用定着<br>
+          <strong>得る：</strong>毎回安定して同品質の生成
+        </div>
+      </div>
+
+      <div class="phase" style="background:#fff;border:1px solid #e2e8f0;padding:18px 16px;">
+        <div class="phase-num" style="background:#7c3aed;color:#fff;width:28px;height:28px;line-height:28px;border-radius:50%;display:inline-block;text-align:center;font-weight:700;font-size:12px;">2</div>
+        <div style="font-size:10px;color:#94a3b8;font-weight:600;letter-spacing:.05em;margin-top:6px;">3〜6ヶ月以内</div>
+        <div style="font-size:14px;font-weight:700;color:#1a2744;margin:4px 0 8px;">GitHub Actions構築</div>
+        <div style="font-size:11px;color:#475569;line-height:1.7;">
+          <strong>状態：</strong>config.json push → 自動生成・公開<br>
+          <strong>やる：</strong>Actions workflow作成・<br>Anthropic APIキーをSecret登録<br>
+          <strong>得る：</strong>「pushだけで完結」を実現
+        </div>
+      </div>
+
+      <div class="phase" style="background:#fff;border:1px solid #e2e8f0;padding:18px 16px;">
+        <div class="phase-num" style="background:#d97706;color:#fff;width:28px;height:28px;line-height:28px;border-radius:50%;display:inline-block;text-align:center;font-weight:700;font-size:12px;">3</div>
+        <div style="font-size:10px;color:#94a3b8;font-weight:600;letter-spacing:.05em;margin-top:6px;">6〜12ヶ月</div>
+        <div style="font-size:14px;font-weight:700;color:#1a2744;margin:4px 0 8px;">ログ・通知の整備</div>
+        <div style="font-size:11px;color:#475569;line-height:1.7;">
+          <strong>状態：</strong>生成のたびにログが自動蓄積<br>
+          <strong>やる：</strong>CHANGELOG自動更新・<br>失敗時のSlack/メール通知<br>
+          <strong>得る：</strong>状況確認の脱・手動
+        </div>
+      </div>
+
+      <div class="phase" style="background:#fff;border:1px solid #e2e8f0;padding:18px 16px;border-radius:0 8px 8px 0;">
+        <div class="phase-num" style="background:#059669;color:#fff;width:28px;height:28px;line-height:28px;border-radius:50%;display:inline-block;text-align:center;font-weight:700;font-size:12px;">4</div>
+        <div style="font-size:10px;color:#94a3b8;font-weight:600;letter-spacing:.05em;margin-top:6px;">12ヶ月〜（最終形）</div>
+        <div style="font-size:14px;font-weight:700;color:#1a2744;margin:4px 0 8px;">完全手放し運用</div>
+        <div style="font-size:11px;color:#475569;line-height:1.7;">
+          <strong>状態：</strong>意図を与えるだけで成果物が公開<br>
+          <strong>やる：</strong>品質チェック・リンク切れ検知・<br>異常自動修復<br>
+          <strong>得る：</strong>「忘れても回る」運用
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">📋 各段階の判定基準（次に進むタイミング）</div>
+    <table class="tbl">
+      <thead><tr><th>段階</th><th>次に進める判定基準</th><th>残課題</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>1→2</td>
+          <td>「半自動」での生成が週1回以上の頻度で安定稼働<br>config.jsonテンプレが3パターン以上完成</td>
+          <td>テンプレ標準化・運用定着</td>
+        </tr>
+        <tr>
+          <td>2→3</td>
+          <td>GitHub Actionsで月10回以上の自動生成が成功<br>失敗率5%以下</td>
+          <td>Secret管理・コスト監視</td>
+        </tr>
+        <tr>
+          <td>3→4</td>
+          <td>失敗通知・ログ追跡が運用に組み込まれている<br>異常検知の精度80%以上</td>
+          <td>品質チェック・異常自動修復</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">🔍 最終形（L4）で人間に残るタスク</div>
+    <div class="notice notice-green">
+      <p>🎯 <strong>「忘れても回る」状態でも、人間が担うべき重要タスク：</strong></p>
+      <ul style="padding-left:20px;margin-top:8px;font-size:13px;">
+        <li><strong>意図の設定：</strong>「何を作るか」「なぜ作るか」の判断は引き続き人間が持つ</li>
+        <li><strong>異常時のレビュー：</strong>通知が来た時にログを読み、判断する</li>
+        <li><strong>戦略の見直し：</strong>四半期ごとにテンプレ・自動化ルールの妥当性をチェック</li>
+        <li><strong>意味づけ：</strong>生成物の価値判断（公開する・しない、改善する・しない）</li>
+      </ul>
+    </div>
+    <div class="notice notice-amber">
+      <p>📌 <strong>AIに渡してはいけない領域：</strong>判断・感情・意味づけ・余白。<br>
+      自動化は「作業」を肩代わりするが、「考えること」は人間に残し続ける。</p>
+    </div>
+  </div>
+
+
 
 
 <div class="sec">

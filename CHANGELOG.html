@@ -150,6 +150,57 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 
       <!-- ▼ ここから履歴エントリ。新しいものを上に追加してください ▼ -->
 
+      <div class="entry" data-actor="claude" data-cat="add">
+        <div class="entry-head">
+          <span class="entry-date">2026-05-15</span>
+          <span class="entry-actor actor-claude">Claude</span>
+          <span class="entry-cat cat-add">追加</span>
+        </div>
+        <div class="entry-title">Academy「次のステップ」に段階的自動化ロードマップを追加</div>
+        <div class="entry-body">
+          自動化レベル4段階（手動／半自動／準自動／完全自動）の整理表 + 完全自動化への3選択肢（A:ローカルスクリプト・B:Anthropic API直接・C:GitHub Actions推奨）を追加。<br>
+          さらに「段階的自動化ロードマップ」4フェーズ（半自動安定化→GitHub Actions構築→ログ通知整備→完全手放し運用）と各段階の判定基準・最終形L4で人間に残るタスクを明示。<br>
+          目指す姿：「ファイア・アンド・フォーゲット」運用＝意図を与えるだけで成果物が公開される状態。
+        </div>
+        <div class="entry-files">
+          <a class="entry-file" href="Anthropic_Academy_Plan_Internal.html">Anthropic_Academy_Plan_Internal.html</a>
+        </div>
+      </div>
+
+      <div class="entry" data-actor="claude" data-cat="add">
+        <div class="entry-head">
+          <span class="entry-date">2026-05-15</span>
+          <span class="entry-actor actor-claude">Claude</span>
+          <span class="entry-cat cat-add">追加</span>
+        </div>
+        <div class="entry-title">Claude Code 一撃自動生成デモ実施・config.json運用テスト</div>
+        <div class="entry-body">
+          はんちょう向けデモとして「Hancho_Life_Portfolio_v1.html」を Claude Code 経由でゼロから生成。<br>
+          続けて Claude Code 実践運用ガイド用の config.json テンプレを作成し、Claude Code 実機テスト中（Claude Code が2画面で並行動作・テンプレ参照・HTML生成・git push まで自動実行）。<br>
+          Generator_Concept_Draft.html にも自動化レベル整理・3選択肢比較表を反映。
+        </div>
+        <div class="entry-files">
+          <a class="entry-file" href="Hancho_Life_Portfolio_v1.html">Hancho_Life_Portfolio_v1.html</a>
+          <a class="entry-file" href="Generator_Concept_Draft.html">Generator_Concept_Draft.html</a>
+        </div>
+      </div>
+
+      <div class="entry" data-actor="human" data-cat="discuss">
+        <div class="entry-head">
+          <span class="entry-date">2026-05-15</span>
+          <span class="entry-actor actor-human">人間</span>
+          <span class="entry-cat cat-discuss">議論</span>
+        </div>
+        <div class="entry-title">Claude Code 確認プロンプト省略の方針確定</div>
+        <div class="entry-body">
+          毎回 Yes/No 確認が出るのが面倒という運用課題に対し、解決策3パターンを整理：<br>
+          ① Shift+Tab で auto-accept モード切替（今すぐ・セッション内）<br>
+          ② claude --permission-mode acceptEdits（次回起動から永続）<br>
+          ③ ~/.claude/settings.json の permissions.allow で許可ツール明示（最も安全）
+        </div>
+      </div>
+
+
       <div class="entry" data-actor="claude" data-cat="change">
         <div class="entry-head">
           <span class="entry-date">2026-05-15</span>

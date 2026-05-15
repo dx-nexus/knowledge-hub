@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "PowerShell($bytes = [System.IO.File]::ReadAllBytes\\(\"C:\\\\git\\\\hancho-docs\\\\Anthropic_Academy_Plan_Internal.html\"\\); \"File size: $\\($bytes.Length\\) bytes\"; \"First bytes: $\\($bytes[0..3] -join ','\\)\"; $enc = [System.IO.StreamReader]::new\\(\"C:\\\\git\\\\hancho-docs\\\\Anthropic_Academy_Plan_Internal.html\"\\); \"Encoding detected: $\\($enc.CurrentEncoding.EncodingName\\)\"; $enc.Close\\(\\))"
+    ]
+  }
+}
