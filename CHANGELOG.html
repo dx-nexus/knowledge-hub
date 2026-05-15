@@ -152,6 +152,74 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 
       <div class="entry" data-actor="claude" data-cat="change">
         <div class="entry-head">
+          <span class="entry-date">2026-05-15</span>
+          <span class="entry-actor actor-claude">Claude</span>
+          <span class="entry-cat cat-change">変更</span>
+        </div>
+        <div class="entry-title">Academy「本資料作成手順」整理・新タブ「次のステップ」を切り出し</div>
+        <div class="entry-body">
+          ①「② テンプレート本文（Claude向け）」を「② 汎用テンプレート（Claude向け）」に名称変更<br>
+          ② STEP 5「Claude Codeで一撃自動生成（実行可能フロー）」を「🚀 Claude Codeで一撃自動生成への道」として独立タブに切り出し<br>
+          結果：6タブ→7タブ構成（はじめに / コース一覧 / 学習ロードマップ / 参考用語集 / 参考システム連携概要 / 参考本資料作成手順 / 次のステップ）
+        </div>
+        <div class="entry-files">
+          <a class="entry-file" href="Anthropic_Academy_Plan_Internal.html">Anthropic_Academy_Plan_Internal.html</a>
+        </div>
+      </div>
+
+      <div class="entry" data-actor="claude" data-cat="fix">
+        <div class="entry-head">
+          <span class="entry-date">2026-05-15</span>
+          <span class="entry-actor actor-claude">Claude</span>
+          <span class="entry-cat cat-fix">修正</span>
+        </div>
+        <div class="entry-title">Academy 学習内容リスト追加・左寄せ全幅・初期タブ修正</div>
+        <div class="entry-body">
+          全13コースカードに「📌 習得できる内容」リスト（各3項目・✓チェックマーク付き）を追加。<br>
+          ヘッダー・タブバー・コンテンツの中央寄せ（max-width:1100px）を撤廃し全幅左寄せ化（!important指定）。<br>
+          初期表示タブが意図せずtab5になっていたのをtab0（はじめに）に修正。
+        </div>
+        <div class="entry-files">
+          <a class="entry-file" href="Anthropic_Academy_Plan_Internal.html">Anthropic_Academy_Plan_Internal.html</a>
+        </div>
+      </div>
+
+      <div class="entry" data-actor="human" data-cat="fix">
+        <div class="entry-head">
+          <span class="entry-date">2026-05-15</span>
+          <span class="entry-actor actor-human">人間</span>
+          <span class="entry-cat cat-fix">修正</span>
+        </div>
+        <div class="entry-title">CSS大量削除事故からの復旧（git checkout 0a000dc）</div>
+        <div class="entry-body">
+          Academyのレイアウト修正時にCSSを大量削除→JavaScriptが破損→「showTab is not defined」エラー発生。<br>
+          git checkout 0a000dc で朝の正常版に復元。教訓：CSS修正は「追加のみ・削除禁止」を運用ルールとして確立。
+        </div>
+        <div class="entry-files">
+          <a class="entry-file" href="Anthropic_Academy_Plan_Internal.html">Anthropic_Academy_Plan_Internal.html</a>
+        </div>
+      </div>
+
+      <div class="entry" data-actor="claude" data-cat="add">
+        <div class="entry-head">
+          <span class="entry-date">2026-05-15</span>
+          <span class="entry-actor actor-claude">Claude</span>
+          <span class="entry-cat cat-add">追加</span>
+        </div>
+        <div class="entry-title">deploy.ps1 ワンコマンドpushスクリプトを追加</div>
+        <div class="entry-body">
+          Downloadsフォルダから最新ファイルを自動検出（LastWriteTime降順）→ 各リポジトリにコピー → vault push → docs同期push まで自動化。<br>
+          コミットメッセージは引数で指定可能（`.\scripts\deploy.ps1 "メッセージ"`）。<br>
+          運用上の課題：Downloadsに古いファイルが残ると古い版がpushされる可能性 → 都度Remove-Itemまたは「ダウンロード前削除」がベター。
+        </div>
+        <div class="entry-files">
+          <a class="entry-file" href="C:\git\hancho-kb\scripts\deploy.ps1">deploy.ps1</a>
+        </div>
+      </div>
+
+
+      <div class="entry" data-actor="claude" data-cat="change">
+        <div class="entry-head">
           <span class="entry-date">2026-05-14</span>
           <span class="entry-actor actor-claude">Claude</span>
           <span class="entry-cat cat-change">変更</span>
