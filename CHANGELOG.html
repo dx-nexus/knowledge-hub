@@ -150,15 +150,50 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 
       <!-- ▼ ここから履歴エントリ。新しいものを上に追加してください ▼ -->
 
+      <div class="entry" data-actor="claude" data-cat="change">
+        <div class="entry-head">
+          <span class="entry-date">2026-05-14</span>
+          <span class="entry-actor actor-claude">Claude</span>
+          <span class="entry-cat cat-change">変更</span>
+        </div>
+        <div class="entry-title">Academy コース一覧の3点修正：レイアウト・学習内容・フィルター</div>
+        <div class="entry-body">
+          ① レイアウト中央寄せ強化（hdr-inner / tab-bar-inner ラッパー追加・1200px中央寄せ確保）<br>
+          ② 全13コースカードに「📌 習得できる内容」リスト（各3項目・チェックマーク付き）を追加<br>
+          ③ filterCourse関数を強化（style.display + classList両適用でフィルター確実動作・try/catch完備）
+        </div>
+        <div class="entry-files">
+          <a class="entry-file" href="Anthropic_Academy_Plan_Internal.html">Anthropic_Academy_Plan_Internal.html</a>
+        </div>
+      </div>
+
       <div class="entry" data-actor="claude" data-cat="add">
         <div class="entry-head">
           <span class="entry-date">2026-05-14</span>
           <span class="entry-actor actor-claude">Claude</span>
           <span class="entry-cat cat-add">追加</span>
         </div>
-        <div class="entry-title">CHANGELOG.html を新規作成</div>
+        <div class="entry-title">CHANGELOG 過去履歴を遡及反映</div>
         <div class="entry-body">
-          AI・人間相互更新可能な変更履歴サマリページを作成。フィルター機能・更新モードボタン・履歴生成スニペット出力に対応。index.html のツール・自動化セクションにカード追加。
+          2026-04 以前の主要マイルストーン（前身プロジェクト hancho-kb 構築・社内Teamsナレッジ基盤設計議論・knowledge-hub 構想のゼロ起点）を遡及追加。今日のセッションも10エントリに細分化して時系列降順で記録。
+        </div>
+        <div class="entry-files">
+          <a class="entry-file" href="CHANGELOG.html">CHANGELOG.html</a>
+        </div>
+      </div>
+
+
+      <!-- ============ 2026-05-14 セッション ============ -->
+
+      <div class="entry" data-actor="claude" data-cat="add">
+        <div class="entry-head">
+          <span class="entry-date">2026-05-14</span>
+          <span class="entry-actor actor-claude">Claude</span>
+          <span class="entry-cat cat-add">追加</span>
+        </div>
+        <div class="entry-title">CHANGELOG.html を新規作成・index.html にカード追加</div>
+        <div class="entry-body">
+          AI・人間相互更新可能な変更履歴サマリページを作成。フィルター機能（変更者別・カテゴリ別）・更新モードボタン（HTMLスニペット自動生成）・初期エントリ仕込み。index.html のプロジェクト管理セクションにCHANGELOGカードを追加。
         </div>
         <div class="entry-files">
           <a class="entry-file" href="CHANGELOG.html">CHANGELOG.html</a>
@@ -172,13 +207,42 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
           <span class="entry-actor actor-claude">Claude</span>
           <span class="entry-cat cat-add">追加</span>
         </div>
-        <div class="entry-title">ナビゲーター・ジェネレーター系を追加</div>
+        <div class="entry-title">index.html にツール・自動化カテゴリを新設</div>
         <div class="entry-body">
-          Navigator_Generator.html（プロトタイプv1：アカウント連携付きシンプル版）と Generator_Concept_Draft.html（認証連携・セキュリティ要件等を整理した構想ドラフト）を新規作成。index.html に「ツール・自動化」カテゴリを追加。
+          V-Consultantセクションの後ろにツール・自動化カテゴリを追加。Navigator_Generator.html と Generator_Concept_Draft.html へのカードリンクを配置。フッターURLを fooueen/hancho-docs から dx-nexus/knowledge-hub に更新。
+        </div>
+        <div class="entry-files">
+          <a class="entry-file" href="index.html">index.html</a>
+        </div>
+      </div>
+
+      <div class="entry" data-actor="claude" data-cat="add">
+        <div class="entry-head">
+          <span class="entry-date">2026-05-14</span>
+          <span class="entry-actor actor-claude">Claude</span>
+          <span class="entry-cat cat-add">追加</span>
+        </div>
+        <div class="entry-title">Generator_Concept_Draft.html を作成</div>
+        <div class="entry-body">
+          ナビゲーター・ジェネレーターの構想ドラフトをカード形式で整理。全体フローSVG、9枚の構成要素カード（入力フォーム/GitHub連携/Anthropic API/HTMLテンプレ/セルフチェック/git push/テンプレ切替/履歴管理/セキュリティ要件）、検討事項表、次のアクション一覧を含む。
+        </div>
+        <div class="entry-files">
+          <a class="entry-file" href="Generator_Concept_Draft.html">Generator_Concept_Draft.html</a>
+        </div>
+      </div>
+
+      <div class="entry" data-actor="claude" data-cat="add">
+        <div class="entry-head">
+          <span class="entry-date">2026-05-14</span>
+          <span class="entry-actor actor-claude">Claude</span>
+          <span class="entry-cat cat-add">追加</span>
+        </div>
+        <div class="entry-title">Navigator_Generator.html プロトタイプ v1 作成</div>
+        <div class="entry-body">
+          基本情報4項目（タイトル・目的・対象・カラー）入力でClaude Code投入用プロンプトを自動生成するシンプル版ジェネレーター。アカウント情報（GitHub Org/vault/docs/Pages URL/ローカルパス）はlocalStorageに保存し初回のみ設定。タブ構成・コンテンツ詳細はAI側で自動補完する設計。
         </div>
         <div class="entry-files">
           <a class="entry-file" href="Navigator_Generator.html">Navigator_Generator.html</a>
-          <a class="entry-file" href="Generator_Concept_Draft.html">Generator_Concept_Draft.html</a>
         </div>
       </div>
 
@@ -188,9 +252,69 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
           <span class="entry-actor actor-claude">Claude</span>
           <span class="entry-cat cat-change">変更</span>
         </div>
-        <div class="entry-title">Anthropic_Academy_Plan_Internal.html を7タブ構成に拡張</div>
+        <div class="entry-title">Anthropic_Academy_Plan_Internal.html を7タブ構成に拡張完了</div>
         <div class="entry-body">
-          「はじめに」「コース一覧」「学習ロードマップ」「（参考）用語集」「（参考）システム連携概要」「（参考）本資料作成手順」「🚀 次のステップ」の7タブ構成に整理。受講するボタン・新規登録ボタン・SVGアーキテクチャ図・自動化フロー図を追加。Gemini レビュー反映済み。
+          「はじめに」「コース一覧」「学習ロードマップ」「（参考）用語集」「（参考）システム連携概要」「（参考）本資料作成手順」「🚀 次のステップ」の7タブ構成に整理。各タブの目的・得られるもの・活用例を「本資料の使い方」表で明示。タイトルを「Anthropic社学習コースナビゲーター」に統一。
+        </div>
+        <div class="entry-files">
+          <a class="entry-file" href="Anthropic_Academy_Plan_Internal.html">Anthropic_Academy_Plan_Internal.html</a>
+        </div>
+      </div>
+
+      <div class="entry" data-actor="claude" data-cat="add">
+        <div class="entry-head">
+          <span class="entry-date">2026-05-14</span>
+          <span class="entry-actor actor-claude">Claude</span>
+          <span class="entry-cat cat-add">追加</span>
+        </div>
+        <div class="entry-title">汎用テンプレ＋Claude Code自動化フロー追加</div>
+        <div class="entry-body">
+          「本資料作成手順」タブに STEP 3（一撃再現プロンプト）・STEP 4（汎用変数指定型テンプレート）を追加。「🚀 次のステップ」タブとして分離し、SVG自動化フロー図（👤人間Input→🤖AI自動化→🎁成果物）・config.json テンプレ・Claude Code実行指示・新規作成/更新パターン使い分けガイドを実装。全コードブロックにコピペボタン実装。
+        </div>
+        <div class="entry-files">
+          <a class="entry-file" href="Anthropic_Academy_Plan_Internal.html">Anthropic_Academy_Plan_Internal.html</a>
+        </div>
+      </div>
+
+      <div class="entry" data-actor="claude" data-cat="fix">
+        <div class="entry-head">
+          <span class="entry-date">2026-05-14</span>
+          <span class="entry-actor actor-claude">Claude</span>
+          <span class="entry-cat cat-fix">修正</span>
+        </div>
+        <div class="entry-title">体裁微修正・個人Git名変数化・セルフチェック</div>
+        <div class="entry-body">
+          word-break:keep-all/table-layout調整で日本語の不自然な改行を解消。overflow-x:hiddenで横スクロール抑止、カード/ボタンサイズ統一。コース数表記に「2026年5月時点」注記追加。個人Git名（hancho-kb/hancho-docs）を変数化（vault_repo_name/docs_repo_name）して他者展開対応。タブid整合性（tab0〜tab6）修正。
+        </div>
+        <div class="entry-files">
+          <a class="entry-file" href="Anthropic_Academy_Plan_Internal.html">Anthropic_Academy_Plan_Internal.html</a>
+        </div>
+      </div>
+
+      <div class="entry" data-actor="gemini" data-cat="discuss">
+        <div class="entry-head">
+          <span class="entry-date">2026-05-14</span>
+          <span class="entry-actor actor-gemini">Gemini</span>
+          <span class="entry-cat cat-discuss">議論</span>
+        </div>
+        <div class="entry-title">Gemini レビュー反映：再現プロンプトの参照ファイル明示化</div>
+        <div class="entry-body">
+          Gemini 2.5 Pro による生ファイル渡しコードレビュー指摘を反映。「Anthropic社学習コースナビゲーターと同等の構造」という抽象表現を「既存の Anthropic_Academy_Plan_Internal.html を構造のテンプレートとして参照」という具体表現に修正。まっさらなClaude Codeセッションでも迷わず動作する汎用性を確保。
+        </div>
+        <div class="entry-files">
+          <a class="entry-file" href="Anthropic_Academy_Plan_Internal.html">Anthropic_Academy_Plan_Internal.html</a>
+        </div>
+      </div>
+
+      <div class="entry" data-actor="human" data-cat="discuss">
+        <div class="entry-head">
+          <span class="entry-date">2026-05-14</span>
+          <span class="entry-actor actor-human">人間</span>
+          <span class="entry-cat cat-discuss">議論</span>
+        </div>
+        <div class="entry-title">表現・トーンの修正方針確定</div>
+        <div class="entry-body">
+          上長コメント反映後の調整。「世界を分断」「やらない理由が見当たらない」「先行取得は今だけ」などの煽り表現を削除し、業務文書として穏やかなトーンに統一。「社内向け」表記から「Anthropic社学習コースナビゲーター」に主語を変更（私個人発信に位置付け）。
         </div>
         <div class="entry-files">
           <a class="entry-file" href="Anthropic_Academy_Plan_Internal.html">Anthropic_Academy_Plan_Internal.html</a>
@@ -205,12 +329,64 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
         </div>
         <div class="entry-title">GitHub Organization dx-nexus に移行</div>
         <div class="entry-body">
-          fooueen/hancho-docs → dx-nexus/knowledge-hub、fooueen/hancho-kb → dx-nexus/vault にリポジトリ転送。GitHub Pages 有効化、update_master.py の URL 更新、全 HTML ファイルへのナビゲーション一括追加（その後、社内向けページからは削除）。
+          個人アカウント fooueen から組織アカウント dx-nexus へリポジトリを転送（hancho-docs → knowledge-hub、hancho-kb → vault）。GitHub Pages 有効化、ローカル remote URL 更新、update_master.py のSYNC_FILES・URL差し替え対応。Pages公開先：https://dx-nexus.github.io/knowledge-hub/
         </div>
         <div class="entry-files">
           <a class="entry-file" href="Project_Master_Document.html">Project_Master_Document.html</a>
         </div>
       </div>
+
+      <!-- ============ 2026-04 以前の主要マイルストーン ============ -->
+
+      <div class="entry" data-actor="claude" data-cat="discuss">
+        <div class="entry-head">
+          <span class="entry-date">2026-04-19</span>
+          <span class="entry-actor actor-claude">Claude</span>
+          <span class="entry-cat cat-discuss">議論</span>
+        </div>
+        <div class="entry-title">IRIAMアバター制作セッション</div>
+        <div class="entry-body">
+          NovelAIを活用したVTuberアバター画像制作（はんちょーペルソナ・七那華の対称双子コンセプト）。配信アカウントとしての活用は検討段階。本ナレッジハブには未掲載。
+        </div>
+      </div>
+
+      <div class="entry" data-actor="claude" data-cat="add">
+        <div class="entry-head">
+          <span class="entry-date">2026-04-16</span>
+          <span class="entry-actor actor-claude">Claude</span>
+          <span class="entry-cat cat-add">追加</span>
+        </div>
+        <div class="entry-title">前身プロジェクト：hancho-kb（Vercel版）構築・Claude Code運用フロー確立</div>
+        <div class="entry-body">
+          Vite + React + GitHub Actions + Vercelスタックで room-plan.vercel.app と hancho-kb.vercel.app を公開。Claude Codeの日常運用フロー（Chat設計→GUI選択→日本語指示→自動push→Vercel反映）を確立。swimlane_v2.html、config_comparison.html、system_guide.htmlを成果物として完成。本ナレッジハブの基盤となる運用ノウハウを蓄積。
+        </div>
+      </div>
+
+      <div class="entry" data-actor="claude" data-cat="discuss">
+        <div class="entry-head">
+          <span class="entry-date">2026-04-02</span>
+          <span class="entry-actor actor-claude">Claude</span>
+          <span class="entry-cat cat-discuss">議論</span>
+        </div>
+        <div class="entry-title">社内Teamsナレッジ基盤の設計議論</div>
+        <div class="entry-body">
+          Qolony社内向けにTeams部門チャネル運用設計を議論。Tips・QA・事例共有の3チャネル構成を提案。投稿テンプレ・ハッシュタグ運用・初動3ステップを整理。本ナレッジハブとは独立した社内向け施策だが、AI活用の組織化テーマとして関連性あり。
+        </div>
+      </div>
+
+      <div class="entry" data-actor="human" data-cat="add">
+        <div class="entry-head">
+          <span class="entry-date">2026-04-01</span>
+          <span class="entry-actor actor-human">人間</span>
+          <span class="entry-cat cat-add">追加</span>
+        </div>
+        <div class="entry-title">knowledge-hub 構想のゼロ起点</div>
+        <div class="entry-body">
+          人生ポートフォリオを GitHub/Markdown で体系化する「経歴OS」構想を出発点として、AI収益化プロジェクト・学習計画・V-Consultantを集約する共有ドキュメントハブの構築を開始。Project Master Document、AI統合学習計画、Anthropic Academy計画書などの主要HTMLを順次作成。
+        </div>
+      </div>
+
+      <!-- ▲ 新しいエントリは上に追加 ▲ -->
 
       <!-- ▲ 新しいエントリは上に追加 ▲ -->
 
