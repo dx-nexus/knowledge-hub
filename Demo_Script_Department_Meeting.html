@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>部内勉強会デモ進行台本 ／ Claude Code 自動生成</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1a2744;--blue:#2563eb;--blue-lt:#eff6ff;
+  --gray:#f8f9fb;--text:#1e293b;--text2:#475569;--text3:#94a3b8;
+  --border:#e2e8f0;--white:#fff;
+  --green:#059669;--green-lt:#ecfdf5;
+  --amber:#d97706;--amber-lt:#fffbeb;
+  --red:#dc2626;--red-lt:#fef2f2;
+  --purple:#7c3aed;--purple-lt:#f5f3ff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{overflow-x:hidden;}
+body{background:var(--gray);color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:14px;line-height:1.85;word-break:keep-all;overflow-wrap:break-word;}
+
+.hdr{background:linear-gradient(135deg,#1a2744 0%,#2d3d6b 100%);color:#fff;padding:32px 40px;}
+.hdr h1{font-size:24px;font-weight:700;letter-spacing:.02em;}
+.hdr .subtitle{font-size:13px;color:rgba(255,255,255,.7);margin-top:6px;}
+.hdr .meta{font-size:11px;color:rgba(255,255,255,.55);margin-top:12px;}
+
+.container{max-width:1000px;margin:0 auto;padding:32px 40px;}
+
+.toc{background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin-bottom:28px;}
+.toc-title{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.15em;margin-bottom:10px;}
+.toc ol{padding-left:22px;font-size:13px;color:var(--text2);line-height:2;}
+.toc a{color:var(--blue);text-decoration:none;}
+
+.sec{margin-bottom:36px;}
+.sec-title{font-size:18px;font-weight:700;color:var(--navy);margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--blue);}
+.sec-sub{font-size:14px;font-weight:700;color:var(--navy);margin:16px 0 10px;}
+
+.step-box{background:#fff;border:1px solid var(--border);border-radius:10px;padding:22px 26px;margin-bottom:14px;display:flex;gap:18px;align-items:flex-start;}
+.step-num{flex-shrink:0;width:44px;height:44px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;}
+.step-content{flex:1;}
+.step-head{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;}
+.step-name{font-size:15px;font-weight:700;color:var(--text);}
+.step-time{font-size:11px;color:var(--text3);background:var(--gray);padding:2px 8px;border-radius:10px;}
+.step-body{font-size:13px;color:var(--text2);line-height:1.9;}
+.step-body strong{color:var(--navy);}
+
+.script{background:#1e293b;color:#fde68a;border-radius:8px;padding:14px 18px;margin:10px 0;font-size:12px;line-height:1.8;}
+.script::before{content:'🎤 トーク例';display:block;font-size:10px;color:#94a3b8;margin-bottom:6px;letter-spacing:.1em;}
+
+.cmd{background:#0f172a;color:#86efac;border-radius:6px;padding:12px 14px;margin:8px 0;font-family:monospace;font-size:12px;}
+
+.notice{border-radius:8px;padding:14px 18px;margin:12px 0;}
+.notice-blue{background:var(--blue-lt);border-left:3px solid var(--blue);}
+.notice-amber{background:var(--amber-lt);border-left:3px solid var(--amber);}
+.notice-red{background:var(--red-lt);border-left:3px solid var(--red);}
+.notice-green{background:var(--green-lt);border-left:3px solid var(--green);}
+
+.tbl{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.tbl th{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:11px 14px;text-align:left;}
+.tbl td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top;line-height:1.8;}
+.tbl tr:last-child td{border-bottom:none;}
+
+.flag{display:inline-block;padding:2px 9px;border-radius:10px;font-size:10px;font-weight:700;letter-spacing:.05em;}
+.flag-h{background:#dbeafe;color:#1d4ed8;}
+.flag-ai{background:#fed7aa;color:#9a3412;}
+.flag-vis{background:#d1fae5;color:#065f46;}
+
+.foot{text-align:center;padding:24px;font-size:11px;color:var(--text3);border-top:1px solid var(--border);margin-top:32px;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>🎤 部内勉強会デモ進行台本</h1>
+  <div class="subtitle">Claude Code による「config.json 一撃自動生成」のライブデモ</div>
+  <div class="meta">所要時間：約12〜15分 ／ 想定参加者：DXコンサル部門メンバー</div>
+</div>
+
+<div class="container">
+
+  <div class="toc">
+    <div class="toc-title">📋 デモ全体構成</div>
+    <ol>
+      <li>🎬 オープニング（2分）— 何を見せるか・なぜ重要か</li>
+      <li>📄 仕込み紹介（2分）— config.json の中身を見せる</li>
+      <li>⚡ ライブ実行（5〜7分）— Claude Code に投げる</li>
+      <li>🎁 成果物公開（2分）— ブラウザでURL確認</li>
+      <li>💭 振り返り（2分）— 何が革新的だったか・展開シナリオ</li>
+    </ol>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">🎬 ① オープニング（2分）</div>
+
+    <div class="step-box">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-head">
+          <div class="step-name">「今日見せるもの」を一文で</div>
+          <div class="step-time">30秒</div>
+        </div>
+        <div class="step-body">
+          人間が「1ファイル（JSON）を渡すだけ」で、AIがHTML資料を作成・公開URLまで返してくれる仕組みを実演します。
+        </div>
+        <div class="script">
+          今日お見せするのは、私が config.json という設定ファイルを1つ用意して、Claude Code に投げると、3〜5分で1つの完成されたHTML資料が GitHub Pages 上に公開URLとして返ってくる、というデモです。
+        </div>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-head">
+          <div class="step-name">「なぜこれが意味あるか」</div>
+          <div class="step-time">90秒</div>
+        </div>
+        <div class="step-body">
+          <strong>3つの観点で価値を伝える：</strong>
+          <ol style="margin:6px 0 0 18px;">
+            <li>業務文書の量産が現実的になる（マニュアル・チェックリスト・議事録）</li>
+            <li>「テンプレ化」より「ジェネレータ化」のほうが応用範囲が広い</li>
+            <li>最終的にはこれをGitHub Actions化すれば、人間は意図を入れるだけになる</li>
+          </ol>
+        </div>
+        <div class="script">
+          これは単なる「便利ツール」ではなく、業務文書を作る作業そのものを再定義する取り組みです。今までExcelやWordでマニュアル作っていたものが、JSONを書くだけで構造化された見やすい資料になります。後でこれを GitHub Actions と組み合わせると、本当にJSON書くだけで成果物が出るので、人間は「何を作るか」だけ考えればよくなります。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">📄 ② 仕込み紹介（2分）</div>
+
+    <div class="step-box">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-head">
+          <div class="step-name">config.json をエディタで開く</div>
+          <div class="step-time">90秒</div>
+        </div>
+        <div class="step-body">
+          <strong>使うサンプル：</strong>demo_config_kickoff.json（DX案件キックオフ・チェックリスト）<br>
+          理由：部の業務に直結している・参加者が「自分でも作りたい」と思える題材。
+        </div>
+        <div class="cmd">
+        code C:\git\hancho-kb\demo_config_kickoff.json
+        </div>
+        <div class="script">
+          中身を見ていただくと、構造はとてもシンプルです。「タイトル」「目的」「対象」「タブ構成（5タブ）」「色設定」を書いただけ。これだけです。中身の文章は一切ありません。あとはClaude Codeが自動で生成します。
+        </div>
+      </div>
+    </div>
+
+    <div class="notice notice-blue">
+      <p>📌 <strong>見せ方のコツ：</strong>JSON の "tab_list" 部分を強調する。「タブ名」と「目的」だけで、各タブ内のコンテンツはAIが補完する点を強調。</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">⚡ ③ ライブ実行（5〜7分）</div>
+
+    <div class="step-box">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-head">
+          <div class="step-name">Claude Code 起動</div>
+          <div class="step-time">30秒</div>
+        </div>
+        <div class="step-body">PowerShell で以下を実行（事前にウィンドウを開いておくと安全）。</div>
+        <div class="cmd">
+cd C:\git\hancho-kb<br>
+claude --permission-mode acceptEdits
+        </div>
+        <div class="script">
+          PowerShellを開いてClaude Codeを起動します。`--permission-mode acceptEdits` を付けると毎回の確認がスキップされるので、デモがスムーズです。
+        </div>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <div class="step-head">
+          <div class="step-name">プロンプトを投げる</div>
+          <div class="step-time">30秒</div>
+        </div>
+        <div class="step-body">
+          以下のテキストをClaude Codeに貼り付け（事前にメモ帳等に用意しておくと安全）。
+        </div>
+        <div class="cmd" style="white-space:pre-wrap;">@demo_config_kickoff.json を読み込んで、以下を実行してください。
+
+1. 既存の Anthropic_Academy_Plan_Internal.html を構造のテンプレートとして参照
+2. config.json の仕様に基づき、新しいHTML資料を生成
+3. タブidは tab0 から連番で統一
+4. doc-footer は最下部に1個のみ
+5. レスポンシブ対応・overflow-x:hidden で横スクロール抑止
+
+セルフチェック後、出力先 C:/git/hancho-docs/Kickoff_Checklist_v1.html に保存し、
+cd C:/git/hancho-docs
+git add Kickoff_Checklist_v1.html
+git commit -m "auto: DX案件キックオフ・チェックリスト v1（Claude Code一撃生成）"
+git push
+
+完了後、生成サイズ・セルフチェック結果・公開URLを報告してください。</div>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-num">6</div>
+      <div class="step-content">
+        <div class="step-head">
+          <div class="step-name">生成中の解説（待ち時間活用）</div>
+          <div class="step-time">3〜5分</div>
+        </div>
+        <div class="step-body">
+          AI が動いている間、画面に映る進行を解説する。沈黙にならないよう、以下のトピックを準備しておく：
+          <ul style="margin:6px 0 0 18px;">
+            <li>Claude Code が「既存テンプレを読み」「JSの整合性を確認し」「コンテンツを生成」している様子</li>
+            <li>「自然言語で指示できる」ことの強み・従来との違い</li>
+            <li>「セルフチェック」を組み込むことで品質を担保している点</li>
+            <li>失敗時のリカバリー（Ctrl+C で中断・もう一度実行可能）</li>
+          </ul>
+        </div>
+        <div class="script">
+          今、Claude Code がやっているのは：①既存のテンプレを読み込み、②JSON設定を読み込み、③タブ構成を組み立て、④各タブの本文を生成し、⑤セルフチェックを走らせる、という流れです。私が個別に指示しなくても、これらすべてを自動で実行してくれます。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">🎁 ④ 成果物公開（2分）</div>
+
+    <div class="step-box">
+      <div class="step-num">7</div>
+      <div class="step-content">
+        <div class="step-head">
+          <div class="step-name">完了報告を確認</div>
+          <div class="step-time">30秒</div>
+        </div>
+        <div class="step-body">
+          Claude Code から「サイズ・セルフチェック・公開URL」が返ってくる。これを確認してブラウザに切り替える。
+        </div>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-num">8</div>
+      <div class="step-content">
+        <div class="step-head">
+          <div class="step-name">ブラウザで公開URLを開く</div>
+          <div class="step-time">90秒</div>
+        </div>
+        <div class="step-body">
+          シークレットウィンドウで開くとキャッシュの心配なし。<br>
+          <strong>見せどころ：</strong>
+          <ul style="margin:6px 0 0 18px;">
+            <li>タブが7つ（または指定数）正しく動く</li>
+            <li>各タブのコンテンツがちゃんと生成されている</li>
+            <li>デザインが整っている</li>
+            <li>これがJSON 1ファイルだけから生まれた事実</li>
+          </ul>
+        </div>
+        <div class="script">
+          できました。これが今、生まれたばかりのHTMLです。タブをクリックしてみると、各章ちゃんと内容が入っています。私はJSON書いただけで、本文一文字も書いていません。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">💭 ⑤ 振り返り（2分）</div>
+
+    <div class="step-box">
+      <div class="step-num">9</div>
+      <div class="step-content">
+        <div class="step-head">
+          <div class="step-name">何が革新的だったか</div>
+          <div class="step-time">60秒</div>
+        </div>
+        <div class="step-body">
+          <strong>3つのキーメッセージで締める：</strong>
+          <ol style="margin:6px 0 0 18px;">
+            <li>「テンプレを埋める」から「テンプレを生成する」への質的変化</li>
+            <li>JSON 1ファイル＝再現性・バージョン管理可能</li>
+            <li>これを GitHub Actions 化すれば「JSON push だけ」で公開まで完結</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-num">10</div>
+      <div class="step-content">
+        <div class="step-head">
+          <div class="step-name">業務への展開シナリオ</div>
+          <div class="step-time">60秒</div>
+        </div>
+        <div class="step-body">
+          <strong>参加者の頭の中に「自分の業務でも使える」と植える：</strong>
+          <ul style="margin:6px 0 0 18px;">
+            <li>新規案件キックオフのチェックリスト</li>
+            <li>議事録テンプレート</li>
+            <li>業務マニュアル</li>
+            <li>研修資料</li>
+            <li>提案書のドラフト</li>
+          </ul>
+        </div>
+        <div class="script">
+          今日は「DX案件キックオフ」で見せましたが、JSON書き換えるだけで、どんなテーマでも同じことができます。議事録、マニュアル、提案書、何でも。ご希望あれば一緒に config.json 作りましょう。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">⚠️ デモ前チェックリスト</div>
+    <table class="tbl">
+      <thead><tr><th>項目</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td>環境</td><td>PowerShell起動済み・C:/git/hancho-kb に cd 済み</td></tr>
+        <tr><td>config.json</td><td>事前に C:/git/hancho-kb/demo_config_kickoff.json を配置</td></tr>
+        <tr><td>プロンプト</td><td>メモ帳等に投げるプロンプトを準備（コピペ可能な状態に）</td></tr>
+        <tr><td>ネット接続</td><td>GitHub Pages の反映には1〜2分かかるので余裕を見る</td></tr>
+        <tr><td>ブラウザ</td><td>シークレットウィンドウを別途用意（キャッシュ回避）</td></tr>
+        <tr><td>Claude Code起動</td><td>事前に1回起動して動作確認しておく（無料枠制限注意）</td></tr>
+        <tr><td>失敗時の保険</td><td>事前に同じ手順で生成済みの公開URLを用意（バックアップ）</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">🛡️ リスク管理（デモ失敗時の対処）</div>
+    <table class="tbl">
+      <thead><tr><th>失敗パターン</th><th>対処法</th></tr></thead>
+      <tbody>
+        <tr><td>Claude Code が動かない</td><td>事前に生成しておいた URL を見せる「あらかじめ用意したものですが…」</td></tr>
+        <tr><td>生成が遅い（10分超）</td><td>「実際は3〜5分で終わります」と説明しつつ振り返りパートへ前倒し</td></tr>
+        <tr><td>生成結果がおかしい</td><td>「セルフチェックでこういうケースも検出できます」とポジティブに転換</td></tr>
+        <tr><td>git push失敗</td><td>「ローカルでは生成済みです」とローカルファイルを開いて見せる</td></tr>
+        <tr><td>ブラウザでキャッシュ問題</td><td>シークレットウィンドウに切り替えて表示</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">📁 デモ用ファイル一式</div>
+    <div class="notice notice-green">
+      <p>📌 サンプル config.json を3パターン用意しました。デモのテーマに応じて使い分け可能です。</p>
+      <ul style="margin:8px 0 0 18px;font-size:12px;">
+        <li><strong>demo_config_kickoff.json</strong> — DX案件キックオフ・チェックリスト（5タブ／部の業務に直結／推奨）</li>
+        <li><strong>demo_config_meeting.json</strong> — 議事録ナビゲーター（3タブ／全員に共感／短時間向け）</li>
+        <li><strong>demo_config_simple.json</strong> — Claude入門5分ガイド（3タブ／AI初心者向け・最もシンプル）</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">🎯 デモを成功させるコツ</div>
+    <div class="notice notice-amber">
+      <p>📌 <strong>原則：</strong>「初めて見る人が興奮するポイント」を意識する。<br>
+      ・JSON が短いほどインパクトが大きい（少ない入力で多くの出力）<br>
+      ・タブが多いほど「これ全部AIが書いた」が刺さる<br>
+      ・実用テーマほど「自分の業務でも使えそう」と感じる</p>
+    </div>
+    <div class="notice notice-blue">
+      <p>📌 <strong>事前リハーサル：</strong>本番と同じ手順で1〜2回は通しで実施。所要時間の感覚と、AIの応答パターンを把握しておく。</p>
+    </div>
+    <div class="notice notice-red">
+      <p>📌 <strong>禁忌：</strong>「完璧に動くこと」を期待しすぎない。AIのデモは「半分動けば成功」「動かなくても話術でカバー」が王道。</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="foot">部内勉強会デモ進行台本 ／ Claude Code 自動生成 ライブ実演 ／ 2026-05-15</div>
+
+</body>
+</html>
