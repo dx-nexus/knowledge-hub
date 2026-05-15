@@ -86,6 +86,56 @@ body{background:var(--gray);color:var(--text);font-family:'Noto Sans JP',sans-se
     </div>
   </div>
 
+  
+  <div class="sec">
+    <div class="sec-title">📊 自動化レベルの整理（現状理解）</div>
+    <div class="notice notice-amber" style="margin-bottom:14px;">
+      <p>📌 <strong>現状は「半自動」レベル：</strong>人間がClaude Codeを起動し、指示を投げる手順が残っています。<br>
+      完全自動化を実現するには、追加の仕組み（GitHub Actions / Anthropic API直接呼出）が必要です。</p>
+    </div>
+
+    <table class="tbl">
+      <thead><tr><th>レベル</th><th>内容</th><th>人間の操作</th><th>状態</th></tr></thead>
+      <tbody>
+        <tr><td>手動</td><td>HTML編集・push全て手作業</td><td>すべて自分で</td><td>❌</td></tr>
+        <tr><td><strong>半自動（現状）</strong></td><td>Claude Codeに指示</td><td>config.json + Claude Code起動 + コマンド入力</td><td>✅ 今ココ</td></tr>
+        <tr><td>準自動</td><td>スクリプト1本で起動</td><td>config.json + <code>.\generate.ps1</code></td><td>△ 検討</td></tr>
+        <tr><td>完全自動</td><td>フォーム入力のみ</td><td>送信ボタン1クリック</td><td>🚧 構想</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">🛤️ 完全自動化への3つの選択肢</div>
+    <table class="tbl">
+      <thead><tr><th>選択肢</th><th>仕組み</th><th>必要なもの</th><th>難易度</th><th>判断</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>A. ローカルスクリプト</td>
+          <td>PowerShellがClaude Code CLIを起動</td>
+          <td>Claude Code headlessモード</td>
+          <td>中</td>
+          <td>ローカル完結・APIキー不要</td>
+        </tr>
+        <tr>
+          <td>B. Anthropic API直接</td>
+          <td>ブラウザJSがClaude API呼出</td>
+          <td>APIキー + GitHub PAT</td>
+          <td>高</td>
+          <td>セキュリティ要件複雑</td>
+        </tr>
+        <tr>
+          <td><strong>C. GitHub Actions（推奨）</strong></td>
+          <td>config.json push→Actions自動実行</td>
+          <td>Actions Secret登録</td>
+          <td>中</td>
+          <td><strong>現実的・push1回で完結</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
   <div class="sec">
     <div class="sec-title">🗺️ 全体フロー（理想形）</div>
     <div class="flow-diagram">

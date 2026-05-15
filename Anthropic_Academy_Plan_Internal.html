@@ -1285,6 +1285,83 @@ tone: </div>
     </div>
   </div>
 
+  
+  <div class="sec">
+    <div class="sec-title">📊 自動化レベルの段階整理</div>
+    <div class="notice notice-amber" style="margin-bottom:14px;">
+      <p>📌 <strong>現状は「半自動」レベル：</strong>Claude Codeを開いて指示を投げる操作は人間が行う。<br>
+      完全自動化（フォーム入力1回のみ）を実現するには、追加の仕組みが必要です。</p>
+    </div>
+
+    <table class="tbl">
+      <thead><tr><th>レベル</th><th>内容</th><th>人間の操作</th><th>状態</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>手動</td>
+          <td>HTML を1から自分で書く</td>
+          <td>編集・保存・git push すべて</td>
+          <td>❌ 採用していない</td>
+        </tr>
+        <tr>
+          <td><strong>半自動<br>（現状）</strong></td>
+          <td>Claude Code に指示を投げる</td>
+          <td>config.json作成 + Claude Code起動<br>+ コマンド入力</td>
+          <td>✅ <strong>今ココ</strong></td>
+        </tr>
+        <tr>
+          <td>準自動</td>
+          <td>スクリプト1本で Claude Code 起動まで</td>
+          <td>config.json作成 + <code>.\generate.ps1</code> 実行</td>
+          <td>△ 検討中</td>
+        </tr>
+        <tr>
+          <td>完全自動</td>
+          <td>ブラウザフォーム入力のみで完結</td>
+          <td>フォーム入力 + 送信ボタン</td>
+          <td>🚧 構想段階</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">🛤️ 完全自動化への3つの選択肢</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-bottom:14px;">
+      <div class="card" style="border-left:3px solid #2563eb;">
+        <div class="card-head">
+          <div class="card-icon" style="background:#eff6ff;">🖥️</div>
+          <div><div class="card-title">A. ローカルスクリプト化</div><div class="card-sub">難易度：中</div></div>
+        </div>
+        <div class="card-body">PowerShellがClaude Code を起動し指示を渡す。Claude Code CLI のheadlessモード活用。</div>
+        <div class="card-foot"><strong style="color:#2563eb;font-size:11px;">ローカル完結・APIキー不要</strong></div>
+      </div>
+
+      <div class="card" style="border-left:3px solid #7c3aed;">
+        <div class="card-head">
+          <div class="card-icon" style="background:#f5f3ff;">🌐</div>
+          <div><div class="card-title">B. Anthropic API直接呼び出し</div><div class="card-sub">難易度：高</div></div>
+        </div>
+        <div class="card-body">ブラウザJSがClaude APIを呼ぶ→HTML生成→GitHub APIでpush。APIキー必須・セキュリティ要件複雑。</div>
+        <div class="card-foot"><strong style="color:#7c3aed;font-size:11px;">フォーム完結・コスト発生</strong></div>
+      </div>
+
+      <div class="card" style="border-left:3px solid #059669;">
+        <div class="card-head">
+          <div class="card-icon" style="background:#ecfdf5;">⚙️</div>
+          <div><div class="card-title">C. GitHub Actions連携</div><div class="card-sub">難易度：中・推奨</div></div>
+        </div>
+        <div class="card-body">config.jsonをpush → GitHub ActionsがClaude APIでHTML生成 → 自動commit・公開。APIキーはSecret管理。</div>
+        <div class="card-foot"><strong style="color:#059669;font-size:11px;">pushだけで完結・最も現実的</strong></div>
+      </div>
+    </div>
+
+    <div class="notice notice-green">
+      <p>🎯 <strong>推奨ルート：</strong>C（GitHub Actions）が現実的。「config.jsonをpushするだけ」で公開URLが返ってくる構造を構築可能。<br>
+      ただし現状はまずB方式（半自動）で運用し、必要に応じてC方式に発展させる段階アプローチが安全です。</p>
+    </div>
+  </div>
+
+
   <div class="sec">
     <div class="sec-title">⚡ コマンド実行までのプロセス（フロー全体図）</div>
 
