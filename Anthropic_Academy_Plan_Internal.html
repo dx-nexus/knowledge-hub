@@ -1285,6 +1285,146 @@ tone: </div>
     </div>
   </div>
 
+  <div class="sec">
+    <div class="sec-title">⚡ コマンド実行までのプロセス（フロー全体図）</div>
+
+    <div class="notice notice-green" style="margin-bottom:14px;">
+      <p>🎯 <strong>理解のポイント：</strong>人間がやるのは「config.json を作る」「Claude Code に1つコマンドを投げる」の2つだけ。<br>
+      JSON読み込み → HTML生成 → セルフチェック → git push → GitHub Pages反映 → 公開URL発行 まですべてAIが連続実行します。</p>
+    </div>
+
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:24px 20px;overflow-x:auto;margin-bottom:16px;">
+    <svg viewBox="0 0 1000 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:1000px;font-family:'Noto Sans JP',sans-serif;">
+      <defs>
+        <marker id="arr-process" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto">
+          <path d="M0,0 L0,10 L12,5 z" fill="#475569"/>
+        </marker>
+        <linearGradient id="g-human" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#3b82f6"/>
+          <stop offset="100%" stop-color="#1d4ed8"/>
+        </linearGradient>
+        <linearGradient id="g-claude" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#d97706"/>
+          <stop offset="100%" stop-color="#92400e"/>
+        </linearGradient>
+        <linearGradient id="g-github" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#059669"/>
+          <stop offset="100%" stop-color="#047857"/>
+        </linearGradient>
+      </defs>
+
+      <!-- レーンラベル -->
+      <text x="100" y="28" font-size="11" font-weight="700" fill="#1d4ed8" text-anchor="middle" letter-spacing="2">👤 人間</text>
+      <text x="500" y="28" font-size="11" font-weight="700" fill="#d97706" text-anchor="middle" letter-spacing="2">🤖 Claude Code（AI 自動実行）</text>
+      <text x="900" y="28" font-size="11" font-weight="700" fill="#059669" text-anchor="middle" letter-spacing="2">🌐 GitHub Pages</text>
+
+      <!-- レーン区切り線 -->
+      <line x1="200" y1="40" x2="200" y2="540" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4,4"/>
+      <line x1="800" y1="40" x2="800" y2="540" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4,4"/>
+
+      <!-- STEP 1: 人間がconfig.json作成 -->
+      <rect x="10" y="50" width="180" height="80" rx="10" fill="url(#g-human)"/>
+      <text x="100" y="78" font-size="22" text-anchor="middle">📝</text>
+      <text x="100" y="100" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">STEP 1</text>
+      <text x="100" y="118" font-size="11" fill="#dbeafe" text-anchor="middle">config.json を作成</text>
+
+      <line x1="190" y1="90" x2="225" y2="90" stroke="#475569" stroke-width="2" marker-end="url(#arr-process)"/>
+
+      <!-- STEP 2: 人間がClaude Codeに投げる -->
+      <rect x="10" y="150" width="180" height="80" rx="10" fill="url(#g-human)"/>
+      <text x="100" y="178" font-size="22" text-anchor="middle">💬</text>
+      <text x="100" y="200" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">STEP 2</text>
+      <text x="100" y="218" font-size="11" fill="#dbeafe" text-anchor="middle">Claude Codeに指示</text>
+
+      <line x1="190" y1="190" x2="225" y2="190" stroke="#475569" stroke-width="2" marker-end="url(#arr-process)"/>
+
+      <!-- AI自動実行ボックス -->
+      <rect x="230" y="50" width="540" height="380" rx="12" fill="#fffbeb" stroke="#d97706" stroke-width="2" stroke-dasharray="4,3"/>
+      <text x="500" y="76" font-size="11" font-weight="700" fill="#d97706" text-anchor="middle" letter-spacing="1">↓ AIが連続自動実行 ↓</text>
+
+      <!-- A: JSON読み込み -->
+      <rect x="250" y="90" width="220" height="56" rx="8" fill="url(#g-claude)"/>
+      <text x="270" y="118" font-size="20" text-anchor="middle">📥</text>
+      <text x="370" y="115" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">A. config.json 読み込み</text>
+      <text x="370" y="132" font-size="10" fill="#fef3c7" text-anchor="middle">変数を解析・デフォルト値補完</text>
+
+      <line x1="370" y1="148" x2="370" y2="168" stroke="#475569" stroke-width="2" marker-end="url(#arr-process)"/>
+
+      <!-- B: HTML生成 -->
+      <rect x="250" y="170" width="220" height="56" rx="8" fill="url(#g-claude)"/>
+      <text x="270" y="198" font-size="20" text-anchor="middle">✍️</text>
+      <text x="370" y="195" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">B. HTML 生成</text>
+      <text x="370" y="212" font-size="10" fill="#fef3c7" text-anchor="middle">既存テンプレ参照・コンテンツ生成</text>
+
+      <line x1="370" y1="228" x2="370" y2="248" stroke="#475569" stroke-width="2" marker-end="url(#arr-process)"/>
+
+      <!-- C: セルフチェック -->
+      <rect x="250" y="250" width="220" height="56" rx="8" fill="url(#g-claude)"/>
+      <text x="270" y="278" font-size="20" text-anchor="middle">🔍</text>
+      <text x="370" y="275" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">C. セルフチェック</text>
+      <text x="370" y="292" font-size="10" fill="#fef3c7" text-anchor="middle">tab整合性・除外語・script重複</text>
+
+      <line x1="370" y1="308" x2="370" y2="328" stroke="#475569" stroke-width="2" marker-end="url(#arr-process)"/>
+
+      <!-- D: ファイル配置 -->
+      <rect x="250" y="330" width="220" height="56" rx="8" fill="url(#g-claude)"/>
+      <text x="270" y="358" font-size="20" text-anchor="middle">📂</text>
+      <text x="370" y="355" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">D. ファイル配置</text>
+      <text x="370" y="372" font-size="10" fill="#fef3c7" text-anchor="middle">docsリポジトリへ書き出し</text>
+
+      <line x1="475" y1="358" x2="510" y2="358" stroke="#475569" stroke-width="2" marker-end="url(#arr-process)"/>
+
+      <!-- E: git commit/push -->
+      <rect x="515" y="330" width="240" height="56" rx="8" fill="url(#g-claude)"/>
+      <text x="535" y="358" font-size="20" text-anchor="middle">🚀</text>
+      <text x="645" y="355" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">E. git add / commit / push</text>
+      <text x="645" y="372" font-size="10" fill="#fef3c7" text-anchor="middle">バージョン管理＋リモート反映</text>
+
+      <line x1="645" y1="328" x2="645" y2="308" stroke="#475569" stroke-width="2" marker-end="url(#arr-process)"/>
+
+      <!-- F: 完了報告 -->
+      <rect x="515" y="250" width="240" height="56" rx="8" fill="url(#g-claude)"/>
+      <text x="535" y="278" font-size="20" text-anchor="middle">📋</text>
+      <text x="645" y="275" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">F. 完了報告</text>
+      <text x="645" y="292" font-size="10" fill="#fef3c7" text-anchor="middle">サイズ・チェック結果・URL返却</text>
+
+      <!-- AI→GitHub Pages -->
+      <line x1="770" y1="358" x2="815" y2="358" stroke="#475569" stroke-width="2" marker-end="url(#arr-process)"/>
+
+      <!-- GitHub Pages -->
+      <rect x="820" y="330" width="170" height="100" rx="10" fill="url(#g-github)"/>
+      <text x="905" y="362" font-size="22" text-anchor="middle">🌐</text>
+      <text x="905" y="384" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">自動反映・公開</text>
+      <text x="905" y="402" font-size="10" fill="#d1fae5" text-anchor="middle">GitHub Pagesが</text>
+      <text x="905" y="416" font-size="10" fill="#d1fae5" text-anchor="middle">URLを発行</text>
+
+      <line x1="905" y1="328" x2="905" y2="278" stroke="#475569" stroke-width="2" stroke-dasharray="4,3"/>
+
+      <!-- 公開URL確認（人間） -->
+      <rect x="820" y="220" width="170" height="56" rx="10" fill="url(#g-human)"/>
+      <text x="840" y="248" font-size="18" text-anchor="middle">🔗</text>
+      <text x="918" y="245" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">公開URLで確認</text>
+      <text x="918" y="262" font-size="9" fill="#dbeafe" text-anchor="middle">人間：ブラウザで閲覧</text>
+
+      <!-- 下部の入力例 -->
+      <rect x="10" y="460" width="980" height="80" rx="10" fill="#f8f9fb" stroke="#e2e8f0"/>
+      <text x="30" y="485" font-size="11" font-weight="700" fill="#475569">📌 STEP 2 で人間が打つコマンド例（これ1行だけ）：</text>
+      <rect x="30" y="495" width="940" height="34" rx="6" fill="#1e293b"/>
+      <text x="44" y="518" font-size="12" font-family="monospace" fill="#fde047">claude "config.json を読み込んで、構造テンプレを参照しHTML生成・セルフチェック・git push まで実行して"</text>
+    </svg>
+    </div>
+
+    <div class="notice notice-blue">
+      <p>💡 <strong>人間の操作は2回だけ：</strong>①config.jsonを保存 → ②Claude Code に一撃指示。<br>
+      その後はA〜Fまで全自動。完了報告として「生成サイズ・セルフチェック結果・公開URL」が返ってきます。</p>
+    </div>
+
+    <div class="notice notice-amber">
+      <p>📌 <strong>「コマンド実行までやる」とは：</strong>JSONをClaude Codeに渡した瞬間から、Claude Codeがローカルファイル操作・git操作までを内部で完結します。人間が個別にgit add / commit / push を打つ必要はありません。</p>
+    </div>
+  </div>
+
+
 <div class="sec">
     <div class="sec-title">🚀 Claude Codeで一撃自動生成への道</div>
     <div class="notice notice-green" style="margin-bottom:14px;">
