@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>他AI引き継ぎプロンプト集 v2 ／ 2026-05-16セッション</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1a2744;--blue:#2563eb;--blue-lt:#eff6ff;
+  --orange:#d97706;--orange-lt:#fffbeb;
+  --green:#059669;--green-lt:#ecfdf5;
+  --purple:#7c3aed;--purple-lt:#f5f3ff;
+  --gray:#f8f9fb;--text:#1e293b;--text2:#475569;--text3:#94a3b8;
+  --border:#e2e8f0;--white:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{overflow-x:hidden;}
+body{background:var(--gray);color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:14px;line-height:1.85;word-break:keep-all;overflow-wrap:break-word;}
+
+.hdr{background:linear-gradient(135deg,#1a2744 0%,#7c3aed 50%,#0891b2 100%);color:#fff;padding:32px 40px;}
+.hdr h1{font-size:24px;font-weight:700;}
+.hdr .subtitle{font-size:13px;color:rgba(255,255,255,.78);margin-top:6px;}
+.hdr .meta{font-size:11px;color:rgba(255,255,255,.55);margin-top:12px;}
+
+.container{max-width:1080px;margin:0 auto;padding:32px 40px;}
+
+.toc{background:#fff;border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:28px;}
+.toc-title{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.15em;margin-bottom:10px;}
+.toc ol{padding-left:22px;font-size:13px;color:var(--text2);line-height:2;}
+.toc a{color:var(--blue);text-decoration:none;}
+
+.sec{margin-bottom:36px;}
+.sec-title{font-size:18px;font-weight:700;color:var(--navy);margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #7c3aed;}
+.sec-sub{font-size:14px;font-weight:700;color:var(--navy);margin:18px 0 10px;}
+
+.prompt-box{background:#1e293b;color:#fde68a;border-radius:10px;padding:20px 24px;margin:14px 0;font-size:12px;line-height:1.85;white-space:pre-wrap;border:2px solid #fbbf24;font-family:monospace;}
+.prompt-box::before{content:'📋 そのままコピペで使えるプロンプト';display:block;font-size:11px;color:#fbbf24;margin-bottom:10px;letter-spacing:.05em;font-family:'Noto Sans JP',sans-serif;font-weight:700;}
+
+.notice{border-radius:8px;padding:14px 18px;margin:12px 0;}
+.notice-blue{background:var(--blue-lt);border-left:3px solid var(--blue);}
+.notice-green{background:var(--green-lt);border-left:3px solid var(--green);}
+.notice-orange{background:var(--orange-lt);border-left:3px solid var(--orange);}
+.notice-purple{background:var(--purple-lt);border-left:3px solid var(--purple);}
+.notice p{font-size:13px;line-height:1.95;}
+
+.tbl{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin:10px 0;}
+.tbl th{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:11px 14px;text-align:left;}
+.tbl td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top;line-height:1.85;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl td:first-child{color:var(--text);font-weight:600;}
+
+.doc-footer{text-align:center;padding:24px;font-size:11px;color:var(--text3);border-top:1px solid var(--border);margin-top:32px;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>🔄 他AI引き継ぎプロンプト集 v2</h1>
+  <div class="subtitle">2026-05-16 セッション総括 ／ Gemini・NotebookLM・次回Claude 向け</div>
+  <div class="meta">本資料：はんちょー個人プロジェクト ／ 公開先：knowledge-hub</div>
+</div>
+
+<div class="container">
+
+  <div class="toc">
+    <div class="toc-title">📋 目次</div>
+    <ol>
+      <li>本日（2026-05-16）の到達点</li>
+      <li>Gemini 向け引き継ぎプロンプト</li>
+      <li>NotebookLM 向け登録手順</li>
+      <li>次回 Claude セッション向け引き継ぎ</li>
+      <li>Claude Code 向け（メタプロンプト 継続運用）</li>
+      <li>共通参照URL一覧</li>
+      <li>未解決の宿題</li>
+    </ol>
+  </div>
+
+  <!-- ============ ① 到達点 ============ -->
+  <div class="sec">
+    <div class="sec-title">① 2026-05-16 セッションの到達点</div>
+
+    <div class="notice notice-blue">
+      <p>📌 <strong>このセッションで達成したこと（前日5/15からの継続）：</strong></p>
+    </div>
+
+    <table class="tbl">
+      <thead><tr><th>カテゴリ</th><th>成果物</th></tr></thead>
+      <tbody>
+        <tr><td>汎用フレームワーク</td><td>Universal_Generation_Flow_v1（5項目受け皿テンプレ＋対話フロー）</td></tr>
+        <tr><td>実例化</td><td>Hancho_Sample_Filled_v1（はんちょう実値で記入された具体例）</td></tr>
+        <tr><td>実生成物</td><td>Hancho_Business_AI_Practice_v1（Claude Code一撃生成・5タブ）</td></tr>
+        <tr><td>運用基盤</td><td>KnowledgeHub_Management_Prompt_v1（メタプロンプト・継続運用化）</td></tr>
+        <tr><td>新プロジェクト</td><td>Algo Trading Project（Phase 0完了・17ファイル・専門家判断レポート）</td></tr>
+        <tr><td>判断レポート</td><td>Algo_Trading_Decision_Report_v1（8専門家視覚化・Paper GO / 実弾 STOP）</td></tr>
+        <tr><td>引き継ぎ</td><td>本資料（他AI共有用プロンプト集 v2）</td></tr>
+      </tbody>
+    </table>
+
+    <div class="notice notice-green">
+      <p>📌 <strong>重要な判断：</strong>SNS事例（シン氏・すがさわ氏）の検証により、Algo Trading の実弾投入は半年後判断に保留。クリプトは全フェーズで除外。Paper Trading での技術学習は継続。</p>
+    </div>
+  </div>
+
+  <!-- ============ ② Gemini ============ -->
+  <div class="sec">
+    <div class="sec-title">② Gemini 向け引き継ぎプロンプト</div>
+
+    <div class="prompt-box">## はんちょう / dx-nexus プロジェクト 状況共有（2026-05-16版）
+
+【公開ドキュメントハブ】
+https://dx-nexus.github.io/knowledge-hub/
+
+【特に確認してほしいページ】
+- 最新引き継ぎ資料（本資料）: https://dx-nexus.github.io/knowledge-hub/Handoff_AI_Prompts_20260516.html
+- CHANGELOG（全履歴27エントリ）: https://dx-nexus.github.io/knowledge-hub/CHANGELOG.html
+- Academy本編: https://dx-nexus.github.io/knowledge-hub/Anthropic_Academy_Plan_Internal.html
+- 汎用フロー: https://dx-nexus.github.io/knowledge-hub/Universal_Generation_Flow_v1.html
+- 実例ページ: https://dx-nexus.github.io/knowledge-hub/Hancho_Sample_Filled_v1.html
+- Algo Trading 判断レポート: https://dx-nexus.github.io/knowledge-hub/Algo_Trading_Decision_Report_v1.html
+
+【現在のフェーズ】
+- knowledge-hub 運用：メタプロンプト方式で継続運用フェーズ
+- Algo Trading：Phase 0完了・Paper Trading 着手前・実弾判断は半年後保留
+- 宿題2件：Claude→Code直接連携・進捗可視化
+
+【依頼内容】
+（具体的な依頼をここに書く）
+
+例：
+- 上記資料を読み込んで、全体構造を要約して
+- knowledge-hub の品質向上に関して提案して
+- Algo Trading Phase 1（データ取得）の仕様設計を支援して
+- メルマガ・note自動化（シン氏的手法）の具体プランを提案して</div>
+  </div>
+
+  <!-- ============ ③ NotebookLM ============ -->
+  <div class="sec">
+    <div class="sec-title">③ NotebookLM 向け登録手順</div>
+
+    <table class="tbl">
+      <thead><tr><th>手順</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td>1. ノート作成</td><td>NotebookLM で新規ノートブック「dx-nexus knowledge-hub 2026-05-16」を作成（または既存ノートを更新）</td></tr>
+        <tr><td>2. ソース追加</td><td>「URL を追加」で以下4つを登録：<br>
+          ・本資料（Handoff_AI_Prompts_20260516.html）<br>
+          ・CHANGELOG.html<br>
+          ・Algo_Trading_Decision_Report_v1.html<br>
+          ・Universal_Generation_Flow_v1.html
+        </td></tr>
+        <tr><td>3. 初回プロンプト</td><td>「このプロジェクトの全体構造と、2026-05-15から16にかけての進化、現在の主要論点を整理して」</td></tr>
+        <tr><td>4. 活用例</td><td>「Algo Trading Phase 5 実弾投入の判断基準を整理して」<br>「knowledge-hub 全体管理メタプロンプトの強化案を提案して」</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ============ ④ 次回Claude ============ -->
+  <div class="sec">
+    <div class="sec-title">④ 次回 Claude セッション向け引き継ぎ</div>
+
+    <div class="prompt-box">前回（2026-05-16）の続きをお願いします。
+
+【前回までの到達点】
+- knowledge-hub：Academy 7タブ・CHANGELOG 27エントリ・自動化ロードマップ・メタプロンプト確立
+- 汎用フレームワーク：JSON駆動 HTML自動生成フロー（受け皿テンプレ5項目）
+- Algo Trading Project：Phase 0完了（dx-nexus/algo-trading-private private）
+- 専門家判断レポート：実弾投入は半年後保留・クリプト除外
+
+【参照URL】
+https://dx-nexus.github.io/knowledge-hub/Handoff_AI_Prompts_20260516.html
+https://dx-nexus.github.io/knowledge-hub/CHANGELOG.html
+https://dx-nexus.github.io/knowledge-hub/Algo_Trading_Decision_Report_v1.html
+
+【宿題（次回検討）】
+1. Claude → Claude Code 直接ファイル受け渡し（中継リポジトリ運用等）
+2. Claude Code 進捗可視化（Slack通知構造化・Kanban・タスクID運用）
+3. Algo Trading Phase 1（データ取得）の仕様設計
+4. シン氏的なコンテンツ自動化（メルマガ・note）の検討開始
+
+【運用ルール（恒久）】
+- CSS修正は追加のみ・削除禁止（!important使用）
+- PowerShellの「>」リダイレクト禁止（Copy-Item使用）
+- Downloads最新ファイル自動特定（Sort-Object LastWriteTime -Descending）
+- セルフチェック必須（タブid連番・doc-footer 1個・script 1個・個人情報残存なし）
+
+【今回のお題】
+（ここに今回の依頼を書く）</div>
+  </div>
+
+  <!-- ============ ⑤ Claude Code ============ -->
+  <div class="sec">
+    <div class="sec-title">⑤ Claude Code 向け（メタプロンプト・継続運用）</div>
+
+    <div class="notice notice-purple">
+      <p>📌 既に確立済みの knowledge-hub 全体管理メタプロンプトを Claude Code セッション開始時に1回投入することで、対話的な継続運用が可能。<br>
+      詳細：<a href="https://dx-nexus.github.io/knowledge-hub/KnowledgeHub_Management_Prompt_v1.html">KnowledgeHub_Management_Prompt_v1.html</a></p>
+    </div>
+
+    <table class="tbl">
+      <thead><tr><th>パターン</th><th>はんちょうの依頼例</th></tr></thead>
+      <tbody>
+        <tr><td>新規資料作成</td><td>「Xというテーマで作りたい」</td></tr>
+        <tr><td>既存修正</td><td>「Xファイルを修正して」</td></tr>
+        <tr><td>状態確認</td><td>「今のハブ状態見せて」</td></tr>
+        <tr><td>メンテナンス</td><td>「整理して」</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ============ ⑥ 共通URL一覧 ============ -->
+  <div class="sec">
+    <div class="sec-title">⑥ 共通参照URL一覧</div>
+
+    <div class="sec-sub">📂 公開ドキュメントハブ</div>
+    <table class="tbl">
+      <tbody>
+        <tr><td>ハブトップ</td><td><a href="https://dx-nexus.github.io/knowledge-hub/">https://dx-nexus.github.io/knowledge-hub/</a></td></tr>
+        <tr><td>CHANGELOG</td><td><a href="https://dx-nexus.github.io/knowledge-hub/CHANGELOG.html">CHANGELOG.html</a></td></tr>
+        <tr><td>Academy本編</td><td><a href="https://dx-nexus.github.io/knowledge-hub/Anthropic_Academy_Plan_Internal.html">Anthropic_Academy_Plan_Internal.html</a></td></tr>
+        <tr><td>汎用フロー</td><td><a href="https://dx-nexus.github.io/knowledge-hub/Universal_Generation_Flow_v1.html">Universal_Generation_Flow_v1.html</a></td></tr>
+        <tr><td>実例ページ</td><td><a href="https://dx-nexus.github.io/knowledge-hub/Hancho_Sample_Filled_v1.html">Hancho_Sample_Filled_v1.html</a></td></tr>
+        <tr><td>業務AI活用集</td><td><a href="https://dx-nexus.github.io/knowledge-hub/Hancho_Business_AI_Practice_v1.html">Hancho_Business_AI_Practice_v1.html</a></td></tr>
+        <tr><td>管理メタプロンプト</td><td><a href="https://dx-nexus.github.io/knowledge-hub/KnowledgeHub_Management_Prompt_v1.html">KnowledgeHub_Management_Prompt_v1.html</a></td></tr>
+        <tr><td>Algo判断レポート</td><td><a href="https://dx-nexus.github.io/knowledge-hub/Algo_Trading_Decision_Report_v1.html">Algo_Trading_Decision_Report_v1.html</a></td></tr>
+        <tr><td>引き継ぎ前版</td><td><a href="https://dx-nexus.github.io/knowledge-hub/Handoff_Document_20260515.html">Handoff_Document_20260515.html</a></td></tr>
+        <tr><td>デモ台本</td><td><a href="https://dx-nexus.github.io/knowledge-hub/Demo_Script_Department_Meeting.html">Demo_Script_Department_Meeting.html</a></td></tr>
+      </tbody>
+    </table>
+
+    <div class="sec-sub">🔒 プライベートリポジトリ</div>
+    <table class="tbl">
+      <tbody>
+        <tr><td>Algo Trading</td><td>github.com/dx-nexus/algo-trading-private（private・はんちょう本人のみ閲覧可）</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ============ ⑦ 宿題 ============ -->
+  <div class="sec">
+    <div class="sec-title">⑦ 未解決の宿題（次回優先）</div>
+
+    <table class="tbl">
+      <thead><tr><th>優先度</th><th>課題</th><th>方向性</th></tr></thead>
+      <tbody>
+        <tr><td>高</td><td>Claude → Claude Code 直接受け渡し</td><td>共通中継リポジトリ運用 / GitHub API 経由 push</td></tr>
+        <tr><td>高</td><td>Claude Code 進捗可視化</td><td>Slack通知構造化 / Kanban / CHANGELOG自動連動 / タスクID運用</td></tr>
+        <tr><td>中</td><td>Algo Trading Phase 1（データ取得）</td><td>銘柄リスト・株価データ・指標計算の仕様設計</td></tr>
+        <tr><td>中</td><td>シン氏的コンテンツ自動化</td><td>メルマガ・note の Universal Flow 応用</td></tr>
+        <tr><td>低</td><td>deploy.ps1 v2 改修</td><td>Downloadsの全 .html / .json を自動振り分け</td></tr>
+      </tbody>
+    </table>
+
+    <div class="notice notice-orange">
+      <p>📌 <strong>Algo Trading 実弾投入の判断時期：</strong>2026年11月〜2027年2月頃を目処に、Paper Trading 3〜6ヶ月実績を見てから冷静に判断。それまでは技術学習として継続。</p>
+    </div>
+  </div>
+
+  <!-- ============ 締め ============ -->
+  <div class="sec">
+    <div class="sec-title">🎯 セッション総括メッセージ</div>
+    <div class="notice notice-green">
+      <p>📌 <strong>2026-05-16セッションの本質的成果：</strong><br>
+      ・knowledge-hub が「単発資料の集合」から「継続運用基盤」に進化<br>
+      ・「Claude対話で構造化→Claude Code で実装」の汎用パターン確立<br>
+      ・新領域（金融×AI）への展開と、冷静な判断軸の確保<br>
+      ・「AIは作業を肩代わり、判断は人間」の原則を実演で証明</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="doc-footer">他AI引き継ぎプロンプト集 v2 ／ 2026-05-16 セッション総括 ／ Claude</div>
+
+</body>
+</html>
