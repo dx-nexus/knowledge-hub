@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>引き継ぎ資料 ／ dx-nexus knowledge-hub セッション 2026-05-15</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1a2744;--blue:#2563eb;--blue-lt:#eff6ff;
+  --gray:#f8f9fb;--text:#1e293b;--text2:#475569;--text3:#94a3b8;
+  --border:#e2e8f0;--white:#fff;
+  --green:#059669;--green-lt:#ecfdf5;
+  --amber:#d97706;--amber-lt:#fffbeb;
+  --red:#dc2626;--red-lt:#fef2f2;
+  --purple:#7c3aed;--purple-lt:#f5f3ff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{overflow-x:hidden;}
+body{background:var(--gray);color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:14px;line-height:1.85;word-break:keep-all;overflow-wrap:break-word;}
+
+.hdr{background:linear-gradient(135deg,#1a2744 0%,#0e7490 100%);color:#fff;padding:32px 40px;}
+.hdr h1{font-size:24px;font-weight:700;}
+.hdr .subtitle{font-size:13px;color:rgba(255,255,255,.7);margin-top:6px;}
+.hdr .meta{font-size:11px;color:rgba(255,255,255,.55);margin-top:12px;}
+
+.container{max-width:1000px;margin:0 auto;padding:32px 40px;}
+
+.toc{background:#fff;border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:28px;}
+.toc-title{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.15em;margin-bottom:10px;}
+.toc ol{padding-left:22px;font-size:13px;color:var(--text2);line-height:2;}
+
+.sec{margin-bottom:36px;}
+.sec-title{font-size:18px;font-weight:700;color:var(--navy);margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--blue);}
+.sec-sub{font-size:14px;font-weight:700;color:var(--navy);margin:18px 0 10px;}
+
+.notice{border-radius:8px;padding:14px 18px;margin:12px 0;}
+.notice-blue{background:var(--blue-lt);border-left:3px solid var(--blue);}
+.notice-amber{background:var(--amber-lt);border-left:3px solid var(--amber);}
+.notice-red{background:var(--red-lt);border-left:3px solid var(--red);}
+.notice-green{background:var(--green-lt);border-left:3px solid var(--green);}
+.notice-purple{background:var(--purple-lt);border-left:3px solid var(--purple);}
+.notice p{font-size:13px;line-height:1.9;}
+
+.tbl{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin:10px 0;}
+.tbl th{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:11px 14px;text-align:left;}
+.tbl td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top;line-height:1.8;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl td:first-child{color:var(--text);font-weight:600;}
+.tbl a{color:var(--blue);text-decoration:none;word-break:break-all;}
+
+.cmd{background:#0f172a;color:#86efac;border-radius:6px;padding:12px 16px;margin:8px 0;font-family:monospace;font-size:12px;line-height:1.7;}
+
+.prompt-box{background:#1e293b;color:#fde68a;border-radius:8px;padding:16px 20px;margin:14px 0;font-size:12px;line-height:1.8;white-space:pre-wrap;}
+.prompt-box::before{content:'📋 そのままコピペで使えるプロンプト';display:block;font-size:11px;color:#94a3b8;margin-bottom:8px;letter-spacing:.05em;}
+
+.foot{text-align:center;padding:24px;font-size:11px;color:var(--text3);border-top:1px solid var(--border);margin-top:32px;}
+
+.tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 9px;border-radius:10px;margin-right:4px;letter-spacing:.05em;}
+.tag-live{background:#d1fae5;color:#065f46;}
+.tag-local{background:#fef3c7;color:#92400e;}
+.tag-demo{background:#dbeafe;color:#1d4ed8;}
+.tag-rule{background:#fce7f3;color:#9f1239;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>📦 引き継ぎ資料</h1>
+  <div class="subtitle">dx-nexus / knowledge-hub セッション 2026-05-15 の総括と当日運用ガイド</div>
+  <div class="meta">読み手：はんちょー本人 ／ Gemini ／ NotebookLM ／ 部内勉強会参加者</div>
+</div>
+
+<div class="container">
+
+  <div class="toc">
+    <div class="toc-title">📋 目次</div>
+    <ol>
+      <li>本日達成したこと（成果物リスト）</li>
+      <li>反映先（公開URL / ローカルパス）</li>
+      <li>勉強会当日の動き方（時系列ガイド）</li>
+      <li>運用ルール（次セッション以降への申し送り）</li>
+      <li>Gemini / NotebookLM への依頼テンプレート</li>
+    </ol>
+  </div>
+
+  <!-- ============ ① ============ -->
+  <div class="sec">
+    <div class="sec-title">① 本日達成したこと</div>
+
+    <div class="notice notice-blue">
+      <p>📌 <strong>セッションの主軸：</strong>GitHub Org移行（dx-nexus）→ Academy 7タブ整理 → ジェネレーター構想カード化 → CHANGELOG設置 → デモ準備一式</p>
+    </div>
+
+    <div class="sec-sub">主な成果物</div>
+    <table class="tbl">
+      <thead><tr><th>カテゴリ</th><th>ファイル</th><th>状態</th></tr></thead>
+      <tbody>
+        <tr><td>Academy本編</td><td>Anthropic_Academy_Plan_Internal.html（7タブ・全13コースに学習内容リスト・自動化ロードマップ）</td><td><span class="tag tag-live">公開</span></td></tr>
+        <tr><td>変更履歴</td><td>CHANGELOG.html（24エントリ／過去履歴遡及含む）</td><td><span class="tag tag-live">公開</span></td></tr>
+        <tr><td>ジェネレーター</td><td>Navigator_Generator.html（プロトタイプv1）</td><td><span class="tag tag-live">公開</span></td></tr>
+        <tr><td>構想整理</td><td>Generator_Concept_Draft.html（認証連携・自動化レベル整理）</td><td><span class="tag tag-live">公開</span></td></tr>
+        <tr><td>個人デモ</td><td>Hancho_Life_Portfolio_v1.html（人生ポートフォリオ・ナビゲーター）</td><td><span class="tag tag-live">公開</span></td></tr>
+        <tr><td>実演結果</td><td>Claude_Code_Practical_Guide_v1.html（Claude Code 自動生成例）</td><td><span class="tag tag-live">公開</span></td></tr>
+        <tr><td>勉強会台本</td><td>Demo_Script_Department_Meeting.html（15分構成）</td><td><span class="tag tag-live">公開</span></td></tr>
+        <tr><td>デモ用JSON</td><td>demo_config_kickoff / meeting / simple .json</td><td><span class="tag tag-local">ローカル</span></td></tr>
+        <tr><td>運用スクリプト</td><td>deploy.ps1（ワンコマンドpush）</td><td><span class="tag tag-local">ローカル</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="sec-sub">本日の重要な意思決定</div>
+    <table class="tbl">
+      <tbody>
+        <tr><td>知識共有基盤</td><td>GitHub Pages（dx-nexus / knowledge-hub）を AI 間の情報共有レイヤとする</td></tr>
+        <tr><td>変更履歴</td><td>CHANGELOG.html を Claude・Gemini・人間の共同編集スペースとして運用</td></tr>
+        <tr><td>自動化方針</td><td>段階的自動化ロードマップ：半自動（現状）→ 準自動 → GitHub Actions（推奨） → 完全手放し運用</td></tr>
+        <tr><td>運用ルール</td><td>CSS修正は「追加のみ・削除禁止」を恒久ルール化（事故からの学び）</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ============ ② ============ -->
+  <div class="sec">
+    <div class="sec-title">② 反映先（公開URL / ローカルパス）</div>
+
+    <div class="sec-sub">📂 GitHub Pages 公開（誰でもブラウザでアクセス可）</div>
+    <table class="tbl">
+      <thead><tr><th>用途</th><th>URL</th></tr></thead>
+      <tbody>
+        <tr><td>ハブ（入口）</td><td><a href="https://dx-nexus.github.io/knowledge-hub/" target="_blank">https://dx-nexus.github.io/knowledge-hub/</a></td></tr>
+        <tr><td>Academy本編</td><td><a href="https://dx-nexus.github.io/knowledge-hub/Anthropic_Academy_Plan_Internal.html" target="_blank">.../Anthropic_Academy_Plan_Internal.html</a></td></tr>
+        <tr><td>CHANGELOG</td><td><a href="https://dx-nexus.github.io/knowledge-hub/CHANGELOG.html" target="_blank">.../CHANGELOG.html</a></td></tr>
+        <tr><td>デモ台本</td><td><a href="https://dx-nexus.github.io/knowledge-hub/Demo_Script_Department_Meeting.html" target="_blank">.../Demo_Script_Department_Meeting.html</a></td></tr>
+        <tr><td>ジェネレーター構想</td><td><a href="https://dx-nexus.github.io/knowledge-hub/Generator_Concept_Draft.html" target="_blank">.../Generator_Concept_Draft.html</a></td></tr>
+        <tr><td>人生ポートフォリオ</td><td><a href="https://dx-nexus.github.io/knowledge-hub/Hancho_Life_Portfolio_v1.html" target="_blank">.../Hancho_Life_Portfolio_v1.html</a></td></tr>
+        <tr><td>Claude Code実践ガイド</td><td><a href="https://dx-nexus.github.io/knowledge-hub/Claude_Code_Practical_Guide_v1.html" target="_blank">.../Claude_Code_Practical_Guide_v1.html</a></td></tr>
+      </tbody>
+    </table>
+
+    <div class="sec-sub">💻 ローカルPC（はんちょうPCのみ）</div>
+    <table class="tbl">
+      <thead><tr><th>用途</th><th>パス</th></tr></thead>
+      <tbody>
+        <tr><td>knowledge management（vault）</td><td><code>C:\git\hancho-kb\</code></td></tr>
+        <tr><td>公開docs リポジトリ</td><td><code>C:\git\hancho-docs\</code></td></tr>
+        <tr><td>ワンコマンド運用</td><td><code>C:\git\hancho-kb\scripts\deploy.ps1</code></td></tr>
+        <tr><td>デモ用JSON</td><td><code>C:\git\hancho-kb\demo_config_kickoff.json</code> ほか2種</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sec-sub">🔗 リポジトリ（変更履歴・差分はこちら）</div>
+    <table class="tbl">
+      <tbody>
+        <tr><td>vault</td><td><a href="https://github.com/dx-nexus/vault" target="_blank">github.com/dx-nexus/vault</a>（旧 hancho-kb）</td></tr>
+        <tr><td>knowledge-hub</td><td><a href="https://github.com/dx-nexus/knowledge-hub" target="_blank">github.com/dx-nexus/knowledge-hub</a>（旧 hancho-docs）</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ============ ③ ============ -->
+  <div class="sec">
+    <div class="sec-title">③ 勉強会当日の動き方（時系列ガイド）</div>
+
+    <div class="sec-sub">前日までに済ませること</div>
+    <table class="tbl">
+      <tbody>
+        <tr><td>1. 台本確認</td><td><a href="https://dx-nexus.github.io/knowledge-hub/Demo_Script_Department_Meeting.html" target="_blank">デモ進行台本</a> を読み込み</td></tr>
+        <tr><td>2. 本番リハーサル</td><td><code>demo_config_kickoff.json</code> を Claude Code に投げて、URL公開まで通しで1回実施</td></tr>
+        <tr><td>3. 保険URL確保</td><td>リハで生成された Kickoff_Checklist_v1.html のURL をブックマーク（バックアップ用）</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sec-sub">当日 開始30分前</div>
+    <div class="cmd">
+# PowerShell起動
+cd C:\git\hancho-kb
+
+# Claude Code を確認スキップモードで起動
+claude --permission-mode acceptEdits
+    </div>
+
+    <div class="notice notice-blue">
+      <p>📌 <strong>別画面で開いておくもの：</strong></p>
+      <ul style="padding-left:18px;margin-top:6px;font-size:12px;">
+        <li>デモ台本（上記URL）</li>
+        <li>メモ帳：投入プロンプト（台本の「⚡ ③ ライブ実行」内）</li>
+        <li>シークレットウィンドウ（成果物確認用・キャッシュ回避）</li>
+      </ul>
+    </div>
+
+    <div class="sec-sub">本番進行（15分・5フェーズ）</div>
+    <table class="tbl">
+      <thead><tr><th>時間</th><th>フェーズ</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td>0:00〜2:00</td><td>🎬 オープニング</td><td>「今日見せること」「なぜ重要か」を1〜2文で</td></tr>
+        <tr><td>2:00〜4:00</td><td>📄 仕込み紹介</td><td>config.json をエディタで開いて中身を見せる</td></tr>
+        <tr><td>4:00〜11:00</td><td>⚡ ライブ実行</td><td>Claude Code にプロンプト投入 → 待ち時間で解説</td></tr>
+        <tr><td>11:00〜13:00</td><td>🎁 成果物公開</td><td>シークレットウィンドウで公開URLを開いて見せる</td></tr>
+        <tr><td>13:00〜15:00</td><td>💭 振り返り</td><td>「これが何の意味か」「業務での使い方」</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sec-sub">投入プロンプト（コピペ可）</div>
+    <div class="prompt-box">@demo_config_kickoff.json を読み込んで、以下を実行してください。
+
+1. 既存の Anthropic_Academy_Plan_Internal.html を構造のテンプレートとして参照
+2. config.json の仕様に基づき、新しいHTML資料を生成
+3. タブidは tab0 から連番で統一
+4. doc-footer は最下部に1個のみ
+5. レスポンシブ対応・overflow-x:hidden で横スクロール抑止
+
+セルフチェック後、出力先 C:/git/hancho-docs/Kickoff_Checklist_v1.html に保存し、
+cd C:/git/hancho-docs
+git add Kickoff_Checklist_v1.html
+git commit -m "auto: DX案件キックオフ・チェックリスト v1（Claude Code一撃生成）"
+git push
+
+完了後、生成サイズ・セルフチェック結果・公開URLを報告してください。</div>
+
+    <div class="notice notice-amber">
+      <p>📌 <strong>失敗時の王道リカバリー：</strong>「AIデモは半分動けば成功、動かなくても話術でカバー」<br>
+      事前に用意した保険URLを「これ、あらかじめ用意したものですが、こういう成果物が出ます」で繋げる。</p>
+    </div>
+  </div>
+
+  <!-- ============ ④ ============ -->
+  <div class="sec">
+    <div class="sec-title">④ 運用ルール（次セッション以降への申し送り）</div>
+
+    <div class="notice notice-red">
+      <p>📌 <strong>今日の事故から学んだ恒久ルール：</strong></p>
+    </div>
+
+    <table class="tbl">
+      <thead><tr><th>ルール</th><th>背景</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tag-rule">CSS</span> CSS修正は<strong>追加のみ・削除禁止</strong>（!important使用）</td><td>CSS大量削除でJSが破損→「showTab is not defined」エラー発生</td></tr>
+        <tr><td><span class="tag tag-rule">PS</span> PowerShellの <code>&gt;</code> / <code>Out-File</code> はファイル破壊リスク</td><td>エンコーディング変換で日本語が文字化け／Copy-Item か Invoke-WebRequest を使う</td></tr>
+        <tr><td><span class="tag tag-rule">DL</span> Downloadsの古いファイル混在事故</td><td><code>Sort-Object LastWriteTime -Descending</code> で最新自動特定（deploy.ps1に実装済み）</td></tr>
+        <tr><td><span class="tag tag-rule">確認</span> ブラウザキャッシュ問題</td><td>動作確認はシークレットウィンドウで（または Ctrl+Shift+R）</td></tr>
+        <tr><td><span class="tag tag-rule">Code</span> Claude Code の権限確認スキップ</td><td><code>--permission-mode acceptEdits</code> または <code>Shift+Tab</code> で auto-accept</td></tr>
+        <tr><td><span class="tag tag-rule">復元</span> 壊れた時は Git の朝コミットに戻す</td><td><code>git checkout {hash} -- {file}</code> で安全復元</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sec-sub">運用フロー（毎回これだけ）</div>
+    <div class="cmd">
+# 1. Claudeからファイルをダウンロード
+# 2. deploy.ps1 を1コマンド実行（コピー → vault push → docs同期push）
+cd C:\git\hancho-kb
+.\scripts\deploy.ps1 "コミットメッセージ"
+
+# 3. 公開URLを確認（シークレットウィンドウ推奨）
+    </div>
+  </div>
+
+  <!-- ============ ⑤ ============ -->
+  <div class="sec">
+    <div class="sec-title">⑤ Gemini / NotebookLM への依頼テンプレート</div>
+
+    <div class="notice notice-purple">
+      <p>📌 <strong>外部AIに状況共有する際、以下のテンプレをそのまま使うと効率的です。</strong></p>
+    </div>
+
+    <div class="sec-sub">A. Gemini への引き継ぎプロンプト</div>
+    <div class="prompt-box">## はんちょう / dx-nexus プロジェクト状況共有
+
+【公開ドキュメントハブ】
+https://dx-nexus.github.io/knowledge-hub/
+
+【リポジトリ（差分・履歴）】
+https://github.com/dx-nexus/knowledge-hub
+
+【特に確認してほしいページ】
+- 引き継ぎ資料: https://dx-nexus.github.io/knowledge-hub/Handoff_Document_20260515.html
+- CHANGELOG: https://dx-nexus.github.io/knowledge-hub/CHANGELOG.html
+- Academy本編: https://dx-nexus.github.io/knowledge-hub/Anthropic_Academy_Plan_Internal.html
+- デモ台本: https://dx-nexus.github.io/knowledge-hub/Demo_Script_Department_Meeting.html
+
+【現在のフェーズ】
+段階的自動化ロードマップ Phase 1（半自動）安定化中。
+GitHub Actions による完全自動化（Phase 2）が次の検討事項。
+
+【依頼内容】
+（ここに具体的な依頼を書く）</div>
+
+    <div class="sec-sub">B. NotebookLM への投入手順</div>
+    <table class="tbl">
+      <thead><tr><th>手順</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td>1. ノート作成</td><td>NotebookLM で新規ノートブック「dx-nexus knowledge-hub」を作成</td></tr>
+        <tr><td>2. ソース追加</td><td>「URL を追加」で本資料・CHANGELOG・Academy・デモ台本のURL を貼る</td></tr>
+        <tr><td>3. 初回プロンプト</td><td>「このプロジェクトの全体構造と現在のフェーズを要約して」</td></tr>
+        <tr><td>4. 以降の活用</td><td>「次のステップとして検討すべきこと」「自動化Phase 2 の構築手順案」など</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sec-sub">C. 次回の Claude セッションへの引き継ぎ</div>
+    <div class="prompt-box">前回（2026-05-15）の続きをお願いします。
+
+【前回の到達点】
+- Academy 7タブ完成・学習内容リスト追加・段階的自動化ロードマップ追加
+- CHANGELOG.html 24エントリ運用中
+- 部内勉強会デモ準備完了（デモ台本・config.json 3パターン・deploy.ps1）
+
+【参照URL】
+https://dx-nexus.github.io/knowledge-hub/Handoff_Document_20260515.html
+https://dx-nexus.github.io/knowledge-hub/CHANGELOG.html
+
+【今回のお題】
+（ここに今回の依頼を書く）</div>
+  </div>
+
+  <!-- ============ 締め ============ -->
+  <div class="sec">
+    <div class="sec-title">🎯 まとめ</div>
+    <div class="notice notice-green">
+      <p>📌 <strong>本日のセッション総括：</strong><br>
+      ・GitHub Pages を AI 間の情報共有基盤として確立<br>
+      ・「半自動」運用フローを deploy.ps1 で安定化<br>
+      ・段階的自動化ロードマップを明文化（最終形は完全手放し運用）<br>
+      ・勉強会デモ一式（台本＋JSON＋実例）を準備完了</p>
+    </div>
+    <div class="notice notice-blue">
+      <p>📌 <strong>次回以降の論点（優先順）：</strong><br>
+      1. GitHub Actions 構築（自動化 Phase 2）<br>
+      2. Generator_Generator の認証連携設計<br>
+      3. 勉強会後の参加者フィードバック反映</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="foot">引き継ぎ資料 ／ 2026-05-15 セッション総括 ／ Claude</div>
+
+</body>
+</html>
