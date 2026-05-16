@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code 起動環境ガイド v1</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1a2744;--blue:#2563eb;--blue-lt:#eff6ff;
+  --orange:#d97706;--orange-lt:#fffbeb;
+  --green:#059669;--green-lt:#ecfdf5;
+  --red:#dc2626;--red-lt:#fef2f2;
+  --purple:#7c3aed;--purple-lt:#f5f3ff;
+  --gray:#f8f9fb;--text:#1e293b;--text2:#475569;--text3:#94a3b8;
+  --border:#e2e8f0;--white:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{overflow-x:hidden;}
+body{background:var(--gray);color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:14px;line-height:1.85;word-break:keep-all;overflow-wrap:break-word;}
+
+.hdr{background:linear-gradient(135deg,#1a2744 0%,#7c3aed 100%);color:#fff;padding:32px 40px;}
+.hdr h1{font-size:24px;font-weight:700;}
+.hdr .subtitle{font-size:13px;color:rgba(255,255,255,.78);margin-top:6px;}
+.hdr .meta{font-size:11px;color:rgba(255,255,255,.55);margin-top:12px;}
+
+.tab-bar{background:var(--white);border-bottom:2px solid var(--border);padding:0 32px;display:flex;gap:2px;overflow-x:auto;}
+.tab-btn{font-size:12px;font-weight:500;padding:14px 18px;border:none;background:none;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;}
+.tab-btn:hover{color:var(--text2);}
+.tab-btn.active{color:var(--purple);border-bottom-color:var(--purple);}
+
+.tab-pane{display:none;padding:28px 32px;}
+.tab-pane.active{display:block;}
+
+.sec{margin-bottom:32px;}
+.sec-title{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--purple);}
+.sec-sub{font-size:14px;font-weight:700;color:var(--navy);margin:18px 0 10px;}
+
+.hero{background:linear-gradient(135deg,#1a2744 0%,#5b21b6 100%);color:#fff;border-radius:12px;padding:24px 30px;margin-bottom:18px;}
+.hero-title{font-size:17px;font-weight:700;margin-bottom:10px;}
+.hero-body{font-size:13px;color:rgba(255,255,255,.85);line-height:1.95;}
+
+.notice{border-radius:8px;padding:14px 18px;margin:12px 0;}
+.notice-red{background:var(--red-lt);border-left:3px solid var(--red);}
+.notice-green{background:var(--green-lt);border-left:3px solid var(--green);}
+.notice-amber{background:var(--orange-lt);border-left:3px solid var(--orange);}
+.notice-blue{background:var(--blue-lt);border-left:3px solid var(--blue);}
+.notice p{font-size:13px;line-height:1.95;}
+
+.tbl{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin:10px 0;}
+.tbl th{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:11px 14px;text-align:left;}
+.tbl td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top;line-height:1.85;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl td:first-child{color:var(--text);font-weight:600;}
+
+.env-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px 22px;margin-bottom:12px;border-left:4px solid var(--blue);}
+.env-card.recommended{border-left-color:var(--green);background:#f0fdf4;}
+.env-card.warning{border-left-color:var(--red);background:#fef2f2;}
+.env-head{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.env-icon{font-size:24px;}
+.env-name{font-size:15px;font-weight:700;color:var(--navy);flex:1;}
+.env-badge{font-size:10px;font-weight:700;padding:2px 9px;border-radius:10px;}
+.badge-go{background:#d1fae5;color:#065f46;}
+.badge-ok{background:#dbeafe;color:#1d4ed8;}
+.badge-caution{background:#fef3c7;color:#92400e;}
+.badge-no{background:#fee2e2;color:#991b1b;}
+.env-body{font-size:12px;color:var(--text2);line-height:1.9;}
+
+.code-block{background:#0f172a;color:#86efac;border-radius:6px;padding:12px 16px;margin:8px 0;font-family:monospace;font-size:12px;line-height:1.75;overflow-x:auto;}
+
+.doc-footer{text-align:center;padding:24px;font-size:11px;color:var(--text3);border-top:1px solid var(--border);margin-top:20px;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>🖥️ Claude Code 起動環境ガイド v1</h1>
+  <div class="subtitle">アプリ vs PowerShell vs WSL vs VS Code — 何で起動するべきか</div>
+  <div class="meta">作成：2026-05-16 ／ 実機検証ベース</div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab(0)">📊 結論</button>
+  <button class="tab-btn" onclick="showTab(1)">🆚 起動環境4種の比較</button>
+  <button class="tab-btn" onclick="showTab(2)">⚠️ よくある問題</button>
+  <button class="tab-btn" onclick="showTab(3)">⚙️ はんちょう向け推奨設定</button>
+  <button class="tab-btn" onclick="showTab(4)">📚 用語整理</button>
+</div>
+
+<!-- TAB 0: 結論 -->
+<div class="tab-pane active" id="tab0">
+  <div class="sec">
+    <div class="sec-title">🎯 結論</div>
+
+    <div class="hero">
+      <div class="hero-title">PowerShellから直接起動が安定・最推奨</div>
+      <div class="hero-body">
+        Windows×日本語環境では、<strong>PowerShellでネイティブに claude コマンドを起動する</strong>のが最も安定。<br>
+        アプリ版や WSL 経由は文字化け・シェル混乱・パス問題が起きやすい。<br>
+        OneDrive配下のフォルダは作業ディレクトリとして使わない。
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">⚡ 3ルール</div>
+    <table class="tbl">
+      <thead><tr><th>ルール</th><th>理由</th></tr></thead>
+      <tbody>
+        <tr><td>① PowerShell から起動</td><td>Windowsネイティブ・コマンド互換性・文字化け回避</td></tr>
+        <tr><td>② 作業ディレクトリは C:\git\ 配下</td><td>OneDriveは同期で消失リスク・パス長制限・ロック競合</td></tr>
+        <tr><td>③ 起動時に <code>--permission-mode acceptEdits</code></td><td>毎回のYes/No確認スキップ・デモ・運用効率化</td></tr>
+      </tbody>
+    </table>
+
+    <div class="code-block">
+# 推奨起動コマンド（コピペ用）
+cd C:\git\hancho-kb
+claude --permission-mode acceptEdits
+    </div>
+  </div>
+</div>
+
+<!-- TAB 1: 4種の比較 -->
+<div class="tab-pane" id="tab1">
+  <div class="sec">
+    <div class="sec-title">🆚 起動環境の比較</div>
+
+    <div class="env-card recommended">
+      <div class="env-head">
+        <div class="env-icon">💙</div>
+        <div class="env-name">① PowerShell から起動</div>
+        <span class="env-badge badge-go">最推奨</span>
+      </div>
+      <div class="env-body">
+        <strong>起動方法：</strong><code>claude</code> コマンドを PowerShell で実行<br>
+        <strong>メリット：</strong>
+        <ul style="padding-left:18px;">
+          <li>Windowsネイティブ・最も互換性高い</li>
+          <li>PS コマンド（Get-Content, Copy-Item等）が問題なく動く</li>
+          <li>日本語パス・ファイル名が文字化けしにくい</li>
+          <li>環境変数・git設定がそのまま使える</li>
+        </ul>
+        <strong>デメリット：</strong>Linux系コマンド（curl, grep等）の挙動は限定的<br>
+      </div>
+    </div>
+
+    <div class="env-card">
+      <div class="env-head">
+        <div class="env-icon">💚</div>
+        <div class="env-name">② VS Code 内ターミナルから起動</div>
+        <span class="env-badge badge-ok">OK</span>
+      </div>
+      <div class="env-body">
+        <strong>起動方法：</strong>VS Code のターミナル（デフォルトは PowerShell）<br>
+        <strong>メリット：</strong>
+        <ul style="padding-left:18px;">
+          <li>エディタ統合・ファイル変更を即確認</li>
+          <li>複数ターミナル並行起動可</li>
+          <li>git連携が見やすい</li>
+        </ul>
+        <strong>注意点：</strong>ターミナルのデフォルトシェルが PowerShell であることを確認（設定 → terminal.integrated.defaultProfile.windows）<br>
+      </div>
+    </div>
+
+    <div class="env-card warning">
+      <div class="env-head">
+        <div class="env-icon">⚠️</div>
+        <div class="env-name">③ WSL（bash）から起動</div>
+        <span class="env-badge badge-caution">条件付き</span>
+      </div>
+      <div class="env-body">
+        <strong>起動方法：</strong>WSL ターミナル（Ubuntu等）から <code>claude</code><br>
+        <strong>問題：</strong>
+        <ul style="padding-left:18px;">
+          <li>PSコマンドが <code>/usr/bin/bash: Get-Content: command not found</code> エラー</li>
+          <li>Windowsパス（C:\...）と Linuxパス（/mnt/c/...）の混在</li>
+          <li>日本語ファイル名の文字化け（UTF-8 / Shift-JIS問題）</li>
+          <li>Claude Codeが自動でPSにリトライするが時間ロス</li>
+        </ul>
+        <strong>使うなら：</strong>Linux系の作業に限定。Windowsファイル操作は避ける。<br>
+      </div>
+    </div>
+
+    <div class="env-card warning">
+      <div class="env-head">
+        <div class="env-icon">🚫</div>
+        <div class="env-name">④ Claude Desktop アプリ内</div>
+        <span class="env-badge badge-no">非推奨</span>
+      </div>
+      <div class="env-body">
+        <strong>状況：</strong>Claude Desktop アプリは MCP（Model Context Protocol）経由でローカルツールを使える仕組みだが、Claude Code とは別物。<br>
+        <strong>問題：</strong>
+        <ul style="padding-left:18px;">
+          <li>「Working directory no longer exists」エラー（OneDrive同期不安定パス）</li>
+          <li>パス指定・シェル制御がCLIより不自由</li>
+          <li>長時間タスクで切断されやすい</li>
+        </ul>
+        <strong>推奨：</strong>Claude.ai は「対話・設計」用、Claude Code は「実装・実行」用と役割分担。<br>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 2: よくある問題 -->
+<div class="tab-pane" id="tab2">
+  <div class="sec">
+    <div class="sec-title">⚠️ よくある問題と対処</div>
+
+    <table class="tbl">
+      <thead><tr><th>症状</th><th>原因</th><th>対処</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>Get-Content: command not found</code></td>
+          <td>bashシェルで PowerShell コマンドを実行</td>
+          <td>PowerShell から claude を起動し直す</td>
+        </tr>
+        <tr>
+          <td>"追セ蜩。網サ髻「董り" のような文字化け</td>
+          <td>エンコーディング不一致（UTF-8 ↔ Shift-JIS）</td>
+          <td>ファイルは UTF-8 (BOMなし) で保存。PowerShellで <code>$OutputEncoding = [System.Text.Encoding]::UTF8</code></td>
+        </tr>
+        <tr>
+          <td><code>Working directory no longer exists</code></td>
+          <td>OneDrive配下フォルダが同期で移動／削除</td>
+          <td>作業ディレクトリを <code>C:\git\</code> 配下に変更（OneDrive配下にしない）</td>
+        </tr>
+        <tr>
+          <td>毎回 Yes/No 確認が出る</td>
+          <td>permission モードがデフォルト</td>
+          <td><code>claude --permission-mode acceptEdits</code> または Shift+Tab で auto モード切替</td>
+        </tr>
+        <tr>
+          <td>ファイル変更が見えない・遅延</td>
+          <td>OneDrive同期との競合</td>
+          <td>OneDrive対象外のパス（C:\git\等）を使う</td>
+        </tr>
+        <tr>
+          <td>パスのバックスラッシュエラー</td>
+          <td>Windows と Linux の混在</td>
+          <td>PowerShellではスラッシュ <code>/</code> でもOK。WSLでは <code>/mnt/c/...</code></td>
+        </tr>
+        <tr>
+          <td>長時間タスクで切断</td>
+          <td>アプリ版のWebSocket切断</td>
+          <td>長時間タスクはCLI（PowerShell）で実行</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">📌 OneDrive 問題の重要度</div>
+    <div class="notice notice-red">
+      <p>📌 <strong>OneDrive配下のフォルダは作業ディレクトリにしない：</strong><br>
+      ・OneDriveが裏で同期するため、ファイルが一時的に消える/移動することがある<br>
+      ・Claude Codeが「Working directory no longer exists」でセッション中断<br>
+      ・git とOneDriveの二重管理は事故の元<br>
+      ・推奨：<code>C:\git\</code> 配下にgitリポジトリを置く（OneDrive対象外）</p>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 3: 推奨設定 -->
+<div class="tab-pane" id="tab3">
+  <div class="sec">
+    <div class="sec-title">⚙️ はんちょう向け推奨設定</div>
+
+    <div class="sec-sub">起動方法（毎回これだけ）</div>
+    <div class="code-block">
+# PowerShell を Win+R → "powershell" で起動
+
+# 作業ディレクトリへ
+cd C:\git\hancho-kb
+
+# Claude Code を確認スキップモードで起動
+claude --permission-mode acceptEdits
+    </div>
+
+    <div class="sec-sub">PowerShell プロファイル設定（任意・1回限り）</div>
+    <div class="notice notice-blue">
+      <p>📌 毎回 <code>--permission-mode acceptEdits</code> を打つのが面倒なら、エイリアスを設定：</p>
+    </div>
+    <div class="code-block">
+# PowerShell プロファイルを開く
+notepad $PROFILE
+
+# 以下を追記して保存
+function ccode { claude --permission-mode acceptEdits @args }
+
+# 再起動後、`ccode` で起動可能に
+    </div>
+
+    <div class="sec-sub">エンコーディング設定（文字化け対策）</div>
+    <div class="code-block">
+# PowerShell プロファイルに追記
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+
+# これで日本語ファイル名・出力の文字化けを抑制
+    </div>
+
+    <div class="sec-sub">作業ディレクトリ整理（推奨構造）</div>
+    <div class="code-block">
+C:\git\                         （Claudeの作業ルート）
+├── hancho-kb\                  （vault: ナレッジ管理）
+├── hancho-docs\                （公開: knowledge-hub）
+├── algo-trading-private\       （Algo Trading）
+└── （今後の新プロジェクト）
+
+# OneDrive配下は触らない
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">🔧 設定の優先順位</div>
+    <table class="tbl">
+      <thead><tr><th>優先度</th><th>設定</th><th>効果</th></tr></thead>
+      <tbody>
+        <tr><td>★★★ 必須</td><td>C:\git\ 配下で作業</td><td>OneDrive事故を完全回避</td></tr>
+        <tr><td>★★★ 必須</td><td>PowerShell から起動</td><td>WSL混乱・文字化けを回避</td></tr>
+        <tr><td>★★ 推奨</td><td>--permission-mode acceptEdits</td><td>確認スキップで時短</td></tr>
+        <tr><td>★★ 推奨</td><td>UTF-8 エンコーディング設定</td><td>日本語出力安定化</td></tr>
+        <tr><td>★ 任意</td><td>PowerShell プロファイル（ccode関数）</td><td>起動コマンド短縮</td></tr>
+        <tr><td>★ 任意</td><td>VS Code 内ターミナル利用</td><td>エディタ統合</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 4: 用語整理 -->
+<div class="tab-pane" id="tab4">
+  <div class="sec">
+    <div class="sec-title">📚 紛らわしい用語整理</div>
+
+    <table class="tbl">
+      <thead><tr><th>用語</th><th>正体</th><th>用途</th></tr></thead>
+      <tbody>
+        <tr><td>Claude.ai（Web）</td><td>ブラウザ版チャットUI</td><td>対話・設計・資料作成</td></tr>
+        <tr><td>Claude Desktop アプリ</td><td>Windows/Macアプリ・MCP対応</td><td>ローカルツール連携対話</td></tr>
+        <tr><td><strong>Claude Code（CLI）</strong></td><td>ターミナル用コーディングエージェント</td><td><strong>実装・自動実行・git操作</strong></td></tr>
+        <tr><td>PowerShell</td><td>Windowsの標準シェル</td><td>Claude Code起動・PSスクリプト</td></tr>
+        <tr><td>WSL（Ubuntu等）</td><td>Windows上で動くLinux</td><td>Linux系ツール用（混在NG）</td></tr>
+        <tr><td>VS Code</td><td>コードエディタ</td><td>編集＋ターミナル統合</td></tr>
+        <tr><td>MCP</td><td>Model Context Protocol</td><td>AIと外部ツールの接続規格</td></tr>
+        <tr><td>API Key</td><td>Anthropic API用キー</td><td>従量課金・自前実装用</td></tr>
+        <tr><td>OneDrive</td><td>Microsoft クラウド同期</td><td>作業ディレクトリには不向き</td></tr>
+      </tbody>
+    </table>
+
+    <div class="notice notice-green">
+      <p>📌 <strong>はんちょうの使い分け：</strong><br>
+      ・Claude.ai（Web）= 設計・対話・資料作成<br>
+      ・Claude Code（PowerShell起動）= 実装・自動化・git push<br>
+      ・Gemini / NotebookLM = 並行レビュー・別視点の検証</p>
+    </div>
+  </div>
+</div>
+
+<div class="doc-footer">Claude Code 起動環境ガイド v1 ／ Windows×日本語環境向け運用ガイド ／ 2026-05-16</div>
+
+<script>
+function showTab(n){
+  document.querySelectorAll('.tab-pane').forEach((p,i)=>p.classList.toggle('active',i===n));
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===n));
+}
+</script>
+
+</body>
+</html>
