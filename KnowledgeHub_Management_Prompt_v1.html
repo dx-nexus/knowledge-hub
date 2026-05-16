@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>knowledge-hub 全体管理プロンプト v1</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1a2744;--blue:#2563eb;--blue-lt:#eff6ff;
+  --orange:#d97706;--orange-lt:#fffbeb;
+  --green:#059669;--green-lt:#ecfdf5;
+  --purple:#7c3aed;--purple-lt:#f5f3ff;
+  --gray:#f8f9fb;--text:#1e293b;--text2:#475569;--text3:#94a3b8;
+  --border:#e2e8f0;--white:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{overflow-x:hidden;}
+body{background:var(--gray);color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:14px;line-height:1.85;word-break:keep-all;overflow-wrap:break-word;}
+
+.hdr{background:linear-gradient(135deg,#1a2744 0%,#7c3aed 100%);color:#fff;padding:32px 40px;}
+.hdr h1{font-size:24px;font-weight:700;}
+.hdr .subtitle{font-size:13px;color:rgba(255,255,255,.75);margin-top:6px;}
+.hdr .meta{font-size:11px;color:rgba(255,255,255,.55);margin-top:12px;}
+
+.container{max-width:1080px;margin:0 auto;padding:32px 40px;}
+
+.banner{background:#f5f3ff;border:2px solid #c4b5fd;border-radius:10px;padding:18px 22px;margin-bottom:28px;}
+.banner-title{font-size:13px;font-weight:700;color:#5b21b6;margin-bottom:8px;}
+.banner-body{font-size:12px;color:#4c1d95;line-height:1.95;}
+
+.sec{margin-bottom:40px;}
+.sec-title{font-size:18px;font-weight:700;color:var(--navy);margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #7c3aed;}
+.sec-sub{font-size:14px;font-weight:700;color:var(--navy);margin:18px 0 10px;}
+
+.prompt-master{background:#1e293b;color:#fde68a;border-radius:10px;padding:24px 28px;margin:14px 0;font-size:12px;line-height:1.9;white-space:pre-wrap;border:2px solid #fbbf24;font-family:monospace;}
+.prompt-master::before{content:'🎯 これをそのままClaude Codeに貼り付け';display:block;font-size:11px;color:#fbbf24;margin-bottom:10px;letter-spacing:.05em;font-family:'Noto Sans JP',sans-serif;font-weight:700;}
+
+.prompt-sub{background:#0f172a;color:#86efac;border-radius:8px;padding:16px 20px;margin:14px 0;font-size:12px;line-height:1.85;white-space:pre-wrap;}
+.prompt-sub::before{content:attr(data-label);display:block;font-size:11px;color:#94a3b8;margin-bottom:8px;letter-spacing:.05em;font-family:'Noto Sans JP',sans-serif;font-weight:700;}
+
+.code-block{background:#0f172a;color:#86efac;border-radius:6px;padding:12px 14px;margin:8px 0;font-family:monospace;font-size:12px;line-height:1.7;}
+
+.notice{border-radius:8px;padding:14px 18px;margin:12px 0;}
+.notice-blue{background:var(--blue-lt);border-left:3px solid var(--blue);}
+.notice-green{background:var(--green-lt);border-left:3px solid var(--green);}
+.notice-orange{background:var(--orange-lt);border-left:3px solid var(--orange);}
+.notice-purple{background:var(--purple-lt);border-left:3px solid var(--purple);}
+.notice p{font-size:13px;line-height:1.9;}
+
+.tbl{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin:10px 0;}
+.tbl th{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:11px 14px;text-align:left;}
+.tbl td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top;line-height:1.85;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl td:first-child{color:var(--text);font-weight:600;}
+
+.foot{text-align:center;padding:24px;font-size:11px;color:var(--text3);border-top:1px solid var(--border);margin-top:32px;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>🎛️ knowledge-hub 全体管理プロンプト v1</h1>
+  <div class="subtitle">Claude Code に dx-nexus/knowledge-hub の運用そのものを任せる「メタプロンプト」</div>
+  <div class="meta">最終更新：2026-05-15 ／ 対象：はんちょう個人運用</div>
+</div>
+
+<div class="container">
+
+  <div class="banner">
+    <div class="banner-title">🎯 このプロンプトの位置付け</div>
+    <div class="banner-body">
+      これまでの「単発タスク用プロンプト」（HTML1本生成）とは違い、<strong>knowledge-hub 全体を継続運用してもらうための"メタプロンプト"</strong> です。<br>
+      Claude Code セッション開始時にこれを1回投入すれば、以降は「Xを作って」「Yを修正して」「状態見せて」と対話的に依頼できます。<br>
+      毎回タスクごとに長い指示を書く必要がなくなります。
+    </div>
+  </div>
+
+  <!-- ========== ① メタプロンプト本体 ========== -->
+  <div class="sec">
+    <div class="sec-title">① メタプロンプト本体（セッション開始時に1回投入）</div>
+
+    <div class="prompt-master">あなたは dx-nexus/knowledge-hub（GitHub Pages公開ドキュメントハブ）の管理者です。
+以下のルールに従って、私からの依頼を対話的に処理してください。
+
+【リポジトリ構造】
+- vault（ナレッジ管理）: C:/git/hancho-kb/
+- docs（公開）: C:/git/hancho-docs/
+- 公開URL: https://dx-nexus.github.io/knowledge-hub/
+- 既存テンプレートのリファレンス: Anthropic_Academy_Plan_Internal.html
+
+【依頼パターンと対応】
+
+■ パターン1：「Xというテーマで新規資料を作りたい」
+1. 受け皿テンプレ（① 何を ② 誰のため ③ なぜ ④ 含めたい要素 ⑤ トーン）を私に質問
+2. 私の回答をもとに config.json 案（タブ構成含む）を提案
+3. 私の承認後、HTMLを生成（既存テンプレ参照）
+4. C:/git/hancho-docs/ に配置
+5. index.html に該当カードを追加
+6. CHANGELOG.html にエントリ追加
+7. git add → commit → push
+8. 完了報告（公開URL、サイズ、セルフチェック結果）
+
+■ パターン2：「Xファイルを修正したい」
+1. 該当ファイルを読み込み、現状把握
+2. 修正案を提示し、私の承認を待つ
+3. 承認後に編集（CSS削除禁止・追加のみ）
+4. CHANGELOG.html に修正記録を追加
+5. git add → commit → push
+6. 完了報告
+
+■ パターン3：「現状を見せて」「ハブ状態確認」
+1. C:/git/hancho-docs 配下のHTMLファイル一覧を取得
+2. 直近のコミット履歴（5件）を確認
+3. index.html・CHANGELOG.html の最新状態を要約
+4. 整合性チェック（リンク切れ・id重複・CSS破損等）
+5. レポート出力
+
+■ パターン4：「整理して」「メンテナンス」
+1. 全HTMLファイルをスキャンし、以下を点検：
+   - index.html に登録されているか
+   - CHANGELOG.html に履歴があるか
+   - タブid連番OK・doc-footer 1個・script 1個
+   - 個人情報（"Qolony"除く）残存なし
+2. 不整合を発見したら修正案を提示
+3. 承認後に修正・push
+
+【共通ルール（全タスク必須）】
+- CSS修正は「追加のみ・削除禁止」（!important使用）
+- セルフチェック（タブid連番・doc-footer 1個・script 1個・個人情報残存なし）必須
+- 文字化け防止：PowerShellの「>」リダイレクトは使わず、Copy-Itemを使用
+- Downloadsからのコピー時は Sort-Object LastWriteTime -Descending で最新自動特定
+- 完了報告は「ファイル名・サイズ・公開URL・チェック結果」をセットで
+- 不明点・選択肢が複数ある場合は必ず私に確認してから実行
+
+【トーン】
+日本語・敬語・実務的。事実と推定を分離し、不明点は「不明／要確認」と明示。
+
+セッションを開始します。最初に、現在のknowledge-hubの状態を簡潔に把握してから、私の指示を待ってください。</div>
+
+    <div class="notice notice-purple">
+      <p>📌 <strong>使い方：</strong>Claude Code を起動した直後、上のプロンプトをそのまま1回貼り付け。以後は「ABCというテーマで作りたい」「Xを修正して」など、短い言葉で依頼できます。</p>
+    </div>
+  </div>
+
+  <!-- ========== ② 起動コマンド ========== -->
+  <div class="sec">
+    <div class="sec-title">② 起動コマンド</div>
+
+    <div class="code-block">cd C:\git\hancho-kb
+claude --permission-mode acceptEdits</div>
+
+    <div class="notice notice-blue">
+      <p>📌 起動後にメタプロンプト貼り付け → 「現状把握しました」的な返答が来る → 以降は短い依頼で対話。</p>
+    </div>
+  </div>
+
+  <!-- ========== ③ 対話例 ========== -->
+  <div class="sec">
+    <div class="sec-title">③ 対話例（メタプロンプト投入後）</div>
+
+    <div class="prompt-sub" data-label="例1：新規資料生成">私：「英語学習ロードマップ v1」を作りたい。
+
+Claude Code：受け皿テンプレを埋めてください：
+① 何を作るか
+② 誰のため
+③ なぜ作る
+④ 含めたい要素
+⑤ トーン
+
+私：①英語学習ロードマップ ②自分自身 ③Anthropic Japan転職に向けた実務英語強化 ④週次プラン、シャドーイング、英語ノート ⑤実務的・落ち着いた色
+
+Claude Code：以下のタブ構成を提案します...承認後、生成・公開します。</div>
+
+    <div class="prompt-sub" data-label="例2：既存ファイル修正">私：CHANGELOG.html の表示が見づらいので改善して。
+
+Claude Code：現状を確認しました。以下の3点を修正案として提示します：
+1. エントリ間の余白を増やす
+2. フィルターボタンの視認性向上
+3. 日付の表記統一
+どれを反映しますか？
+
+私：3つとも反映して。
+
+Claude Code：実行します...完了。push済み。</div>
+
+    <div class="prompt-sub" data-label="例3：現状確認">私：今のハブの状態見せて。
+
+Claude Code：knowledge-hub 状態レポート（2026-05-15 23:45）
+- 公開HTMLファイル：14件
+- 直近コミット：feat: はんちょう実例ページ（5分前）
+- index.html登録漏れ：なし
+- CHANGELOG最新エントリ：2026-05-15
+- 整合性チェック：全項目OK
+詳細が必要なファイルはありますか？</div>
+  </div>
+
+  <!-- ========== ④ なぜメタプロンプトが必要か ========== -->
+  <div class="sec">
+    <div class="sec-title">④ なぜ「メタプロンプト」が必要か</div>
+
+    <table class="tbl">
+      <thead><tr><th>従来（単発プロンプト）</th><th>メタプロンプト</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>毎回タスクごとに長い指示を書く（生成仕様・セルフチェック項目・push手順）</td>
+          <td>1回投入すれば、以降は「Xを作って」だけでOK</td>
+        </tr>
+        <tr>
+          <td>セルフチェック忘れ・push忘れの事故が起きやすい</td>
+          <td>共通ルールに「必須」と書いてあるので自動適用される</td>
+        </tr>
+        <tr>
+          <td>新規ファイルがindex.htmlに登録漏れ・CHANGELOG記録漏れ</td>
+          <td>パターン1に「index追加」「CHANGELOG追加」を組み込み済み</td>
+        </tr>
+        <tr>
+          <td>ファイル単位の点検が必要</td>
+          <td>「整理して」の一言でハブ全体スキャン可能</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="notice notice-green">
+      <p>📌 <strong>本質的な価値：</strong>Claude Code が「タスク実行マシン」から「ハブの共同管理者」に昇格する。<br>
+      人間は「何を依頼するか」だけ考えればよくなり、運用ルールの守りはAIに委譲できる。</p>
+    </div>
+  </div>
+
+  <!-- ========== ⑤ 適用範囲と限界 ========== -->
+  <div class="sec">
+    <div class="sec-title">⑤ 適用範囲と限界</div>
+
+    <div class="sec-sub">✅ 任せられること</div>
+    <ul style="padding-left:22px;font-size:13px;color:var(--text2);line-height:2;">
+      <li>新規HTML資料の生成（テンプレ参照）</li>
+      <li>既存ファイルの修正（CSS追加・コンテンツ修正）</li>
+      <li>index.html / CHANGELOG.html の自動更新</li>
+      <li>セルフチェック・git push まで一貫実行</li>
+      <li>整合性チェック・不整合の発見</li>
+    </ul>
+
+    <div class="sec-sub">⚠️ 任せられないこと（人間判断が必要）</div>
+    <ul style="padding-left:22px;font-size:13px;color:var(--text2);line-height:2;">
+      <li>「何を作るか」の判断（テーマ・目的の決定）</li>
+      <li>「どのトーンか」の最終決定（公開可否・社内外向け）</li>
+      <li>機密情報・個人情報の取り扱い判断</li>
+      <li>事実誤認の最終確認（ハルシネーション対策）</li>
+      <li>大規模なリポジトリ構造変更</li>
+    </ul>
+
+    <div class="notice notice-orange">
+      <p>📌 <strong>原則：</strong>AIは作業を肩代わりするが、判断・意味づけ・最終承認は人間が持つ。<br>
+      メタプロンプトでも、「承認後に実行」のステップを必ず組み込んでいる。</p>
+    </div>
+  </div>
+
+  <!-- ========== ⑥ 使い分けガイド ========== -->
+  <div class="sec">
+    <div class="sec-title">⑥ プロンプトの使い分け</div>
+
+    <table class="tbl">
+      <thead><tr><th>シーン</th><th>使うプロンプト</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>新規ハブを立ち上げた直後</td>
+          <td>個別単発プロンプト（最初の1〜2本でテンプレを確立）</td>
+        </tr>
+        <tr>
+          <td>ハブ運用が安定してきた</td>
+          <td>本ページのメタプロンプト（継続運用フェーズ）</td>
+        </tr>
+        <tr>
+          <td>勉強会デモ・短時間で1本生成</td>
+          <td>個別単発プロンプト（明確で見せやすい）</td>
+        </tr>
+        <tr>
+          <td>四半期ごとの整理・棚卸し</td>
+          <td>メタプロンプト + 「整理して」</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ========== ⑦ 将来の発展 ========== -->
+  <div class="sec">
+    <div class="sec-title">⑦ 将来の発展（自動化Phase 2-4 への接続）</div>
+
+    <div class="notice notice-blue">
+      <p>📌 メタプロンプトは「半自動運用」の完成形。次のフェーズへ進化させる場合：</p>
+      <ul style="padding-left:20px;margin-top:8px;font-size:12px;">
+        <li><strong>Phase 2（準自動）：</strong>メタプロンプトをファイル化し、<code>claude --resume @meta_prompt.txt</code> で起動時自動投入</li>
+        <li><strong>Phase 3（自動）：</strong>GitHub Actions 化。config.json push → メタプロンプト相当のロジック実行 → 自動公開</li>
+        <li><strong>Phase 4（完全手放し）：</strong>Slack/メール経由で依頼 → AI が判断・実行 → 結果通知</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div class="foot">knowledge-hub 全体管理プロンプト v1 ／ メタプロンプトによる継続運用フェーズへ ／ 2026-05-15</div>
+
+</body>
+</html>
