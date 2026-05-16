@@ -152,6 +152,59 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 
       <div class="entry" data-actor="claude" data-cat="add">
         <div class="entry-head">
+          <span class="entry-date">2026-05-16</span>
+          <span class="entry-actor actor-claude">Claude</span>
+          <span class="entry-cat cat-add">追加</span>
+        </div>
+        <div class="entry-title">Algo Trading Project 立ち上げ・実弾判断レポート公開</div>
+        <div class="entry-body">
+          新規プライベートリポジトリ（dx-nexus/algo-trading-private）を立ち上げ、Phase 0（環境構築）を Claude Code 一撃生成で完了（17ファイル・3分48秒）。<br>
+          並行して、専門家パネル8名による多角検証レポート（Algo_Trading_Decision_Report_v1）を作成。<br>
+          結論：Paper Trading は GO ／ 実弾投入は Phase 5 で厳格条件付き判断（半年後）／ クリプトは全フェーズで除外。<br>
+          SNS事例（@sin_brain1, @sawa20200424）は生存バイアスとして処理。
+        </div>
+        <div class="entry-files">
+          <a class="entry-file" href="https://github.com/dx-nexus/algo-trading-private">algo-trading-private (private)</a>
+        </div>
+      </div>
+
+      <div class="entry" data-actor="claude" data-cat="add">
+        <div class="entry-head">
+          <span class="entry-date">2026-05-16</span>
+          <span class="entry-actor actor-claude">Claude</span>
+          <span class="entry-cat cat-add">追加</span>
+        </div>
+        <div class="entry-title">JSON駆動 HTML自動生成 汎用フロー＋はんちょう実例ページ公開</div>
+        <div class="entry-body">
+          「人間→Claude対話→config.json→Claude Code→公開URL」のフロー全体を、汎用版（Universal_Generation_Flow_v1）と実例版（Hancho_Sample_Filled_v1）の2層構造で公開。<br>
+          受け皿テンプレ5項目（何を/誰のため/なぜ/含めたい要素/トーン）で人間負荷を最小化。<br>
+          knowledge-hub 全体管理メタプロンプト（KnowledgeHub_Management_Prompt_v1）も追加。継続運用フェーズに移行。
+        </div>
+        <div class="entry-files">
+          <a class="entry-file" href="Universal_Generation_Flow_v1.html">Universal_Generation_Flow_v1.html</a>
+          <a class="entry-file" href="Hancho_Sample_Filled_v1.html">Hancho_Sample_Filled_v1.html</a>
+          <a class="entry-file" href="KnowledgeHub_Management_Prompt_v1.html">KnowledgeHub_Management_Prompt_v1.html</a>
+          <a class="entry-file" href="Hancho_Business_AI_Practice_v1.html">Hancho_Business_AI_Practice_v1.html</a>
+        </div>
+      </div>
+
+      <div class="entry" data-actor="human" data-cat="discuss">
+        <div class="entry-head">
+          <span class="entry-date">2026-05-16</span>
+          <span class="entry-actor actor-human">人間</span>
+          <span class="entry-cat cat-discuss">議論</span>
+        </div>
+        <div class="entry-title">宿題2件を次セッションへ持ち越し</div>
+        <div class="entry-body">
+          ① Claude → Claude Code への直接ファイル受け渡し（現状は人間が中継役）<br>
+          ② Claude Code 進捗の可視化（CLI画面のブラックボックス問題）<br>
+          ⇒ 共通中継リポジトリ運用、Slack通知構造化、CHANGELOG自動連動、タスクID運用 などを検討予定。
+        </div>
+      </div>
+
+
+      <div class="entry" data-actor="claude" data-cat="add">
+        <div class="entry-head">
           <span class="entry-date">2026-05-15</span>
           <span class="entry-actor actor-claude">Claude</span>
           <span class="entry-cat cat-add">追加</span>
