@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JSON駆動 HTML自動生成 汎用フロー v1</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1a2744;--navy2:#2d3d6b;
+  --blue:#2563eb;--blue-lt:#eff6ff;
+  --orange:#d97706;--orange-lt:#fffbeb;
+  --green:#059669;--green-lt:#ecfdf5;
+  --purple:#7c3aed;--purple-lt:#f5f3ff;
+  --gray:#f8f9fb;--gray2:#f1f3f7;
+  --text:#1e293b;--text2:#475569;--text3:#94a3b8;
+  --border:#e2e8f0;--white:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{overflow-x:hidden;}
+body{background:var(--gray);color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:14px;line-height:1.85;word-break:keep-all;overflow-wrap:break-word;}
+
+.hdr{background:linear-gradient(135deg,#1a2744 0%,#2d3d6b 50%,#0e7490 100%);color:#fff;padding:32px 40px;}
+.hdr h1{font-size:24px;font-weight:700;letter-spacing:.02em;}
+.hdr .subtitle{font-size:13px;color:rgba(255,255,255,.7);margin-top:6px;}
+.hdr .meta{font-size:11px;color:rgba(255,255,255,.55);margin-top:12px;}
+
+.container{max-width:1100px;margin:0 auto;padding:32px 40px;}
+
+.toc{background:#fff;border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:28px;}
+.toc-title{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.15em;margin-bottom:10px;}
+.toc ol{padding-left:22px;font-size:13px;color:var(--text2);line-height:2;}
+.toc a{color:var(--blue);text-decoration:none;}
+
+.sec{margin-bottom:40px;}
+.sec-title{font-size:20px;font-weight:700;color:var(--navy);margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--blue);}
+.sec-sub{font-size:14px;font-weight:700;color:var(--navy);margin:18px 0 10px;}
+
+.hero{background:linear-gradient(135deg,#1a2744 0%,#2d3d6b 100%);color:#fff;border-radius:12px;padding:28px 32px;margin-bottom:24px;}
+.hero-title{font-size:18px;font-weight:700;margin-bottom:10px;}
+.hero-body{font-size:13px;color:rgba(255,255,255,.85);line-height:1.95;}
+
+.flow-svg{background:#fff;border:1px solid var(--border);border-radius:10px;padding:24px 20px;margin-bottom:18px;overflow-x:auto;}
+
+.notice{border-radius:8px;padding:14px 18px;margin:12px 0;}
+.notice-blue{background:var(--blue-lt);border-left:3px solid var(--blue);}
+.notice-orange{background:var(--orange-lt);border-left:3px solid var(--orange);}
+.notice-green{background:var(--green-lt);border-left:3px solid var(--green);}
+.notice-purple{background:var(--purple-lt);border-left:3px solid var(--purple);}
+.notice p{font-size:13px;line-height:1.95;}
+
+.tbl{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin:10px 0;}
+.tbl th{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:11px 14px;text-align:left;}
+.tbl td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top;line-height:1.85;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl td:first-child{color:var(--text);font-weight:600;white-space:nowrap;}
+
+.step-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:22px 26px;margin-bottom:14px;}
+.step-head{display:flex;align-items:center;gap:14px;margin-bottom:12px;border-bottom:1px solid var(--border);padding-bottom:10px;}
+.step-num{flex-shrink:0;width:40px;height:40px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;}
+.step-title{font-size:15px;font-weight:700;color:var(--navy);}
+.step-actor{font-size:11px;color:#fff;background:var(--blue);padding:2px 9px;border-radius:10px;font-weight:600;margin-left:8px;}
+.step-actor.ai{background:var(--orange);}
+.step-actor.system{background:var(--green);}
+
+.prompt-box{background:#1e293b;color:#fde68a;border-radius:8px;padding:16px 20px;margin:14px 0;font-size:12px;line-height:1.8;white-space:pre-wrap;}
+.prompt-box::before{content:'📋 そのままコピペ可';display:block;font-size:11px;color:#94a3b8;margin-bottom:8px;letter-spacing:.05em;}
+
+.tmpl-box{background:#f0f9ff;border:2px dashed var(--blue);border-radius:8px;padding:18px 22px;margin:14px 0;font-size:13px;line-height:2;}
+.tmpl-box .tmpl-title{font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.1em;margin-bottom:10px;text-transform:uppercase;}
+.tmpl-box .tmpl-field{padding:6px 0;border-bottom:1px solid #cfe9fd;}
+.tmpl-box .tmpl-field:last-child{border-bottom:none;}
+.tmpl-box .tmpl-label{font-weight:700;color:var(--navy);display:inline-block;min-width:120px;}
+.tmpl-box .tmpl-fill{color:var(--text3);font-style:italic;}
+
+.code-block{background:#0f172a;color:#86efac;border-radius:6px;padding:12px 14px;margin:8px 0;font-family:monospace;font-size:12px;line-height:1.7;overflow-x:auto;}
+.code-block.json{color:#fde68a;}
+
+.dialog{background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:10px 0;}
+.dialog-human{border-left:3px solid var(--blue);}
+.dialog-claude{border-left:3px solid var(--orange);background:#fffbf3;}
+.dialog-label{font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--text3);margin-bottom:6px;text-transform:uppercase;}
+.dialog-human .dialog-label{color:var(--blue);}
+.dialog-claude .dialog-label{color:var(--orange);}
+.dialog p{font-size:13px;line-height:1.9;color:var(--text);}
+
+.bullet-list{padding-left:20px;font-size:13px;color:var(--text2);line-height:2;}
+.bullet-list li{margin-bottom:4px;}
+
+.foot{text-align:center;padding:24px;font-size:11px;color:var(--text3);border-top:1px solid var(--border);margin-top:32px;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>📐 JSON駆動 HTML自動生成 汎用フロー v1</h1>
+  <div class="subtitle">人間は「条件と目的」だけ伝える ／ AI と Code が成果物までを連結する</div>
+  <div class="meta">対象：個人の業務文書作成・部内勉強会発表用 ／ 2026-05-15</div>
+</div>
+
+<div class="container">
+
+  <div class="toc">
+    <div class="toc-title">📋 目次</div>
+    <ol>
+      <li>全体イメージ（誰が何をやるか）</li>
+      <li>人間が用意するもの：条件と目的だけ</li>
+      <li>STEP 1：受け皿テンプレートで意図を言語化</li>
+      <li>STEP 2：Claude と対話して config.json を生成</li>
+      <li>STEP 3：Claude Code に投げて HTML 生成・公開</li>
+      <li>STEP 4：完成確認とフィードバックループ</li>
+      <li>汎用化のポイント（個人実践 → 部内展開）</li>
+    </ol>
+  </div>
+
+  <!-- ========== ① 全体イメージ ========== -->
+  <div class="sec">
+    <div class="sec-title">① 全体イメージ（誰が何をやるか）</div>
+
+    <div class="hero">
+      <div class="hero-title">🎯 核心アイデア：人間が伝えるのは「意図」だけ</div>
+      <div class="hero-body">
+        人間 → Claude（対話）→ JSON → Claude Code → HTML → 公開URL<br>
+        この一連の流れの中で、人間がやるのは「条件と目的を言語化すること」だけ。<br>
+        構造化（JSON化）も、コーディングも、デプロイも、すべてAIが担う。
+      </div>
+    </div>
+
+    <div class="flow-svg">
+      <svg viewBox="0 0 1000 360" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:1000px;font-family:'Noto Sans JP',sans-serif;">
+        <defs>
+          <marker id="arr" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto">
+            <path d="M0,0 L0,10 L12,5 z" fill="#475569"/>
+          </marker>
+          <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#1d4ed8"/>
+          </linearGradient>
+          <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#d97706"/><stop offset="100%" stop-color="#92400e"/>
+          </linearGradient>
+          <linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#5b21b6"/>
+          </linearGradient>
+          <linearGradient id="g4" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#059669"/><stop offset="100%" stop-color="#047857"/>
+          </linearGradient>
+        </defs>
+
+        <!-- レーン -->
+        <text x="120" y="22" font-size="11" font-weight="700" fill="#1d4ed8" text-anchor="middle" letter-spacing="1">👤 人間（入力）</text>
+        <text x="380" y="22" font-size="11" font-weight="700" fill="#d97706" text-anchor="middle" letter-spacing="1">💬 Claude（対話）</text>
+        <text x="620" y="22" font-size="11" font-weight="700" fill="#7c3aed" text-anchor="middle" letter-spacing="1">🤖 Claude Code（実行）</text>
+        <text x="880" y="22" font-size="11" font-weight="700" fill="#059669" text-anchor="middle" letter-spacing="1">🌐 GitHub Pages</text>
+
+        <!-- ① 人間：意図 -->
+        <rect x="30" y="50" width="180" height="100" rx="12" fill="url(#g1)"/>
+        <text x="120" y="80" font-size="22" text-anchor="middle">📝</text>
+        <text x="120" y="105" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">受け皿テンプレ</text>
+        <text x="120" y="124" font-size="10" fill="#dbeafe" text-anchor="middle">・何を作るか</text>
+        <text x="120" y="140" font-size="10" fill="#dbeafe" text-anchor="middle">・なぜ・誰のため</text>
+
+        <line x1="210" y1="100" x2="285" y2="100" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+
+        <!-- ② Claude対話 -->
+        <rect x="290" y="50" width="180" height="100" rx="12" fill="url(#g2)"/>
+        <text x="380" y="80" font-size="22" text-anchor="middle">💬</text>
+        <text x="380" y="105" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">対話で構造化</text>
+        <text x="380" y="124" font-size="10" fill="#fed7aa" text-anchor="middle">・タブ構成提案</text>
+        <text x="380" y="140" font-size="10" fill="#fed7aa" text-anchor="middle">・config.json生成</text>
+
+        <line x1="470" y1="100" x2="545" y2="100" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+
+        <!-- ③ Claude Code -->
+        <rect x="550" y="50" width="180" height="100" rx="12" fill="url(#g3)"/>
+        <text x="640" y="80" font-size="22" text-anchor="middle">🤖</text>
+        <text x="640" y="105" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">JSON→HTML生成</text>
+        <text x="640" y="124" font-size="10" fill="#ddd6fe" text-anchor="middle">・テンプレ参照</text>
+        <text x="640" y="140" font-size="10" fill="#ddd6fe" text-anchor="middle">・自動push</text>
+
+        <line x1="730" y1="100" x2="805" y2="100" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+
+        <!-- ④ GitHub Pages -->
+        <rect x="810" y="50" width="160" height="100" rx="12" fill="url(#g4)"/>
+        <text x="890" y="80" font-size="22" text-anchor="middle">🌐</text>
+        <text x="890" y="105" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">公開URL発行</text>
+        <text x="890" y="124" font-size="10" fill="#d1fae5" text-anchor="middle">・自動反映</text>
+        <text x="890" y="140" font-size="10" fill="#d1fae5" text-anchor="middle">・誰でも閲覧</text>
+
+        <!-- 下半分：人間の負荷 -->
+        <rect x="30" y="200" width="940" height="130" rx="10" fill="#f8f9fb" stroke="#e2e8f0"/>
+        <text x="500" y="230" font-size="13" font-weight="700" fill="#1a2744" text-anchor="middle">💡 人間の負荷比較</text>
+
+        <text x="80" y="265" font-size="11" font-weight="700" fill="#1d4ed8">人間がやる：</text>
+        <text x="80" y="285" font-size="11" fill="#475569">①「条件と目的」をテンプレに書く（5〜10分）</text>
+        <text x="80" y="303" font-size="11" fill="#475569">② Claude との対話を確認・微調整</text>
+        <text x="80" y="321" font-size="11" fill="#475569">③ Claude Code に最終JSONを投げる（1コマンド）</text>
+
+        <text x="540" y="265" font-size="11" font-weight="700" fill="#d97706">AIがやる：</text>
+        <text x="540" y="285" font-size="11" fill="#475569">・タブ構成の提案・JSON構造化</text>
+        <text x="540" y="303" font-size="11" fill="#475569">・各タブのコンテンツ生成</text>
+        <text x="540" y="321" font-size="11" fill="#475569">・セルフチェック・git push・URL発行</text>
+      </svg>
+    </div>
+
+    <div class="notice notice-blue">
+      <p>📌 <strong>従来との違い：</strong>「JSONを手書き」→「Claudeと対話してJSONを作る」に変わると、人間に必要なのは <strong>意図の言語化能力</strong> だけになる。HTML/CSS/JSの知識も、JSON記法の知識も不要。</p>
+    </div>
+  </div>
+
+  <!-- ========== ② 人間が用意するもの ========== -->
+  <div class="sec">
+    <div class="sec-title">② 人間が用意するもの：条件と目的だけ</div>
+
+    <div class="sec-sub">受け皿テンプレート（汎用版）</div>
+    <div class="notice notice-purple">
+      <p>📌 以下のテンプレートに記入するだけで、Claude が JSON 化を引き受けます。<br>
+      項目は<strong>「何を・誰に・なぜ・どんな構造で・どんな雰囲気で」</strong>の5観点に集約されています。</p>
+    </div>
+
+    <div class="tmpl-box">
+      <div class="tmpl-title">📝 受け皿テンプレート v1（コピーして使う）</div>
+
+      <div class="tmpl-field">
+        <span class="tmpl-label">① 何を作るか</span>
+        <span class="tmpl-fill">例：DX案件キックオフ・チェックリスト</span>
+      </div>
+      <div class="tmpl-field">
+        <span class="tmpl-label">② 誰のため</span>
+        <span class="tmpl-fill">例：Qolony EA部門の若手コンサル</span>
+      </div>
+      <div class="tmpl-field">
+        <span class="tmpl-label">③ なぜ作る</span>
+        <span class="tmpl-fill">例：新規案件着任時の抜け漏れ防止・初動の質を担保したい</span>
+      </div>
+      <div class="tmpl-field">
+        <span class="tmpl-label">④ 含めたい要素</span>
+        <span class="tmpl-fill">例：1〜7日目のチェック項目、ヒアリングシート、課題台帳テンプレ</span>
+      </div>
+      <div class="tmpl-field">
+        <span class="tmpl-label">⑤ 雰囲気・トーン</span>
+        <span class="tmpl-fill">例：実務的・落ち着いた色（ネイビー基調）・敬語</span>
+      </div>
+      <div class="tmpl-field">
+        <span class="tmpl-label">⑥ 任意：参考にしたいもの</span>
+        <span class="tmpl-fill">例：Anthropic_Academy_Plan_Internal.html の構造</span>
+      </div>
+    </div>
+
+    <div class="notice notice-orange">
+      <p>📌 <strong>テンプレート設計の意図：</strong>「タブ構成」「色」「文字数」などの<strong>構造的な決定はあえて含めない</strong>。これらは Claude との対話の中で決めるべきもの。人間が決めるのは「やりたいこと」のレイヤーまで。</p>
+    </div>
+  </div>
+
+  <!-- ========== ③ STEP 1 ========== -->
+  <div class="sec">
+    <div class="sec-title">③ STEP 1：受け皿テンプレで意図を言語化</div>
+
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-num">1</div>
+        <div class="step-title">テンプレートに記入する</div>
+        <span class="step-actor">👤 人間</span>
+      </div>
+      <p style="font-size:13px;line-height:1.95;color:var(--text2);">
+        紙でもメモアプリでも、上の受け皿テンプレを埋めるだけ。所要時間 5〜10 分。<br>
+        <strong>埋まらない項目があってもOK。</strong>Claudeとの対話で補完される。
+      </p>
+    </div>
+
+    <div class="notice notice-blue">
+      <p>📌 <strong>埋めるコツ：</strong>「うまく書こう」とせず、メモレベルで構わない。Claudeが整理してくれる。</p>
+    </div>
+  </div>
+
+  <!-- ========== ④ STEP 2 ========== -->
+  <div class="sec">
+    <div class="sec-title">④ STEP 2：Claude と対話して config.json を生成</div>
+
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-num">2</div>
+        <div class="step-title">受け皿テンプレを Claude に渡す</div>
+        <span class="step-actor">👤 人間</span>
+        <span class="step-actor ai">💬 Claude</span>
+      </div>
+
+      <div class="prompt-box">以下の条件で HTML 資料を作りたいので、Claude Code に投入できる config.json を作ってください。
+
+① 何を作るか：
+② 誰のため：
+③ なぜ作る：
+④ 含めたい要素：
+⑤ 雰囲気・トーン：
+⑥ 参考にしたいもの（任意）：
+
+config.json は以下のスキーマで作ってください。
+- title: 資料タイトル
+- subtitle: サブタイトル（1行）
+- audience: 対象読者
+- purpose: 作成目的
+- date: YYYY-MM-DD
+- primary_color: メインカラー（HEX）
+- accent_color: アクセントカラー（HEX）
+- tab_list: [{name, purpose}] の配列
+- deploy: {target_repo, github_pages_url, output_filename}
+
+タブ構成は私の意図を汲んで提案してください。一度提示して、私の確認を取ってから確定してください。</div>
+    </div>
+
+    <div class="sec-sub">期待される対話の流れ</div>
+
+    <div class="dialog dialog-human">
+      <div class="dialog-label">人間</div>
+      <p>上記プロンプト＋受け皿テンプレを記入したもの</p>
+    </div>
+
+    <div class="dialog dialog-claude">
+      <div class="dialog-label">Claude</div>
+      <p>「DX案件キックオフ・チェックリスト」ですね。以下のタブ構成を提案します：<br>
+      ・はじめに（本資料の目的と使い方）<br>
+      ・Day 1-2（案件背景・体制把握）<br>
+      ・Day 3-5（現状調査・課題ヒアリング）<br>
+      ・Day 6-7（初期アウトプット・優先課題設定）<br>
+      ・（参考）テンプレ集<br>
+      この構成でよろしければ config.json を出力します。</p>
+    </div>
+
+    <div class="dialog dialog-human">
+      <div class="dialog-label">人間</div>
+      <p>OKです。お願いします。<br>
+      （または、「Day 3-5 を Day 3-4 と Day 5-7 に分けたい」など微調整）</p>
+    </div>
+
+    <div class="dialog dialog-claude">
+      <div class="dialog-label">Claude</div>
+      <p>了解しました。config.json を出力します。<br>
+      （JSON を提示・ダウンロード可能な形で返却）</p>
+    </div>
+
+    <div class="notice notice-green">
+      <p>📌 <strong>このフェーズの価値：</strong>人間は「タブ構成や項目」を一から考える必要がない。Claude の提案を <strong>受け入れる／微調整する</strong> だけ。意思決定の負荷が大幅に下がる。</p>
+    </div>
+  </div>
+
+  <!-- ========== ⑤ STEP 3 ========== -->
+  <div class="sec">
+    <div class="sec-title">⑤ STEP 3：Claude Code に投げて HTML 生成・公開</div>
+
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-num">3</div>
+        <div class="step-title">config.json を保存して Claude Code を起動</div>
+        <span class="step-actor">👤 人間</span>
+        <span class="step-actor system">🤖 Code</span>
+      </div>
+
+      <div class="code-block">
+cd C:\git\hancho-kb
+# config.json を C:\git\hancho-kb\config.json に保存しておく
+
+# Claude Code 起動（確認スキップモード）
+claude --permission-mode acceptEdits
+      </div>
+
+      <div style="margin-top:14px;font-size:13px;color:var(--text2);">そして Claude Code 内で以下を投げる：</div>
+
+      <div class="prompt-box">@config.json を読み込んで以下を実行してください。
+
+1. 既存の Anthropic_Academy_Plan_Internal.html を構造のテンプレートとして参照
+2. config.json の仕様に基づき、新しいHTML資料を生成
+3. タブidは tab0 から連番で統一
+4. doc-footer は最下部に1個のみ
+5. レスポンシブ対応（overflow-x:hidden）
+
+セルフチェック後、config.json の deploy 設定通りにファイルを配置し、
+git add → commit → push まで実行。
+
+完了後、生成サイズ・セルフチェック結果・公開URLを報告してください。</div>
+    </div>
+
+    <div class="notice notice-blue">
+      <p>📌 <strong>Claude Code がやること：</strong>JSON 読込 → HTML 生成 → セルフチェック → ファイル配置 → git push まで自動。人間は完了報告を待つだけ。</p>
+    </div>
+  </div>
+
+  <!-- ========== ⑥ STEP 4 ========== -->
+  <div class="sec">
+    <div class="sec-title">⑥ STEP 4：完成確認とフィードバックループ</div>
+
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-num">4</div>
+        <div class="step-title">公開 URL を確認・必要なら再生成</div>
+        <span class="step-actor">👤 人間</span>
+      </div>
+      <p style="font-size:13px;line-height:1.95;color:var(--text2);">
+        Claude Code が報告した URL をブラウザで開く（<strong>シークレットウィンドウ推奨</strong>・キャッシュ回避）。<br>
+        修正したい点があれば、config.json を更新して再度 Claude Code に投げる。
+      </p>
+    </div>
+
+    <div class="sec-sub">よくあるフィードバック例</div>
+    <table class="tbl">
+      <thead><tr><th>気になる点</th><th>対応</th></tr></thead>
+      <tbody>
+        <tr><td>タブを1つ追加したい</td><td>config.json の tab_list に1行追加 → 再投入</td></tr>
+        <tr><td>色味を変えたい</td><td>primary_color / accent_color を変更 → 再投入</td></tr>
+        <tr><td>本文のニュアンスを変えたい</td><td>Claude Code に「tab2 の文体をもう少し砕けたトーンに変えて」と追加指示</td></tr>
+        <tr><td>図解を追加したい</td><td>「tab3 にフロー図を SVG で追加して」と追加指示</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ========== ⑦ 汎用化のポイント ========== -->
+  <div class="sec">
+    <div class="sec-title">⑦ 汎用化のポイント（個人実践 → 部内展開）</div>
+
+    <div class="hero">
+      <div class="hero-title">🌐 個人の実践から、部内・組織への横展開へ</div>
+      <div class="hero-body">
+        このフレームワークは、誰の業務にも適用できる。<br>
+        重要なのは「受け皿テンプレートを共通化する」こと。各人が同じテンプレで意図を言語化すれば、AIの出力品質も安定する。
+      </div>
+    </div>
+
+    <div class="sec-sub">部内に持ち込む際の3つの段階</div>
+    <table class="tbl">
+      <thead><tr><th>段階</th><th>内容</th><th>所要時間目安</th></tr></thead>
+      <tbody>
+        <tr><td>第1段階：紹介</td><td>「こういう仕組みがある」を見せる（デモ）</td><td>15〜30分</td></tr>
+        <tr><td>第2段階：体験</td><td>有志メンバーと一緒に1本作ってみる（受け皿テンプレ記入から）</td><td>1時間</td></tr>
+        <tr><td>第3段階：定着</td><td>業務マニュアル・議事録テンプレ等で実運用に組み込む</td><td>1〜2週間</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sec-sub">汎用化を進める上での注意点</div>
+    <div class="bullet-list">
+      <ul class="bullet-list">
+        <li><strong>受け皿テンプレは「埋めやすさ」を優先：</strong>項目を増やしすぎない。5〜6項目で十分。</li>
+        <li><strong>JSONスキーマは固定する：</strong>変動要素を増やすと品質がぶれる。tab_list の構造などはチームで統一。</li>
+        <li><strong>テンプレ参照 HTML は1つに絞る：</strong>「これを参考に」と指示する基準ファイルを決めておく。</li>
+        <li><strong>セルフチェック項目を共通化：</strong>「tab id 連番」「doc-footer 1個」「個人情報残存なし」等。</li>
+      </ul>
+    </div>
+
+    <div class="notice notice-purple">
+      <p>📌 <strong>最終ゴール：</strong>「受け皿テンプレに書く → Claude Code 1回起動 → 公開URL」の3ステップで誰でも業務文書を量産できる状態。さらに先には GitHub Actions による完全自動化（フォーム入力だけで完結）が見える。</p>
+    </div>
+  </div>
+
+  <!-- ========== まとめ ========== -->
+  <div class="sec">
+    <div class="sec-title">🎯 まとめ：このフローが意味すること</div>
+
+    <div class="notice notice-blue">
+      <p>📌 <strong>従来：</strong>「資料を書く」＝コンテンツ作成・構造設計・体裁調整・公開作業 すべてを人間が担う</p>
+    </div>
+    <div class="notice notice-green">
+      <p>📌 <strong>本フロー：</strong>「資料を書く」＝<strong>意図を言語化するだけ</strong>。構造化・コーディング・公開は AI が担う</p>
+    </div>
+    <div class="notice notice-orange">
+      <p>📌 <strong>人間に残るタスク：</strong>「何を作るか」「なぜ作るか」の判断、AIが出した提案の評価・選択、最終的な意味づけ</p>
+    </div>
+
+    <div class="hero" style="margin-top:18px;">
+      <div class="hero-title">💡 部内勉強会で伝えるべき1つのメッセージ</div>
+      <div class="hero-body">
+        <strong>「AI は作業を肩代わりする。しかし、作るかどうか、何を作るかの判断は、私たちが持つ」</strong><br><br>
+        このフローを実践することで、業務文書作成にかかる時間を 80% 削減しながら、本来人間がやるべき<strong>意図の設計と意味づけ</strong>に集中できるようになる。
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="foot">JSON駆動 HTML自動生成 汎用フロー v1 ／ 個人実践から部内展開へ ／ 2026-05-15</div>
+
+</body>
+</html>
