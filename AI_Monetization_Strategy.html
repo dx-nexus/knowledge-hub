@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI×マネタイズ自動化戦略およびアーキテクチャ設計書</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#070d18;--navy2:#0e1a2e;--navy3:#1a2744;
+  --blue:#00c8f0;--blue2:#00a8cc;--blue-lt:#e0f9ff;
+  --gray:#f8f9fb;--gray2:#f1f3f7;--gray3:#e2e8f0;
+  --text:#1e293b;--text2:#475569;--text3:#94a3b8;
+  --border:#e2e8f0;--white:#ffffff;
+  --green:#059669;--green-lt:#ecfdf5;
+  --amber:#d97706;--amber-lt:#fffbeb;
+  --red:#dc2626;--red-lt:#fef2f2;
+  --sans:'Noto Sans JP',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.8;word-break:keep-all;overflow-wrap:break-word;}
+
+/* Header */
+.hdr{background:var(--navy);color:#fff;padding:0;}
+.hdr-top{padding:28px 32px 20px;border-bottom:1px solid rgba(255,255,255,.08);}
+.hdr-top h1{font-size:20px;font-weight:700;letter-spacing:.03em;margin-bottom:4px;}
+.hdr-top p{font-size:12px;color:rgba(255,255,255,.5);}
+.hdr-meta{padding:12px 32px;display:flex;gap:20px;font-size:11px;color:rgba(255,255,255,.45);}
+.hdr-meta span{display:flex;align-items:center;gap:5px;}
+.hdr-meta span::before{content:'';width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.3);}
+
+/* Tabs */
+.tab-bar{background:var(--white);border-bottom:2px solid var(--border);padding:0 32px;display:flex;overflow-x:auto;gap:2px;}
+.tab-btn{font-size:12px;font-weight:500;padding:14px 20px;border:none;background:none;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:.15s;letter-spacing:.03em;}
+.tab-btn:hover{color:var(--text2);}
+.tab-btn.active{color:#0099bb;border-bottom-color:#00c8f0;}
+
+.tab-pane{display:none;max-width:1200px;margin:0 auto;padding:32px;}
+.tab-pane.active{display:block;}
+
+/* Sections */
+.sec{margin-bottom:40px;}
+.sec-title{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.15em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--border);}
+.sec-lead{font-size:14px;color:var(--text2);margin-bottom:20px;line-height:1.8;}
+
+/* Cards */
+.grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fill,minmax(440px,1fr));gap:14px;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:18px 20px;transition:.15s;}
+.card:hover{box-shadow:0 2px 12px rgba(30,41,59,.08);}
+.card-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;}
+.card-icon{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;}
+.card-title{font-size:14px;font-weight:700;color:var(--text);line-height:1.4;}
+.card-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+.card-body{font-size:12px;color:var(--text2);line-height:1.8;margin-bottom:12px;}
+.card-foot{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.tag{font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;}
+.tag-dev{background:#e0f9ff;color:#0077aa;border:1px solid #b3eef8;}
+.tag-biz{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0;}
+.tag-cloud{background:#fffbeb;color:#92400e;border:1px solid #fde68a;}
+.tag-risk{background:#fef2f2;color:#991b1b;border:1px solid #fecaca;}
+.priority{font-size:11px;font-weight:700;color:#0099bb;background:var(--blue-lt);padding:2px 8px;border-radius:4px;}
+
+/* Table */
+.tbl{width:100%;border-collapse:collapse;font-size:13px;background:var(--white);border-radius:8px;overflow:hidden;border:1px solid var(--border);word-break:keep-all;line-break:strict;overflow-wrap:break-word;}
+.tbl th{background:var(--navy);color:#fff;font-size:11px;font-weight:700;letter-spacing:.08em;padding:10px 14px;text-align:left;}
+.tbl td{padding:12px 16px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top;line-height:1.8;}
+.tbl td:first-child{color:var(--text);font-weight:500;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:var(--gray);}
+
+/* Notice box */
+.notice{border-radius:8px;padding:14px 18px;margin:12px 0;}
+.notice-blue{background:var(--blue-lt);border-left:3px solid var(--blue);}
+.notice-green{background:var(--green-lt);border-left:3px solid var(--green);}
+.notice-amber{background:var(--amber-lt);border-left:3px solid var(--amber);}
+.notice-red{background:var(--red-lt);border-left:3px solid var(--red);}
+.notice p{font-size:13px;line-height:1.9;word-break:keep-all;overflow-wrap:break-word;}
+.notice-blue p{color:#0077aa;}
+.notice-green p{color:#065f46;}
+.notice-amber p{color:#92400e;}
+.notice-red p{color:#991b1b;}
+
+/* System diagram blocks */
+.sys-block{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:20px 24px;margin-bottom:16px;}
+.sys-label{font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--text3);text-transform:uppercase;margin-bottom:12px;}
+.sys-row{display:flex;gap:10px;flex-wrap:wrap;align-items:stretch;}
+.sys-box{background:var(--gray);border:1px solid var(--border);border-radius:6px;padding:12px 14px;flex:1;min-width:140px;}
+.sys-box-title{font-size:12px;font-weight:700;color:var(--navy3);margin-bottom:4px;}
+.sys-box-body{font-size:11px;color:var(--text2);line-height:1.6;}
+.sys-box.accent{background:var(--blue-lt);border-color:#b3eef8;}
+.sys-box.accent .sys-box-title{color:#0077aa;}
+.sys-arrow{display:flex;align-items:center;color:var(--text3);font-size:20px;flex-shrink:0;padding-top:4px;}
+
+/* Phase badge */
+.phase{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:var(--navy);color:#fff;margin-right:6px;}
+
+/* Roadmap steps */
+.roadmap-step{display:flex;gap:16px;align-items:flex-start;margin-bottom:20px;}
+.roadmap-num{width:36px;height:36px;border-radius:50%;background:var(--navy);color:#00c8f0;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;flex-shrink:0;}
+.roadmap-content{flex:1;}
+.roadmap-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.roadmap-desc{font-size:12px;color:var(--text2);line-height:1.8;}
+
+/* Footer */
+.doc-footer{text-align:center;padding:24px;font-size:11px;color:var(--text3);border-top:1px solid var(--border);margin-top:20px;}
+
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-top">
+    <h1>AI×マネタイズ自動化戦略およびアーキテクチャ設計書</h1>
+    <p>作成：2026-05-17　／　対象：プロジェクトメンバー・関係者</p>
+  </div>
+  <div class="hdr-meta">
+    <span>チャットからエージェントへの自動化構造の定義</span>
+    <span>世界のAIマネタイズ手法の分析とリスク管理</span>
+    <span>2026-05-17 現在</span>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab(0)">1. エージェント自動化構造</button>
+  <button class="tab-btn" onclick="showTab(1)">2. AIマネタイズ分析</button>
+  <button class="tab-btn" onclick="showTab(2)">3. リスクマネジメント</button>
+  <button class="tab-btn" onclick="showTab(3)">4. 今後のロードマップ</button>
+</div>
+
+<!-- TAB 0: エージェント自動化構造 -->
+<div class="tab-pane active" id="tab0">
+
+  <div class="sec">
+    <div class="sec-title">第1部：チャットからエージェントへの自動化構造（Gemini基盤）</div>
+    <p class="sec-lead">Generative AI（特にGeminiエコシステム）を起点とし、チャット上の指示から物理的な業務自動化（自律型エージェント）を駆動するための3つのシステムアーキテクチャを定義する。</p>
+
+    <div class="notice notice-blue" style="margin-bottom:24px;">
+      <p>📌 以下の3アーキテクチャは、コスト・権限・スケール要件に応じて使い分ける。小規模バックオフィス自動化から、エンタープライズ級の統合まで段階的に移行可能な設計となっている。</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">アーキテクチャ 1：Google Workspace連動型（GAS × Gemini API）</div>
+
+    <div class="sys-block">
+      <div class="sys-label">フロー構成</div>
+      <div class="sys-row">
+        <div class="sys-box accent">
+          <div class="sys-box-title">ユーザーのチャット指示</div>
+          <div class="sys-box-body">Gemini上で自然言語による業務指示を入力</div>
+        </div>
+        <div class="sys-arrow">→</div>
+        <div class="sys-box">
+          <div class="sys-box-title">Gemini → 構造化JSON出力</div>
+          <div class="sys-box-body">命令を機械処理可能なJSON形式に変換</div>
+        </div>
+        <div class="sys-arrow">→</div>
+        <div class="sys-box">
+          <div class="sys-box-title">Webhook → GAS起動</div>
+          <div class="sys-box-body">Google Apps Scriptをトリガー経由で実行</div>
+        </div>
+        <div class="sys-arrow">→</div>
+        <div class="sys-box accent">
+          <div class="sys-box-title">Workspace自動操作</div>
+          <div class="sys-box-body">Spreadsheet / Gmail / Drive / Calendar</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card" style="border-left:3px solid #00c8f0;">
+        <div class="card-head">
+          <div class="card-icon" style="background:#e0f9ff;">✅</div>
+          <div><div class="card-title">メリット</div></div>
+        </div>
+        <div class="card-body">
+          インフラ構築コストが<strong>完全無料</strong>。セキュリティがGoogleアカウント内で完結するため安全性が極めて高い。既存Workspace契約のみで即時導入可能。
+        </div>
+      </div>
+      <div class="card" style="border-left:3px solid #059669;">
+        <div class="card-head">
+          <div class="card-icon" style="background:#ecfdf5;">🏢</div>
+          <div><div class="card-title">ユースケース</div></div>
+        </div>
+        <div class="card-body">
+          バックオフィス業務、レポート自動生成、顧客データ自動同期。月次報告書の自動作成やメール仕分け・返信テンプレート生成など。
+        </div>
+        <div class="card-foot"><span class="tag tag-biz">低コスト</span><span class="tag tag-dev">即導入可</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">アーキテクチャ 2：Function Calling × ローカルPythonエージェント</div>
+
+    <div class="sys-block">
+      <div class="sys-label">フロー構成</div>
+      <div class="sys-row">
+        <div class="sys-box accent">
+          <div class="sys-box-title">Gemini API（Function Calling）</div>
+          <div class="sys-box-body">実行すべき関数と引数をLLMが判断・出力</div>
+        </div>
+        <div class="sys-arrow">→</div>
+        <div class="sys-box">
+          <div class="sys-box-title">ローカルPythonスクリプト</div>
+          <div class="sys-box-body">Claude Code等のCLI環境でOS上で直接実行</div>
+        </div>
+        <div class="sys-arrow">→</div>
+        <div class="sys-box accent">
+          <div class="sys-box-title">ローカルFS・内部API操作</div>
+          <div class="sys-box-body">C:\git等のファイルシステムや社内個別APIを直接制御</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card" style="border-left:3px solid #00c8f0;">
+        <div class="card-head">
+          <div class="card-icon" style="background:#e0f9ff;">⚡</div>
+          <div><div class="card-title">メリット</div></div>
+        </div>
+        <div class="card-body">
+          ローカルファイルシステムや社内個別APIに対する<strong>強力な操作権限</strong>。自在なカスタマイズが可能で、クラウドに依存しないオフライン操作にも対応。
+        </div>
+      </div>
+      <div class="card" style="border-left:3px solid #059669;">
+        <div class="card-head">
+          <div class="card-icon" style="background:#ecfdf5;">💻</div>
+          <div><div class="card-title">ユースケース</div></div>
+        </div>
+        <div class="card-body">
+          ローカルコードの自動修正、デプロイパイプラインの自動実行、ファイルの自動振り分け。開発者の反復作業を完全自動化する用途に最適。
+        </div>
+        <div class="card-foot"><span class="tag tag-dev">開発者向け</span><span class="tag tag-cloud">カスタム特化</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">アーキテクチャ 3：Vertex AI Agent Builder（エンタープライズ級）</div>
+
+    <div class="sys-block">
+      <div class="sys-label">フロー構成</div>
+      <div class="sys-row">
+        <div class="sys-box accent">
+          <div class="sys-box-title">Google Cloud（GCP）フルマネージド</div>
+          <div class="sys-box-body">Geminiコアのエンタープライズ環境</div>
+        </div>
+        <div class="sys-arrow">→</div>
+        <div class="sys-box">
+          <div class="sys-box-title">データストア（RAG）統合</div>
+          <div class="sys-box-body">社内ナレッジをベクトル検索で参照</div>
+        </div>
+        <div class="sys-arrow">→</div>
+        <div class="sys-box">
+          <div class="sys-box-title">外部SaaS APIコネクタ</div>
+          <div class="sys-box-body">Salesforce等との強固なグラフィカル統合</div>
+        </div>
+        <div class="sys-arrow">→</div>
+        <div class="sys-box accent">
+          <div class="sys-box-title">エンタープライズ自動応答</div>
+          <div class="sys-box-body">高可用性・ガバナンス対応のエージェント</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card" style="border-left:3px solid #00c8f0;">
+        <div class="card-head">
+          <div class="card-icon" style="background:#e0f9ff;">🏗️</div>
+          <div><div class="card-title">メリット</div></div>
+        </div>
+        <div class="card-body">
+          高い可用性、企業基準のガバナンス、膨大なデータへの対応力。Vertex AI の SLA 保証と監査ログにより、大企業のコンプライアンス要件を満たす。
+        </div>
+      </div>
+      <div class="card" style="border-left:3px solid #059669;">
+        <div class="card-head">
+          <div class="card-icon" style="background:#ecfdf5;">🔗</div>
+          <div><div class="card-title">ユースケース</div></div>
+        </div>
+        <div class="card-body">
+          エンタープライズ向けカスタマーサポートエージェント、社内ナレッジ検索・自動応答システム。数万件規模のドキュメントRAGを用いた高精度回答生成。
+        </div>
+        <div class="card-foot"><span class="tag tag-cloud">GCP</span><span class="tag tag-biz">エンタープライズ</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">3アーキテクチャ比較</div>
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>アーキテクチャ</th>
+          <th>コスト</th>
+          <th>権限・操作範囲</th>
+          <th>スケール</th>
+          <th>最適用途</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>① GAS × Gemini API</td>
+          <td>無料〜低</td>
+          <td>Workspace内のみ</td>
+          <td>小〜中</td>
+          <td>バックオフィス自動化</td>
+        </tr>
+        <tr>
+          <td>② Function Calling × Python</td>
+          <td>低〜中</td>
+          <td>ローカルFS・内部API</td>
+          <td>中</td>
+          <td>開発パイプライン自動化</td>
+        </tr>
+        <tr>
+          <td>③ Vertex AI Agent Builder</td>
+          <td>中〜高</td>
+          <td>クラウド全体・外部SaaS</td>
+          <td>大（エンタープライズ）</td>
+          <td>社内知識基盤・CS自動化</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- TAB 1: AIマネタイズ分析 -->
+<div class="tab-pane" id="tab1">
+
+  <div class="sec">
+    <div class="sec-title">第2部：世界におけるAI×マネタイズ自動化戦略の分析</div>
+    <p class="sec-lead">事業家（スケール性重視）、クオンツ（ROI重視）、リスクマネージャー（防衛重視）の3名の専門家による議論を経て、2026年現在の市場において最も再現性が高く、投資価値のある3つの分散投資先を選定した。</p>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">専門家3名の視点</div>
+    <div class="grid-3">
+      <div class="card" style="border-left:3px solid #00c8f0;">
+        <div class="card-head">
+          <div class="card-icon" style="background:#e0f9ff;">🚀</div>
+          <div>
+            <div class="card-title">事業家（スケール性重視）</div>
+            <div class="card-sub">再現性と水平展開の可能性を評価</div>
+          </div>
+        </div>
+        <div class="card-body">
+          一度構築した仕組みが横展開できるか。人的リソースを増やさずにアウトプットが線形以上に伸びる構造かどうかを最重視する。
+        </div>
+        <div class="card-foot"><span class="tag tag-dev">スケール</span></div>
+      </div>
+      <div class="card" style="border-left:3px solid #059669;">
+        <div class="card-head">
+          <div class="card-icon" style="background:#ecfdf5;">📊</div>
+          <div>
+            <div class="card-title">クオンツ（ROI重視）</div>
+            <div class="card-sub">投資対効果と回収期間を定量評価</div>
+          </div>
+        </div>
+        <div class="card-body">
+          初期投資額と月次キャッシュフロー、回収期間を数値で見る。感情的なトレンドではなく、再現可能なROIの根拠があるかを問う。
+        </div>
+        <div class="card-foot"><span class="tag tag-biz">ROI</span></div>
+      </div>
+      <div class="card" style="border-left:3px solid #d97706;">
+        <div class="card-head">
+          <div class="card-icon" style="background:#fffbeb;">🛡️</div>
+          <div>
+            <div class="card-title">リスクマネージャー（防衛重視）</div>
+            <div class="card-sub">最悪シナリオと撤退条件を設計</div>
+          </div>
+        </div>
+        <div class="card-body">
+          最も楽観的なシナリオではなく、最も悲観的なシナリオが発生した場合の損失規模と回復可能性を先に確定してから参入を判断する。
+        </div>
+        <div class="card-foot"><span class="tag tag-risk">リスク</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">投資ポートフォリオ選定表</div>
+
+    <div class="notice notice-blue" style="margin-bottom:16px;">
+      <p>📌 以下の3分野は独立して機能するが、組み合わせることで相互にリード・顧客・コンテンツを循環させるエコシステムを形成できる。</p>
+    </div>
+
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>投資対象</th>
+          <th>再現性</th>
+          <th>自動化レベル</th>
+          <th>コアコンセプト</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="phase">①</span></td>
+          <td style="font-weight:700;">B2B Micro-SaaS の量産</td>
+          <td><span style="color:#059669;font-weight:700;">極めて高い</span></td>
+          <td>中（要メンテ）</td>
+          <td>AIエージェントを動かすための「設計図（config.json）」のパッケージ化・販売。金を掘るのではなくツルハシを売るモデル。</td>
+        </tr>
+        <tr>
+          <td><span class="phase">②</span></td>
+          <td style="font-weight:700;">AI-SDR（自動営業代行）</td>
+          <td><span style="color:#059669;font-weight:700;">高い</span></td>
+          <td><span style="color:#00a8cc;font-weight:700;">高（完全無人）</span></td>
+          <td>ターゲットのWebサイトを自律クローリングし、超パーソナライズされたDMを自動生成・送信・返信対応する。</td>
+        </tr>
+        <tr>
+          <td><span class="phase">③</span></td>
+          <td style="font-weight:700;">Faceless Media（自動メディア）</td>
+          <td>中</td>
+          <td><span style="color:#00a8cc;font-weight:700;">極めて高</span></td>
+          <td>海外の最新一次ソースを自動クローリング、要約、翻訳、動画・音声・テキスト化してプラットフォームへ自動配信。</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">各投資先の詳細</div>
+    <div class="grid-3">
+
+      <div class="card" style="border-top:3px solid #00c8f0;">
+        <div class="card-head">
+          <div class="card-icon" style="background:#e0f9ff;">📦</div>
+          <div>
+            <div class="card-title">① B2B Micro-SaaS の量産</div>
+            <div class="card-sub">再現性：極めて高い</div>
+          </div>
+        </div>
+        <div class="card-body">
+          AIエージェントのconfigファイルを「製品」として販売するモデル。一度パッケージ化すれば追加コストほぼゼロで横展開できる。競合が増えてもconfig量産で先行逃げ切りが可能。
+        </div>
+        <div class="card-foot">
+          <span class="tag tag-dev">低初期コスト</span>
+          <span class="priority">推奨 No.1</span>
+        </div>
+      </div>
+
+      <div class="card" style="border-top:3px solid #059669;">
+        <div class="card-head">
+          <div class="card-icon" style="background:#ecfdf5;">🤖</div>
+          <div>
+            <div class="card-title">② AI-SDR（自動営業代行）</div>
+            <div class="card-sub">自動化レベル：高（完全無人）</div>
+          </div>
+        </div>
+        <div class="card-body">
+          人間の営業活動を完全代替するエージェント。ターゲット企業のWebを自律的にクローリングし、担当者名・課題・使用ツールを特定してパーソナライズDMを送信する。
+        </div>
+        <div class="card-foot">
+          <span class="tag tag-biz">完全無人営業</span>
+        </div>
+      </div>
+
+      <div class="card" style="border-top:3px solid #d97706;">
+        <div class="card-head">
+          <div class="card-icon" style="background:#fffbeb;">📺</div>
+          <div>
+            <div class="card-title">③ Faceless Media（自動メディア）</div>
+            <div class="card-sub">自動化レベル：極めて高</div>
+          </div>
+        </div>
+        <div class="card-body">
+          海外一次ソースを日本語コンテンツに変換してマルチプラットフォーム配信。収益はプラットフォーム広告＋メルマガ誘導の二重構造。アルゴリズム変動リスクに注意が必要。
+        </div>
+        <div class="card-foot">
+          <span class="tag tag-cloud">マルチプラットフォーム</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- TAB 2: リスクマネジメント -->
+<div class="tab-pane" id="tab2">
+
+  <div class="sec">
+    <div class="sec-title">第3部：リスクマネジメント・マトリクス（最悪のシナリオと防衛策）</div>
+    <p class="sec-lead">プロジェクトの持続可能性を担保するため、各投資先における「最もネガティブなパターン」を想定し、事前の防衛策と撤退ラインを明確化する。</p>
+
+    <div class="notice notice-amber" style="margin-bottom:24px;">
+      <p>⚠️ <strong>基本方針：</strong>最悪のシナリオが現実になったとき、生活およびメイン事業に影響を与えない範囲のみでリスクを取る。撤退ラインは事前に数値で定め、感情で変更しない。</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">リスクマトリクス詳細</div>
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th style="width:18%;">対象モデル</th>
+          <th style="width:41%;">最もネガティブなパターン（最悪のシナリオ）</th>
+          <th style="width:41%;">具体的な防衛策および撤退ライン</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <span class="phase">①</span><br>
+            <strong>B2B Micro-SaaS</strong>
+          </td>
+          <td>
+            基盤AIの急速なアップデートにより、自社パッケージが1ヶ月で陳腐化。顧客からのエラー報告とサポート対応に忙殺される。
+          </td>
+          <td>
+            <span style="color:#059669;font-weight:700;">防衛策：</span>ソースコード売り切りの「アセット型販売」とし、保守運用は別料金のサブスクにする。1つのツールに固執せず量産体制を維持する。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span class="phase">②</span><br>
+            <strong>AI-SDR</strong>
+          </td>
+          <td>
+            AIが自動生成した大量のDMがスパム判定を受け、自社の主要メールドメインやSNSアカウントが完全に凍結される。
+          </td>
+          <td>
+            <span style="color:#059669;font-weight:700;">防衛策：</span>ドメインパワーの低い「使い捨て専用ドメイン」を別途取得・運用する。1日の送信数に厳格な上限を設け、文面に人間の手によるようなランダムな「揺らぎ」を自動挿入する。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span class="phase">③</span><br>
+            <strong>Faceless Media</strong>
+          </td>
+          <td>
+            プラットフォーム（Google / YouTube / X）のアルゴリズムアップデートにより、「AI生成コンテンツ」として一斉排除され、インプレッションが突然ゼロになる。
+          </td>
+          <td>
+            <span style="color:#059669;font-weight:700;">防衛策：</span>特定のプラットフォームに依存せず、最終コンバージョンを「自社ニュースレター（メルマガリストの獲得）」に設定し、顧客資産を直接保有する。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span class="phase">参考</span><br>
+            <strong>Algo Trading</strong>
+          </td>
+          <td>
+            予期せぬ市場クラッシュ（フラッシュ・クラッシュ）発生時、APIの遅延やバグによりストップロスが機能せず、口座資金を全損、追証を抱える。
+          </td>
+          <td>
+            <span style="color:#d97706;font-weight:700;">撤退ライン：</span>最低3〜6ヶ月はPaper Tradingで検証。実弾投入時は、全損しても生活およびメイン事業に一切影響のない「完全固定リスク資金」専用口座のみで運用する。
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">リスク分類マップ</div>
+    <div class="grid-3">
+      <div class="card" style="border-left:3px solid #dc2626;">
+        <div class="card-head">
+          <div class="card-icon" style="background:#fef2f2;">🔴</div>
+          <div>
+            <div class="card-title">高インパクト・低頻度リスク</div>
+            <div class="card-sub">発生確率は低いが致命的</div>
+          </div>
+        </div>
+        <div class="card-body">
+          ドメイン・アカウント凍結、プラットフォーム排除。発生後の回復が困難なため、<strong>事前の分散設計が必須</strong>。専用ドメイン・複数アカウント運用で影響範囲を局所化する。
+        </div>
+        <div class="card-foot"><span class="tag tag-risk">要事前対策</span></div>
+      </div>
+
+      <div class="card" style="border-left:3px solid #d97706;">
+        <div class="card-head">
+          <div class="card-icon" style="background:#fffbeb;">🟡</div>
+          <div>
+            <div class="card-title">中インパクト・高頻度リスク</div>
+            <div class="card-sub">定期的に発生するが対処可能</div>
+          </div>
+        </div>
+        <div class="card-body">
+          AIモデルのアップデートによるパッケージ陳腐化、アルゴリズム変動。<strong>量産体制と保守収益モデル</strong>により、1件の陳腐化が全体に波及しない構造を維持する。
+        </div>
+        <div class="card-foot"><span class="tag tag-cloud">継続モニタリング</span></div>
+      </div>
+
+      <div class="card" style="border-left:3px solid #059669;">
+        <div class="card-head">
+          <div class="card-icon" style="background:#ecfdf5;">🟢</div>
+          <div>
+            <div class="card-title">低インパクト・管理可能リスク</div>
+            <div class="card-sub">通常業務で吸収できる範囲</div>
+          </div>
+        </div>
+        <div class="card-body">
+          個別顧客のサポート対応、コンテンツ品質のばらつき。SOP（標準作業手順書）の整備とサポート窓口の分離により、<strong>コアビジネスへの影響を最小化</strong>する。
+        </div>
+        <div class="card-foot"><span class="tag tag-biz">SOP対応</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">共通防衛原則</div>
+    <div class="notice notice-blue" style="margin-bottom:12px;">
+      <p>🔵 <strong>分散の原則：</strong>単一プラットフォーム・単一収益源への依存を避ける。常に2〜3の代替経路を用意し、どれか1つが止まっても事業が継続できる状態を維持する。</p>
+    </div>
+    <div class="notice notice-green" style="margin-bottom:12px;">
+      <p>🟢 <strong>顧客資産の直接保有：</strong>プラットフォームに預けたフォロワーや読者は「借り物」に過ぎない。メルマガリスト（メールアドレス）のみが、どのプラットフォームが消えても自社が保有し続けられる顧客資産である。</p>
+    </div>
+    <div class="notice notice-amber">
+      <p>🟡 <strong>撤退ラインの事前定義：</strong>感情が入り込む前に数値で撤退条件を決める。「月次赤字がX円を超えたら3ヶ月以内に撤退」など、意思決定ルールを文書化する。</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- TAB 3: 今後のロードマップ -->
+<div class="tab-pane" id="tab3">
+
+  <div class="sec">
+    <div class="sec-title">第4部：今後のプロジェクトロードマップ（方向性提案）</div>
+    <p class="sec-lead">PMOとして、最も知的好奇心を満たし、かつシナジーを生み出しやすい「投資先①（B2B Micro-SaaS） × 投資先②（AI-SDR）」のクロスオーバー戦略を提案する。</p>
+
+    <div style="background:linear-gradient(135deg,#070d18 0%,#0e1a2e 60%,#1a2744 100%);border-radius:12px;padding:28px 32px;margin-bottom:24px;color:#fff;">
+      <div style="font-size:16px;font-weight:700;margin-bottom:10px;letter-spacing:.02em;color:#00c8f0;">
+        クロスオーバー戦略のコアコンセプト
+      </div>
+      <div style="font-size:13px;color:rgba(255,255,255,.85);line-height:2;">
+        「自分自身を最初の顧客にする」という構造設計。<br>
+        Micro-SaaSで開発したアセットを、AI-SDRで自動営業する——これにより、<strong style="color:#00c8f0;">開発と販売が一体化した完全自動化ループ</strong>が生まれる。
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">フェーズ別ロードマップ</div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">1</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">開発アセットの商品化（Micro-SaaS化）</div>
+        <div class="roadmap-desc">
+          自らが実証した「config.jsonによるHTML一撃生成フロー」などの開発アセットを商品化する。ソースコードと仕様書をセットにしたパッケージとして、使い切り型（アセット販売）と保守込みサブスクの二層構造で提供する。
+        </div>
+      </div>
+    </div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">2</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">AI-SDR（自動営業エージェント）の構築</div>
+        <div class="roadmap-desc">
+          その商品を自動で企業へ営業・売却するための「AI-SDR（自動営業エージェント）」を構築し、バックエンドの営業活動を完全自動化する。ターゲット企業のWebをクローリングし、課題と担当者を特定してパーソナライズDMを自動送信する。
+        </div>
+      </div>
+    </div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">3</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">クロスオーバーループの確立</div>
+        <div class="roadmap-desc">
+          Micro-SaaS（製品）× AI-SDR（営業）のループが回り始めたら、Faceless Mediaを加えてコンテンツマーケティングによるインバウンドリードも追加する。メルマガリスト → SDRターゲット → 成約 → アセット改善という循環エコシステムを完成させる。
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">クロスオーバー戦略の全体像</div>
+
+    <div class="sys-block">
+      <div class="sys-label">エコシステム構造</div>
+      <div class="sys-row">
+        <div class="sys-box accent">
+          <div class="sys-box-title">① Micro-SaaS（製品開発）</div>
+          <div class="sys-box-body">config.json × AIエージェントのパッケージ販売。継続的に量産・アップデート</div>
+        </div>
+        <div class="sys-arrow">→</div>
+        <div class="sys-box">
+          <div class="sys-box-title">② AI-SDR（自動営業）</div>
+          <div class="sys-box-body">ターゲット企業を自律クローリングし、製品のパーソナライズDMを自動送信</div>
+        </div>
+        <div class="sys-arrow">→</div>
+        <div class="sys-box accent">
+          <div class="sys-box-title">③ Faceless Media（集客）</div>
+          <div class="sys-box-body">コンテンツ配信でインバウンドリードを獲得。メルマガに誘導して顧客資産化</div>
+        </div>
+        <div class="sys-arrow">→</div>
+        <div class="sys-box">
+          <div class="sys-box-title">成約・フィードバック</div>
+          <div class="sys-box-body">顧客の声をアセット改善に反映。次の量産サイクルへ</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">マイルストーン</div>
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>フェーズ</th>
+          <th>目標</th>
+          <th>主なアクション</th>
+          <th>成功指標</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="phase">Ph.1</span> 商品化</td>
+          <td>最初のアセット販売</td>
+          <td>config.json生成フローをパッケージ化。Gumroad等でアセット販売開始</td>
+          <td>初回販売1件達成</td>
+        </tr>
+        <tr>
+          <td><span class="phase">Ph.2</span> 営業自動化</td>
+          <td>AI-SDR稼働</td>
+          <td>ターゲットDB構築 → クローリングエージェント実装 → DM自動送信開始</td>
+          <td>週次DM送信100件・返信率3%以上</td>
+        </tr>
+        <tr>
+          <td><span class="phase">Ph.3</span> 量産体制</td>
+          <td>アセット5種類以上</td>
+          <td>AI研修資料・提案書テンプレ等の横展開。Faceless Media追加</td>
+          <td>月次MRR（サブスク収益）の安定化</td>
+        </tr>
+        <tr>
+          <td><span class="phase">Ph.4</span> エコシステム確立</td>
+          <td>3ループが自律稼働</td>
+          <td>Micro-SaaS × AI-SDR × Faceless Mediaの完全連携</td>
+          <td>人的介入なしでの月次売上達成</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">次のアクション（優先順）</div>
+    <div class="notice notice-blue" style="margin-bottom:12px;">
+      <p>🔵 <strong>今すぐできること：</strong>本資料で実証した「config.json → HTML一撃生成フロー」を、最初のMicro-SaaSアセットとしてパッケージ化する。仕様書・config.jsonサンプル・使用手順書のセット販売から開始する。</p>
+    </div>
+    <div class="notice notice-green" style="margin-bottom:12px;">
+      <p>🟢 <strong>今月中に着手：</strong>AI-SDRのターゲットリスト設計。自社アセットが価値を提供できる企業セグメント（DX推進担当者・社内AI研修担当等）を定義し、ターゲットDBの初期構築を開始する。</p>
+    </div>
+    <div class="notice notice-amber">
+      <p>🟡 <strong>来月以降：</strong>Faceless Mediaの配信チャンネル選定と初回コンテンツ自動生成パイプラインのPoC実施。メルマガ登録導線を最初から設計に組み込む。</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="doc-footer">AI×マネタイズ自動化戦略およびアーキテクチャ設計書　／　作成：2026-05-17　／　対象：プロジェクトメンバー・関係者</div>
+
+<script>
+function showTab(n){
+  document.querySelectorAll('.tab-pane').forEach((p,i)=>p.classList.toggle('active',i===n));
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===n));
+}
+</script>
+
+</body>
+</html>
