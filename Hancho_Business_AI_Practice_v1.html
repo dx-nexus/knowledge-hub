@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DXコンサル業務AI活用ガイド v1</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1a2744;--navy2:#243156;--navy3:#2d3d6b;
+  --blue:#0891b2;--blue2:#06b6d4;--blue-lt:#ecfeff;
+  --gray:#f8f9fb;--gray2:#f1f3f7;--gray3:#e2e8f0;
+  --text:#1e293b;--text2:#475569;--text3:#94a3b8;
+  --border:#e2e8f0;--white:#ffffff;
+  --green:#059669;--green-lt:#ecfdf5;
+  --amber:#d97706;--amber-lt:#fffbeb;
+  --red:#dc2626;--red-lt:#fef2f2;
+  --sans:'Noto Sans JP',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{overflow-x:hidden;}
+body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.8;word-break:keep-all;overflow-wrap:break-word;}
+
+/* Header */
+.hdr{background:var(--navy);color:#fff;padding:0;}
+.hdr-top{padding:28px 32px 20px;border-bottom:1px solid rgba(255,255,255,.1);}
+.hdr-top h1{font-size:20px;font-weight:700;letter-spacing:.03em;margin-bottom:4px;}
+.hdr-top p{font-size:12px;color:rgba(255,255,255,.55);}
+.hdr-meta{padding:12px 32px;display:flex;gap:20px;font-size:11px;color:rgba(255,255,255,.5);flex-wrap:wrap;}
+.hdr-meta span{display:flex;align-items:center;gap:5px;}
+.hdr-meta span::before{content:'';width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.4);}
+
+/* Tabs */
+.tab-bar{background:var(--white);border-bottom:2px solid var(--border);padding:0 32px;display:flex;overflow-x:auto;gap:2px;-webkit-overflow-scrolling:touch;}
+.tab-btn{font-size:12px;font-weight:500;padding:14px 20px;border:none;background:none;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:.15s;letter-spacing:.03em;}
+.tab-btn:hover{color:var(--text2);}
+.tab-btn.active{color:var(--blue);border-bottom-color:var(--blue);}
+
+.tab-pane{display:none;max-width:1200px;margin:0 auto;padding:32px 32px;}
+.tab-pane.active{display:block;}
+
+/* Sections */
+.sec{margin-bottom:40px;}
+.sec-title{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.15em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--border);}
+.sec-lead{font-size:14px;color:var(--text2);margin-bottom:20px;line-height:1.8;}
+
+/* Cards */
+.grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:14px;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:18px 20px;transition:.15s;}
+.card:hover{box-shadow:0 2px 12px rgba(30,41,59,.08);}
+.card-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;}
+.card-icon{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;}
+.card-title{font-size:14px;font-weight:700;color:var(--text);line-height:1.4;}
+.card-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+.card-body{font-size:12px;color:var(--text2);line-height:1.8;margin-bottom:12px;}
+.card-foot{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.tag{font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;}
+.tag-blue{background:#ecfeff;color:#0e7490;border:1px solid #a5f3fc;}
+.tag-green{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0;}
+.tag-amber{background:#fffbeb;color:#92400e;border:1px solid #fde68a;}
+.tag-red{background:#fef2f2;color:#991b1b;border:1px solid #fecaca;}
+
+/* Table */
+.tbl{width:100%;border-collapse:collapse;font-size:13px;background:var(--white);border-radius:8px;overflow:hidden;border:1px solid var(--border);word-break:keep-all;overflow-wrap:break-word;}
+.tbl th{background:var(--navy);color:#fff;font-size:11px;font-weight:700;letter-spacing:.08em;padding:10px 14px;text-align:left;}
+.tbl td{padding:12px 16px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top;line-height:1.8;}
+.tbl td:first-child{color:var(--text);font-weight:500;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:var(--gray);}
+
+/* Notice box */
+.notice{border-radius:8px;padding:14px 18px;margin:12px 0;}
+.notice-blue{background:var(--blue-lt);border-left:3px solid var(--blue);}
+.notice-green{background:var(--green-lt);border-left:3px solid var(--green);}
+.notice-amber{background:var(--amber-lt);border-left:3px solid var(--amber);}
+.notice-red{background:var(--red-lt);border-left:3px solid var(--red);}
+.notice p{font-size:13px;line-height:1.9;word-break:keep-all;overflow-wrap:break-word;}
+.notice-blue p{color:#155e75;}
+.notice-green p{color:#065f46;}
+.notice-amber p{color:#92400e;}
+.notice-red p{color:#991b1b;}
+
+/* Code block */
+.code-block-wrap{position:relative;background:#1e293b;border-radius:8px;padding:0;margin-bottom:14px;overflow:hidden;}
+.code-block-wrap .copy-btn{position:absolute;top:10px;right:10px;background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:5px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:.2s;z-index:2;}
+.code-block-wrap .copy-btn:hover{background:rgba(255,255,255,.18);}
+.code-block-wrap .copy-btn.copied{background:#059669;border-color:#059669;}
+.code-block-wrap .code-label{padding:10px 16px 0 16px;font-size:10px;font-weight:700;color:#64748b;letter-spacing:.1em;text-transform:uppercase;}
+.code-block-wrap .code-content{padding:16px 20px 20px;color:#e2e8f0;font-size:12px;line-height:1.9;font-family:'Courier New',monospace;white-space:pre-wrap;overflow-x:auto;}
+
+/* Roadmap */
+.roadmap-step{display:flex;gap:16px;margin-bottom:20px;align-items:flex-start;}
+.roadmap-num{width:36px;height:36px;border-radius:50%;background:var(--navy);color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.roadmap-content{flex:1;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:16px 20px;}
+.roadmap-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.roadmap-body{font-size:12px;color:var(--text2);line-height:1.8;}
+.roadmap-connector{width:2px;background:var(--border);margin:0 17px;height:14px;}
+
+/* Warning card */
+.warn-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:18px 20px;margin-bottom:12px;}
+.warn-card.danger{border-left:4px solid var(--red);}
+.warn-card.caution{border-left:4px solid var(--amber);}
+.warn-card.tip{border-left:4px solid var(--green);}
+.warn-title{font-size:13px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.warn-body{font-size:12px;color:var(--text2);line-height:1.8;}
+
+/* Footer */
+.doc-footer{text-align:center;padding:24px;font-size:11px;color:var(--text3);border-top:1px solid var(--border);margin-top:20px;}
+
+/* Responsive */
+@media(max-width:700px){
+  .hdr-top{padding:20px 16px 16px;}
+  .hdr-meta{padding:10px 16px;}
+  .tab-bar{padding:0 8px;}
+  .tab-btn{padding:12px 14px;font-size:11px;}
+  .tab-pane{padding:20px 16px;}
+  .grid-2,.grid-3{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-top">
+    <h1>DXコンサル業務AI活用ガイド v1</h1>
+    <p>DXコンサル業務でのClaude活用ノウハウを体系化</p>
+  </div>
+  <div class="hdr-meta">
+    <span>作成：2026-05-16</span>
+    <span>対象：DXコンサルタント・PMO担当者</span>
+    <span>目的：日常業務でのAI活用パターンを再現性ある形で整理</span>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab(0)">はじめに</button>
+  <button class="tab-btn" onclick="showTab(1)">提案書・パワポ作成</button>
+  <button class="tab-btn" onclick="showTab(2)">QA・障害分析</button>
+  <button class="tab-btn" onclick="showTab(3)">議事録・文書化</button>
+  <button class="tab-btn" onclick="showTab(4)">（参考）落とし穴</button>
+  <button class="tab-btn" onclick="showTab(5)">🚀 次のステップ</button>
+</div>
+
+<!-- TAB 0: はじめに -->
+<div class="tab-pane active" id="tab0">
+
+  <div class="sec">
+    <div class="sec-title">このガイドについて</div>
+    <div style="background:linear-gradient(135deg,#1a2744 0%,#2d3d6b 100%);border-radius:12px;padding:28px 32px;margin-bottom:20px;color:#fff;">
+      <div style="font-size:18px;font-weight:700;margin-bottom:10px;letter-spacing:.02em;">
+        🤖 DXコンサル業務AI活用ガイド v1
+      </div>
+      <div style="font-size:13px;color:rgba(255,255,255,.85);line-height:1.9;">
+        DXコンサルとして日常業務でClaudeをどう使っているか——提案書作成・障害分析・議事録まとめ——を<br>
+        再現性のある「型」として整理したノウハウ集です。<br>
+        「AIって何に使えばいい？」に対する、現場の答えがここにあります。
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:24px;">
+      <div style="background:#ecfeff;border:1px solid #a5f3fc;border-radius:8px;padding:18px;text-align:center;">
+        <div style="font-size:26px;font-weight:800;color:#0891b2;">3</div>
+        <div style="font-size:11px;color:#475569;margin-top:4px;">主要活用シーン<br><span style="font-size:10px;color:#94a3b8;">（提案・QA・議事録）</span></div>
+      </div>
+      <div style="background:#ecfdf5;border:1px solid #a7f3d0;border-radius:8px;padding:18px;text-align:center;">
+        <div style="font-size:26px;font-weight:800;color:#059669;">即</div>
+        <div style="font-size:11px;color:#475569;margin-top:4px;">コピペして使える<br>プロンプト例付き</div>
+      </div>
+      <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:18px;text-align:center;">
+        <div style="font-size:26px;font-weight:800;color:#d97706;">実</div>
+        <div style="font-size:11px;color:#475569;margin-top:4px;">実務で検証済みの<br>パターンのみ掲載</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;margin-bottom:8px;">
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:18px;">
+        <div style="font-size:13px;font-weight:700;color:#1a2744;margin-bottom:10px;">📋 このガイドでできること</div>
+        <ul style="font-size:12px;color:#475569;line-height:2;padding-left:16px;margin:0;">
+          <li>業務別のClaude活用パターンがひと目でわかる</li>
+          <li>すぐ使えるプロンプトをそのままコピーして実践できる</li>
+          <li>よくある失敗と対策を事前に把握して安全に使える</li>
+          <li>個人実践から部内・組織展開への道筋が見える</li>
+        </ul>
+      </div>
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:18px;">
+        <div style="font-size:13px;font-weight:700;color:#1a2744;margin-bottom:10px;">💡 なぜAIを業務に取り入れるのか</div>
+        <ul style="font-size:12px;color:#475569;line-height:2;padding-left:16px;margin:0;">
+          <li>「考える時間」を増やし「書く時間」を減らすため</li>
+          <li>ドラフトを0→1で生成し、思考の壁打ち相手として使う</li>
+          <li>属人的なノウハウを形式知化・再現可能にするため</li>
+          <li>競合他社との提案品質の差別化を図るため</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">本資料の使い方（各タブ説明）</div>
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>タブ名</th>
+          <th>目的・内容</th>
+          <th>こんな時に使う</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>提案書・パワポ作成</td>
+          <td>構造設計・ドラフト生成・ビジュアル提案への活用パターンと具体プロンプト例</td>
+          <td>提案書の構成で悩んだとき、スライド骨子を急ぎ作りたいとき</td>
+        </tr>
+        <tr>
+          <td>QA・障害分析</td>
+          <td>5Why・MECE・問題切り分けでのClaude活用。根本原因分析と対応策立案</td>
+          <td>障害が起きて原因を整理したいとき、QA報告書を素早く作りたいとき</td>
+        </tr>
+        <tr>
+          <td>議事録・文書化</td>
+          <td>会議メモ→構造化文書→関係者報告への展開フロー</td>
+          <td>会議直後にメモを整理したいとき、宿題・決定事項を一覧化したいとき</td>
+        </tr>
+        <tr>
+          <td>（参考）落とし穴</td>
+          <td>事実誤認・機密情報漏えい・ハルシネーションへの対策（カード形式）</td>
+          <td>Claude活用を他メンバーに展開する前に確認したいとき</td>
+        </tr>
+        <tr>
+          <td>🚀 次のステップ</td>
+          <td>個人実践→部内展開→組織化の3段階ロードマップ</td>
+          <td>AI活用を組織全体に広げる計画を立てたいとき</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">基本的な使い方の心得</div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#ecfeff;">🎯</div>
+          <div>
+            <div class="card-title">目的を先に言う</div>
+            <div class="card-sub">コンテキストを与える</div>
+          </div>
+        </div>
+        <div class="card-body">「〇〇の目的で、△△の立場から、□□を作りたい」という前置きを必ず入れる。背景情報が多いほど出力品質が上がる。</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#ecfdf5;">✂️</div>
+          <div>
+            <div class="card-title">一度に一つの指示</div>
+            <div class="card-sub">タスクを分割する</div>
+          </div>
+        </div>
+        <div class="card-body">複数の要求を一度に投げない。「まず構成案だけ」→「次に本文」→「最後に推敲」と段階を踏むと精度が上がる。</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#fffbeb;">🔁</div>
+          <div>
+            <div class="card-title">出力を育てる</div>
+            <div class="card-sub">反復改善する</div>
+          </div>
+        </div>
+        <div class="card-body">最初の出力が100点でなくてOK。「〇〇を△△に変えて」「もっと簡潔に」と指示を重ねることで完成度を高める。</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /tab0 -->
+
+<!-- TAB 1: 提案書・パワポ作成 -->
+<div class="tab-pane" id="tab1">
+
+  <div class="sec">
+    <div class="sec-title">活用の全体像</div>
+    <div class="notice notice-blue">
+      <p>提案書作成は「構造設計 → ドラフト生成 → レビュー・推敲」の3ステップで進めるのが最も効果的です。Claudeは構造設計とドラフト生成で特に威力を発揮します。</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:16px;">
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center;">
+        <div style="font-size:22px;margin-bottom:6px;">🏗️</div>
+        <div style="font-size:12px;font-weight:700;color:#1a2744;">Step 1</div>
+        <div style="font-size:11px;color:#475569;margin-top:4px;">構造設計<br>（目次・骨子）</div>
+      </div>
+      <div style="color:#94a3b8;display:flex;align-items:center;justify-content:center;font-size:20px;">→</div>
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center;">
+        <div style="font-size:22px;margin-bottom:6px;">✍️</div>
+        <div style="font-size:12px;font-weight:700;color:#1a2744;">Step 2</div>
+        <div style="font-size:11px;color:#475569;margin-top:4px;">ドラフト生成<br>（スライド本文）</div>
+      </div>
+      <div style="color:#94a3b8;display:flex;align-items:center;justify-content:center;font-size:20px;">→</div>
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center;">
+        <div style="font-size:22px;margin-bottom:6px;">🎨</div>
+        <div style="font-size:12px;font-weight:700;color:#1a2744;">Step 3</div>
+        <div style="font-size:11px;color:#475569;margin-top:4px;">ビジュアル提案<br>（図解・レイアウト案）</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">Step 1 — 構造設計プロンプト例</div>
+    <p class="sec-lead">まず目次・骨子だけを生成させる。詳細は後工程。</p>
+    <div class="code-block-wrap">
+      <div class="code-label">📋 構造設計プロンプト</div>
+      <button class="copy-btn" onclick="copyCode(this)">📋 コピー</button>
+      <div class="code-content">あなたはDXコンサルタントです。以下の条件で提案書の構成案（目次）を作成してください。
+
+【提案の背景】
+・クライアント：製造業（従業員500名規模）
+・課題：現場の作業報告が紙ベースで、集計に週2日かかっている
+・提案内容：モバイルアプリ＋クラウド連携による報告デジタル化
+
+【出力形式】
+・スライド枚数：10〜12枚
+・各スライドに「スライドタイトル」と「伝えたいメッセージ（1文）」を記載
+・ストーリーライン：課題提起 → 解決策 → 効果 → 実施計画 → 費用対効果
+
+まず構成案のみを出力してください。本文は次のステップで作成します。</div>
+    </div>
+
+    <div class="notice notice-green">
+      <p>💡 ポイント：「まず構成案のみ」と明示することで、Claudeが詳細に走らず骨子に集中します。レビューしてからドラフト生成に進む流れが効率的です。</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">Step 2 — ドラフト生成プロンプト例</div>
+    <p class="sec-lead">構成案が確定したら、スライドごとに本文を生成する。</p>
+    <div class="code-block-wrap">
+      <div class="code-label">✍️ スライド本文生成プロンプト</div>
+      <button class="copy-btn" onclick="copyCode(this)">📋 コピー</button>
+      <div class="code-content">先ほど確認した構成案の「3枚目：現状の課題」スライドの本文を作成してください。
+
+【制約】
+・箇条書き：3〜5項目
+・各項目に「定量的な数値・事実」を1つ含める（例：週2日、月40時間など）
+・読む人：意思決定者（現場詳細より経営インパクトを重視）
+・文体：簡潔・断定調（「〜です」「〜あります」）
+
+【このスライドで言いたいこと（メッセージ）】
+「紙の報告フローが生産性を年間〇〇時間分ロスさせている」
+
+上記の制約に従い、箇条書き本文と補足説明（2〜3文）を出力してください。</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">Step 3 — ビジュアル提案プロンプト例</div>
+    <p class="sec-lead">図解や表のレイアウト案を言語で指示する。</p>
+    <div class="code-block-wrap">
+      <div class="code-label">🎨 図解・レイアウト提案プロンプト</div>
+      <button class="copy-btn" onclick="copyCode(this)">📋 コピー</button>
+      <div class="code-content">以下のスライド内容を視覚化するための図解レイアウト案を提案してください。
+
+【スライド内容】
+「As-Is（現状）→ To-Be（理想）の比較」
+・現状：紙記入 → 手集計 → Excelまとめ（週2日）
+・理想：スマホ入力 → 自動集計 → リアルタイムダッシュボード（即時）
+
+【要望】
+・左右対比レイアウト
+・矢印で変化を表現
+・パワーポイントで再現しやすい構成
+・視覚的にインパクトを出したい
+
+具体的なレイアウト構成とパワポでの作り方（テキストボックス配置・色使い）を説明してください。</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">応用：ワンライナー活用パターン</div>
+    <table class="tbl">
+      <thead>
+        <tr><th>シーン</th><th>プロンプトのポイント</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>エグゼクティブサマリー</td>
+          <td>「経営者向けに3行でまとめ。数値・リスク・推奨アクションを含める」</td>
+        </tr>
+        <tr>
+          <td>競合比較表</td>
+          <td>「〇〇・△△・自社の3社を、価格・機能・サポートで比較する表を作成」</td>
+        </tr>
+        <tr>
+          <td>Q&A想定</td>
+          <td>「この提案に対してクライアントが懸念しそうな質問を5つ挙げ、回答案も出して」</td>
+        </tr>
+        <tr>
+          <td>タイトルコピー改善</td>
+          <td>「このスライドタイトルをより刺さるキャッチコピーに3案書き直して」</td>
+        </tr>
+        <tr>
+          <td>数値の言語化</td>
+          <td>「削減時間40時間/月を経営インパクトの言葉（コスト・機会損失）で表現して」</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- /tab1 -->
+
+<!-- TAB 2: QA・障害分析 -->
+<div class="tab-pane" id="tab2">
+
+  <div class="sec">
+    <div class="sec-title">Claude × 問題分析の強み</div>
+    <div class="notice notice-blue">
+      <p>Claudeは「構造化思考」が得意です。5WhyやMECEといったフレームワークを指定すると、ランダムな思いつきではなく、体系的な分析が得られます。</p>
+    </div>
+    <div class="grid-3" style="margin-top:16px;">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#ecfeff;">🔍</div>
+          <div>
+            <div class="card-title">5Why 根本原因分析</div>
+            <div class="card-sub">表面的な症状から根本へ</div>
+          </div>
+        </div>
+        <div class="card-body">「なぜ？」を5回繰り返すフレームワーク。Claudeに問題を投げると、見落としがちな根本原因まで掘り下げてくれる。</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#ecfdf5;">📊</div>
+          <div>
+            <div class="card-title">MECE 問題切り分け</div>
+            <div class="card-sub">漏れなくダブりなく</div>
+          </div>
+        </div>
+        <div class="card-body">原因候補を「人・機械・手順・環境」等のカテゴリで整理。見落とし防止と優先度付けに有効。</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#fffbeb;">📝</div>
+          <div>
+            <div class="card-title">報告書ドラフト化</div>
+            <div class="card-sub">分析結果を即文書化</div>
+          </div>
+        </div>
+        <div class="card-body">分析結果を渡すと、障害報告書・QA対応レポート形式に整形してくれる。報告作業の時間を大幅削減。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">5Why 分析プロンプト例</div>
+    <div class="code-block-wrap">
+      <div class="code-label">🔍 5Why 根本原因分析プロンプト</div>
+      <button class="copy-btn" onclick="copyCode(this)">📋 コピー</button>
+      <div class="code-content">以下の障害について、5Why分析を行い根本原因を特定してください。
+
+【発生事象】
+・日時：2026-05-15 14:30
+・内容：顧客向けWebシステムのログイン画面が30分間応答不可
+・影響範囲：全ユーザー（約200名）ログイン不可
+
+【すでにわかっていること】
+・14:30にデプロイ作業を実施していた
+・ロールバック後に復旧
+・エラーログ："DB connection timeout after 30s"
+
+【依頼】
+1. 5Whyフレームワークで根本原因を分析してください
+2. 各「なぜ」に対して「確認すべき証拠・ログ」を併記してください
+3. 最終的な根本原因の仮説を2〜3個挙げてください</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">MECE 問題切り分けプロンプト例</div>
+    <div class="code-block-wrap">
+      <div class="code-label">📊 MECE 問題切り分けプロンプト</div>
+      <button class="copy-btn" onclick="copyCode(this)">📋 コピー</button>
+      <div class="code-content">以下の問題を、MECEの観点で原因カテゴリに分類して整理してください。
+
+【問題】
+顧客データの取り込みバッチ処理が毎月月末に失敗する。
+月初・月中は正常動作している。
+
+【MECEカテゴリの例（参考）】
+「人・機械・手順・環境・データ」または「性能・設定・データ量・外部依存」など
+
+【依頼】
+1. 適切なMECEカテゴリを選定し、各カテゴリで考えられる原因候補を列挙してください
+2. 月末にのみ発生することから考えられる「特有の条件」を特定してください
+3. 優先的に調査すべき仮説をTOP3で挙げ、理由を添えてください
+
+出力は表形式（カテゴリ / 原因候補 / 調査方法）でお願いします。</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">障害報告書 ドラフト生成プロンプト例</div>
+    <div class="code-block-wrap">
+      <div class="code-label">📝 障害報告書ドラフト生成プロンプト</div>
+      <button class="copy-btn" onclick="copyCode(this)">📋 コピー</button>
+      <div class="code-content">以下の障害情報を元に、顧客向け障害報告書のドラフトを作成してください。
+
+【障害概要】
+・発生日時：2026-05-15 14:30〜15:00（約30分）
+・対象システム：顧客管理Webシステム
+・影響：ログイン不可（全ユーザー約200名）
+・根本原因：デプロイ時のDB接続設定の環境変数未設定
+
+【報告書フォーマット】
+1. 障害の概要（3行以内）
+2. 発生から復旧までのタイムライン
+3. 根本原因
+4. 再発防止策（3〜5項目）
+5. 顧客へのお詫びと今後の対応
+
+【読む相手】顧客の担当部長（技術詳細より影響と対策を重視）
+【文体】丁寧・謝罪を含む・簡潔</div>
+    </div>
+
+    <div class="notice notice-amber">
+      <p>⚠️ 注意：生成されたドラフトは必ず人間がレビューし、事実確認を行ってから顧客に送付してください。日時・数値・固有名詞は特に要注意です。</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">QA活用パターン早見表</div>
+    <table class="tbl">
+      <thead>
+        <tr><th>シーン</th><th>使えるフレーム</th><th>Claudeへの指示のコツ</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>原因がわからない障害</td>
+          <td>5Why</td>
+          <td>事象・時刻・エラーログを貼り付けて「5Whyで分析して」</td>
+        </tr>
+        <tr>
+          <td>原因候補が多すぎる</td>
+          <td>MECE整理</td>
+          <td>「MECEでカテゴリ分類し、優先度TOP3を選んで」</td>
+        </tr>
+        <tr>
+          <td>テストケース漏れが心配</td>
+          <td>境界値分析</td>
+          <td>「この機能の境界値・異常系テストケースを網羅的に列挙して」</td>
+        </tr>
+        <tr>
+          <td>報告書を素早く作りたい</td>
+          <td>構造化ドラフト</td>
+          <td>「事実メモを渡すので報告書フォーマットに整形して」</td>
+        </tr>
+        <tr>
+          <td>再発防止策を考えたい</td>
+          <td>対策立案</td>
+          <td>「根本原因に対して、人・プロセス・ツールの観点で対策を出して」</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- /tab2 -->
+
+<!-- TAB 3: 議事録・文書化 -->
+<div class="tab-pane" id="tab3">
+
+  <div class="sec">
+    <div class="sec-title">会議メモ → 文書化の流れ</div>
+    <div class="notice notice-blue">
+      <p>会議直後の「生メモ」をClaudeに渡すだけで、構造化された議事録に変換できます。重要なのは「決定事項」「宿題（担当者・期限）」「次のアクション」の3点を必ず抽出させること。</p>
+    </div>
+    <div style="margin-top:20px;">
+      <div class="roadmap-step">
+        <div class="roadmap-num">1</div>
+        <div class="roadmap-content">
+          <div class="roadmap-title">生メモをそのまま貼り付ける</div>
+          <div class="roadmap-body">走り書きのメモ・箇条書き・断片的な発言録でOK。「整える」必要はありません。Claudeが構造化してくれます。</div>
+        </div>
+      </div>
+      <div class="roadmap-connector"></div>
+      <div class="roadmap-step">
+        <div class="roadmap-num">2</div>
+        <div class="roadmap-content">
+          <div class="roadmap-title">構造化議事録を生成</div>
+          <div class="roadmap-body">日時・参加者・議題・決定事項・宿題・ネクストアクションの形式に整形。抽出漏れが大幅に減ります。</div>
+        </div>
+      </div>
+      <div class="roadmap-connector"></div>
+      <div class="roadmap-step">
+        <div class="roadmap-num">3</div>
+        <div class="roadmap-content">
+          <div class="roadmap-title">関係者報告メール用に変換</div>
+          <div class="roadmap-body">「議事録を、欠席者向けの報告メール形式に変換して」と一言追加するだけで、そのまま送れるメール文が完成。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">議事録生成プロンプト例</div>
+    <div class="code-block-wrap">
+      <div class="code-label">📋 議事録構造化プロンプト</div>
+      <button class="copy-btn" onclick="copyCode(this)">📋 コピー</button>
+      <div class="code-content">以下の会議メモを、構造化された議事録に変換してください。
+
+【会議メモ（そのまま）】
+（ここに走り書きのメモをペーストする）
+例：
+・5/16 DX推進会議
+・参加：田中、鈴木、山田、外部A社（佐藤さん）
+・A社のシステム概要説明あり。来月デモ予定。
+・予算は上期中に確保の方向。CFO承認必要。田中さんがアレンジ。
+・次回6/3 同メンバーで。場所TBD。
+・懸念：セキュリティ審査どうする？→鈴木さんが社内情報システム部門に確認する
+
+【出力フォーマット】
+## 会議概要
+- 日時：
+- 参加者：
+
+## 決定事項
+（番号付きリスト）
+
+## 宿題・アクションアイテム
+| # | 内容 | 担当 | 期限 |
+|---|------|------|------|
+
+## 次回予定
+- 日時：
+- 議題（予定）：
+
+## 備考・懸念事項</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">宿題管理・進捗レポート生成プロンプト例</div>
+    <div class="code-block-wrap">
+      <div class="code-label">📊 宿題ステータスレポート生成プロンプト</div>
+      <button class="copy-btn" onclick="copyCode(this)">📋 コピー</button>
+      <div class="code-content">以下のアクションアイテム一覧を元に、週次進捗報告メールを作成してください。
+
+【アクションアイテム一覧】
+| # | 内容 | 担当 | 期限 | ステータス |
+|---|------|------|------|------------|
+| 1 | CFO承認申請 | 田中 | 5/20 | 完了 |
+| 2 | セキュリティ審査確認 | 鈴木 | 5/23 | 進行中 |
+| 3 | デモ日程調整 | 山田 | 5/20 | 未着手 |
+| 4 | 次回会議場所確保 | 田中 | 5/30 | 完了 |
+
+【報告先】プロジェクトオーナー（詳細より全体ステータスを重視）
+【文体】端的・箇条書き中心・リスク事項を明示
+
+ステータスサマリー（完了/進行中/未着手の件数）を先頭に入れてください。</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">関係者報告メール変換プロンプト例</div>
+    <div class="code-block-wrap">
+      <div class="code-label">📧 報告メール変換プロンプト</div>
+      <button class="copy-btn" onclick="copyCode(this)">📋 コピー</button>
+      <div class="code-content">上記の議事録を、会議に参加していないステークホルダー（役員クラス）向けの報告メールに変換してください。
+
+【変換ルール】
+・件名も含めて出力する
+・本文は300文字以内（要点のみ）
+・「何が決まったか」「次に何が起きるか」の2点を明確に
+・敬語・ビジネスメール形式
+・詳細を知りたい場合の問い合わせ先も末尾に入れる</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">文書化活用パターン早見表</div>
+    <table class="tbl">
+      <thead>
+        <tr><th>シーン</th><th>Claudeへの指示</th><th>時間短縮効果</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>会議直後の議事録作成</td>
+          <td>生メモ貼付→「構造化議事録にして」</td>
+          <td>30分 → 5分</td>
+        </tr>
+        <tr>
+          <td>宿題一覧の抽出</td>
+          <td>議事録貼付→「宿題と担当者・期限を表形式で」</td>
+          <td>10分 → 1分</td>
+        </tr>
+        <tr>
+          <td>欠席者への共有メール</td>
+          <td>議事録貼付→「欠席者向け報告メールに変換」</td>
+          <td>20分 → 3分</td>
+        </tr>
+        <tr>
+          <td>週次進捗レポート</td>
+          <td>アクションリスト貼付→「週次報告形式でまとめて」</td>
+          <td>40分 → 5分</td>
+        </tr>
+        <tr>
+          <td>議事録の英語化</td>
+          <td>日本語議事録貼付→「英語のMeeting Minutesに変換」</td>
+          <td>60分 → 10分</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- /tab3 -->
+
+<!-- TAB 4: （参考）落とし穴 -->
+<div class="tab-pane" id="tab4">
+
+  <div class="sec">
+    <div class="sec-title">知っておくべき3大リスク</div>
+    <div class="notice notice-amber">
+      <p>AIは非常に便利ですが、使い方を誤ると業務上の重大なリスクを生みます。以下の3点を理解した上で活用してください。</p>
+    </div>
+
+    <div class="warn-card danger" style="margin-top:20px;">
+      <div class="warn-title">
+        <span style="font-size:18px;">🔴</span>
+        <span style="color:#dc2626;">リスク①：機密情報・個人情報の入力</span>
+      </div>
+      <div class="warn-body">
+        <p style="margin-bottom:8px;">Claude等の外部AIサービスに入力した情報は、サービス改善等に利用される可能性があります。以下の情報は絶対に入力しないでください。</p>
+        <ul style="font-size:12px;color:#475569;padding-left:16px;line-height:2;">
+          <li>顧客の個人情報（氏名・連絡先・契約内容）</li>
+          <li>自社・顧客の未公開財務情報</li>
+          <li>システムのID・パスワード・APIキー</li>
+          <li>NDA・守秘義務が課されている情報</li>
+        </ul>
+        <div class="notice notice-green" style="margin-top:10px;">
+          <p>✅ 対策：固有名詞を「顧客A社」「担当者X」に置き換えてから入力する。架空の例示に置き換えてAIを使う。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn-card caution" style="margin-top:12px;">
+      <div class="warn-title">
+        <span style="font-size:18px;">🟡</span>
+        <span style="color:#d97706;">リスク②：ハルシネーション（事実誤認）</span>
+      </div>
+      <div class="warn-body">
+        <p style="margin-bottom:8px;">AIは「もっともらしい嘘」をつくことがあります。特に以下の情報は必ず別途確認してください。</p>
+        <ul style="font-size:12px;color:#475569;padding-left:16px;line-height:2;">
+          <li>法律・規制・制度（税率・条項・規則の名前）</li>
+          <li>統計データ・調査数値（出典なしで提示される数字）</li>
+          <li>特定の企業・製品についての詳細情報</li>
+          <li>最新情報（AIの知識には学習カットオフがある）</li>
+        </ul>
+        <div class="notice notice-green" style="margin-top:10px;">
+          <p>✅ 対策：「この数値の出典は？」と必ず聞く。重要な事実は公式サイト・一次情報で確認する。「AIが言っていた」は根拠にならない。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn-card caution" style="margin-top:12px;">
+      <div class="warn-title">
+        <span style="font-size:18px;">🟡</span>
+        <span style="color:#d97706;">リスク③：過信・確認省略</span>
+      </div>
+      <div class="warn-body">
+        <p style="margin-bottom:8px;">AIの出力が「それっぽく見える」ため、確認せずにそのまま使ってしまうケースが増えています。</p>
+        <ul style="font-size:12px;color:#475569;padding-left:16px;line-height:2;">
+          <li>報告書・提案書はドラフトとして扱い、必ず人間がレビューする</li>
+          <li>顧客・社外への送付前は特に丁寧にチェックする</li>
+          <li>固有名詞・日時・数値は特に要確認</li>
+        </ul>
+        <div class="notice notice-green" style="margin-top:10px;">
+          <p>✅ 対策：「AIはドラフト、最終確認は人間」を徹底する。チェックポイントを明示した社内ルールを作る。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">チーム展開時の注意点</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#fef2f2;">📜</div>
+          <div>
+            <div class="card-title">利用ガイドラインを先に作る</div>
+          </div>
+        </div>
+        <div class="card-body">「何はOKで何はNG」を文書化しないと、メンバーによって使い方がバラバラになる。最初に簡易でも利用ルールを共有する。</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#fffbeb;">🧑‍🏫</div>
+          <div>
+            <div class="card-title">失敗事例を共有する文化</div>
+          </div>
+        </div>
+        <div class="card-body">「AIにこう入力したら変な出力が来た」「ここで事実誤認があった」という失敗を共有する場を作ることで、チーム全体の精度が上がる。</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#ecfdf5;">⚙️</div>
+          <div>
+            <div class="card-title">使うツールを統一する</div>
+          </div>
+        </div>
+        <div class="card-body">メンバーによって使うAIサービスがバラバラだと、セキュリティ管理が困難になる。組織として使用承認されたツールに統一する。</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#ecfeff;">📋</div>
+          <div>
+            <div class="card-title">入力情報のチェックリスト</div>
+          </div>
+        </div>
+        <div class="card-body">AIに入力する前に「機密情報が含まれていないか」を確認するチェックリストを習慣化。特に新しいメンバーへの教育が重要。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">落とし穴チェックリスト（保存版）</div>
+    <table class="tbl">
+      <thead>
+        <tr><th>チェック項目</th><th>確認タイミング</th><th>リスクレベル</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>入力文に個人情報・機密情報が含まれていないか</td>
+          <td>入力前</td>
+          <td><span class="tag tag-red">高</span></td>
+        </tr>
+        <tr>
+          <td>出力の数値・統計に出典があるか</td>
+          <td>出力後</td>
+          <td><span class="tag tag-red">高</span></td>
+        </tr>
+        <tr>
+          <td>法的・規制的な内容は専門家に確認したか</td>
+          <td>使用前</td>
+          <td><span class="tag tag-red">高</span></td>
+        </tr>
+        <tr>
+          <td>社外送付前に人間がレビューしたか</td>
+          <td>送付前</td>
+          <td><span class="tag tag-amber">中</span></td>
+        </tr>
+        <tr>
+          <td>固有名詞・日時・金額を実データで確認したか</td>
+          <td>使用前</td>
+          <td><span class="tag tag-amber">中</span></td>
+        </tr>
+        <tr>
+          <td>AIの回答が最新情報かどうか確認したか</td>
+          <td>使用前</td>
+          <td><span class="tag tag-amber">中</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- /tab4 -->
+
+<!-- TAB 5: 次のステップ -->
+<div class="tab-pane" id="tab5">
+
+  <div class="sec">
+    <div class="sec-title">3段階ロードマップ</div>
+    <div class="notice notice-blue">
+      <p>AI活用は「個人の便利ツール」から「組織の競争力」へ段階的に発展させることができます。以下の3フェーズで計画的に展開することを推奨します。</p>
+    </div>
+
+    <div style="margin-top:24px;">
+      <div style="background:linear-gradient(135deg,#1a2744 0%,#2d3d6b 100%);border-radius:12px;padding:20px 24px;margin-bottom:14px;color:#fff;display:flex;gap:20px;align-items:flex-start;">
+        <div style="background:rgba(255,255,255,.15);border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;flex-shrink:0;">1</div>
+        <div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:8px;">個人実践フェーズ（今すぐ〜1ヶ月）</div>
+          <ul style="font-size:12px;color:rgba(255,255,255,.85);line-height:2;padding-left:16px;margin:0;">
+            <li>本資料のプロンプトを自分の業務で試す</li>
+            <li>週1回、「AIを使って何が変わったか」をメモする</li>
+            <li>失敗例・成功例を記録し、自分の活用パターンを確立する</li>
+            <li>「これは絶対使える」という型を3つ見つける</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px 24px;margin-bottom:14px;display:flex;gap:20px;align-items:flex-start;">
+        <div style="background:#0891b2;border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;flex-shrink:0;color:#fff;">2</div>
+        <div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:8px;color:#1a2744;">部内展開フェーズ（1〜3ヶ月）</div>
+          <ul style="font-size:12px;color:#475569;line-height:2;padding-left:16px;margin:0;">
+            <li>チームの朝会・MTGで「AI活用Tips」を週1回共有する</li>
+            <li>本資料をベースに部門向け「利用ガイドライン」を作成する</li>
+            <li>共通プロンプトライブラリをNotionやSharePointで管理する</li>
+            <li>月1回「AI活用振り返り」の場を設ける（失敗共有含む）</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px 24px;margin-bottom:14px;display:flex;gap:20px;align-items:flex-start;">
+        <div style="background:#059669;border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;flex-shrink:0;color:#fff;">3</div>
+        <div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:8px;color:#1a2744;">組織展開フェーズ（3ヶ月〜）</div>
+          <ul style="font-size:12px;color:#475569;line-height:2;padding-left:16px;margin:0;">
+            <li>全社AI利用ポリシーの策定・情報システム部門と連携</li>
+            <li>部門横断のAI活用推進チームを結成する</li>
+            <li>コスト・工数削減効果を定量化し、経営層へ報告する</li>
+            <li>社内認定制度・AI活用スキルの評価への組み込みを提案する</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">フェーズ別 目標指標</div>
+    <table class="tbl">
+      <thead>
+        <tr><th>フェーズ</th><th>期間目安</th><th>成功の目安</th><th>主要アクション</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Phase 1：個人実践</td>
+          <td>〜1ヶ月</td>
+          <td>週3回以上AIを業務で使えている</td>
+          <td>プロンプト試行・記録・型の確立</td>
+        </tr>
+        <tr>
+          <td>Phase 2：部内展開</td>
+          <td>1〜3ヶ月</td>
+          <td>チームの半数以上がAIを業務利用</td>
+          <td>ガイドライン作成・共有会・ライブラリ整備</td>
+        </tr>
+        <tr>
+          <td>Phase 3：組織化</td>
+          <td>3ヶ月〜</td>
+          <td>削減工数を定量化し経営報告できる</td>
+          <td>ポリシー策定・推進組織・評価制度</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">今日からできるアクション</div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#ecfeff;">⚡</div>
+          <div>
+            <div class="card-title">今日やること</div>
+            <div class="card-sub">所要時間：15分</div>
+          </div>
+        </div>
+        <div class="card-body">本資料の「提案書・パワポ」タブからプロンプト1つを選び、実際の自分の業務で試してみる。結果をメモに残す。</div>
+        <div class="card-foot"><span class="tag tag-green">今すぐ</span></div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#ecfdf5;">📅</div>
+          <div>
+            <div class="card-title">今週中にやること</div>
+            <div class="card-sub">所要時間：30分</div>
+          </div>
+        </div>
+        <div class="card-body">3タブ（提案書・QA・議事録）から各1プロンプトずつ試し、「自分ならこう使う」バージョンにカスタマイズする。</div>
+        <div class="card-foot"><span class="tag tag-blue">今週</span></div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#fffbeb;">🚀</div>
+          <div>
+            <div class="card-title">今月中にやること</div>
+            <div class="card-sub">所要時間：2時間</div>
+          </div>
+        </div>
+        <div class="card-body">チームメンバー1人にAI活用を共有する。本資料を見せながら「こう使うと便利」と実演する場を作る。</div>
+        <div class="card-foot"><span class="tag tag-amber">今月</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">さらに学ぶなら</div>
+    <div class="notice notice-blue">
+      <p>📚 Anthropic社が公式学習コースを無料公開しています。「Prompt Engineering for Business Users」から始めるのがおすすめです。修了証も取得できます（Anthropic Academy）。</p>
+    </div>
+    <div class="notice notice-green" style="margin-top:12px;">
+      <p>💬 本資料の内容に追加したい事例・改善点があれば、気軽にフィードバックを。実務で使えるナレッジを随時アップデートしていきます。</p>
+    </div>
+  </div>
+
+</div><!-- /tab5 -->
+
+<div class="doc-footer">DXコンサル業務AI活用ガイド v1 ／ 更新：2026-05-16 ／ DXコンサル業務でのClaude活用ノウハウ集</div>
+
+<script>
+function showTab(n){
+  document.querySelectorAll('.tab-pane').forEach(function(p,i){p.classList.toggle('active',i===n);});
+  document.querySelectorAll('.tab-btn').forEach(function(b,i){b.classList.toggle('active',i===n);});
+}
+function copyCode(btn){
+  var block = btn.parentElement.querySelector('.code-content');
+  var text = block.innerText;
+  navigator.clipboard.writeText(text).then(function(){
+    btn.textContent = '✅ コピーしました';
+    btn.classList.add('copied');
+    setTimeout(function(){btn.textContent='📋 コピー';btn.classList.remove('copied');}, 2000);
+  }).catch(function(){
+    btn.textContent = '❌ 失敗';
+    setTimeout(function(){btn.textContent='📋 コピー';}, 2000);
+  });
+}
+</script>
+</body>
+</html>
