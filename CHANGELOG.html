@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
@@ -94,6 +94,66 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .output-block pre{padding:16px;color:var(--text);font-size:11px;line-height:1.8;font-family:var(--mono);white-space:pre-wrap;word-break:break-all;overflow-wrap:anywhere;max-height:300px;overflow-y:auto;}
 
 .footer{margin-top:48px;font-family:var(--mono);font-size:10px;color:var(--muted);text-align:center;border-top:1px solid var(--border);padding-top:20px;}
+
+@media (max-width: 768px) {
+  body { font-size: 13px !important; }
+
+  .tbl, table {
+    display: block !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .tbl td, .tbl th, table td, table th {
+    padding: 8px 10px !important;
+    font-size: 12px !important;
+    line-height: 1.6 !important;
+    word-break: break-word !important;
+  }
+
+  .hdr { padding: 20px 16px !important; }
+  .hdr h1 { font-size: 18px !important; }
+  .hdr .subtitle { font-size: 11px !important; }
+
+  .tab-bar {
+    padding: 0 12px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .tab-btn {
+    font-size: 11px !important;
+    padding: 11px 12px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .tab-pane, .container { padding: 18px 14px !important; }
+
+  .sec-title { font-size: 14px !important; }
+  .sec-sub { font-size: 13px !important; }
+
+  .notice, .card { padding: 12px 14px !important; }
+  .notice p { font-size: 12px !important; }
+
+  .code-block, .prompt-box, pre, .cmd {
+    font-size: 11px !important;
+    padding: 10px 12px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    word-break: break-all !important;
+  }
+
+  svg { max-width: 100% !important; height: auto !important; }
+  .svg-wrap, .flow-svg { padding: 12px 8px !important; }
+
+  .signal-grid, .phase-grid, .stack-card {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .hero, .banner, .bigmsg { padding: 16px 18px !important; }
+  .hero-title, .banner-title { font-size: 15px !important; }
+  .hero-body, .banner-body { font-size: 12px !important; }
+}
 </style>
 </head>
 <body>

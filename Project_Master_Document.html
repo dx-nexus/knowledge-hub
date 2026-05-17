@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
@@ -86,6 +86,66 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14
 /* Alert box */
 .alert{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:8px;padding:14px 18px;margin-bottom:16px;}
 .alert p{font-size:13px;color:#fca5a5;}
+
+@media (max-width: 768px) {
+  body { font-size: 13px !important; }
+
+  .tbl, table {
+    display: block !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .tbl td, .tbl th, table td, table th {
+    padding: 8px 10px !important;
+    font-size: 12px !important;
+    line-height: 1.6 !important;
+    word-break: break-word !important;
+  }
+
+  .hdr { padding: 20px 16px !important; }
+  .hdr h1 { font-size: 18px !important; }
+  .hdr .subtitle { font-size: 11px !important; }
+
+  .tab-bar {
+    padding: 0 12px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .tab-btn {
+    font-size: 11px !important;
+    padding: 11px 12px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .tab-pane, .container { padding: 18px 14px !important; }
+
+  .sec-title { font-size: 14px !important; }
+  .sec-sub { font-size: 13px !important; }
+
+  .notice, .card { padding: 12px 14px !important; }
+  .notice p { font-size: 12px !important; }
+
+  .code-block, .prompt-box, pre, .cmd {
+    font-size: 11px !important;
+    padding: 10px 12px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    word-break: break-all !important;
+  }
+
+  svg { max-width: 100% !important; height: auto !important; }
+  .svg-wrap, .flow-svg { padding: 12px 8px !important; }
+
+  .signal-grid, .phase-grid, .stack-card {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .hero, .banner, .bigmsg { padding: 16px 18px !important; }
+  .hero-title, .banner-title { font-size: 15px !important; }
+  .hero-body, .banner-body { font-size: 12px !important; }
+}
 </style>
 </head>
 <body>
