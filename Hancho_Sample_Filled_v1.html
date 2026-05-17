@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>はんちょう実例：JSON駆動生成フロー記入例 v1</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1a2744;--blue:#2563eb;--blue-lt:#eff6ff;
+  --orange:#d97706;--orange-lt:#fffbeb;
+  --green:#059669;--green-lt:#ecfdf5;
+  --purple:#7c3aed;--purple-lt:#f5f3ff;
+  --gray:#f8f9fb;--text:#1e293b;--text2:#475569;--text3:#94a3b8;
+  --border:#e2e8f0;--white:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{overflow-x:hidden;}
+body{background:var(--gray);color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:14px;line-height:1.85;word-break:keep-all;overflow-wrap:break-word;}
+
+.hdr{background:linear-gradient(135deg,#1a2744 0%,#0891b2 100%);color:#fff;padding:32px 40px;}
+.hdr h1{font-size:24px;font-weight:700;}
+.hdr .subtitle{font-size:13px;color:rgba(255,255,255,.75);margin-top:6px;}
+.hdr .meta{font-size:11px;color:rgba(255,255,255,.55);margin-top:12px;}
+.hdr .nav-link{display:inline-block;margin-top:14px;background:rgba(255,255,255,.15);color:#fff;padding:6px 14px;border-radius:20px;font-size:11px;text-decoration:none;border:1px solid rgba(255,255,255,.3);}
+.hdr .nav-link:hover{background:rgba(255,255,255,.25);}
+
+.container{max-width:1080px;margin:0 auto;padding:32px 40px;}
+
+.banner{background:#fffbeb;border:2px solid #fde68a;border-radius:10px;padding:16px 20px;margin-bottom:28px;}
+.banner-title{font-size:13px;font-weight:700;color:#92400e;margin-bottom:6px;}
+.banner-body{font-size:12px;color:#78350f;line-height:1.85;}
+
+.sec{margin-bottom:36px;}
+.sec-title{font-size:18px;font-weight:700;color:var(--navy);margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #0891b2;}
+.sec-sub{font-size:14px;font-weight:700;color:var(--navy);margin:18px 0 10px;}
+
+.fill-box{background:#ecfdf5;border:2px solid #6ee7b7;border-radius:10px;padding:20px 24px;margin:14px 0;}
+.fill-box .fill-title{font-size:11px;font-weight:700;color:#065f46;letter-spacing:.1em;margin-bottom:12px;text-transform:uppercase;}
+.fill-field{padding:8px 0;border-bottom:1px solid #a7f3d0;font-size:13px;line-height:1.95;}
+.fill-field:last-child{border-bottom:none;}
+.fill-label{display:inline-block;font-weight:700;color:#047857;min-width:130px;vertical-align:top;}
+.fill-value{color:var(--text);}
+
+.dialog{background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:10px 0;}
+.dialog-human{border-left:3px solid var(--blue);}
+.dialog-claude{border-left:3px solid var(--orange);background:#fffdf5;}
+.dialog-label{font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--text3);margin-bottom:6px;text-transform:uppercase;}
+.dialog-human .dialog-label{color:var(--blue);}
+.dialog-claude .dialog-label{color:var(--orange);}
+.dialog p{font-size:13px;line-height:1.9;color:var(--text);}
+
+.prompt-box{background:#1e293b;color:#fde68a;border-radius:8px;padding:16px 20px;margin:14px 0;font-size:12px;line-height:1.8;white-space:pre-wrap;}
+.prompt-box::before{content:'📋 そのままコピペ可';display:block;font-size:11px;color:#94a3b8;margin-bottom:8px;letter-spacing:.05em;}
+
+.code-block{background:#0f172a;color:#86efac;border-radius:6px;padding:12px 14px;margin:8px 0;font-family:monospace;font-size:12px;line-height:1.7;overflow-x:auto;white-space:pre-wrap;}
+.code-block.json{color:#fde68a;}
+
+.notice{border-radius:8px;padding:14px 18px;margin:12px 0;}
+.notice-blue{background:var(--blue-lt);border-left:3px solid var(--blue);}
+.notice-green{background:var(--green-lt);border-left:3px solid var(--green);}
+.notice-orange{background:var(--orange-lt);border-left:3px solid var(--orange);}
+.notice p{font-size:13px;line-height:1.9;}
+
+.tbl{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin:10px 0;}
+.tbl th{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:11px 14px;text-align:left;}
+.tbl td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top;line-height:1.85;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl td:first-child{color:var(--text);font-weight:600;}
+
+.step-num{display:inline-block;width:32px;height:32px;line-height:32px;background:#0891b2;color:#fff;border-radius:50%;font-weight:700;font-size:14px;text-align:center;margin-right:10px;vertical-align:middle;}
+
+.foot{text-align:center;padding:24px;font-size:11px;color:var(--text3);border-top:1px solid var(--border);margin-top:32px;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>📝 はんちょう実例：JSON駆動生成フロー記入例</h1>
+  <div class="subtitle">汎用フローの上に「はんちょうの実値」を載せた具体例 ／ デモ用</div>
+  <div class="meta">対象：はんちょう本人 ／ 部内勉強会の参考実例 ／ 2026-05-15</div>
+  <a class="nav-link" href="Universal_Generation_Flow_v1.html">← 汎用版フローガイドへ戻る</a>
+</div>
+
+<div class="container">
+
+  <div class="banner">
+    <div class="banner-title">🎯 このページの位置付け</div>
+    <div class="banner-body">
+      「<a href="Universal_Generation_Flow_v1.html" style="color:#92400e;font-weight:700;">JSON駆動 HTML自動生成 汎用フロー v1</a>」が <strong>誰でも使える汎用テンプレート</strong> なのに対し、<br>
+      本ページは <strong>はんちょう自身の業務文脈を埋めた具体例</strong>。受け皿テンプレの記入例・Claude との対話例・実用 config.json・実行手順までを一通り提示。<br>
+      勉強会で「この通りやれば自分でもできる」と参加者に示すための実例として使用。
+    </div>
+  </div>
+
+  <!-- ========== STEP 1：受け皿テンプレ記入例 ========== -->
+  <div class="sec">
+    <div class="sec-title"><span class="step-num">1</span>受け皿テンプレ：はんちょうの記入例</div>
+
+    <div class="notice notice-blue">
+      <p>📌 <strong>テーマ選定の理由：</strong>「業務AI活用集」は自分が今やっている社内AI普及活動の体系化に直結する。発表時に「実際に使ってます」と言える題材。</p>
+    </div>
+
+    <div class="fill-box">
+      <div class="fill-title">📝 はんちょうの受け皿テンプレ（実値）</div>
+
+      <div class="fill-field">
+        <span class="fill-label">① 何を作るか</span>
+        <span class="fill-value">DXコンサル業務での Claude 活用ノウハウ集</span>
+      </div>
+      <div class="fill-field">
+        <span class="fill-label">② 誰のため</span>
+        <span class="fill-value">自分自身の業務整理 + 同じ立場のDXコンサル仲間（Qolony EA部門）</span>
+      </div>
+      <div class="fill-field">
+        <span class="fill-label">③ なぜ作る</span>
+        <span class="fill-value">日々のAI活用を体系化し、再現性のある運用パターンとして共有可能にするため。<br>個人実践を「組織で展開できる形」にしたい。</span>
+      </div>
+      <div class="fill-field">
+        <span class="fill-label">④ 含めたい要素</span>
+        <span class="fill-value">
+          ・提案書・パワポ作成での活用<br>
+          ・QA・障害分析での活用<br>
+          ・議事録・配布文書での活用<br>
+          ・落とし穴（事実誤認・機密情報）と回避策<br>
+          ・組織展開への発展（次のステップ）
+        </span>
+      </div>
+      <div class="fill-field">
+        <span class="fill-label">⑤ 雰囲気・トーン</span>
+        <span class="fill-value">実務的・落ち着いた色（ネイビー基調・アクセントはシアン）・敬語・コンサルらしいトーン</span>
+      </div>
+      <div class="fill-field">
+        <span class="fill-label">⑥ 参考にするもの</span>
+        <span class="fill-value">Anthropic_Academy_Plan_Internal.html の構造（タブUI・カード・notice）</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== STEP 2：Claude との対話例 ========== -->
+  <div class="sec">
+    <div class="sec-title"><span class="step-num">2</span>Claude との対話（はんちょうの実演ログ）</div>
+
+    <div class="dialog dialog-human">
+      <div class="dialog-label">👤 はんちょう</div>
+      <p>以下の条件で HTML 資料を作りたいので、Claude Code に投入できる config.json を作ってください。<br><br>
+      ① 何を作るか：DXコンサル業務での Claude 活用ノウハウ集<br>
+      ② 誰のため：自分 + Qolony EA部門の仲間<br>
+      ③ なぜ作る：個人実践を組織で展開できる形に体系化したい<br>
+      ④ 含めたい要素：提案書作成・QA分析・議事録・落とし穴・組織展開<br>
+      ⑤ 雰囲気：実務的・ネイビー＋シアン・敬語<br>
+      ⑥ 参考：Anthropic_Academy_Plan_Internal.html<br><br>
+      タブ構成は意図を汲んで提案してください。</p>
+    </div>
+
+    <div class="dialog dialog-claude">
+      <div class="dialog-label">💬 Claude</div>
+      <p>「DXコンサル業務でのClaude活用ノウハウ集」ですね。以下のタブ構成を提案します：<br><br>
+      1. はじめに（なぜAIを業務に取り入れているか・本資料の使い方）<br>
+      2. 提案書・パワポ作成（ドラフト・構造設計・ビジュアル提案への活用）<br>
+      3. QA・障害分析（問題切り分け・根本原因分析・対応策立案）<br>
+      4. 議事録・文書化（会議メモ整理・配布資料化・関係者報告）<br>
+      5. （参考）落とし穴（事実確認・機密情報・ハルシネーション対策）<br>
+      6. 🚀 次のステップ（個人実践から組織展開へ）<br><br>
+      6タブ構成、カラーはネイビー(#1a2744) + アクセントシアン(#0891b2)を提案します。よろしければ config.json を出力します。</p>
+    </div>
+
+    <div class="dialog dialog-human">
+      <div class="dialog-label">👤 はんちょう</div>
+      <p>いいですね、その構成で。よろしくお願いします。</p>
+    </div>
+
+    <div class="dialog dialog-claude">
+      <div class="dialog-label">💬 Claude</div>
+      <p>了解しました。以下の config.json を出力します。<br>
+      <strong>hancho_config.json</strong> として保存してください。</p>
+    </div>
+
+    <div class="notice notice-green">
+      <p>📌 <strong>対話のポイント：</strong>人間は「タブ構成」「色」「文字数」を自分で考える必要がない。Claude の提案を <strong>受け入れる／微調整する</strong> だけ。</p>
+    </div>
+  </div>
+
+  <!-- ========== STEP 3：生成された JSON ========== -->
+  <div class="sec">
+    <div class="sec-title"><span class="step-num">3</span>生成された config.json（はんちょう実用版）</div>
+
+    <div class="notice notice-orange">
+      <p>📌 これがそのまま Claude Code に投入できる JSON。コピーして <code>C:\git\hancho-kb\hancho_config.json</code> として保存。</p>
+    </div>
+
+    <div class="code-block json">{
+  "title": "はんちょー業務AI活用集 v1",
+  "subtitle": "DXコンサル業務でのClaude活用ノウハウを体系化",
+  "audience": "はんちょー本人 + 同じ立場のDXコンサル仲間",
+  "purpose": "日常業務でAIをどう取り入れているかを記録・共有し、再現性のある運用パターンとして整理する",
+  "date": "2026-05-15",
+  "primary_color": "#1a2744",
+  "accent_color": "#0891b2",
+  "tab_list": [
+    {"name": "はじめに", "purpose": "なぜAIを業務に取り入れているか・本資料の使い方"},
+    {"name": "提案書・パワポ作成", "purpose": "ドラフト作成・構造設計・ビジュアル提案への活用"},
+    {"name": "QA・障害分析", "purpose": "問題切り分け・根本原因分析・対応策立案"},
+    {"name": "議事録・文書化", "purpose": "会議メモ整理・配布資料化・関係者報告"},
+    {"name": "（参考）落とし穴", "purpose": "事実確認・機密情報・ハルシネーション対策"},
+    {"name": "🚀 次のステップ", "purpose": "個人実践から組織展開への発展"}
+  ],
+  "deploy": {
+    "vault_repo_name": "vault",
+    "docs_repo_name": "knowledge-hub",
+    "target_repo": "C:/git/hancho-docs",
+    "github_pages_url": "https://dx-nexus.github.io/knowledge-hub/",
+    "output_filename": "Hancho_Business_AI_Practice_v1.html"
+  }
+}</div>
+  </div>
+
+  <!-- ========== STEP 4：Claude Code に投げる ========== -->
+  <div class="sec">
+    <div class="sec-title"><span class="step-num">4</span>Claude Code に投げる（実行手順）</div>
+
+    <div class="sec-sub">準備</div>
+    <div class="code-block"># config.json を vault リポジトリに保存
+Copy-Item "$env:USERPROFILE\Downloads\hancho_config.json" "C:\git\hancho-kb\hancho_config.json" -Force
+
+# Claude Code 起動（確認スキップモード）
+cd C:\git\hancho-kb
+claude --permission-mode acceptEdits</div>
+
+    <div class="sec-sub">投入プロンプト</div>
+    <div class="prompt-box">@hancho_config.json を読み込んで、以下を実行してください。
+
+1. 既存の Anthropic_Academy_Plan_Internal.html を構造のテンプレートとして参照
+2. config.json の仕様に基づき、新しいHTML資料を生成
+3. タブidは tab0 から連番で統一
+4. doc-footer は最下部に1個のみ
+5. レスポンシブ対応・overflow-x:hidden で横スクロール抑止
+
+各タブの内容は、私の DXコンサル業務における実用観点で具体的に記述してください。
+特に以下を含めてください：
+- 提案書作成タブ：構造設計・ドラフト生成・ビジュアル提案の具体プロンプト例
+- QA・障害分析タブ：5Why・MECEでの切り分け活用例
+- 議事録タブ：構造化フォーマット・宿題・期限の明確化
+- 落とし穴タブ：事実誤認・機密情報・ハルシネーションへの対策
+- 次のステップタブ：個人実践→部内展開→組織化の3段階
+
+セルフチェック（タブid・doc-footer・script重複・個人情報残存）後、
+出力先 C:/git/hancho-docs/Hancho_Business_AI_Practice_v1.html に保存し、
+cd C:/git/hancho-docs
+git add Hancho_Business_AI_Practice_v1.html
+git commit -m "auto: はんちょー業務AI活用集 v1（Claude Code 一撃生成）"
+git push
+
+完了後、生成サイズ・セルフチェック結果・公開URLを報告してください。</div>
+
+    <div class="sec-sub">期待される完了報告</div>
+    <div class="code-block">✅ 生成完了
+  ファイル: C:/git/hancho-docs/Hancho_Business_AI_Practice_v1.html
+  サイズ: 約 50,000〜80,000 bytes
+  セルフチェック: tab id連番 OK / doc-footer 1個 OK / script 1個 OK
+  公開URL: https://dx-nexus.github.io/knowledge-hub/Hancho_Business_AI_Practice_v1.html</div>
+  </div>
+
+  <!-- ========== STEP 5：確認 ========== -->
+  <div class="sec">
+    <div class="sec-title"><span class="step-num">5</span>完成確認</div>
+
+    <div class="notice notice-blue">
+      <p>📌 公開URLをシークレットウィンドウで開く（キャッシュ回避）：<br>
+      <code>https://dx-nexus.github.io/knowledge-hub/Hancho_Business_AI_Practice_v1.html</code></p>
+    </div>
+
+    <div class="sec-sub">完成後の活用シナリオ</div>
+    <table class="tbl">
+      <thead><tr><th>シーン</th><th>使い方</th></tr></thead>
+      <tbody>
+        <tr><td>部内勉強会</td><td>「私の実例です」として画面共有・配布</td></tr>
+        <tr><td>新人指導</td><td>「こういう活用法があるよ」のリファレンスとして渡す</td></tr>
+        <tr><td>自分の振り返り</td><td>四半期ごとに見直して v2 / v3 にアップデート</td></tr>
+        <tr><td>キャリア資産</td><td>経歴OSの一部として「AI活用実績」を可視化</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ========== なぜ「分けた」のか ========== -->
+  <div class="sec">
+    <div class="sec-title">📌 「汎用版」と「実例版」を分けた理由</div>
+
+    <table class="tbl">
+      <thead><tr><th>区分</th><th>役割</th><th>更新タイミング</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>汎用版</strong><br><a href="Universal_Generation_Flow_v1.html">Universal_Generation_Flow_v1.html</a></td>
+          <td>誰でも使えるフレームワーク（受け皿テンプレ＋手順）</td>
+          <td>仕組み自体の改善時のみ更新</td>
+        </tr>
+        <tr>
+          <td><strong>実例版</strong><br>本ページ</td>
+          <td>はんちょうの実値で具体化された記入例</td>
+          <td>はんちょうの業務状況が変わるたびに更新</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="notice notice-green">
+      <p>📌 <strong>分けた価値：</strong>「汎用版」だけだと抽象的すぎて初心者には伝わらず、「実例版」だけだと他者が応用しづらい。<strong>両方セット</strong>で初めて再現性が担保される。</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="foot">はんちょう実例：JSON駆動生成フロー記入例 v1 ／ 汎用フローの個人実装版 ／ 2026-05-15</div>
+
+</body>
+</html>
