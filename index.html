@@ -27,7 +27,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .badge-wip{background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3);}
 
 @media (max-width: 768px) {
-  body { font-size: 13px !important; }
+  body { font-size: 13px !important; padding: 16px 14px !important; }
+  .grid { grid-template-columns: 1fr !important; }
+  .card { width: 100% !important; min-width: unset !important; }
 
   .tbl, table {
     display: block !important;
