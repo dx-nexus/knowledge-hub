@@ -249,12 +249,13 @@ body {
   .tab-bar  { padding: 0 8px !important; overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
   .tab-btn  { font-size: 11px !important; padding: 11px 12px !important; flex-shrink: 0 !important; }
   .tab-pane, .container { padding: 18px 14px !important; }
-  .grid-2, .grid-3, .grid2 { grid-template-columns: 1fr !important; }
-  .grid { grid-template-columns: 1fr 1fr !important; }
+  .grid, .grid-2, .grid-3, .grid2 { grid-template-columns: 1fr !important; }
   .tbl, table { display: block !important; width: 100% !important; overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
   .tbl td, .tbl th, table td, table th { padding: 8px 10px !important; font-size: 12px !important; word-break: break-word !important; }
   .code-block-wrap .code-content, .prompt-box, .cmd, pre { font-size: 11px !important; padding: 10px 12px !important; overflow-x: auto !important; word-break: break-all !important; }
-  .notice, .card { padding: 12px 14px !important; }
+  .notice { padding: 12px 14px !important; }
+  .card { width: 100% !important; min-width: unset !important; padding: 12px 14px !important; }
+  header h1 { font-size: 1.4rem; word-break: break-word; }
   svg { max-width: 100% !important; height: auto !important; }
   .svg-wrap, .flow-svg { padding: 12px 8px !important; }
 }
