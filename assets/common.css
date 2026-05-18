@@ -216,6 +216,14 @@ button:hover, .btn:hover { background: var(--accent2); }
 /* grid内では幅100%・block維持 */
 .grid > .notice, .grid-2 > .notice, .grid-3 > .notice { width: 100%; display: block; }
 
+/* ── Hero / Banner ── */
+.hero {
+  display: inline-block;
+  width: auto;
+  max-width: 100%;
+  min-width: 280px;
+}
+
 /* ── Code Block (dark surface kept for readability) ── */
 .code-block-wrap {
   position: relative; background: #1e2d40;
