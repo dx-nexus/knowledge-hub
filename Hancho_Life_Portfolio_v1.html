@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>はんちょう人生ポートフォリオ・ナビゲーター v1</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1a2744;--navy2:#243156;--navy3:#2d3d6b;
+  --blue:#0891b2;--blue2:#0e7490;--blue-lt:#ecfeff;
+  --gray:#f8f9fb;--gray2:#f1f3f7;
+  --text:#1e293b;--text2:#475569;--text3:#94a3b8;
+  --border:#e2e8f0;--white:#fff;
+  --green:#059669;--green-lt:#ecfdf5;
+  --amber:#d97706;--amber-lt:#fffbeb;
+  --purple:#7c3aed;--purple-lt:#f5f3ff;
+  --sans:'Noto Sans JP',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{overflow-x:hidden;}
+body{background:var(--gray);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.8;word-break:keep-all;overflow-wrap:break-word;}
+
+.hdr{background:linear-gradient(135deg,#1a2744 0%,#0e7490 100%);color:#fff;padding:0;}
+.hdr-top{padding:32px 32px 8px;}
+.hdr-top h1{font-size:24px;font-weight:700;letter-spacing:.02em;}
+.hdr-top .subtitle{font-size:13px;color:rgba(255,255,255,.7);margin-top:6px;font-style:italic;}
+.hdr-meta{padding:0 32px 24px;font-size:11px;color:rgba(255,255,255,.55);}
+
+.tab-bar{background:var(--white);border-bottom:2px solid var(--border);padding:0 32px;display:flex;gap:2px;overflow-x:auto;}
+.tab-btn{font-size:12px;font-weight:500;padding:14px 18px;border:none;background:none;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:.15s;}
+.tab-btn:hover{color:var(--text2);}
+.tab-btn.active{color:var(--blue);border-bottom-color:var(--blue);}
+
+.tab-pane{display:none;padding:28px 32px;}
+.tab-pane.active{display:block;}
+
+.sec{margin-bottom:32px;}
+.sec-title{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.15em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--border);}
+
+.hero-box{background:linear-gradient(135deg,#1a2744 0%,#2d3d6b 100%);border-radius:12px;padding:28px 32px;margin-bottom:20px;color:#fff;}
+.hero-box .hero-title{font-size:18px;font-weight:700;margin-bottom:10px;letter-spacing:.02em;}
+.hero-box .hero-body{font-size:13px;color:rgba(255,255,255,.85);line-height:1.9;}
+
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px;}
+.stat{background:var(--blue-lt);border:1px solid #a5f3fc;border-radius:8px;padding:16px;text-align:center;}
+.stat-val{font-size:22px;font-weight:800;color:var(--blue2);}
+.stat-lbl{font-size:11px;color:var(--text2);margin-top:4px;}
+
+.notice{border-radius:8px;padding:14px 18px;margin:12px 0;}
+.notice-blue{background:var(--blue-lt);border-left:3px solid var(--blue);}
+.notice-amber{background:var(--amber-lt);border-left:3px solid var(--amber);}
+.notice-green{background:var(--green-lt);border-left:3px solid var(--green);}
+.notice-purple{background:var(--purple-lt);border-left:3px solid var(--purple);}
+.notice p{font-size:13px;line-height:1.9;}
+.notice-blue p{color:#155e75;}
+.notice-amber p{color:#92400e;}
+.notice-green p{color:#065f46;}
+.notice-purple p{color:#5b21b6;}
+
+.tbl{width:100%;border-collapse:collapse;font-size:13px;background:var(--white);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.tbl th{background:var(--navy);color:#fff;font-size:11px;font-weight:700;letter-spacing:.08em;padding:11px 14px;text-align:left;}
+.tbl td{padding:12px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top;line-height:1.8;}
+.tbl td:first-child{color:var(--text);font-weight:600;}
+.tbl tr:last-child td{border-bottom:none;}
+
+.grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:18px 20px;transition:.15s;}
+.card:hover{box-shadow:0 2px 12px rgba(30,41,59,.08);}
+.card-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+.card-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;}
+.card-title{font-size:13px;font-weight:700;color:var(--text);line-height:1.4;}
+.card-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+.card-body{font-size:12px;color:var(--text2);line-height:1.9;margin-bottom:8px;}
+.card-action{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);font-size:11px;color:var(--blue2);font-weight:600;}
+
+.roadmap{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0;}
+.phase{background:var(--white);border:1px solid var(--border);padding:18px 16px;position:relative;}
+.phase:first-child{border-radius:8px 0 0 8px;}
+.phase:last-child{border-radius:0 8px 8px 0;}
+.phase-num{display:inline-block;width:28px;height:28px;line-height:28px;background:var(--blue);color:#fff;border-radius:50%;font-size:12px;font-weight:700;text-align:center;margin-bottom:8px;}
+.phase-period{font-size:10px;color:var(--text3);font-weight:600;letter-spacing:.05em;}
+.phase-title{font-size:14px;font-weight:700;color:var(--navy);margin:4px 0 8px;}
+.phase-body{font-size:11px;color:var(--text2);line-height:1.7;}
+
+.doc-footer{text-align:center;padding:20px;font-size:11px;color:var(--text3);border-top:1px solid var(--border);margin-top:20px;}
+
+/* 追加：左寄せ */
+.hdr-top,.hdr-meta,.tab-bar,.tab-pane{max-width:none;margin-left:0;margin-right:0;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-top">
+    <h1>はんちょう人生ポートフォリオ・ナビゲーター v1</h1>
+    <div class="subtitle">全領域を1つのポートフォリオとして全体最適で設計する</div>
+  </div>
+  <div class="hdr-meta">作成：2026-05-15　／　v1（個人運用ガイド）</div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab(0)">はじめに</button>
+  <button class="tab-btn" onclick="showTab(1)">キャリア</button>
+  <button class="tab-btn" onclick="showTab(2)">スキル開発</button>
+  <button class="tab-btn" onclick="showTab(3)">（参考）ライフ</button>
+  <button class="tab-btn" onclick="showTab(4)">🚀 次のステップ</button>
+</div>
+
+<!-- TAB 0: はじめに -->
+<div class="tab-pane active" id="tab0">
+  <div class="sec">
+    <div class="sec-title">📘 このナビゲーターについて</div>
+    <div class="hero-box">
+      <div class="hero-title">🎯 人生を1つのポートフォリオとして運用する</div>
+      <div class="hero-body">
+        キャリア・スキル・ライフを別々のタスクではなく、相互に補強し合う統合システムとして設計する。<br>
+        AIは判断・余白を奪わず、整理・選択肢設計・壁打ちの役割を担う。低コスト・低リスク・再現性重視。
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat"><div class="stat-val">4</div><div class="stat-lbl">アクティブ領域</div></div>
+      <div class="stat"><div class="stat-val">90日</div><div class="stat-lbl">短期サイクル</div></div>
+      <div class="stat"><div class="stat-val">v1</div><div class="stat-lbl">バージョン</div></div>
+      <div class="stat"><div class="stat-val">∞</div><div class="stat-lbl">アップデート可能</div></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">🗺️ 本資料の使い方（各タブ説明）</div>
+    <table class="tbl">
+      <thead><tr><th>タブ</th><th>目的</th><th>得られるもの</th><th>活用例</th></tr></thead>
+      <tbody>
+        <tr><td>キャリア</td><td>DXコンサル→Anthropic Japan視野の<br>段階設計</td><td>3フェーズの<br>キャリアロードマップ</td><td>四半期レビュー時の<br>立ち位置確認</td></tr>
+        <tr><td>スキル開発</td><td>英語・AI実装・音楽の<br>3軸を統合管理</td><td>領域別の<br>具体アクション</td><td>週次スキル投資の<br>配分判断</td></tr>
+        <tr><td>（参考）ライフ</td><td>投資・健康・男磨きの<br>長期テーマ</td><td>領域別の<br>運用方針</td><td>仕事と並行した<br>ベースライン維持</td></tr>
+        <tr><td>🚀 次のステップ</td><td>具体アクションを<br>90日プランに落とし込む</td><td>四半期マイルストーン</td><td>月初の<br>計画立案</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">💡 行動原則</div>
+    <div class="notice notice-blue">
+      <p>📌 <strong>低コスト・低リスク・省力化・再現性</strong> — 派手な投資より、続けられる仕組みづくり。AIは補助者であり、判断と意味づけは自分が持つ。</p>
+    </div>
+    <div class="notice notice-amber">
+      <p>📌 <strong>全体最適 vs 部分最適</strong> — 1つの領域に集中しすぎず、領域同士のシナジーを活かす。AI実装で得た英語力が、Anthropic転職の武器になる、など。</p>
+    </div>
+    <div class="notice notice-green">
+      <p>📌 <strong>v1思考</strong> — 完璧を目指さず、まずv1を出す。本資料自体がその実践例。</p>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 1: キャリア -->
+<div class="tab-pane" id="tab1">
+  <div class="sec">
+    <div class="sec-title">🎯 キャリアの全体像</div>
+    <div class="hero-box">
+      <div class="hero-title">DXコンサル → AI Solutions Architect への段階移行</div>
+      <div class="hero-body">
+        AnserParaSOL更改案件で培った品質PMO・改善提案・関係者調整の能力に、AI活用・Python実装・Claude API経験を上積みすることで、Anthropic Japan（Solutions Architect / Applied AI寄り）の人材像に近づける。
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">📅 3フェーズ・ロードマップ</div>
+    <div class="roadmap">
+      <div class="phase">
+        <div class="phase-num">1</div>
+        <div class="phase-period">2026 Q2〜Q3（直近）</div>
+        <div class="phase-title">現職での価値発信フェーズ</div>
+        <div class="phase-body">AnserParaSOL案件継続。社内AI知識基盤・ジェネレーター運用を実績化。経歴OSをGitHub上で体系化。</div>
+      </div>
+      <div class="phase">
+        <div class="phase-num">2</div>
+        <div class="phase-period">2026 Q4〜2027 Q2</div>
+        <div class="phase-title">技術スキル補強フェーズ</div>
+        <div class="phase-body">Python・Claude API実装経験を意図的に積む。MCP/Subagents/Cowork公式コース修了。実務英語の再構築。</div>
+      </div>
+      <div class="phase">
+        <div class="phase-num">3</div>
+        <div class="phase-period">2027 Q3〜</div>
+        <div class="phase-title">転職検討・準備フェーズ</div>
+        <div class="phase-body">Anthropic Japan / 外資AIベンダーへの応募準備。経歴OSとGitHub成果を武器に交渉。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">⚡ 現在の優位性と補強領域</div>
+    <table class="tbl">
+      <thead><tr><th>区分</th><th>強み</th><th>補強が必要な領域</th></tr></thead>
+      <tbody>
+        <tr><td>業務経験</td><td>品質PMO・横断改善・大手SIer案件・楽天SKU英語環境</td><td>AI実装・プロダクト設計の実務経験</td></tr>
+        <tr><td>AI知識</td><td>Claude 101修了・JDLA Generative AI Test取得・社内AI基盤構築</td><td>Python実装・Claude API活用・MCP実装</td></tr>
+        <tr><td>英語</td><td>楽天での英語実務</td><td>専門用語・ライティング・国際プレゼン</td></tr>
+        <tr><td>発信</td><td>GitHub・Pages活用済み</td><td>note・LinkedIn等の対外発信</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 2: スキル開発 -->
+<div class="tab-pane" id="tab2">
+  <div class="sec">
+    <div class="sec-title">📚 3軸統合スキル開発</div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#eff6ff;">🌐</div>
+          <div><div class="card-title">英語（実務 7割）</div><div class="card-sub">Googleでも通用する国際実務コミュニケーション</div></div>
+        </div>
+        <div class="card-body">楽天SKU案件の経験を教材化。専門用語・メール・会議英語の3層構成で再構築。AI翻訳と人間判断の使い分け。</div>
+        <div class="card-action">→ 週3回・1日30分のシャドーイング＋週1回の英語アウトプット</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#f5f3ff;">🤖</div>
+          <div><div class="card-title">AI実装</div><div class="card-sub">Python + Claude API</div></div>
+        </div>
+        <div class="card-body">Anthropic Academy 17コースを役割別に受講。Claude Code日常運用フローを継続発展。MCP/Subagents/Skills実装も視野。</div>
+        <div class="card-action">→ 月1コース受講・小規模実装プロジェクトを四半期1本</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#ecfdf5;">🥁</div>
+          <div><div class="card-title">音楽</div><div class="card-sub">ドラム歴20年・オープンハンド</div></div>
+        </div>
+        <div class="card-body">グルーヴ・歌・バンド全体を活かす演奏。SNS発信・収益化も検討。AI×音楽の領域開拓も視野。</div>
+        <div class="card-action">→ 月2回スタジオ・年1ライブ・SNS発信は無理せず</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">🔗 領域間シナジー</div>
+    <div class="notice notice-purple">
+      <p>💡 <strong>英語×AI実装：</strong>Anthropic公式ドキュメントの読解＋自分の実装ノートを英語で書く運用で、両方の質が同時に上がる。</p>
+    </div>
+    <div class="notice notice-blue">
+      <p>💡 <strong>AI実装×音楽：</strong>音楽は「規則性と即興性のバランス」の宝庫。プロンプト設計・エージェント設計の感覚を磨く副次効果あり。</p>
+    </div>
+    <div class="notice notice-green">
+      <p>💡 <strong>音楽×英語：</strong>洋楽の歌詞・インタビュー読解は、語彙と文化の両方を同時に伸ばせる教材になる。</p>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 3: ライフ（参考） -->
+<div class="tab-pane" id="tab3">
+  <div class="sec">
+    <div class="sec-title">🏡 ベースライン領域</div>
+    <table class="tbl">
+      <thead><tr><th>領域</th><th>方針</th><th>運用ルール</th></tr></thead>
+      <tbody>
+        <tr><td>投資・資産形成</td><td>数字の根拠と再現性。家計・資産の可視化。</td><td>キャッシュ戦略・返済比率・信用情報の月次チェック</td></tr>
+        <tr><td>不動産</td><td>実家システムの整理と、自分の居住戦略の分離</td><td>感情と数字を切り分けて判断</td></tr>
+        <tr><td>健康（プール）</td><td>持続性最優先・無理しない</td><td>週2回プール・歩数記録</td></tr>
+        <tr><td>男磨き</td><td>清潔感・ファッション最適化・段階的禁煙</td><td>月1ヘアカット・季節ごとの衣替え見直し</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">💼 仕事との両立原則</div>
+    <div class="notice notice-amber">
+      <p>📌 ライフ領域は「キャリアやスキル開発を支える基盤」と位置付ける。崩れない仕組み＞高い水準。仕事が忙しい時期はベースラインを守ることだけに集中。</p>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 4: 次のステップ -->
+<div class="tab-pane" id="tab4">
+  <div class="sec">
+    <div class="sec-title">🚀 90日プラン（2026 Q2末まで）</div>
+    <table class="tbl">
+      <thead><tr><th>領域</th><th>30日</th><th>60日</th><th>90日</th></tr></thead>
+      <tbody>
+        <tr><td>キャリア</td><td>経歴OS v1 公開</td><td>社内AI知識基盤の運用実績まとめ</td><td>四半期レビュー＋次のロードマップ策定</td></tr>
+        <tr><td>AI実装</td><td>Claude Code 101 修了</td><td>MCP 入門・小規模実装</td><td>Subagents・Skills 着手</td></tr>
+        <tr><td>英語</td><td>シャドーイング習慣化</td><td>英語ノート月次運用</td><td>LinkedIn英語プロフィール作成</td></tr>
+        <tr><td>音楽</td><td>月2スタジオ復活</td><td>SNS発信 試行</td><td>年1ライブ計画</td></tr>
+        <tr><td>ライフ</td><td>家計可視化</td><td>プール週2定着</td><td>四半期健康診断</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">📌 行動の優先順位</div>
+    <div class="hero-box">
+      <div class="hero-title">「経歴OS v1 公開」と「Claude Code 101 修了」を最優先</div>
+      <div class="hero-body">
+        この2つは「対外発信できる成果」と「Anthropic Japan転職時の証明」の両方に直結する最重要アクション。
+        他の領域は崩さない程度の最低ラインで維持し、まずこの2つを30日以内に達成する。
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">🔄 レビューサイクル</div>
+    <div class="notice notice-blue">
+      <p>📌 月初に本ナビゲーターを開いて30/60/90日の進捗を確認。四半期末にv2へアップデート。年1回 大幅な見直し。</p>
+    </div>
+  </div>
+</div>
+
+<div class="doc-footer">はんちょう人生ポートフォリオ・ナビゲーター v1 ／ 作成：Claude Code 一撃自動生成 ／ 2026-05-15</div>
+
+<script>
+function showTab(n){
+  document.querySelectorAll('.tab-pane').forEach((p,i)=>p.classList.toggle('active',i===n));
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===n));
+}
+</script>
+
+</body>
+</html>

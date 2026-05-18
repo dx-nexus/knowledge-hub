@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>はんちょう Algo Trading Project v1 ／ Claude Code × Alpaca</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1a2744;--blue:#2563eb;--blue-lt:#eff6ff;
+  --orange:#d97706;--orange-lt:#fffbeb;
+  --green:#059669;--green-lt:#ecfdf5;
+  --purple:#7c3aed;--purple-lt:#f5f3ff;
+  --red:#dc2626;--red-lt:#fef2f2;
+  --gray:#f8f9fb;--text:#1e293b;--text2:#475569;--text3:#94a3b8;
+  --border:#e2e8f0;--white:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{overflow-x:hidden;}
+body{background:var(--gray);color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:14px;line-height:1.85;word-break:keep-all;overflow-wrap:break-word;}
+
+.hdr{background:linear-gradient(135deg,#1a2744 0%,#0891b2 50%,#059669 100%);color:#fff;padding:32px 40px;}
+.hdr h1{font-size:24px;font-weight:700;}
+.hdr .subtitle{font-size:13px;color:rgba(255,255,255,.78);margin-top:6px;}
+.hdr .meta{font-size:11px;color:rgba(255,255,255,.55);margin-top:12px;}
+
+.tab-bar{background:var(--white);border-bottom:2px solid var(--border);padding:0 32px;display:flex;gap:2px;overflow-x:auto;}
+.tab-btn{font-size:12px;font-weight:500;padding:14px 18px;border:none;background:none;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:.15s;}
+.tab-btn:hover{color:var(--text2);}
+.tab-btn.active{color:var(--blue);border-bottom-color:var(--blue);}
+
+.tab-pane{display:none;padding:28px 32px;}
+.tab-pane.active{display:block;}
+
+.sec{margin-bottom:32px;}
+.sec-title{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #0891b2;}
+.sec-sub{font-size:14px;font-weight:700;color:var(--navy);margin:18px 0 10px;}
+
+.hero{background:linear-gradient(135deg,#1a2744 0%,#0e7490 100%);color:#fff;border-radius:12px;padding:24px 30px;margin-bottom:24px;}
+.hero-title{font-size:17px;font-weight:700;margin-bottom:10px;}
+.hero-body{font-size:13px;color:rgba(255,255,255,.85);line-height:1.95;}
+
+.notice{border-radius:8px;padding:14px 18px;margin:12px 0;}
+.notice-blue{background:var(--blue-lt);border-left:3px solid var(--blue);}
+.notice-orange{background:var(--orange-lt);border-left:3px solid var(--orange);}
+.notice-green{background:var(--green-lt);border-left:3px solid var(--green);}
+.notice-red{background:var(--red-lt);border-left:3px solid var(--red);}
+.notice-purple{background:var(--purple-lt);border-left:3px solid var(--purple);}
+.notice p{font-size:13px;line-height:1.95;}
+
+.tbl{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin:10px 0;}
+.tbl th{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:11px 14px;text-align:left;}
+.tbl td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top;line-height:1.85;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl td:first-child{color:var(--text);font-weight:600;}
+
+.code-block{background:#0f172a;color:#86efac;border-radius:6px;padding:14px 18px;margin:10px 0;font-family:monospace;font-size:12px;line-height:1.7;overflow-x:auto;}
+.code-block.py{color:#fde68a;}
+
+.phase-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0;margin:14px 0;}
+.phase{background:#fff;border:1px solid var(--border);padding:18px 16px;}
+.phase:first-child{border-radius:8px 0 0 8px;}
+.phase:last-child{border-radius:0 8px 8px 0;}
+.phase-num{display:inline-block;width:30px;height:30px;line-height:30px;color:#fff;border-radius:50%;font-weight:700;font-size:12px;text-align:center;margin-bottom:8px;}
+.phase-title{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.phase-body{font-size:11px;color:var(--text2);line-height:1.7;}
+.phase-status{display:inline-block;font-size:9px;font-weight:700;padding:1px 7px;border-radius:8px;margin-top:6px;}
+
+.doc-footer{text-align:center;padding:24px;font-size:11px;color:var(--text3);border-top:1px solid var(--border);margin-top:20px;}
+
+/* 全幅左寄せ */
+.tab-pane{max-width:none;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>📈 はんちょう Algo Trading Project v1</h1>
+  <div class="subtitle">Claude Code × Alpaca API × GitHub Actions — 技術学習プロジェクトとしての自動売買ボット構築</div>
+  <div class="meta">作成：2026-05-15 ／ 個人プロジェクト ／ 段階的アプローチ</div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab(0)">はじめに</button>
+  <button class="tab-btn" onclick="showTab(1)">システム構成</button>
+  <button class="tab-btn" onclick="showTab(2)">段階的ロードマップ</button>
+  <button class="tab-btn" onclick="showTab(3)">投資ロジック設計</button>
+  <button class="tab-btn" onclick="showTab(4)">リスク管理</button>
+  <button class="tab-btn" onclick="showTab(5)">（参考）落とし穴</button>
+  <button class="tab-btn" onclick="showTab(6)">🚀 次のステップ</button>
+</div>
+
+<!-- TAB 0: はじめに -->
+<div class="tab-pane active" id="tab0">
+  <div class="sec">
+    <div class="sec-title">📘 このプロジェクトの位置付け</div>
+
+    <div class="hero">
+      <div class="hero-title">🎯 投機ツールではなく、技術学習プロジェクト</div>
+      <div class="hero-body">
+        本プロジェクトは「儲けるための魔法のシステム」ではない。<br>
+        <strong>Python + Claude API + GitHub Actions + 外部API連携</strong> を実装する技術学習プロジェクトであり、<br>
+        Anthropic Japan転職時の差別化要因「金融×AI実装経験」を獲得することが第一目的。<br>
+        投資ロジックそのものは人間が設計し、AIは実行のみを担う。
+      </div>
+    </div>
+
+    <div class="sec-sub">3つの並行する目的</div>
+    <table class="tbl">
+      <thead><tr><th>目的</th><th>得られるもの</th></tr></thead>
+      <tbody>
+        <tr><td>① 技術学習</td><td>Python実装・API連携・GitHub Actions・Slack通知・MCP Server活用</td></tr>
+        <tr><td>② キャリア差別化</td><td>「Claude Code × 金融API実装」の実例 → 経歴OSに記載</td></tr>
+        <tr><td>③ 投資判断の質向上</td><td>感情を排したルールベース運用の経験 → 自分の投資原則の言語化</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">⚠️ 重要な前提</div>
+    <div class="notice notice-red">
+      <p>📌 <strong>実弾投入は最終段階：</strong>Phase 0〜4は Paper Trading（仮想取引）のみ。実弾投入は Phase 5 で判断するが、決定は <strong>3〜6ヶ月の Paper Trading 実績</strong> を踏まえて行う。早期の実弾投入は禁止。</p>
+    </div>
+    <div class="notice notice-orange">
+      <p>📌 <strong>投資判断は人間が事前定義：</strong>ルール（損切り・利確・配分）は事前に人間が決め、AI は実行のみ。AIに「この銘柄買うべき？」と判断を委ねない。</p>
+    </div>
+    <div class="notice notice-blue">
+      <p>📌 <strong>確定申告等の税務手続き：</strong>米国市場の取引には日本居住者向け税務処理が必要。AlpacaJapan（日本法人）であれば特定口座対応あり。</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">📋 本資料の使い方（各タブ説明）</div>
+    <table class="tbl">
+      <thead><tr><th>タブ</th><th>目的</th></tr></thead>
+      <tbody>
+        <tr><td>システム構成</td><td>使用する技術スタックと連携方式の理解</td></tr>
+        <tr><td>段階的ロードマップ</td><td>Phase 0〜5 の進め方・所要時間目安</td></tr>
+        <tr><td>投資ロジック設計</td><td>ルールベース運用の設計・期待値計算</td></tr>
+        <tr><td>リスク管理</td><td>損失制御・Paper Trading優先・撤退ルール</td></tr>
+        <tr><td>（参考）落とし穴</td><td>初心者が陥りやすい罠と回避策</td></tr>
+        <tr><td>🚀 次のステップ</td><td>実弾投入判断基準・拡張可能性</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 1: システム構成 -->
+<div class="tab-pane" id="tab1">
+  <div class="sec">
+    <div class="sec-title">🏗️ システム構成</div>
+    <div class="hero">
+      <div class="hero-title">5つのコンポーネントの連携</div>
+      <div class="hero-body">
+        Alpaca API（取引執行）× Python（ロジック実装）× Claude Code（コード生成・修正）× GitHub Actions（定期実行）× Slack（通知）
+      </div>
+    </div>
+
+    <table class="tbl">
+      <thead><tr><th>コンポーネント</th><th>役割</th><th>備考</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Alpaca</td>
+          <td>証券口座・API実行・約定処理</td>
+          <td>日本法人「アルパカ証券」あり。Paper Trading 無料</td>
+        </tr>
+        <tr>
+          <td>Python</td>
+          <td>ロジック・データ取得・売買判断</td>
+          <td>alpaca-py SDK 公式提供</td>
+        </tr>
+        <tr>
+          <td>Claude Code</td>
+          <td>コード生成・修正・拡張</td>
+          <td>MCP Server経由で自然言語連携も可能</td>
+        </tr>
+        <tr>
+          <td>GitHub Actions</td>
+          <td>定期実行（毎営業日 / 毎時等）</td>
+          <td>無料枠で十分。Secret管理に注意</td>
+        </tr>
+        <tr>
+          <td>Slack</td>
+          <td>取引状況・損益・エラー通知</td>
+          <td>Webhook URL 1本で完結</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">🔧 最小構成のサンプルコード（Hello Alpaca）</div>
+    <div class="notice notice-blue">
+      <p>📌 Paper Trading の口座残高を取得する最小実装。これが動けば環境構築は完了。</p>
+    </div>
+    <div class="code-block py">import os
+from alpaca.trading.client import TradingClient
+
+# Paper Trading キー（環境変数から取得）
+API_KEY = os.environ['ALPACA_API_KEY']
+API_SECRET = os.environ['ALPACA_SECRET_KEY']
+
+# paper=True で仮想取引モード
+client = TradingClient(API_KEY, API_SECRET, paper=True)
+
+account = client.get_account()
+print(f"残高: ${account.cash}")
+print(f"購買力: ${account.buying_power}")
+print(f"ポートフォリオ評価額: ${account.portfolio_value}")</div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">📡 GitHub Actions による定期実行</div>
+    <div class="code-block">name: Daily Trading Bot
+on:
+  schedule:
+    - cron: '30 14 * * 1-5'  # 平日 23:30 JST (米国市場開場前)
+  workflow_dispatch:
+
+jobs:
+  trade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - run: pip install alpaca-py requests
+      - run: python trading_bot.py
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}</div>
+  </div>
+</div>
+
+<!-- TAB 2: 段階的ロードマップ -->
+<div class="tab-pane" id="tab2">
+  <div class="sec">
+    <div class="sec-title">🛤️ Phase 0〜5 ロードマップ</div>
+    <div class="notice notice-red">
+      <p>📌 <strong>実弾投入は Phase 5 まで禁止。</strong>各 Phase の卒業基準を満たしてから次へ。</p>
+    </div>
+
+    <div class="phase-grid">
+      <div class="phase">
+        <div class="phase-num" style="background:#94a3b8;">0</div>
+        <div class="phase-title">環境構築</div>
+        <div class="phase-body">
+          ・Alpaca Paper Trading 口座開設<br>
+          ・APIキー取得<br>
+          ・Hello World 動作確認<br>
+          <strong>所要：1〜2日</strong>
+        </div>
+        <span class="phase-status" style="background:#fef3c7;color:#92400e;">最優先</span>
+      </div>
+      <div class="phase">
+        <div class="phase-num" style="background:#2563eb;">1</div>
+        <div class="phase-title">データ取得</div>
+        <div class="phase-body">
+          ・銘柄リスト管理<br>
+          ・株価データ取得<br>
+          ・テクニカル指標計算<br>
+          <strong>所要：1〜2週</strong>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-num" style="background:#7c3aed;">2</div>
+        <div class="phase-title">ロジック実装</div>
+        <div class="phase-body">
+          ・ルールベース判断<br>
+          ・期待値計算<br>
+          ・損切り/利確ライン<br>
+          <strong>所要：2〜3週</strong>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-num" style="background:#d97706;">3</div>
+        <div class="phase-title">バックテスト</div>
+        <div class="phase-body">
+          ・過去データで検証<br>
+          ・勝率・最大DD確認<br>
+          ・ロジック修正<br>
+          <strong>所要：1〜2週</strong>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-num" style="background:#059669;">4</div>
+        <div class="phase-title">Paper運用</div>
+        <div class="phase-body">
+          ・GitHub Actions自動化<br>
+          ・Slack通知<br>
+          ・3〜6ヶ月実績蓄積<br>
+          <strong>所要：3〜6ヶ月</strong>
+        </div>
+        <span class="phase-status" style="background:#ecfdf5;color:#065f46;">核心</span>
+      </div>
+      <div class="phase">
+        <div class="phase-num" style="background:#dc2626;">5</div>
+        <div class="phase-title">実弾検討</div>
+        <div class="phase-body">
+          ・Paper実績評価<br>
+          ・小額から開始判断<br>
+          ・税務体制整備<br>
+          <strong>慎重に判断</strong>
+        </div>
+        <span class="phase-status" style="background:#fef2f2;color:#991b1b;">要決断</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">📋 各 Phase の卒業基準</div>
+    <table class="tbl">
+      <thead><tr><th>Phase</th><th>卒業基準</th></tr></thead>
+      <tbody>
+        <tr><td>0 → 1</td><td>Paper Trading で残高取得・テスト注文成功</td></tr>
+        <tr><td>1 → 2</td><td>銘柄リスト・株価データ・指標計算が安定動作</td></tr>
+        <tr><td>2 → 3</td><td>ルールベース判断ロジックがエラーなく動く</td></tr>
+        <tr><td>3 → 4</td><td>バックテスト勝率 50% 以上・最大ドローダウン 15% 以内</td></tr>
+        <tr><td>4 → 5</td><td>Paper Trading で 3〜6ヶ月運用・月次でプラス収益</td></tr>
+        <tr><td>5</td><td>実弾は最初 10〜20万円程度の少額から</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 3: 投資ロジック設計 -->
+<div class="tab-pane" id="tab3">
+  <div class="sec">
+    <div class="sec-title">📐 ルールベース運用の設計</div>
+    <div class="notice notice-purple">
+      <p>📌 <strong>原則：</strong>「予測しない」「期待値で勝つ」「感情を排する」。AIに判断を委ねず、人間が事前にルールを定義する。</p>
+    </div>
+
+    <div class="sec-sub">参考：3層ポートフォリオ案</div>
+    <table class="tbl">
+      <thead><tr><th>層</th><th>配分</th><th>方針</th><th>期待値</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>① 長期コア</td>
+          <td>70%</td>
+          <td>配当貴族銘柄を長期保有（損切りなし）</td>
+          <td>年率 5〜8%</td>
+        </tr>
+        <tr>
+          <td>② 中期成長</td>
+          <td>20%</td>
+          <td>-8%損切り / +20%利確</td>
+          <td>(0.33×20%) + (0.67×-8%) = +1.2%/回</td>
+        </tr>
+        <tr>
+          <td>③ 短期</td>
+          <td>10%</td>
+          <td>-3%損切り / +9%利確</td>
+          <td>(0.5×9%) + (0.5×-3%) = +3%/回</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="notice notice-blue">
+      <p>📌 上記は X 投稿（@sawa20200424）の構成を参考にしたもの。あくまで一例で、はんちょう自身のリスク許容度に合わせて配分や閾値を再設計すること。</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">🧮 期待値計算の考え方</div>
+    <div class="code-block">期待値 = (勝率 × 平均利益) - (敗率 × 平均損失)
+
+例：勝率33%・利益20% / 損失8%
+→ (0.33 × 20%) + (0.67 × -8%) = 6.6% - 5.36% = +1.24%
+
+つまり、3回に1回勝てればプラスになる構造。
+ルールを守れば「予測」は不要。</div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">📝 銘柄選定の基準（事前定義）</div>
+    <table class="tbl">
+      <tbody>
+        <tr><td>セクター分散</td><td>1セクターに資産の30%以上を集中させない</td></tr>
+        <tr><td>時価総額</td><td>長期コアは時価総額500億ドル以上の安定銘柄</td></tr>
+        <tr><td>配当履歴</td><td>連続増配 20年以上（配当貴族）を優先</td></tr>
+        <tr><td>流動性</td><td>1日平均出来高 100万株以上</td></tr>
+        <tr><td>除外</td><td>レバレッジETF・仕組債・新規上場直後の銘柄</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 4: リスク管理 -->
+<div class="tab-pane" id="tab4">
+  <div class="sec">
+    <div class="sec-title">🛡️ リスク管理の原則</div>
+    <div class="hero">
+      <div class="hero-title">「絶対に負けない」より「致命傷を避ける」</div>
+      <div class="hero-body">
+        勝つことより先に「破滅しない」設計をする。<br>
+        ・1取引あたりの最大損失：総資産の 2% 以内<br>
+        ・1日の最大損失：総資産の 5% 以内<br>
+        ・連続損失時の自動停止：5連敗で取引中断・人間レビュー
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">📋 必須のセーフティ機構</div>
+    <table class="tbl">
+      <thead><tr><th>機構</th><th>実装内容</th></tr></thead>
+      <tbody>
+        <tr><td>ポジションサイジング</td><td>1取引の損失額 ≤ 総資産2% になるロット計算</td></tr>
+        <tr><td>自動損切り（Stop Loss）</td><td>事前定義した損失率到達時に自動執行</td></tr>
+        <tr><td>連敗ストップ</td><td>n回連敗で自動取引停止・Slack通知</td></tr>
+        <tr><td>API障害対応</td><td>注文失敗時の再試行・人間通知</td></tr>
+        <tr><td>緊急停止スイッチ</td><td>GitHub Actions の workflow_dispatch で即停止可能</td></tr>
+        <tr><td>日次ログ保存</td><td>全取引履歴を CSV/JSON で蓄積（後検証用）</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">🚨 撤退基準（事前定義）</div>
+    <div class="notice notice-red">
+      <p>📌 <strong>以下のいずれかに該当したら即停止：</strong></p>
+      <ul style="padding-left:20px;margin-top:8px;font-size:12px;">
+        <li>1ヶ月の累積損失が 10% を超えた</li>
+        <li>バックテストと実運用の勝率乖離が 20% 以上</li>
+        <li>API側の仕様変更・障害でロジックが想定外動作</li>
+        <li>感情的になって「ルールを破りたい」と感じた瞬間</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 5: 落とし穴 -->
+<div class="tab-pane" id="tab5">
+  <div class="sec">
+    <div class="sec-title">⚠️ 初心者が陥りやすい罠</div>
+
+    <table class="tbl">
+      <thead><tr><th>罠</th><th>回避策</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>カーブフィッティング</td>
+          <td>過去データで「勝率90%」になるロジックは、未来では動かない。Out-of-sample検証必須</td>
+        </tr>
+        <tr>
+          <td>取引コスト・スリッページ無視</td>
+          <td>バックテストに手数料・約定遅延・税金を必ず含める</td>
+        </tr>
+        <tr>
+          <td>感情でルール変更</td>
+          <td>運用中のロジック変更は禁止。変更したい時は一旦停止して再バックテスト</td>
+        </tr>
+        <tr>
+          <td>レバレッジに手を出す</td>
+          <td>信用取引・先物・オプションは Phase 5 でも対象外。現物のみ</td>
+        </tr>
+        <tr>
+          <td>「儲かった」で配分倍増</td>
+          <td>勝った直後ほど慎重に。配分変更は四半期レビュー時のみ</td>
+        </tr>
+        <tr>
+          <td>APIキーの漏洩</td>
+          <td>GitHub Secret 使用必須・絶対にコード内ハードコードしない</td>
+        </tr>
+        <tr>
+          <td>確定申告の準備不足</td>
+          <td>米国取引は税務処理が複雑。AlpacaJapan（日本法人・特定口座対応）を優先検討</td>
+        </tr>
+        <tr>
+          <td>SNSの「勝った」報告に踊らされる</td>
+          <td>勝った話は表に出るが、負けた話は出ない。生存バイアスに注意</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">🤖 AI に対する誤解の回避</div>
+    <div class="notice notice-orange">
+      <p>📌 <strong>AIは「予測マシン」ではない。実行マシン。</strong><br>
+      ChatGPTやClaudeに「この銘柄上がる？」と聞いても、それは判断材料にならない。AIに任せるのは「ルールの実行・データ整理・コード生成」まで。判断は人間が事前に設計する。</p>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 6: 次のステップ -->
+<div class="tab-pane" id="tab6">
+  <div class="sec">
+    <div class="sec-title">🚀 直近のアクション（Phase 0 着手）</div>
+    <div class="notice notice-green">
+      <p>📌 まず今週末に以下を実施：</p>
+    </div>
+
+    <table class="tbl">
+      <thead><tr><th>順</th><th>アクション</th><th>所要</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Alpaca 口座開設の選択（米国本社版 / AlpacaJapan）</td><td>30分</td></tr>
+        <tr><td>2</td><td>Paper Trading アカウント有効化・APIキー取得</td><td>30分</td></tr>
+        <tr><td>3</td><td>新規GitHubリポジトリ作成（algo-trading-private）</td><td>10分</td></tr>
+        <tr><td>4</td><td>Python環境準備（alpaca-py インストール）</td><td>20分</td></tr>
+        <tr><td>5</td><td>Hello World スクリプト動作確認</td><td>30分</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">💡 Anthropic Japan転職への接続</div>
+    <div class="hero">
+      <div class="hero-title">差別化要因「金融×AI実装経験」の獲得</div>
+      <div class="hero-body">
+        本プロジェクトは経歴OSに「Claude Code を活用した金融API連携・自動売買ボットの設計と Paper Trading 運用」として記載可能。<br>
+        単なるAPI連携ではなく、ロジック設計・リスク管理・段階的アプローチの経験は、Solutions Architect/Applied AI 職で高く評価される実例になる。
+      </div>
+    </div>
+
+    <div class="sec-sub">経歴OSに記載する形式（案）</div>
+    <div class="code-block">## Algo Trading Project (Personal)
+**Stack:** Python, Claude Code, Alpaca API, GitHub Actions, Slack
+**Period:** 2026/05〜
+**Outcome:**
+- Paper Trading で X ヶ月運用、月次収益率 Y%
+- Phase制設計でリスク管理を構造化
+- バックテスト → 自動運用 → 通知までを一気通貫で実装
+**Skills:**
+- 金融APIとの連携
+- 期待値計算ベースのアルゴリズム設計
+- セルフチェック・撤退ルールの事前設計
+- AIへの委譲範囲の見極め（実行 vs 判断）</div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">📈 拡張可能性（Phase 4以降）</div>
+    <table class="tbl">
+      <tbody>
+        <tr><td>仮想通貨対応</td><td>Alpaca Crypto API（米国本社版）で BTC/ETH の同様ロジック展開</td></tr>
+        <tr><td>マルチエージェント</td><td>銘柄選定エージェント・実行エージェント・監視エージェントの分業</td></tr>
+        <tr><td>ニュース連動</td><td>Claude API でニュース要約 → 重要イベント時のポジション縮小</td></tr>
+        <tr><td>ダッシュボード</td><td>Vercel + React で運用状況可視化（hancho-kb系の延長）</td></tr>
+        <tr><td>知見の対外発信</td><td>note等で「個人投資家向け Algo Trading 入門」シリーズ化</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">🎯 最終的に得たいもの</div>
+    <div class="hero">
+      <div class="hero-title">「儲け」ではなく「言語化された運用システム」</div>
+      <div class="hero-body">
+        本プロジェクトの真の成果は、短期的な収益ではない。<br>
+        ・自分の投資原則がコードに落とし込まれている<br>
+        ・感情を排した運用ができる仕組みがある<br>
+        ・技術的な実装力が経歴として残る<br>
+        <br>
+        これらが揃ったとき、結果として収益は「副産物」として付いてくる。
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="doc-footer">はんちょう Algo Trading Project v1 ／ Claude Code × Alpaca ／ 2026-05-15</div>
+
+<script>
+function showTab(n){
+  document.querySelectorAll('.tab-pane').forEach((p,i)=>p.classList.toggle('active',i===n));
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===n));
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Algo Trading 実弾判断レポート v1 ／ 専門家パネル多角検証</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1a2744;--blue:#2563eb;--blue-lt:#eff6ff;
+  --orange:#d97706;--orange-lt:#fffbeb;
+  --green:#059669;--green-lt:#ecfdf5;
+  --red:#dc2626;--red-lt:#fef2f2;
+  --purple:#7c3aed;--purple-lt:#f5f3ff;
+  --gray:#f8f9fb;--text:#1e293b;--text2:#475569;--text3:#94a3b8;
+  --border:#e2e8f0;--white:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{overflow-x:hidden;}
+body{background:var(--gray);color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:14px;line-height:1.85;word-break:keep-all;overflow-wrap:break-word;}
+
+.hdr{background:linear-gradient(135deg,#1a2744 0%,#dc2626 100%);color:#fff;padding:32px 40px;}
+.hdr h1{font-size:24px;font-weight:700;}
+.hdr .subtitle{font-size:13px;color:rgba(255,255,255,.78);margin-top:6px;}
+.hdr .meta{font-size:11px;color:rgba(255,255,255,.55);margin-top:12px;}
+
+.tab-bar{background:var(--white);border-bottom:2px solid var(--border);padding:0 32px;display:flex;gap:2px;overflow-x:auto;}
+.tab-btn{font-size:12px;font-weight:500;padding:14px 18px;border:none;background:none;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;}
+.tab-btn:hover{color:var(--text2);}
+.tab-btn.active{color:var(--red);border-bottom-color:var(--red);}
+
+.tab-pane{display:none;padding:28px 32px;}
+.tab-pane.active{display:block;}
+
+.sec{margin-bottom:32px;}
+.sec-title{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--red);}
+
+.hero{background:linear-gradient(135deg,#1a2744 0%,#7c2d12 100%);color:#fff;border-radius:12px;padding:24px 30px;margin-bottom:18px;}
+.hero-title{font-size:17px;font-weight:700;margin-bottom:10px;}
+.hero-body{font-size:13px;color:rgba(255,255,255,.85);line-height:1.95;}
+
+.signal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:14px 0;}
+.signal{background:#fff;border:2px solid;border-radius:10px;padding:18px 20px;}
+.signal-green{border-color:#6ee7b7;background:#ecfdf5;}
+.signal-amber{border-color:#fcd34d;background:#fffbeb;}
+.signal-red{border-color:#fca5a5;background:#fef2f2;}
+.signal-emoji{font-size:32px;margin-bottom:8px;}
+.signal-label{font-size:11px;font-weight:700;letter-spacing:.05em;margin-bottom:6px;}
+.signal-green .signal-label{color:#065f46;}
+.signal-amber .signal-label{color:#92400e;}
+.signal-red .signal-label{color:#991b1b;}
+.signal-title{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.signal-body{font-size:12px;color:var(--text2);line-height:1.85;}
+
+.notice{border-radius:8px;padding:14px 18px;margin:12px 0;}
+.notice-red{background:var(--red-lt);border-left:3px solid var(--red);}
+.notice-green{background:var(--green-lt);border-left:3px solid var(--green);}
+.notice-amber{background:var(--orange-lt);border-left:3px solid var(--orange);}
+.notice-blue{background:var(--blue-lt);border-left:3px solid var(--blue);}
+.notice p{font-size:13px;line-height:1.95;}
+
+.tbl{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin:10px 0;}
+.tbl th{background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:11px 14px;text-align:left;}
+.tbl td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top;line-height:1.85;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl td:first-child{color:var(--text);font-weight:600;}
+
+.expert-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:12px;border-left:4px solid var(--blue);}
+.expert-card.amber{border-left-color:var(--orange);}
+.expert-card.red{border-left-color:var(--red);}
+.expert-card.green{border-left-color:var(--green);}
+.expert-head{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.expert-icon{font-size:28px;}
+.expert-name{font-size:14px;font-weight:700;color:var(--navy);}
+.expert-verdict{font-size:11px;font-weight:700;padding:2px 9px;border-radius:10px;margin-left:auto;}
+.verdict-go{background:#d1fae5;color:#065f46;}
+.verdict-caution{background:#fef3c7;color:#92400e;}
+.verdict-stop{background:#fee2e2;color:#991b1b;}
+.expert-body{font-size:12px;color:var(--text2);line-height:1.9;}
+
+.svg-wrap{background:#fff;border:1px solid var(--border);border-radius:10px;padding:24px 20px;margin:14px 0;overflow-x:auto;}
+
+.bigmsg{background:linear-gradient(135deg,#1a2744,#1e293b);color:#fff;border-radius:10px;padding:20px 24px;margin:14px 0;text-align:center;}
+.bigmsg .bm-label{font-size:11px;color:#fde68a;letter-spacing:.15em;margin-bottom:8px;}
+.bigmsg .bm-title{font-size:18px;font-weight:700;}
+
+.doc-footer{text-align:center;padding:24px;font-size:11px;color:var(--text3);border-top:1px solid var(--border);margin-top:20px;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>🚦 Algo Trading 実弾判断レポート v1</h1>
+  <div class="subtitle">専門家パネル8名による多角検証 ／ 視覚化版</div>
+  <div class="meta">作成：2026-05-16 ／ 個人プロジェクト判断材料</div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab(0)">📊 一目で結論</button>
+  <button class="tab-btn" onclick="showTab(1)">⚖️ 8専門家の評価</button>
+  <button class="tab-btn" onclick="showTab(2)">🚦 Go / Stop 判定</button>
+  <button class="tab-btn" onclick="showTab(3)">📉 リスク構造図</button>
+  <button class="tab-btn" onclick="showTab(4)">🪞 SNS事例の真実</button>
+  <button class="tab-btn" onclick="showTab(5)">🛤️ 推奨ルート</button>
+</div>
+
+<!-- TAB 0: 一目で結論 -->
+<div class="tab-pane active" id="tab0">
+
+  <div class="bigmsg">
+    <div class="bm-label">本レポートの結論</div>
+    <div class="bm-title">🟢 Paper Trading：GO ／ 🔴 実弾投入：今は STOP</div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">📊 信号機サマリー</div>
+    <div class="signal-grid">
+      <div class="signal signal-green">
+        <div class="signal-emoji">🟢</div>
+        <div class="signal-label">GREEN</div>
+        <div class="signal-title">Alpaca自体の合法性</div>
+        <div class="signal-body">SEC/FINRA規制下・SIPC保護・2026年Best Algo Brokerなど信頼性は高い</div>
+      </div>
+      <div class="signal signal-green">
+        <div class="signal-emoji">🟢</div>
+        <div class="signal-label">GREEN</div>
+        <div class="signal-title">Paper Trading学習</div>
+        <div class="signal-body">仮想資金で完全リスク無し。技術スキル獲得には最適</div>
+      </div>
+      <div class="signal signal-amber">
+        <div class="signal-emoji">🟡</div>
+        <div class="signal-label">CAUTION</div>
+        <div class="signal-title">税務・規制</div>
+        <div class="signal-body">日本居住者の確定申告複雑・W-8BEN必要・SIPC実行使は困難</div>
+      </div>
+      <div class="signal signal-amber">
+        <div class="signal-emoji">🟡</div>
+        <div class="signal-label">CAUTION</div>
+        <div class="signal-title">サポート品質</div>
+        <div class="signal-body">出金拒否・口座凍結報告あり・電話サポート無し</div>
+      </div>
+      <div class="signal signal-red">
+        <div class="signal-emoji">🔴</div>
+        <div class="signal-label">RED</div>
+        <div class="signal-title">個人勝率の現実</div>
+        <div class="signal-body">統計的に個人投資家の80%以上が長期で負ける</div>
+      </div>
+      <div class="signal signal-red">
+        <div class="signal-emoji">🔴</div>
+        <div class="signal-label">RED</div>
+        <div class="signal-title">クリプト取引</div>
+        <div class="signal-body">価格グリッチで誤執行・補償拒否事例多数</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">⚡ 一行サマリー</div>
+    <div class="notice notice-blue">
+      <p>📌 <strong>技術学習として進める分には全く問題なし。実弾を出すなら3〜6ヶ月のPaper実績後に判断、最初は10〜20万円以内、クリプトは除外。</strong></p>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 1: 8専門家の評価 -->
+<div class="tab-pane" id="tab1">
+  <div class="sec">
+    <div class="sec-title">⚖️ 8名の仮想専門家による評価</div>
+
+    <div class="expert-card green">
+      <div class="expert-head">
+        <div class="expert-icon">⚖️</div>
+        <div class="expert-name">① 金融規制専門家</div>
+        <div class="expert-verdict verdict-go">GO</div>
+      </div>
+      <div class="expert-body">
+        Alpacaは2015年創業、SEC/FINRA規制下の正規ブローカー。ScamDetector 90.6/100、BrokerChooser 4.1/5。SIPC保護対象。<br>
+        <strong>ただし日本居住者がSIPC保護を実際に行使するのは現実的に困難。</strong>
+      </div>
+    </div>
+
+    <div class="expert-card red">
+      <div class="expert-head">
+        <div class="expert-icon">🛡️</div>
+        <div class="expert-name">② 投資リスクマネジメント専門家</div>
+        <div class="expert-verdict verdict-caution">CAUTION</div>
+      </div>
+      <div class="expert-body">
+        Trustpilot・TradingView・Slashdot で<strong>出金拒否・口座凍結・補償拒否の報告が複数</strong>。「Relationship Managerの主観で凍結」「数週間出金できない」「サポートが電話に出ない」。<br>
+        APIは優秀だがブローカーとしてのカスタマーサポートは業界最弱クラス。
+      </div>
+    </div>
+
+    <div class="expert-card amber">
+      <div class="expert-head">
+        <div class="expert-icon">💰</div>
+        <div class="expert-name">③ 税務専門家</div>
+        <div class="expert-verdict verdict-caution">CAUTION</div>
+      </div>
+      <div class="expert-body">
+        W-8BEN提出（3年更新）・譲渡所得（株式）・雑所得（クリプト・総合課税最大55%）・為替損益すべて自己処理。<br>
+        <strong>実弾投入時は税理士相談を強く推奨。</strong>申告漏れは国税庁の海外口座監視対象。
+      </div>
+    </div>
+
+    <div class="expert-card amber">
+      <div class="expert-head">
+        <div class="expert-icon">🔐</div>
+        <div class="expert-name">④ セキュリティ専門家</div>
+        <div class="expert-verdict verdict-caution">CAUTION</div>
+      </div>
+      <div class="expert-body">
+        類似ドメイン多数（alapca.markets / alpsca.markets 等のフィッシング）。APIキー漏洩リスク高。<br>
+        <strong>GitHub Secret必須、.envコミット禁止、2段階認証必須。</strong>
+      </div>
+    </div>
+
+    <div class="expert-card red">
+      <div class="expert-head">
+        <div class="expert-icon">💎</div>
+        <div class="expert-name">⑤ 暗号資産（クリプト）専門家</div>
+        <div class="expert-verdict verdict-stop">STOP</div>
+      </div>
+      <div class="expert-body">
+        YFI・SUSHI等で価格グリッチが過去発生。stop-lossが市場価格20-30%下で誤執行され、補償拒否。<br>
+        <strong>Alpacaでクリプトは触らない。株式・ETFのみ。</strong>
+      </div>
+    </div>
+
+    <div class="expert-card red">
+      <div class="expert-head">
+        <div class="expert-icon">🧠</div>
+        <div class="expert-name">⑥ 行動経済学専門家（最重要）</div>
+        <div class="expert-verdict verdict-stop">STOP</div>
+      </div>
+      <div class="expert-body">
+        「3週間で4.19%」「30万稼いだ」のSNS投稿は<strong>典型的な生存バイアス</strong>。<br>
+        勝った人の声だけ拡散。投稿者の真の収益源は<strong>情報販売・コラボ案件・有料コミュニティ</strong>であることが多い。<br>
+        統計的有意性ゼロの短期実績を「再現性ある手法」と誤認するのが最大の罠。
+      </div>
+    </div>
+
+    <div class="expert-card green">
+      <div class="expert-head">
+        <div class="expert-icon">💼</div>
+        <div class="expert-name">⑦ キャリア戦略専門家</div>
+        <div class="expert-verdict verdict-go">GO（Paper限定）</div>
+      </div>
+      <div class="expert-body">
+        Paper Tradingで「金融×AI実装経験・バックテストレポート公開」は転職時のキラーアセット。<br>
+        <strong>実弾は不要。むしろデータの方が職務経歴として強い。</strong><br>
+        ※ただし今回はキャリア絡めない方針なので参考まで。
+      </div>
+    </div>
+
+    <div class="expert-card red">
+      <div class="expert-head">
+        <div class="expert-icon">😈</div>
+        <div class="expert-name">⑧ Devil's Advocate（批判的レビュー）</div>
+        <div class="expert-verdict verdict-stop">STOP</div>
+      </div>
+      <div class="expert-body">
+        「安定して勝てる個人投資家は統計的にほぼいない」<br>
+        「『絶対に負けない』は誇張。配当貴族でも2008・2020年は30-50%下落」<br>
+        「期待値計算は理論値。手数料・スリッページ・税金で目減り」<br>
+        「『AIに任せれば勝てる』は投資業界最古の罠の進化形」
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 2: Go/Stop判定 -->
+<div class="tab-pane" id="tab2">
+  <div class="sec">
+    <div class="sec-title">🚦 判定マトリクス</div>
+
+    <div class="svg-wrap">
+      <svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;font-family:'Noto Sans JP',sans-serif;">
+        <defs>
+          <linearGradient id="gradGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#059669"/><stop offset="100%" stop-color="#047857"/>
+          </linearGradient>
+          <linearGradient id="gradAmber" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#d97706"/><stop offset="100%" stop-color="#b45309"/>
+          </linearGradient>
+          <linearGradient id="gradRed" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#dc2626"/><stop offset="100%" stop-color="#991b1b"/>
+          </linearGradient>
+        </defs>
+
+        <!-- 軸ラベル -->
+        <text x="450" y="30" font-size="14" font-weight="700" fill="#1a2744" text-anchor="middle">フェーズ × アクション 判定マトリクス</text>
+
+        <text x="100" y="80" font-size="11" font-weight="700" fill="#475569">時間 →</text>
+        <text x="50" y="170" font-size="11" font-weight="700" fill="#475569" transform="rotate(-90,50,170)">アクション</text>
+
+        <!-- フェーズヘッダ -->
+        <rect x="150" y="90" width="160" height="40" rx="6" fill="#1a2744"/>
+        <text x="230" y="115" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">Phase 0-1</text>
+        <text x="230" y="128" font-size="9" fill="#cbd5e1" text-anchor="middle">環境構築・データ取得</text>
+
+        <rect x="320" y="90" width="160" height="40" rx="6" fill="#1a2744"/>
+        <text x="400" y="115" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">Phase 2-3</text>
+        <text x="400" y="128" font-size="9" fill="#cbd5e1" text-anchor="middle">ロジック実装・検証</text>
+
+        <rect x="490" y="90" width="160" height="40" rx="6" fill="#1a2744"/>
+        <text x="570" y="115" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">Phase 4</text>
+        <text x="570" y="128" font-size="9" fill="#cbd5e1" text-anchor="middle">Paper運用 3-6ヶ月</text>
+
+        <rect x="660" y="90" width="200" height="40" rx="6" fill="#1a2744"/>
+        <text x="760" y="115" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">Phase 5</text>
+        <text x="760" y="128" font-size="9" fill="#cbd5e1" text-anchor="middle">実弾投入</text>
+
+        <!-- 行1: 学習・実装 -->
+        <rect x="60" y="150" width="80" height="60" rx="6" fill="#f1f5f9"/>
+        <text x="100" y="175" font-size="11" font-weight="700" fill="#1a2744" text-anchor="middle">学習・</text>
+        <text x="100" y="190" font-size="11" font-weight="700" fill="#1a2744" text-anchor="middle">実装</text>
+
+        <rect x="150" y="150" width="160" height="60" rx="6" fill="url(#gradGreen)"/>
+        <text x="230" y="183" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">🟢 GO</text>
+        <text x="230" y="200" font-size="10" fill="#d1fae5" text-anchor="middle">即着手OK</text>
+
+        <rect x="320" y="150" width="160" height="60" rx="6" fill="url(#gradGreen)"/>
+        <text x="400" y="183" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">🟢 GO</text>
+        <text x="400" y="200" font-size="10" fill="#d1fae5" text-anchor="middle">バックテスト含む</text>
+
+        <rect x="490" y="150" width="160" height="60" rx="6" fill="url(#gradGreen)"/>
+        <text x="570" y="183" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">🟢 GO</text>
+        <text x="570" y="200" font-size="10" fill="#d1fae5" text-anchor="middle">Slack通知含む</text>
+
+        <rect x="660" y="150" width="200" height="60" rx="6" fill="url(#gradAmber)"/>
+        <text x="760" y="183" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">🟡 CAUTION</text>
+        <text x="760" y="200" font-size="10" fill="#fef3c7" text-anchor="middle">条件付き判断</text>
+
+        <!-- 行2: 仮想資金 -->
+        <rect x="60" y="220" width="80" height="60" rx="6" fill="#f1f5f9"/>
+        <text x="100" y="245" font-size="11" font-weight="700" fill="#1a2744" text-anchor="middle">仮想</text>
+        <text x="100" y="260" font-size="11" font-weight="700" fill="#1a2744" text-anchor="middle">取引</text>
+
+        <rect x="150" y="220" width="160" height="60" rx="6" fill="url(#gradGreen)"/>
+        <text x="230" y="253" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">🟢 GO</text>
+        <text x="230" y="270" font-size="10" fill="#d1fae5" text-anchor="middle">Paper無料</text>
+
+        <rect x="320" y="220" width="160" height="60" rx="6" fill="url(#gradGreen)"/>
+        <text x="400" y="253" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">🟢 GO</text>
+        <text x="400" y="270" font-size="10" fill="#d1fae5" text-anchor="middle">推奨</text>
+
+        <rect x="490" y="220" width="160" height="60" rx="6" fill="url(#gradGreen)"/>
+        <text x="570" y="253" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">🟢 GO</text>
+        <text x="570" y="270" font-size="10" fill="#d1fae5" text-anchor="middle">勝率検証</text>
+
+        <rect x="660" y="220" width="200" height="60" rx="6" fill="#f3f4f6"/>
+        <text x="760" y="253" font-size="11" fill="#94a3b8" text-anchor="middle">─</text>
+        <text x="760" y="270" font-size="10" fill="#94a3b8" text-anchor="middle">対象外</text>
+
+        <!-- 行3: 実弾（株式・ETF） -->
+        <rect x="60" y="290" width="80" height="60" rx="6" fill="#f1f5f9"/>
+        <text x="100" y="315" font-size="11" font-weight="700" fill="#1a2744" text-anchor="middle">実弾</text>
+        <text x="100" y="330" font-size="11" font-weight="700" fill="#1a2744" text-anchor="middle">株式ETF</text>
+
+        <rect x="150" y="290" width="160" height="60" rx="6" fill="url(#gradRed)"/>
+        <text x="230" y="323" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">🔴 STOP</text>
+        <text x="230" y="340" font-size="10" fill="#fecaca" text-anchor="middle">時期尚早</text>
+
+        <rect x="320" y="290" width="160" height="60" rx="6" fill="url(#gradRed)"/>
+        <text x="400" y="323" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">🔴 STOP</text>
+        <text x="400" y="340" font-size="10" fill="#fecaca" text-anchor="middle">未検証</text>
+
+        <rect x="490" y="290" width="160" height="60" rx="6" fill="url(#gradAmber)"/>
+        <text x="570" y="323" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">🟡 CAUTION</text>
+        <text x="570" y="340" font-size="10" fill="#fef3c7" text-anchor="middle">判断保留</text>
+
+        <rect x="660" y="290" width="200" height="60" rx="6" fill="url(#gradAmber)"/>
+        <text x="760" y="318" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">🟡 厳格条件付き</text>
+        <text x="760" y="335" font-size="10" fill="#fef3c7" text-anchor="middle">10-20万円から・撤退ルール厳守</text>
+        <text x="760" y="348" font-size="9" fill="#fef3c7" text-anchor="middle">Paper実績 月次プラス・DD10%以内</text>
+
+        <!-- 行4: 実弾（クリプト） -->
+        <rect x="60" y="360" width="80" height="60" rx="6" fill="#f1f5f9"/>
+        <text x="100" y="385" font-size="11" font-weight="700" fill="#1a2744" text-anchor="middle">実弾</text>
+        <text x="100" y="400" font-size="11" font-weight="700" fill="#1a2744" text-anchor="middle">クリプト</text>
+
+        <rect x="150" y="360" width="710" height="60" rx="6" fill="url(#gradRed)"/>
+        <text x="500" y="393" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">🔴 全フェーズ STOP（価格グリッチ事例・補償拒否）</text>
+        <text x="500" y="410" font-size="11" fill="#fecaca" text-anchor="middle">Paper Tradingでも触らない方が無難</text>
+
+        <!-- 凡例 -->
+        <text x="450" y="465" font-size="11" fill="#475569" text-anchor="middle">※ Phase 5 GOの厳格条件：Paper 3-6ヶ月運用・月次プラス・最大DD 10%以内・税理士事前相談・撤退基準明文化</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 3: リスク構造図 -->
+<div class="tab-pane" id="tab3">
+  <div class="sec">
+    <div class="sec-title">📉 リスクの4重構造</div>
+
+    <div class="svg-wrap">
+      <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:800px;font-family:'Noto Sans JP',sans-serif;">
+        <!-- 同心円 -->
+        <circle cx="400" cy="200" r="180" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+        <circle cx="400" cy="200" r="140" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+        <circle cx="400" cy="200" r="100" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+        <circle cx="400" cy="200" r="60" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+
+        <!-- ラベル -->
+        <text x="400" y="195" font-size="14" font-weight="700" fill="#065f46" text-anchor="middle">あなた</text>
+        <text x="400" y="215" font-size="11" fill="#047857" text-anchor="middle">の資金</text>
+
+        <text x="400" y="135" font-size="12" font-weight="700" fill="#1d4ed8" text-anchor="middle">① 市場リスク</text>
+        <text x="400" y="150" font-size="10" fill="#1e40af" text-anchor="middle">暴落・ボラ・経済危機</text>
+
+        <text x="400" y="80" font-size="12" font-weight="700" fill="#b45309" text-anchor="middle">② ブローカーリスク</text>
+        <text x="400" y="95" font-size="10" fill="#92400e" text-anchor="middle">出金拒否・凍結・グリッチ</text>
+
+        <text x="400" y="35" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">③ 自分の判断リスク</text>
+        <text x="400" y="50" font-size="10" fill="#7f1d1d" text-anchor="middle">感情・ルール破り・過信</text>
+
+        <text x="400" y="370" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">④ 環境リスク</text>
+        <text x="400" y="385" font-size="10" fill="#7f1d1d" text-anchor="middle">税務・為替・規制変更</text>
+      </svg>
+    </div>
+
+    <div class="notice notice-red">
+      <p>📌 <strong>勘違いしやすいポイント：</strong>「市場リスク」だけ見て自動売買を語る人が多いが、実際は4重のリスクが同時に存在する。特に <strong>③自分の判断リスク</strong> が最も大きい（プロでも避けられない）。</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">📊 各リスクの詳細</div>
+    <table class="tbl">
+      <thead><tr><th>レベル</th><th>リスク種別</th><th>具体例</th><th>対策</th></tr></thead>
+      <tbody>
+        <tr><td>外側</td><td>環境リスク</td><td>税制変更・円高ドル安・米国規制変更</td><td>分散・税理士相談・余剰資金</td></tr>
+        <tr><td>外側</td><td>ブローカーリスク</td><td>出金拒否・口座凍結・価格グリッチ</td><td>少額分散・記録保存・サポート対応記録</td></tr>
+        <tr><td>中間</td><td>市場リスク</td><td>暴落・流動性枯渇・ブラックスワン</td><td>損切り徹底・ポジションサイジング</td></tr>
+        <tr><td>最深</td><td><strong>判断リスク</strong></td><td>感情で買い増し・ルール破り・過信</td><td><strong>完全自動化＋人間レビューゼロ運用が困難</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 4: SNS事例の真実 -->
+<div class="tab-pane" id="tab4">
+  <div class="sec">
+    <div class="sec-title">🪞 「シン氏・すがさわ氏」事例の構造分析</div>
+
+    <div class="hero">
+      <div class="hero-title">SNS投稿は「成功例の選択的露出」</div>
+      <div class="hero-body">
+        勝った人だけが投稿する。負けた人は黙る。<br>
+        さらに、勝ったように見える人の真の収益源は<strong>情報販売</strong>であることが多い。
+      </div>
+    </div>
+
+    <div class="svg-wrap">
+      <svg viewBox="0 0 800 360" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:800px;font-family:'Noto Sans JP',sans-serif;">
+        <!-- ピラミッド -->
+        <polygon points="400,30 100,300 700,300" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+
+        <!-- 層 -->
+        <line x1="200" y1="210" x2="600" y2="210" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <line x1="280" y1="120" x2="520" y2="120" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,4"/>
+
+        <!-- ラベル -->
+        <text x="400" y="80" font-size="13" font-weight="700" fill="#991b1b" text-anchor="middle">SNSで目立つ少数</text>
+        <text x="400" y="98" font-size="10" fill="#7f1d1d" text-anchor="middle">「勝った」「30万稼いだ」を発信</text>
+        <text x="400" y="111" font-size="10" fill="#7f1d1d" text-anchor="middle">←真の収益源は情報販売の可能性大</text>
+
+        <text x="400" y="160" font-size="13" font-weight="700" fill="#b45309" text-anchor="middle">中間層：何とか続けている人</text>
+        <text x="400" y="180" font-size="10" fill="#92400e" text-anchor="middle">プラマイゼロ前後・特に発信なし</text>
+
+        <text x="400" y="245" font-size="13" font-weight="700" fill="#1f2937" text-anchor="middle">大多数：負けて静かに退場</text>
+        <text x="400" y="265" font-size="10" fill="#374151" text-anchor="middle">SNSには現れない・自分の物語にしない</text>
+        <text x="400" y="280" font-size="10" fill="#374151" text-anchor="middle">統計的にはこの層が80%以上</text>
+
+        <text x="400" y="330" font-size="11" fill="#475569" text-anchor="middle">＝ あなたが見ているのは「ピラミッドの頂点だけ」</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">📋 投稿者の収益構造（推定）</div>
+    <table class="tbl">
+      <thead><tr><th>収益源</th><th>確実性</th><th>本人にとっての重要度</th></tr></thead>
+      <tbody>
+        <tr><td>株式投資の利益</td><td>不確実（市場依存）</td><td>表向きは主軸・実は副次的</td></tr>
+        <tr><td>note・有料コラム販売</td><td><strong>確実（情報商材）</strong></td><td>★★★★★</td></tr>
+        <tr><td>コラボ案件・PR</td><td>確実（広告収益）</td><td>★★★★</td></tr>
+        <tr><td>有料コミュニティ</td><td>確実（月額課金）</td><td>★★★★</td></tr>
+        <tr><td>書籍・セミナー</td><td>確実</td><td>★★★</td></tr>
+      </tbody>
+    </table>
+
+    <div class="notice notice-amber">
+      <p>📌 <strong>気づき：</strong>「Claude Codeで30万稼いだ」のシン氏の投稿、よく見ると<strong>「メルマガ販売スキル」「コラボ案件」</strong>と書いてある。これは投資ではなく情報販売の売上。投資の話と混同しないこと。</p>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 5: 推奨ルート -->
+<div class="tab-pane" id="tab5">
+  <div class="sec">
+    <div class="sec-title">🛤️ 当初方針 ＋α での推奨ルート</div>
+
+    <div class="bigmsg">
+      <div class="bm-label">推奨</div>
+      <div class="bm-title">「Paper完走 → 実弾は半年後に冷静に判断」</div>
+    </div>
+
+    <div class="svg-wrap">
+      <svg viewBox="0 0 900 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;font-family:'Noto Sans JP',sans-serif;">
+        <defs>
+          <marker id="arr" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto">
+            <path d="M0,0 L0,10 L12,5 z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- ステップ -->
+        <rect x="30" y="50" width="150" height="80" rx="10" fill="#059669"/>
+        <text x="105" y="80" font-size="22" text-anchor="middle">🟢</text>
+        <text x="105" y="105" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">Phase 0-1</text>
+        <text x="105" y="120" font-size="10" fill="#d1fae5" text-anchor="middle">環境構築・データ取得</text>
+
+        <line x1="180" y1="90" x2="220" y2="90" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+
+        <rect x="225" y="50" width="150" height="80" rx="10" fill="#059669"/>
+        <text x="300" y="80" font-size="22" text-anchor="middle">🟢</text>
+        <text x="300" y="105" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">Phase 2-3</text>
+        <text x="300" y="120" font-size="10" fill="#d1fae5" text-anchor="middle">ロジック・バックテスト</text>
+
+        <line x1="375" y1="90" x2="415" y2="90" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+
+        <rect x="420" y="50" width="170" height="80" rx="10" fill="#059669"/>
+        <text x="505" y="80" font-size="22" text-anchor="middle">🟢</text>
+        <text x="505" y="105" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">Phase 4 (3-6ヶ月)</text>
+        <text x="505" y="120" font-size="10" fill="#d1fae5" text-anchor="middle">Paper運用・実績蓄積</text>
+
+        <line x1="590" y1="90" x2="630" y2="90" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+
+        <rect x="635" y="50" width="230" height="80" rx="10" fill="#d97706"/>
+        <text x="750" y="80" font-size="22" text-anchor="middle">🟡</text>
+        <text x="750" y="100" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">Phase 5 判断</text>
+        <text x="750" y="115" font-size="10" fill="#fef3c7" text-anchor="middle">Paper実績次第で実弾検討</text>
+        <text x="750" y="128" font-size="10" fill="#fef3c7" text-anchor="middle">(2026年11月-2027年2月頃)</text>
+
+        <!-- 下部メッセージ -->
+        <rect x="30" y="160" width="840" height="60" rx="8" fill="#f1f5f9"/>
+        <text x="450" y="185" font-size="12" font-weight="700" fill="#1a2744" text-anchor="middle">⚡ 今日できること：Phase 0 はすでに完了 ／ 次は Phase 1（データ取得）に着手</text>
+        <text x="450" y="205" font-size="11" fill="#475569" text-anchor="middle">焦らず、半年スパンで「自分のロジックが市場で生き残るか」を Paper で検証する</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">⚙️ Phase 5 で実弾投入する場合の厳格条件</div>
+    <table class="tbl">
+      <thead><tr><th>条件</th><th>基準</th></tr></thead>
+      <tbody>
+        <tr><td>Paper Trading 実績</td><td>6ヶ月以上 / 月次プラス / 最大DD 10%以内</td></tr>
+        <tr><td>初期投入額</td><td>余剰資金（生活防衛資金除く）の <strong>10%以内</strong>、最大 10〜20万円</td></tr>
+        <tr><td>対象資産</td><td>株式・ETFのみ。<strong>クリプトは除外</strong></td></tr>
+        <tr><td>レバレッジ</td><td>使わない（現物のみ）</td></tr>
+        <tr><td>税務準備</td><td>W-8BEN提出済み、税理士事前相談済み</td></tr>
+        <tr><td>撤退基準</td><td>月次累積損失10%超で即停止、ルール破りたい衝動で即停止</td></tr>
+        <tr><td>監視頻度</td><td>毎営業日Slack通知、週次レビュー、月次総点検</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">💡 +αの提案：別の収益源と並走</div>
+    <div class="notice notice-blue">
+      <p>📌 投資の自動化はリスクが高いので、<strong>同時並行で別の収益源も検証</strong>することを推奨：</p>
+      <ul style="padding-left:20px;margin-top:8px;font-size:12px;">
+        <li><strong>シン氏的なコンテンツ自動化</strong>（メルマガ・note）— はんちょうの Universal Generation Flow で同じ仕組みが応用可能、即着手可</li>
+        <li><strong>楽天SKU案件で得た実務英語</strong> — 業務委託・コンサル副業として時給化</li>
+        <li><strong>knowledge-hub の体系化された資料</strong> — 教材化・有償提供</li>
+      </ul>
+      <p style="margin-top:8px;">投資1本に資金調達を依存させない方が、メンタル的にも持続可能。</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">📌 今日決めること</div>
+    <div class="notice notice-green">
+      <p>📌 <strong>明日以降への持ち越し事項：</strong></p>
+      <ul style="padding-left:20px;margin-top:8px;font-size:12px;">
+        <li>Alpaca Paper Trading の登録手順を計画書化</li>
+        <li>Phase 1（データ取得）の仕様を設計</li>
+        <li>シン氏的なコンテンツ自動化を別タスクとして検討開始するか判断</li>
+      </ul>
+      <p style="margin-top:8px;">今日は<strong>頭が加熱状態</strong>。判断は明日以降に持ち越す方が安全。</p>
+    </div>
+  </div>
+</div>
+
+<div class="doc-footer">Algo Trading 実弾判断レポート v1 ／ 専門家パネル多角検証 ／ 2026-05-16</div>
+
+<script>
+function showTab(n){
+  document.querySelectorAll('.tab-pane').forEach((p,i)=>p.classList.toggle('active',i===n));
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===n));
+}
+</script>
+
+</body>
+</html>

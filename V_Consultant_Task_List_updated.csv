@@ -1,0 +1,14 @@
+フェーズ,タスク名,ステータス,担当/ツール,備考・課題・ノウハウ
+0. 戦略・販売,Coconala出品（梅1.5万円〜）,✅ 完了,Coconala,V-Consultant構築代行として出品済み
+0. 戦略・販売,note無料記事の公開,✅ 完了,note,集客フックとして公開済み
+0. 戦略・販売,X bio・導線の整備,✅ 完了,X,noteへのリンク設置済み
+1. 音声環境構築,仮想ケーブル(VB-CABLE)導入,✅ 完了,VB-CABLE,
+1. 音声環境構築,VC Clientインストール・起動,✅ 完了,VC Client,batファイルからの起動で127.0.0.1エラー回避
+1. 音声環境構築,パラメータの神設定,✅ 完了,VC Client,"遅延解消(Chunk48)、声質調整(TUNE+12/Index0.4)"
+1. 音声環境構築,GPU(CUDA)による高速化,⚠️ 保留,VC Client,PCがAMD統合GPU(VRAM377MB)のためCUDA不可。購入者PCがNVIDIAの場合は対応可能
+2. アバター準備,ベース画像（口閉じ）生成,✅ 完了,Leonardo.ai,
+2. アバター準備,差分画像（口開き）作成,✅ 完了,Adobe Firefly,Photopeaは難航→Adobe Fireflyで再生成に切替
+3. 実機連携,veadotube mini の設定,✅ 完了,veadotube mini,VB-CABLEの音量でOpen/Close画像を切替
+4. 最終出力,OBS Studio の合成・出力,✅ 完了,OBS Studio,クロマキーで緑背景除去・仮想カメラ起動済み
+4. 最終出力,Zoom での動作確認,✅ 完了,Zoom,OBS Virtual Cameraとして認識・表示確認済み
+5. 今後の課題,声質変換の実用化,📋 今後対応,VC Client,"AMD GPUでは遅延大。NVIDIA GPU搭載PCでの動作は確認済み手順あり"
