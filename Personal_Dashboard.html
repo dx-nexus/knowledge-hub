@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>パーソナル・コマンドセンター ／ はんちょー</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+/* ── ダッシュボード固有スタイル ── */
+.dash-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+.dash-tab {
+  padding: 10px 20px; border-radius: 8px; cursor: pointer;
+  font-family: var(--mono); font-size: 12px; font-weight: 700;
+  border: 1px solid var(--border); background: var(--surface2);
+  color: var(--muted); transition: .15s; user-select: none;
+}
+.dash-tab:hover { color: var(--text); border-color: var(--accent); }
+.dash-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+.track { display: none; }
+.track.active { display: block; }
+
+.phase-box {
+  background: var(--surface2); border: 2px solid var(--accent);
+  border-radius: 10px; padding: 20px 24px; margin-bottom: 24px;
+  display: flex; align-items: flex-start; gap: 16px;
+}
+.phase-num {
+  min-width: 48px; height: 48px; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 13px; font-weight: 700; flex-shrink: 0;
+}
+.phase-body h3 { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.phase-body p  { font-size: 12px; color: var(--muted); line-height: 1.8; }
+
+.hw-list { list-style: none; padding: 0; margin: 0; }
+.hw-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 12px 16px; border-radius: 8px;
+  border: 0.5px solid var(--border); background: var(--surface2);
+  margin-bottom: 8px; transition: .15s;
+}
+.hw-item:hover { border-color: var(--accent); background: #fff8e6; }
+.hw-cb {
+  width: 18px; height: 18px; border-radius: 4px;
+  border: 2px solid var(--border); flex-shrink: 0; margin-top: 1px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 11px; transition: .15s; background: #fff;
+}
+.hw-cb.done { background: var(--accent); border-color: var(--accent); color: #fff; }
+.hw-text { font-size: 13px; color: var(--text); line-height: 1.6; flex: 1; }
+.hw-text.done { text-decoration: line-through; color: var(--muted); }
+.hw-pri { font-size: 10px; font-family: var(--mono); padding: 1px 6px; border-radius: 4px; flex-shrink: 0; margin-top: 2px; }
+.pri-high { background: rgba(239,68,68,.1); color: #dc2626; border: 1px solid rgba(239,68,68,.25); }
+.pri-mid  { background: rgba(245,158,11,.1); color: #b45309; border: 1px solid rgba(245,158,11,.25); }
+.pri-low  { background: rgba(100,116,139,.1); color: #475569; border: 1px solid rgba(100,116,139,.25); }
+
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap: 10px; margin-bottom: 24px; }
+.kpi-card {
+  background: var(--surface2); border: 0.5px solid var(--border);
+  border-radius: 8px; padding: 14px 16px; text-align: center;
+}
+.kpi-val { font-family: var(--mono); font-size: 22px; font-weight: 700; color: var(--accent); }
+.kpi-label { font-size: 10px; color: var(--muted); margin-top: 4px; }
+
+.link-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.link-chip {
+  font-size: 11px; font-family: var(--mono);
+  padding: 5px 12px; border-radius: 20px;
+  background: var(--tag-bg); color: var(--tag-text);
+  text-decoration: none; border: 1px solid var(--border); transition: .15s;
+}
+.link-chip:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+@media (max-width: 768px) {
+  .dash-tabs { gap: 6px; }
+  .dash-tab  { padding: 8px 14px; font-size: 11px; }
+  .phase-box { flex-direction: column; gap: 12px; }
+  .kpi-grid  { grid-template-columns: repeat(2,1fr); }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hdr-top">
+    <div class="hdr-inner">
+      <div>
+        <h1>📌 パーソナル・コマンドセンター</h1>
+        <p>4軸の並行プロジェクトを俯瞰する進捗ダッシュボード</p>
+      </div>
+    </div>
+  </div>
+  <div class="hdr-meta">
+    <span><a href="index.html">← Hub</a></span>
+    <span>🗓️ 更新: 2026-05-18</span>
+    <span>🔄 4 tracks</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- タブ -->
+  <div class="dash-tabs">
+    <div class="dash-tab active" onclick="switchTrack('ai-side',this)">🤖 AI副業</div>
+    <div class="dash-tab" onclick="switchTrack('invest',this)">📈 投資</div>
+    <div class="dash-tab" onclick="switchTrack('career',this)">💼 キャリア</div>
+    <div class="dash-tab" onclick="switchTrack('english',this)">🌏 英語学習</div>
+  </div>
+
+  <!-- ── Track 1: AI副業 ── -->
+  <div class="track active" id="track-ai-side">
+
+    <div class="sec-title">現在フェーズ</div>
+    <div class="phase-box">
+      <div class="phase-num">P2</div>
+      <div class="phase-body">
+        <h3>パイプライン本稼働 &amp; 記事量産フェーズ</h3>
+        <p>AI記事生成パイプラインが稼働中。週次でコンテンツを量産し、aitsumamigui サイトへ自動投稿する体制を構築。収益化の初期KPIを設定してモニタリング開始。</p>
+        <div class="link-list">
+          <a href="Project_Master_Document.html" class="link-chip">📊 Project Master Doc</a>
+          <a href="Pipeline_SystemReview_20260507.html" class="link-chip">⚙️ Pipeline Review</a>
+          <a href="AI_Monetization_Strategy.html" class="link-chip">🏗️ マネタイズ戦略</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-title">KPI</div>
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-val">—</div><div class="kpi-label">月間収益 (円)</div></div>
+      <div class="kpi-card"><div class="kpi-val">—</div><div class="kpi-label">月間PV</div></div>
+      <div class="kpi-card"><div class="kpi-val">—</div><div class="kpi-label">公開記事数</div></div>
+      <div class="kpi-card"><div class="kpi-val">—</div><div class="kpi-label">CV率 (%)</div></div>
+    </div>
+
+    <div class="sec-title">次の宿題</div>
+    <ul class="hw-list" id="hw-ai-side">
+      <li class="hw-item">
+        <div class="hw-cb" onclick="toggleHw(this)"></div>
+        <div class="hw-text">パイプラインの週次レビューと品質チェックを実施する</div>
+        <span class="hw-pri pri-high">HIGH</span>
+      </li>
+      <li class="hw-item">
+        <div class="hw-cb" onclick="toggleHw(this)"></div>
+        <div class="hw-text">aitsumamigui サイトのSEOメタタグ・sitemap 設定を確認する</div>
+        <span class="hw-pri pri-high">HIGH</span>
+      </li>
+      <li class="hw-item">
+        <div class="hw-cb" onclick="toggleHw(this)"></div>
+        <div class="hw-text">月次収益レポート用のダッシュボードを簡易作成する（Google Analytics or Sheets）</div>
+        <span class="hw-pri pri-mid">MID</span>
+      </li>
+      <li class="hw-item">
+        <div class="hw-cb" onclick="toggleHw(this)"></div>
+        <div class="hw-text">ナビゲーター・ジェネレーターのα版をテストし、フィードバックをまとめる</div>
+        <span class="hw-pri pri-mid">MID</span>
+      </li>
+      <li class="hw-item">
+        <div class="hw-cb" onclick="toggleHw(this)"></div>
+        <div class="hw-text">aitsumamigui の競合サイトを3件調査し、差別化ポイントを整理する</div>
+        <span class="hw-pri pri-low">LOW</span>
+      </li>
+    </ul>
+
+  </div>
+
+  <!-- ── Track 2: 投資 ── -->
+  <div class="track" id="track-invest">
+
+    <div class="sec-title">現在フェーズ</div>
+    <div class="phase-box">
+      <div class="phase-num">P1</div>
+      <div class="phase-body">
+        <h3>Paper Trading 運用 &amp; バックテスト検証フェーズ</h3>
+        <p>Phase 0（環境構築）完了済み。Paper Trading 1ヶ月のデータを蓄積中。バックテスト結果の定量評価が完了したら Phase 2（戦略最適化）へ移行予定。実弾投入は Phase 5 以降・厳格条件付き。</p>
+        <div class="link-list">
+          <a href="Hancho_Algo_Trading_Project_v1.html" class="link-chip">📈 Algo Trading Project</a>
+          <a href="Algo_Trading_Decision_Report_v1.html" class="link-chip">📊 実弾判断レポート</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-title">KPI</div>
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-val">—</div><div class="kpi-label">Paper 累積損益 (円)</div></div>
+      <div class="kpi-card"><div class="kpi-val">—</div><div class="kpi-label">Sharpe Ratio</div></div>
+      <div class="kpi-card"><div class="kpi-val">—</div><div class="kpi-label">最大DD (%)</div></div>
+      <div class="kpi-card"><div class="kpi-val">—</div><div class="kpi-label">勝率 (%)</div></div>
+    </div>
+
+    <div class="sec-title">次の宿題</div>
+    <ul class="hw-list" id="hw-invest">
+      <li class="hw-item">
+        <div class="hw-cb" onclick="toggleHw(this)"></div>
+        <div class="hw-text">Paper Trading 直近1ヶ月のパフォーマンスレポートをまとめる</div>
+        <span class="hw-pri pri-high">HIGH</span>
+      </li>
+      <li class="hw-item">
+        <div class="hw-cb" onclick="toggleHw(this)"></div>
+        <div class="hw-text">バックテスト結果をSharpe Ratio・最大DDで評価し、合格基準を満たすか確認</div>
+        <span class="hw-pri pri-high">HIGH</span>
+      </li>
+      <li class="hw-item">
+        <div class="hw-cb" onclick="toggleHw(this)"></div>
+        <div class="hw-text">Algo Trading Decision Report の「実弾条件」チェックリストを現在の進捗と照合する</div>
+        <span class="hw-pri pri-mid">MID</span>
+      </li>
+      <li class="hw-item">
+        <div class="hw-cb" onclick="toggleHw(this)"></div>
+        <div class="hw-text">クリプト除外の判断を再確認・記録する（全フェーズで除外継続）</div>
+        <span class="hw-pri pri-low">LOW</span>
+      </li>
+    </ul>
+
+  </div>
+
+  <!-- ── Track 3: キャリア ── -->
+  <div class="track" id="track-career">
+
+    <div class="sec-title">現在フェーズ</div>
+    <div class="phase-box">
+      <div class="phase-num">C2</div>
+      <div class="phase-body">
+        <h3>社内AI布教 &amp; DXコンサル実績積み上げフェーズ</h3>
+        <p>部内勉強会でのAIデモを成功させ、DXコンサル業務でのAI活用実績を積む。V-Consultant プロジェクトを前進させ、外部登壇・発信のネタを増やす。Anthropic Academy コースで資格取得を目指す。</p>
+        <div class="link-list">
+          <a href="Demo_Script_Department_Meeting.html" class="link-chip">🎤 勉強会デモ台本</a>
+          <a href="V_Consultant_System_Overview.html" class="link-chip">🎭 V-Consultant 概要</a>
+          <a href="Hancho_Business_AI_Practice_v1.html" class="link-chip">💼 業務AI活用集</a>
+          <a href="Hancho_Life_Portfolio_v1.html" class="link-chip">🎯 Life Portfolio</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-title">KPI</div>
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-val">—</div><div class="kpi-label">勉強会 実施回数</div></div>
+      <div class="kpi-card"><div class="kpi-val">—</div><div class="kpi-label">Anthropic Academy 進捗 (%)</div></div>
+      <div class="kpi-card"><div class="kpi-val">—</div><div class="kpi-label">V-Consultant フェーズ</div></div>
+      <div class="kpi-card"><div class="kpi-val">—</div><div class="kpi-label">社内AI化 案件数</div></div>
+    </div>
+
+    <div class="sec-title">次の宿題</div>
+    <ul class="hw-list" id="hw-career">
+      <li class="hw-item">
+        <div class="hw-cb" onclick="toggleHw(this)"></div>
+        <div class="hw-text">部内勉強会デモの最終リハーサルを行い、想定QAを準備する</div>
+        <span class="hw-pri pri-high">HIGH</span>
+      </li>
+      <li class="hw-item">
+        <div class="hw-cb" onclick="toggleHw(this)"></div>
+        <div class="hw-text">V-Consultant プロジェクト定義書のアクション項目を1件以上進める</div>
+        <span class="hw-pri pri-high">HIGH</span>
+      </li>
+      <li class="hw-item">
+        <div class="hw-cb" onclick="toggleHw(this)"></div>
+        <div class="hw-text">Anthropic Academy の次のコースを1コース受講・修了する</div>
+        <span class="hw-pri pri-mid">MID</span>
+      </li>
+      <li class="hw-item">
+        <div class="hw-cb" onclick="toggleHw(this)"></div>
+        <div class="hw-text">社内のAI化できそな業務プロセスを1件ピックアップし、提案案を作成する</div>
+        <span class="hw-pri pri-mid">MID</span>
+      </li>
+      <li class="hw-item">
+        <div class="hw-cb" onclick="toggleHw(this)"></div>
+        <div class="hw-text">Life Portfolio を見直し、1年後のキャリアゴールを具体化する</div>
+        <span class="hw-pri pri-low">LOW</span>
+      </li>
+    </ul>
+
+  </div>
+
+  <!-- ── Track 4: 英語学習 ── -->
+  <div class="track" id="track-english">
+
+    <div class="sec-title">現在フェーズ</div>
+    <div class="phase-box">
+      <div class="phase-num">E1</div>
+      <div class="phase-body">
+        <h3>AI×英語 並行学習フェーズ</h3>
+        <p>AIを使った英語学習の習慣化を図る。英語公式ドキュメントの読解・英語でのプロンプト作成を日常業務に組み込む。DXコンサル業務の英語資料作成にも応用する。</p>
+        <div class="link-list">
+          <a href="AI_Learning_Plan.html" class="link-chip">🎓 AI統合学習計画</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-title">KPI</div>
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-val">—</div><div class="kpi-label">週間学習時間 (h)</div></div>
+      <div class="kpi-card"><div class="kpi-val">—</div><div class="kpi-label">英語記事読了数</div></div>
+      <div class="kpi-card"><div class="kpi-val">—</div><div class="kpi-label">英語Prompt作成数</div></div>
+      <div class="kpi-card"><div class="kpi-val">—</div><div class="kpi-label">TOEIC 目標スコア</div></div>
+    </div>
+
+    <div class="sec-title">次の宿題</div>
+    <ul class="hw-list" id="hw-english">
+      <li class="hw-item">
+        <div class="hw-cb" onclick="toggleHw(this)"></div>
+        <div class="hw-text">Anthropic 公式ドキュメントを英語で1記事精読しメモを残す</div>
+        <span class="hw-pri pri-high">HIGH</span>
+      </li>
+      <li class="hw-item">
+        <div class="hw-cb" onclick="toggleHw(this)"></div>
+        <div class="hw-text">今週のClaude Codeへの指示を英語でも1回試し、出力を比較する</div>
+        <span class="hw-pri pri-mid">MID</span>
+      </li>
+      <li class="hw-item">
+        <div class="hw-cb" onclick="toggleHw(this)"></div>
+        <div class="hw-text">英語での週次学習時間を記録する仕組みをつくる（Notionやシート）</div>
+        <span class="hw-pri pri-mid">MID</span>
+      </li>
+      <li class="hw-item">
+        <div class="hw-cb" onclick="toggleHw(this)"></div>
+        <div class="hw-text">英語技術記事（dev.to / Medium）を1本読みサマリを日本語で書く</div>
+        <span class="hw-pri pri-low">LOW</span>
+      </li>
+    </ul>
+
+  </div>
+
+</main>
+
+<footer class="doc-footer">
+  github.com/dx-nexus/knowledge-hub ／ GitHubにpushすると自動更新
+</footer>
+
+<script>
+function switchTrack(id, btn) {
+  document.querySelectorAll(".track").forEach(t => t.classList.remove("active"));
+  document.querySelectorAll(".dash-tab").forEach(b => b.classList.remove("active"));
+  document.getElementById("track-" + id).classList.add("active");
+  btn.classList.add("active");
+}
+
+function toggleHw(cb) {
+  cb.classList.toggle("done");
+  cb.textContent = cb.classList.contains("done") ? "✓" : "";
+  const txt = cb.parentElement.querySelector(".hw-text");
+  if (txt) txt.classList.toggle("done");
+}
+</script>
+
+</body>
+</html>

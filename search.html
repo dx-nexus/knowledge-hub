@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全文検索 ／ はんちょー Document Hub</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+.search-wrap { margin: 32px 0 24px; }
+.search-box {
+  width: 100%; padding: 14px 20px;
+  background: #fff; border: 2px solid var(--border);
+  border-radius: 10px; font-size: 15px;
+  font-family: var(--sans); color: var(--text);
+  outline: none; transition: .2s;
+}
+.search-box:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(217,119,6,.12); }
+.search-box::placeholder { color: var(--muted); }
+.result-count { font-size: 11px; font-family: var(--mono); color: var(--muted); margin-top: 10px; }
+.result-count strong { color: var(--accent); }
+.no-result { padding: 40px; text-align: center; color: var(--muted); font-size: 13px; }
+.result-cat { font-size: 9px; font-family: var(--mono); letter-spacing: .1em; text-transform: uppercase;
+  padding: 1px 7px; border-radius: 10px; margin-left: 6px;
+  background: var(--tag-bg); color: var(--tag-text); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hdr-top">
+    <div class="hdr-inner">
+      <div>
+        <h1>🔍 全文検索</h1>
+        <p>27本のドキュメントをキーワードで横断検索</p>
+      </div>
+    </div>
+  </div>
+  <div class="hdr-meta">
+    <span><a href="index.html">← Hub</a></span>
+    <span>📄 27 docs</span>
+  </div>
+</header>
+
+<main>
+
+  <div class="search-wrap">
+    <input type="search" id="q" class="search-box" placeholder="キーワードを入力… 例: Claude Code, アルゴリズム, V-Consultant" autofocus autocomplete="off">
+    <div class="result-count" id="count"></div>
+  </div>
+
+  <div class="grid" id="results"></div>
+
+</main>
+
+<footer class="doc-footer">
+  github.com/dx-nexus/knowledge-hub ／ GitHubにpushすると自動更新
+</footer>
+
+<script>
+const DOCS = [
+  // ── プロジェクト管理 ──────────────────────────────────────────
+  { title:"Project Master Document", desc:"AI収益化プロジェクト全体の計画・作業ログ・課題台帳", url:"Project_Master_Document.html", cat:"プロジェクト管理", icon:"📊", status:"live", date:"LIVE", tags:"計画 作業ログ 課題台帳 AI収益化" },
+  { title:"Pipeline System Review", desc:"AI記事生成パイプラインのシステムレビュー", url:"Pipeline_SystemReview_20260507.html", cat:"プロジェクト管理", icon:"⚙️", status:"live", date:"LIVE", tags:"パイプライン システムレビュー 記事生成" },
+  { title:"CHANGELOG", desc:"Claude・Gemini・人間の共同編集履歴サマリ", url:"CHANGELOG.html", cat:"プロジェクト管理", icon:"📜", status:"live", date:"LIVE", tags:"変更履歴 changelog claude gemini" },
+  { title:"パーソナル・コマンドセンター", desc:"AI副業・投資・キャリア・英語の4軸進捗ダッシュボード", url:"Personal_Dashboard.html", cat:"プロジェクト管理", icon:"📌", status:"live", date:"2026-05-18", tags:"ダッシュボード 副業 投資 キャリア 英語" },
+  { title:"部内勉強会デモ進行台本", desc:"部内勉強会向けAIデモの進行台本・実演手順", url:"Demo_Script_Department_Meeting.html", cat:"プロジェクト管理", icon:"🎤", status:"live", date:"2026-05-16", tags:"デモ 勉強会 プレゼン 台本" },
+  { title:"引き継ぎ資料 2026-05-15", desc:"dx-nexus knowledge-hub セッション 2026-05-15 の作業状況・次アクション引き継ぎ", url:"Handoff_Document_20260515.html", cat:"プロジェクト管理", icon:"📤", status:"live", date:"2026-05-15", tags:"引き継ぎ handoff セッション" },
+  { title:"他AI引き継ぎプロンプト集 v2", desc:"2026-05-16 版 他AI向け引き継ぎプロンプト集", url:"Handoff_AI_Prompts_20260516.html", cat:"プロジェクト管理", icon:"📋", status:"live", date:"2026-05-16", tags:"引き継ぎ プロンプト gemini 他AI" },
+  { title:"引き継ぎ資料 2026-05-18", desc:"L4アップグレードセッション 2026-05-18 の引き継ぎ", url:"Handoff_Document_20260518.html", cat:"プロジェクト管理", icon:"📤", status:"live", date:"2026-05-18", tags:"引き継ぎ handoff l4 アップグレード" },
+
+  // ── 学習計画 ─────────────────────────────────────────────────
+  { title:"AI統合学習計画", desc:"ユニコスクール × Anthropic Academy × GitHub Courses", url:"AI_Learning_Plan.html", cat:"学習計画", icon:"🎓", status:"live", date:"LIVE", tags:"学習計画 ユニコスクール anthropic github courses" },
+  { title:"ユニコスクール受講計画書", desc:"AIエージェント開発コース 受講進捗管理", url:"Unicorn_School_Plan.html", cat:"学習計画", icon:"🦄", status:"live", date:"LIVE", tags:"ユニコスクール AIエージェント 受講 進捗" },
+  { title:"Anthropic Academy 活用ガイド（社内版）", desc:"全コース概要・用語集・システム連携・役割別ロードマップ", url:"Anthropic_Academy_Plan_Internal.html", cat:"学習計画", icon:"🏢", status:"live", date:"LIVE", tags:"anthropic academy 社内 ロードマップ 用語集" },
+  { title:"トラブルシュート & QA一覧", desc:"ハマりやすい問題14件・AI自動改善目標付き", url:"Troubleshooting_QA.html", cat:"学習計画", icon:"🛠️", status:"live", date:"LIVE", tags:"トラブルシュート QA 問題 解決" },
+  { title:"Anthropic Academy 計画書", desc:"17コース受講ロードマップ", url:"Anthropic_Academy_Plan.html", cat:"学習計画", icon:"🤖", status:"live", date:"LIVE", tags:"anthropic academy コース ロードマップ" },
+
+  // ── V-Consultant ─────────────────────────────────────────────
+  { title:"V-Consultant システム概要", desc:"AIアバター×声質変換環境の全体構成", url:"V_Consultant_System_Overview.html", cat:"V-Consultant", icon:"🎭", status:"live", date:"LIVE", tags:"v-consultant アバター 声質変換 vtuber" },
+  { title:"V-Consultant プロジェクト定義書", desc:"プロジェクトスコープ・要件・アクション", url:"V_Consultant_Project_Definition.html", cat:"V-Consultant", icon:"📋", status:"live", date:"LIVE", tags:"v-consultant プロジェクト定義 スコープ 要件" },
+  { title:"JSON駆動 HTML自動生成 汎用フロー", desc:"JSON入力からHTML自動生成する汎用フロー・手順・テンプレート", url:"Universal_Generation_Flow_v1.html", cat:"V-Consultant", icon:"🔄", status:"live", date:"2026-05-16", tags:"JSON 自動生成 html テンプレート 汎用フロー" },
+  { title:"汎用フロー・はんちょう実例ページ", desc:"JSON駆動生成フローではんちょーを実際に作成した実例", url:"Hancho_Sample_Filled_v1.html", cat:"V-Consultant", icon:"📝", status:"live", date:"2026-05-16", tags:"はんちょう 実例 json 生成フロー" },
+  { title:"はんちょー業務AI活用集", desc:"DXコンサル業務AI活用ガイド v1・フレームワーク活用ノウハウ", url:"Hancho_Business_AI_Practice_v1.html", cat:"V-Consultant", icon:"💼", status:"live", date:"2026-05-16", tags:"はんちょー 業務AI DXコンサル フレームワーク" },
+
+  // ── ツール・自動化 ────────────────────────────────────────────
+  { title:"ナビゲーター・ジェネレーター", desc:"基本情報入力でClaude Code投入用プロンプトを自動生成", url:"Navigator_Generator.html", cat:"ツール・自動化", icon:"🚀", status:"wip", date:"PROTOTYPE", tags:"ジェネレーター プロンプト 自動生成 claude code" },
+  { title:"ジェネレーター構想ドラフト", desc:"ナビゲーター・ジェネレーターの認証連携・セキュリティ要件", url:"Generator_Concept_Draft.html", cat:"ツール・自動化", icon:"🚧", status:"wip", date:"WIP", tags:"ジェネレーター 認証 セキュリティ WIP" },
+  { title:"AI×マネタイズ自動化戦略", desc:"AI活用マネタイズの自動化戦略とシステムアーキテクチャ設計書", url:"AI_Monetization_Strategy.html", cat:"ツール・自動化", icon:"🏗️", status:"live", date:"2026-05-17", tags:"マネタイズ 自動化 アーキテクチャ 戦略" },
+  { title:"Claude Code 起動環境ガイド", desc:"Claude Code の起動・環境構築・初期設定手順ガイド", url:"ClaudeCode_Launch_Environment_Guide_v1.html", cat:"ツール・自動化", icon:"🛠️", status:"live", date:"2026-05-17", tags:"claude code 起動 環境構築 初期設定" },
+  { title:"Claude Code 実践運用ガイド", desc:"Claude Code の実務活用・コマンド・ベストプラクティス集", url:"Claude_Code_Practical_Guide_v1.html", cat:"ツール・自動化", icon:"⌨️", status:"live", date:"2026-05-15", tags:"claude code 実践 コマンド ベストプラクティス" },
+  { title:"knowledge-hub 全体管理メタプロンプト", desc:"ドキュメントハブ運用・更新・整合性管理プロンプト集", url:"KnowledgeHub_Management_Prompt_v1.html", cat:"ツール・自動化", icon:"🗂️", status:"live", date:"2026-05-16", tags:"knowledge-hub 管理 プロンプト 運用 整合性" },
+
+  // ── 個別プロジェクト ──────────────────────────────────────────
+  { title:"瀬戸内スペース Webプロジェクト記録", desc:"Astro + Decap CMS + Netlify による Jamstack 構成", url:"Setouchi_Space_Project_v1.html", cat:"個別プロジェクト", icon:"🌊", status:"live", date:"2026-05-17", tags:"瀬戸内 astro jamstack netlify web" },
+  { title:"Algo Trading Project", desc:"アルゴリズムトレーディングプロジェクト詳細", url:"Hancho_Algo_Trading_Project_v1.html", cat:"個別プロジェクト", icon:"📈", status:"live", date:"LIVE", tags:"algo trading アルゴリズム 投資 自動売買" },
+  { title:"Algo Trading 実弾判断レポート", desc:"専門家パネル8名による多角検証・実弾投入判断", url:"Algo_Trading_Decision_Report_v1.html", cat:"個別プロジェクト", icon:"📊", status:"live", date:"2026-05-16", tags:"algo trading 実弾 判断 専門家 paper trading" },
+  { title:"Life Portfolio", desc:"はんちょーのライフポートフォリオ・キャリア設計", url:"Hancho_Life_Portfolio_v1.html", cat:"個別プロジェクト", icon:"🎯", status:"live", date:"LIVE", tags:"ライフポートフォリオ キャリア 設計" },
+];
+
+const q    = document.getElementById("q");
+const box  = document.getElementById("results");
+const cnt  = document.getElementById("count");
+
+function render(docs) {
+  if (docs.length === 0) {
+    box.innerHTML = '<div class="no-result">該当するドキュメントが見つかりませんでした。</div>';
+    cnt.innerHTML = "";
+    return;
+  }
+  box.innerHTML = docs.map(d => `
+    <a class="card" href="${d.url}">
+      <div class="card-head">
+        <div class="card-icon">${d.icon}</div>
+        <div>
+          <div class="card-title">${d.title} <span class="result-cat">${d.cat}</span></div>
+          <div class="card-sub">${d.desc}</div>
+        </div>
+      </div>
+      <div class="card-foot">
+        <span class="badge ${d.status === 'wip' ? 'badge-wip' : 'badge-live'}">${d.date}</span>
+      </div>
+    </a>
+  `).join("");
+  cnt.innerHTML = `<strong>${docs.length}</strong> 件ヒット`;
+}
+
+function search(kw) {
+  if (!kw.trim()) { render(DOCS); cnt.innerHTML = `全 <strong>${DOCS.length}</strong> 件`; return; }
+  const terms = kw.trim().toLowerCase().split(/\s+/);
+  const hit = DOCS.filter(d => {
+    const hay = [d.title, d.desc, d.cat, d.tags].join(" ").toLowerCase();
+    return terms.every(t => hay.includes(t));
+  });
+  render(hit);
+}
+
+q.addEventListener("input", e => search(e.target.value));
+
+// 初期表示
+render(DOCS);
+cnt.innerHTML = `全 <strong>${DOCS.length}</strong> 件`;
+</script>
+
+</body>
+</html>

@@ -1,273 +1,381 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>はんちょー ドキュメントハブ</title>
 <link rel="stylesheet" href="assets/common.css">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#070d18;--surface:#0f1929;--surface2:#162035;--border:#1e3354;--accent:#00c8f0;--green:#10b981;--yellow:#f59e0b;--purple:#a78bfa;--text:#dde6f0;--muted:#5a7190;--mono:'IBM Plex Mono',monospace;--sans:'Noto Sans JP',sans-serif;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;padding:40px 24px;}
-.inner{max-width:800px;margin:0 auto;}
-.hdr{margin-bottom:40px;}
-.hdr h1{font-family:var(--mono);font-size:20px;color:var(--accent);letter-spacing:.06em;}
-.hdr p{font-size:12px;color:var(--muted);margin-top:6px;}
-.section{margin-bottom:32px;}
-.sec-title{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:14px;}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 18px;text-decoration:none;color:var(--text);transition:.15s;display:block;}
-.card:hover{border-color:var(--accent);background:var(--surface2);}
-.card-icon{font-size:20px;margin-bottom:8px;}
-.card h3{font-size:13px;font-weight:700;margin-bottom:4px;}
-.card p{font-size:11px;color:var(--muted);}
-.badge{display:inline-block;padding:1px 7px;border-radius:10px;font-size:9px;font-family:var(--mono);margin-top:6px;}
-.badge-live{background:rgba(16,185,129,.15);color:var(--green);border:1px solid rgba(16,185,129,.3);}
-.badge-wip{background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3);}
-
-@media (max-width: 768px) {
-  body { font-size: 13px !important; padding: 16px 14px !important; }
-  .grid { grid-template-columns: 1fr !important; }
-  .card { width: 100% !important; min-width: unset !important; }
-
-  .tbl, table {
-    display: block !important;
-    width: 100% !important;
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-  }
-  .tbl td, .tbl th, table td, table th {
-    padding: 8px 10px !important;
-    font-size: 12px !important;
-    line-height: 1.6 !important;
-    word-break: break-word !important;
-  }
-
-  .hdr { padding: 20px 16px !important; }
-  .hdr h1 { font-size: 18px !important; }
-  .hdr .subtitle { font-size: 11px !important; }
-
-  .tab-bar {
-    padding: 0 12px !important;
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-  }
-  .tab-btn {
-    font-size: 11px !important;
-    padding: 11px 12px !important;
-    flex-shrink: 0 !important;
-  }
-
-  .tab-pane, .container { padding: 18px 14px !important; }
-
-  .sec-title { font-size: 14px !important; }
-  .sec-sub { font-size: 13px !important; }
-
-  .notice, .card { padding: 12px 14px !important; }
-  .notice p { font-size: 12px !important; }
-
-  .code-block, .prompt-box, pre, .cmd {
-    font-size: 11px !important;
-    padding: 10px 12px !important;
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-    word-break: break-all !important;
-  }
-
-  svg { max-width: 100% !important; height: auto !important; }
-  .svg-wrap, .flow-svg { padding: 12px 8px !important; }
-
-  .signal-grid, .phase-grid, .stack-card {
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-  }
-
-  .hero, .banner, .bigmsg { padding: 16px 18px !important; }
-  .hero-title, .banner-title { font-size: 15px !important; }
-  .hero-body, .banner-body { font-size: 12px !important; }
-}
-</style>
 </head>
 <body>
-<div class="inner">
-  <div class="hdr">
-    <h1>はんちょー ／ Document Hub</h1>
-    <p>AI収益化プロジェクト・学習計画・V-Consultant の共有ドキュメント置き場</p>
-  </div>
 
-  <div class="section">
+<header>
+  <div class="hdr-top">
+    <div class="hdr-inner">
+      <div>
+        <h1>はんちょー ／ Document Hub</h1>
+        <p>AI収益化プロジェクト・学習計画・V-Consultant の共有ドキュメント置き場</p>
+      </div>
+    </div>
+  </div>
+  <div class="hdr-meta">
+    <span>📄 27 docs</span>
+    <span>🗓️ 2026-05-18</span>
+    <span><a href="search.html">🔍 全文検索</a></span>
+    <span><a href="Personal_Dashboard.html">📌 ダッシュボード</a></span>
+    <span><a href="CHANGELOG.html">📜 CHANGELOG</a></span>
+  </div>
+</header>
+
+<main>
+
+  <div class="sec">
     <div class="sec-title">プロジェクト管理</div>
     <div class="grid">
+
       <a class="card" href="Project_Master_Document.html">
-        <div class="card-icon">📊</div>
-        <h3>Project Master Document</h3>
-        <p>AI収益化プロジェクト全体の計画・作業ログ・課題台帳</p>
-        <span class="badge badge-live">LIVE</span>
+        <div class="card-head">
+          <div class="card-icon">📊</div>
+          <div>
+            <div class="card-title">Project Master Document</div>
+            <div class="card-sub">AI収益化プロジェクト全体の計画・作業ログ・課題台帳</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">LIVE</span></div>
       </a>
+
       <a class="card" href="Pipeline_SystemReview_20260507.html">
-        <div class="card-icon">⚙️</div>
-        <h3>Pipeline System Review</h3>
-        <p>AI記事生成パイプラインのシステムレビュー</p>
-        <span class="badge badge-live">LIVE</span>
+        <div class="card-head">
+          <div class="card-icon">⚙️</div>
+          <div>
+            <div class="card-title">Pipeline System Review</div>
+            <div class="card-sub">AI記事生成パイプラインのシステムレビュー</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">LIVE</span></div>
       </a>
-      <a class="card" href="CHANGELOG.html">
-        <div class="card-icon">📜</div>
-        <h3>CHANGELOG</h3>
-        <p>Claude・Gemini・人間の共同編集履歴サマリ</p>
-        <span class="badge badge-live">LIVE</span>
+
+      <a class="card" href="Personal_Dashboard.html">
+        <div class="card-head">
+          <div class="card-icon">📌</div>
+          <div>
+            <div class="card-title">パーソナル・コマンドセンター</div>
+            <div class="card-sub">AI副業・投資・キャリア・英語の4軸進捗ダッシュボード</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">2026-05-18</span></div>
       </a>
+
       <a class="card" href="Demo_Script_Department_Meeting.html">
-        <div class="card-icon">🎤</div>
-        <h3>部内勉強会デモ進行台本</h3>
-        <p>部内勉強会向けAIデモの進行台本・実演手順</p>
-        <span class="badge badge-live">2026-05-16</span>
+        <div class="card-head">
+          <div class="card-icon">🎤</div>
+          <div>
+            <div class="card-title">部内勉強会デモ進行台本</div>
+            <div class="card-sub">部内勉強会向けAIデモの進行台本・実演手順</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">2026-05-16</span></div>
       </a>
+
       <a class="card" href="Handoff_Document_20260515.html">
-        <div class="card-icon">📤</div>
-        <h3>引き継ぎ資料 2026-05-15</h3>
-        <p>dx-nexus knowledge-hub セッション 2026-05-15 の作業状況・次アクション引き継ぎ</p>
-        <span class="badge badge-live">2026-05-15</span>
+        <div class="card-head">
+          <div class="card-icon">📤</div>
+          <div>
+            <div class="card-title">引き継ぎ資料 2026-05-15</div>
+            <div class="card-sub">セッション 2026-05-15 の作業状況・次アクション引き継ぎ</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">2026-05-15</span></div>
       </a>
+
       <a class="card" href="Handoff_AI_Prompts_20260516.html">
-        <div class="card-icon">📋</div>
-        <h3>他AI引き継ぎプロンプト集 v2</h3>
-        <p>2026-05-16 版 他AI向け引き継ぎプロンプト集（v2）</p>
-        <span class="badge badge-live">2026-05-16</span>
+        <div class="card-head">
+          <div class="card-icon">📋</div>
+          <div>
+            <div class="card-title">他AI引き継ぎプロンプト集 v2</div>
+            <div class="card-sub">2026-05-16 版 他AI向け引き継ぎプロンプト集</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">2026-05-16</span></div>
       </a>
+
+      <a class="card" href="Handoff_Document_20260518.html">
+        <div class="card-head">
+          <div class="card-icon">📤</div>
+          <div>
+            <div class="card-title">引き継ぎ資料 2026-05-18</div>
+            <div class="card-sub">L4アップグレードセッション 2026-05-18 の引き継ぎ</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">2026-05-18</span></div>
+      </a>
+
     </div>
   </div>
 
-  <div class="section">
+  <div class="sec">
     <div class="sec-title">学習計画</div>
     <div class="grid">
+
       <a class="card" href="AI_Learning_Plan.html">
-        <div class="card-icon">🎓</div>
-        <h3>AI統合学習計画</h3>
-        <p>ユニコスクール × Anthropic Academy × GitHub Courses</p>
-        <span class="badge badge-live">LIVE</span>
+        <div class="card-head">
+          <div class="card-icon">🎓</div>
+          <div>
+            <div class="card-title">AI統合学習計画</div>
+            <div class="card-sub">ユニコスクール × Anthropic Academy × GitHub Courses</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">LIVE</span></div>
       </a>
+
       <a class="card" href="Unicorn_School_Plan.html">
-        <div class="card-icon">🦄</div>
-        <h3>ユニコスクール受講計画書</h3>
-        <p>AIエージェント開発コース 受講進捗管理</p>
-        <span class="badge badge-live">LIVE</span>
+        <div class="card-head">
+          <div class="card-icon">🦄</div>
+          <div>
+            <div class="card-title">ユニコスクール受講計画書</div>
+            <div class="card-sub">AIエージェント開発コース 受講進捗管理</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">LIVE</span></div>
       </a>
+
       <a class="card" href="Anthropic_Academy_Plan_Internal.html">
-        <div class="card-icon">🏢</div>
-        <h3>Anthropic Academy 活用ガイド（社内版）</h3>
-        <p>全コース概要・用語集・システム連携・役割別ロードマップ</p>
-        <span class="badge badge-live">LIVE</span>
+        <div class="card-head">
+          <div class="card-icon">🏢</div>
+          <div>
+            <div class="card-title">Anthropic Academy 活用ガイド（社内版）</div>
+            <div class="card-sub">全コース概要・用語集・システム連携・役割別ロードマップ</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">LIVE</span></div>
       </a>
+
       <a class="card" href="Troubleshooting_QA.html">
-        <div class="card-icon">🛠️</div>
-        <h3>トラブルシュート &amp; QA一覧</h3>
-        <p>ハマりやすい問題14件・AI自動改善目標付き</p>
-        <span class="badge badge-live">LIVE</span>
+        <div class="card-head">
+          <div class="card-icon">🛠️</div>
+          <div>
+            <div class="card-title">トラブルシュート &amp; QA一覧</div>
+            <div class="card-sub">ハマりやすい問題14件・AI自動改善目標付き</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">LIVE</span></div>
       </a>
+
       <a class="card" href="Anthropic_Academy_Plan.html">
-        <div class="card-icon">🤖</div>
-        <h3>Anthropic Academy 計画書</h3>
-        <p>17コース受講ロードマップ</p>
-        <span class="badge badge-live">LIVE</span>
+        <div class="card-head">
+          <div class="card-icon">🤖</div>
+          <div>
+            <div class="card-title">Anthropic Academy 計画書</div>
+            <div class="card-sub">17コース受講ロードマップ</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">LIVE</span></div>
       </a>
+
     </div>
   </div>
 
-  <div class="section">
+  <div class="sec">
     <div class="sec-title">V-Consultant</div>
     <div class="grid">
+
       <a class="card" href="V_Consultant_System_Overview.html">
-        <div class="card-icon">🎭</div>
-        <h3>V-Consultant システム概要</h3>
-        <p>AIアバター×声質変換環境の全体構成</p>
-        <span class="badge badge-live">LIVE</span>
+        <div class="card-head">
+          <div class="card-icon">🎭</div>
+          <div>
+            <div class="card-title">V-Consultant システム概要</div>
+            <div class="card-sub">AIアバター×声質変換環境の全体構成</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">LIVE</span></div>
       </a>
+
       <a class="card" href="V_Consultant_Project_Definition.html">
-        <div class="card-icon">📋</div>
-        <h3>V-Consultant プロジェクト定義書</h3>
-        <p>プロジェクトスコープ・要件・アクション</p>
-        <span class="badge badge-live">LIVE</span>
+        <div class="card-head">
+          <div class="card-icon">📋</div>
+          <div>
+            <div class="card-title">V-Consultant プロジェクト定義書</div>
+            <div class="card-sub">プロジェクトスコープ・要件・アクション</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">LIVE</span></div>
       </a>
+
       <a class="card" href="Universal_Generation_Flow_v1.html">
-        <div class="card-icon">🔄</div>
-        <h3>JSON駆動 HTML自動生成 汎用フロー</h3>
-        <p>JSON入力からHTML自動生成する汎用フロー・手順・テンプレート</p>
-        <span class="badge badge-live">2026-05-16</span>
+        <div class="card-head">
+          <div class="card-icon">🔄</div>
+          <div>
+            <div class="card-title">JSON駆動 HTML自動生成 汎用フロー</div>
+            <div class="card-sub">JSON入力からHTML自動生成する汎用フロー・手順・テンプレート</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">2026-05-16</span></div>
       </a>
+
       <a class="card" href="Hancho_Sample_Filled_v1.html">
-        <div class="card-icon">📝</div>
-        <h3>汎用フロー・はんちょう実例ページ</h3>
-        <p>JSON駆動生成フローではんちょーを実際に作成した実例ページ</p>
-        <span class="badge badge-live">2026-05-16</span>
+        <div class="card-head">
+          <div class="card-icon">📝</div>
+          <div>
+            <div class="card-title">汎用フロー・はんちょう実例ページ</div>
+            <div class="card-sub">JSON駆動生成フローではんちょーを実際に作成した実例</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">2026-05-16</span></div>
       </a>
+
       <a class="card" href="Hancho_Business_AI_Practice_v1.html">
-        <div class="card-icon">💼</div>
-        <h3>はんちょー業務AI活用集</h3>
-        <p>DXコンサル業務AI活用ガイド v1・はんちょーフレームワーク活用ノウハウ</p>
-        <span class="badge badge-live">2026-05-16</span>
+        <div class="card-head">
+          <div class="card-icon">💼</div>
+          <div>
+            <div class="card-title">はんちょー業務AI活用集</div>
+            <div class="card-sub">DXコンサル業務AI活用ガイド v1・フレームワーク活用ノウハウ</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">2026-05-16</span></div>
       </a>
+
     </div>
   </div>
 
-  <div class="section">
+  <div class="sec">
     <div class="sec-title">ツール・自動化</div>
     <div class="grid">
+
+      <a class="card" href="search.html">
+        <div class="card-head">
+          <div class="card-icon">🔍</div>
+          <div>
+            <div class="card-title">全文検索</div>
+            <div class="card-sub">27本のドキュメントをキーワードで横断検索</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">2026-05-18</span></div>
+      </a>
+
       <a class="card" href="Navigator_Generator.html">
-        <div class="card-icon">🚀</div>
-        <h3>ナビゲーター・ジェネレーター</h3>
-        <p>基本情報入力でClaude Code投入用プロンプトを自動生成</p>
-        <span class="badge badge-wip">PROTOTYPE</span>
+        <div class="card-head">
+          <div class="card-icon">🚀</div>
+          <div>
+            <div class="card-title">ナビゲーター・ジェネレーター</div>
+            <div class="card-sub">基本情報入力でClaude Code投入用プロンプトを自動生成</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-wip">PROTOTYPE</span></div>
       </a>
+
       <a class="card" href="Generator_Concept_Draft.html">
-        <div class="card-icon">🚧</div>
-        <h3>ジェネレーター構想ドラフト</h3>
-        <p>ナビゲーター・ジェネレーターの認証連携・セキュリティ要件・次アクション整理</p>
-        <span class="badge badge-wip">WIP</span>
+        <div class="card-head">
+          <div class="card-icon">🚧</div>
+          <div>
+            <div class="card-title">ジェネレーター構想ドラフト</div>
+            <div class="card-sub">ナビゲーター・ジェネレーターの認証連携・セキュリティ要件</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-wip">WIP</span></div>
       </a>
+
       <a class="card" href="AI_Monetization_Strategy.html">
-        <div class="card-icon">🏗️</div>
-        <h3>AI×マネタイズ自動化戦略・アーキテクチャ設計書</h3>
-        <p>AI活用マネタイズの自動化戦略とシステムアーキテクチャ設計書</p>
-        <span class="badge badge-live">2026-05-17</span>
+        <div class="card-head">
+          <div class="card-icon">🏗️</div>
+          <div>
+            <div class="card-title">AI×マネタイズ自動化戦略</div>
+            <div class="card-sub">AI活用マネタイズの自動化戦略とシステムアーキテクチャ設計書</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">2026-05-17</span></div>
       </a>
+
       <a class="card" href="ClaudeCode_Launch_Environment_Guide_v1.html">
-        <div class="card-icon">🛠️</div>
-        <h3>Claude Code 起動環境ガイド</h3>
-        <p>Claude Code の起動・環境構築・初期設定手順ガイド</p>
-        <span class="badge badge-live">2026-05-17</span>
+        <div class="card-head">
+          <div class="card-icon">🛠️</div>
+          <div>
+            <div class="card-title">Claude Code 起動環境ガイド</div>
+            <div class="card-sub">Claude Code の起動・環境構築・初期設定手順ガイド</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">2026-05-17</span></div>
       </a>
+
       <a class="card" href="Claude_Code_Practical_Guide_v1.html">
-        <div class="card-icon">⌨️</div>
-        <h3>Claude Code 実践運用ガイド</h3>
-        <p>Claude Code の実務活用・コマンド・ベストプラクティス集</p>
-        <span class="badge badge-live">2026-05-15</span>
+        <div class="card-head">
+          <div class="card-icon">⌨️</div>
+          <div>
+            <div class="card-title">Claude Code 実践運用ガイド</div>
+            <div class="card-sub">Claude Code の実務活用・コマンド・ベストプラクティス集</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">2026-05-15</span></div>
       </a>
+
       <a class="card" href="KnowledgeHub_Management_Prompt_v1.html">
-        <div class="card-icon">🗂️</div>
-        <h3>knowledge-hub 全体管理メタプロンプト</h3>
-        <p>ドキュメントハブ運用・更新・整合性管理プロンプト集</p>
-        <span class="badge badge-live">2026-05-16</span>
+        <div class="card-head">
+          <div class="card-icon">🗂️</div>
+          <div>
+            <div class="card-title">knowledge-hub 全体管理メタプロンプト</div>
+            <div class="card-sub">ドキュメントハブ運用・更新・整合性管理プロンプト集</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">2026-05-16</span></div>
       </a>
+
     </div>
   </div>
 
-
-  <div class="section">
+  <div class="sec">
     <div class="sec-title">個別プロジェクト</div>
     <div class="grid">
+
       <a class="card" href="Setouchi_Space_Project_v1.html">
-        <div class="card-icon">🌊</div>
-        <h3>瀬戸内スペース Webプロジェクト記録</h3>
-        <p>Astro + Decap CMS + Netlify による Jamstack 構成</p>
-        <span class="badge badge-live">2026-05-17</span>
+        <div class="card-head">
+          <div class="card-icon">🌊</div>
+          <div>
+            <div class="card-title">瀬戸内スペース Webプロジェクト記録</div>
+            <div class="card-sub">Astro + Decap CMS + Netlify による Jamstack 構成</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">2026-05-17</span></div>
       </a>
+
+      <a class="card" href="Hancho_Algo_Trading_Project_v1.html">
+        <div class="card-head">
+          <div class="card-icon">📈</div>
+          <div>
+            <div class="card-title">Algo Trading Project</div>
+            <div class="card-sub">アルゴリズムトレーディングプロジェクト詳細</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">LIVE</span></div>
+      </a>
+
+      <a class="card" href="Algo_Trading_Decision_Report_v1.html">
+        <div class="card-head">
+          <div class="card-icon">📊</div>
+          <div>
+            <div class="card-title">Algo Trading 実弾判断レポート</div>
+            <div class="card-sub">専門家パネル8名による多角検証・実弾投入判断</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">2026-05-16</span></div>
+      </a>
+
+      <a class="card" href="Hancho_Life_Portfolio_v1.html">
+        <div class="card-head">
+          <div class="card-icon">🎯</div>
+          <div>
+            <div class="card-title">Life Portfolio</div>
+            <div class="card-sub">はんちょーのライフポートフォリオ・キャリア設計</div>
+          </div>
+        </div>
+        <div class="card-foot"><span class="badge badge-live">LIVE</span></div>
+      </a>
+
     </div>
   </div>
 
-  <div class="footer">
-    github.com/dx-nexus/knowledge-hub ／ GitHubにpushすると自動更新
-  </div>
-</div>
+</main>
+
+<footer class="doc-footer">
+  github.com/dx-nexus/knowledge-hub ／ GitHubにpushすると自動更新
+</footer>
+
 </body>
 </html>

@@ -211,6 +211,31 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 
       <!-- ▼ ここから履歴エントリ。新しいものを上に追加してください ▼ -->
 
+      <div class="entry" data-actor="claude" data-cat="add">
+        <div class="entry-head">
+          <span class="entry-date">2026-05-18</span>
+          <span class="entry-actor actor-claude">Claude</span>
+          <span class="entry-cat cat-add">追加</span>
+        </div>
+        <div class="entry-title">Knowledge Hub "次世代L4" アップグレード — 5タスク完了</div>
+        <div class="entry-body">
+          【Task 0】index.html インラインCSS撤廃・Plan C (common.css) に完全統一。3つのindex未登録ファイルもindex追加。<br>
+          【Task 0b】scripts/deploy.ps1 復元 — git add→commit→push を1コマンドで実行するデプロイヘルパー。<br>
+          【Task 1】inbox/next_request.json + scripts/poll_inbox.py 作成。GitHub API でリモートSHAを監視し変更時に git pull → claude 自動起動。GITHUB_TOKEN / POLL_INTERVAL / BRANCH 環境変数で設定可能。<br>
+          【Task 2】search.html 作成。27本ドキュメントを対象にした軽量JS横断検索（Lunr不使用・DOM フィルタリング）。複数キーワード AND 検索対応。<br>
+          【Task 3】Personal_Dashboard.html 作成。AI副業・投資・キャリア・英語の4軸タブ型ダッシュボード。KPI表示・チェックボックス式宿題リスト付き。index.html にも登録済み。
+        </div>
+        <div class="entry-files">
+          <a class="entry-file" href="index.html">index.html</a>
+          <a class="entry-file" href="assets/common.css">assets/common.css</a>
+          <a class="entry-file" href="search.html">search.html</a>
+          <a class="entry-file" href="Personal_Dashboard.html">Personal_Dashboard.html</a>
+          <a class="entry-file" href="scripts/deploy.ps1">scripts/deploy.ps1</a>
+          <a class="entry-file" href="scripts/poll_inbox.py">scripts/poll_inbox.py</a>
+          <a class="entry-file" href="inbox/next_request.json">inbox/next_request.json</a>
+        </div>
+      </div>
+
       <div class="entry" data-actor="claude" data-cat="change">
         <div class="entry-head">
           <span class="entry-date">2026-05-18</span>

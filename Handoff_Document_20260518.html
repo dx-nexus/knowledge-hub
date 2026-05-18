@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>引き継ぎ資料 2026-05-18 ／ はんちょー Document Hub</title>
+<link rel="stylesheet" href="assets/common.css">
+</head>
+<body>
+
+<header>
+  <div class="hdr-top">
+    <div class="hdr-inner">
+      <div>
+        <h1>📤 引き継ぎ資料 2026-05-18</h1>
+        <p>Knowledge Hub "次世代L4" アップグレードセッション — 作業記録と次アクション</p>
+      </div>
+    </div>
+  </div>
+  <div class="hdr-meta">
+    <span><a href="index.html">← Hub</a></span>
+    <span>🗓️ 2026-05-18</span>
+    <span class="actor-claude" style="padding:4px 10px;border-radius:4px;font-family:var(--mono);font-size:10px;">by Claude</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- 完了タスクサマリ -->
+  <div class="sec">
+    <div class="sec-title">完了タスクサマリ</div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">0a</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">index.html デザイン統一（インラインCSS撤廃）</div>
+        <div class="roadmap-body">
+          独自ダークネイビーテーマのインラインCSSを全削除し、<code>assets/common.css</code>（Plan C Navy×Amber）に完全統一。
+          カードを <code>.card-head / .card-icon / .card-title / .card-sub / .card-foot</code> の正規構造にリファクタ。
+          index未登録だった3ファイル（Hancho_Life_Portfolio_v1、Hancho_Algo_Trading_Project_v1、Algo_Trading_Decision_Report_v1）も「個別プロジェクト」セクションへ追加。
+        </div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">0b</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">scripts/deploy.ps1 復元</div>
+        <div class="roadmap-body">
+          <code>.\scripts\deploy.ps1 [-Message "任意メッセージ"]</code> で git add → commit → push を1コマンド実行。
+          変更なしの場合はスキップ。デプロイ後に公開URLを表示する。
+        </div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">1</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">完全無人インボックス構築</div>
+        <div class="roadmap-body">
+          <strong>inbox/next_request.json</strong>：ブラウザからGitHub API経由で書き込むリクエスト受け皿（初期値 <code>{}</code>）。<br>
+          <strong>scripts/poll_inbox.py</strong>：GitHub API でリモートファイルのSHAを定期チェック（デフォルト60秒）。
+          変更検知時に <code>git pull</code> → JSONの <code>task</code> フィールドを読んで <code>claude --dangerously-skip-permissions -p "..."</code> をサブプロセス起動。
+          処理後にローカルinboxを <code>{}</code> へリセット。<br>
+          <strong>必要な環境変数：</strong> <code>GITHUB_TOKEN</code>, <code>GITHUB_REPO</code>（省略時: dx-nexus/knowledge-hub）
+        </div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">2</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">横断検索ページ (search.html)</div>
+        <div class="roadmap-body">
+          27本のドキュメントを対象に、タイトル・説明・カテゴリ・タグを AND 検索。
+          Lunr.js 等の外部依存なし。入力即時フィルタリング（input イベント）。
+          index.html ヘッダーの「🔍 全文検索」リンクおよびツール・自動化セクションのカードからアクセス可能。
+        </div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">3</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">Personal_Dashboard.html 作成</div>
+        <div class="roadmap-body">
+          4軸（AI副業・投資・キャリア・英語学習）タブ型ダッシュボード。
+          各軸に「現在フェーズ」「KPI」「次の宿題リスト（チェックボックス式）」を配置。
+          Plan C 共通CSSデザイン踏襲。
+          index.html ヘッダーの「📌 ダッシュボード」リンクおよびプロジェクト管理セクションのカードからアクセス可能。
+        </div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">4</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">CHANGELOG更新 + 本引き継ぎ資料作成</div>
+        <div class="roadmap-body">
+          CHANGELOG.html に2026-05-18 エントリ追加（タスク0〜3の完了内容）。
+          本ページ（Handoff_Document_20260518.html）を作成し、index.html「プロジェクト管理」セクションに登録済み。
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ファイル一覧 -->
+  <div class="sec">
+    <div class="sec-title">作成・更新ファイル一覧</div>
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>ファイル</th>
+          <th>操作</th>
+          <th>概要</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="index.html">index.html</a></td>
+          <td><span class="badge badge-live">更新</span></td>
+          <td>インラインCSS撤廃・Plan C統一・3ファイル追加・Search/Dashboard リンク追加</td>
+        </tr>
+        <tr>
+          <td><a href="assets/common.css">assets/common.css</a></td>
+          <td><span class="badge badge-live">追加</span></td>
+          <td>.hdr-meta a スタイル追加（リンク色継承・hover opacity）</td>
+        </tr>
+        <tr>
+          <td><a href="search.html">search.html</a></td>
+          <td><span class="badge badge-live">新規</span></td>
+          <td>27本横断検索ページ（軽量JS、外部依存なし）</td>
+        </tr>
+        <tr>
+          <td><a href="Personal_Dashboard.html">Personal_Dashboard.html</a></td>
+          <td><span class="badge badge-live">新規</span></td>
+          <td>4軸パーソナルダッシュボード（タブ+チェックボックス+KPI）</td>
+        </tr>
+        <tr>
+          <td>scripts/deploy.ps1</td>
+          <td><span class="badge badge-live">新規</span></td>
+          <td>デプロイヘルパーPowerShellスクリプト</td>
+        </tr>
+        <tr>
+          <td>scripts/poll_inbox.py</td>
+          <td><span class="badge badge-live">新規</span></td>
+          <td>GitHub API ポーラー → claude 自動起動スクリプト</td>
+        </tr>
+        <tr>
+          <td>inbox/next_request.json</td>
+          <td><span class="badge badge-live">新規</span></td>
+          <td>無人インボックス受け皿ファイル（初期値 {}）</td>
+        </tr>
+        <tr>
+          <td><a href="CHANGELOG.html">CHANGELOG.html</a></td>
+          <td><span class="badge badge-live">更新</span></td>
+          <td>2026-05-18 エントリ追記</td>
+        </tr>
+        <tr>
+          <td><a href="Handoff_Document_20260518.html">Handoff_Document_20260518.html</a></td>
+          <td><span class="badge badge-live">新規</span></td>
+          <td>本ドキュメント</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 次アクション -->
+  <div class="sec">
+    <div class="sec-title">次のAIへの引き継ぎ事項</div>
+    <div class="notice notice-amber">
+      <p><strong>インボックス自動化の起動方法：</strong><br>
+        環境変数 <code>GITHUB_TOKEN</code> と <code>GITHUB_REPO=dx-nexus/knowledge-hub</code> を設定してから
+        <code>python scripts/poll_inbox.py</code> を実行。
+        GitHub API 経由で <code>inbox/next_request.json</code> の <code>task</code> フィールドに指示テキストを書くと Claude が自動起動する。
+      </p>
+    </div>
+    <div class="notice notice-blue" style="margin-top:10px;">
+      <p><strong>ダッシュボードのKPI更新：</strong><br>
+        <code>Personal_Dashboard.html</code> の各 <code>.kpi-val</code> の「—」を実数値に更新すること。
+        また宿題リストも定期的に見直し・追加すること。
+      </p>
+    </div>
+    <div class="notice notice-green" style="margin-top:10px;">
+      <p><strong>search.html のドキュメント追加：</strong><br>
+        新しいHTMLを作成したら <code>search.html</code> の <code>const DOCS = [...]</code> 配列に1エントリ追加すること。
+        フォーマット: <code>{ title, desc, url, cat, icon, status, date, tags }</code>
+      </p>
+    </div>
+  </div>
+
+  <!-- セルフチェック -->
+  <div class="sec">
+    <div class="sec-title">セルフチェック結果</div>
+    <table class="tbl">
+      <thead><tr><th>チェック項目</th><th>結果</th></tr></thead>
+      <tbody>
+        <tr><td>タブ id の重複</td><td>✅ なし</td></tr>
+        <tr><td>doc-footer の存在</td><td>✅ 全新規ファイルに付与済み</td></tr>
+        <tr><td>scriptタグの整合性</td><td>✅ search.html / Personal_Dashboard.html ともに閉じタグ確認済み</td></tr>
+        <tr><td>個人情報の混入</td><td>✅ なし（メールアドレス等なし）</td></tr>
+        <tr><td>CSS 削除禁止ルール</td><td>✅ common.css は追加のみ（.hdr-meta a 2行追加）</td></tr>
+        <tr><td>PowerShell &gt; リダイレクト禁止</td><td>✅ deploy.ps1 は Write-Host のみ使用</td></tr>
+        <tr><td>index.html → 新規ファイルのリンク</td><td>✅ Personal_Dashboard.html / search.html / Handoff_Document_20260518.html すべて登録</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+
+<footer class="doc-footer">
+  github.com/dx-nexus/knowledge-hub ／ GitHubにpushすると自動更新
+</footer>
+
+</body>
+</html>
