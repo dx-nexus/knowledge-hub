@@ -207,12 +207,14 @@ button:hover, .btn:hover { background: var(--accent2); }
 .tbl tr:hover td { background: rgba(254,243,199,.5); }
 
 /* ── Notice ── */
-.notice { border-radius: 8px; padding: 14px 18px; margin: 12px 0; }
+.notice { border-radius: 8px; padding: 14px 18px; margin: 12px 0; display: inline-block; width: auto; max-width: 100%; min-width: 280px; }
 .notice-blue  { background: rgba(59,130,246,.06);  border-left: 3px solid #3b82f6; }
 .notice-green { background: rgba(16,185,129,.06);  border-left: 3px solid var(--green); }
 .notice-amber { background: rgba(217,119,6,.08);   border-left: 3px solid var(--accent); }
 .notice-red   { background: rgba(239,68,68,.06);   border-left: 3px solid var(--red); }
 .notice p { font-size: 13px; line-height: 1.9; word-break: keep-all; overflow-wrap: break-word; color: var(--text); }
+/* grid内では幅100%・block維持 */
+.grid > .notice, .grid-2 > .notice, .grid-3 > .notice { width: 100%; display: block; }
 
 /* ── Code Block (dark surface kept for readability) ── */
 .code-block-wrap {
