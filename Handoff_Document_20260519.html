@@ -156,12 +156,22 @@
         <tr>
           <td><a href="Handoff_Document_20260519.html">Handoff_Document_20260519.html</a></td>
           <td><span class="badge badge-live">新規</span></td>
-          <td>本引き継ぎ資料（このファイル）。セッション2の内容を追記更新済み。</td>
+          <td>本引き継ぎ資料（このファイル）。セッション1〜4の全作業を網羅。</td>
         </tr>
         <tr>
           <td><a href="Marketing_PMF_Map.html">Marketing_PMF_Map.html</a></td>
           <td><span class="badge badge-live">新規</span></td>
           <td>PMFマトリクス2×2。3タブ（マトリクス図・戦略詳細・ブルーオーシャン詳細）。</td>
+        </tr>
+        <tr>
+          <td>private-core/scripts/deploy_to_hub.ps1</td>
+          <td><span class="badge badge-live">新規</span></td>
+          <td>生成HTMLをhancho-docsへコピー→commit→push する統合デプロイスクリプト。</td>
+        </tr>
+        <tr>
+          <td>hancho-kb/.claude/skills/handoff/SKILL.md</td>
+          <td><span class="badge badge-live">新規</span></td>
+          <td>/handoffスキル定義ファイル。引き継ぎ資料生成の完全自動化手順を内包。</td>
         </tr>
       </tbody>
     </table>
@@ -193,6 +203,82 @@
     </div>
   </div>
 
+  <!-- セッション3追記 -->
+  <div class="sec">
+    <div class="sec-title">【セッション3追記】The Great Migration — 2リポジトリ商用構成への移行（2026-05-19）</div>
+
+    <div class="notice notice-green">
+      <p>
+        <strong>✅ アーキテクチャ移行完了：</strong>
+        Public リポジトリ（hancho-docs）からコア資産（scripts/・inbox/）を Private リポジトリ（-private-core）へ完全移行。
+        公開専用リポジトリと生成エンジン＋機密資産リポジトリに役割分離した2リポジトリ商用構成が確立。
+      </p>
+    </div>
+
+    <div class="roadmap-step" style="margin-top:14px;">
+      <div class="roadmap-num" style="background:var(--accent);">+1</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">hancho-docs → private-core へのファイル移行</div>
+        <div class="roadmap-body">
+          <code>git rm --cached</code> で hancho-docs から scripts/ と inbox/ を削除。<br>
+          -private-core へ同ファイル群を移動（poll_inbox.py, next_request.json, deploy.ps1）。<br>
+          新設フォルダ：<code>client/</code>（顧客案件）・<code>algo-trading/</code>（売買ロジック）を private-core に追加。
+        </div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+    <div class="roadmap-step">
+      <div class="roadmap-num" style="background:var(--accent);">+2</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">deploy_to_hub.ps1 新設</div>
+        <div class="roadmap-body">
+          <code>private-core/scripts/deploy_to_hub.ps1</code> を新規作成。<br>
+          <code>-Files</code> または <code>-Glob</code> パラメータで対象HTMLを指定し、hancho-docs へコピー → git add/commit/push を一括実行。<br>
+          <code>-DryRun</code> スイッチで実行内容の事前確認も可能。これにより private-core を「唯一の生成エンジン」として確立。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- セッション4追記 -->
+  <div class="sec">
+    <div class="sec-title">【セッション4追記】/handoff スキル作成 + 自動化推薦（2026-05-19）</div>
+
+    <div class="notice notice-green">
+      <p>
+        <strong>✅ 運用自動化スキル確立：</strong>
+        Claude Code 専用の <code>/handoff</code> スキルを作成し、セッション終了時の引き継ぎドキュメント生成を完全自動化。
+        さらに <code>claude-code-setup</code> プラグインによるプロジェクト向け自動化推薦レポートを取得し、次の最適化候補を特定済み。
+      </p>
+    </div>
+
+    <div class="roadmap-step" style="margin-top:14px;">
+      <div class="roadmap-num" style="background:var(--accent);">+1</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">/handoff スキル作成（hancho-kb/.claude/skills/handoff/SKILL.md）</div>
+        <div class="roadmap-body">
+          STEP 0〜4 の実行手順（git log収集 → HTML生成 → index.html更新 → CHANGELOG更新 → commit/push）をスキルファイルとして定義。<br>
+          <strong>重要ルール：</strong>Handoff.md は絶対作成しない・インラインCSSは書かない・assets/common.css のクラスのみ使用。<br>
+          <code>/reload-plugins</code> 後に即時利用可能。次回セッションから <code>/handoff</code> と入力するだけで引き継ぎ資料が自動生成される。
+        </div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+    <div class="roadmap-step">
+      <div class="roadmap-num" style="background:var(--accent);">+2</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">claude-code-setup プラグイン導入 + 自動化推薦</div>
+        <div class="roadmap-body">
+          プロジェクト構成を解析し、以下の自動化候補を特定：<br>
+          ・<strong>MCP Server</strong>: context7（ライブドキュメント参照）・GitHub MCP（Issues/PR管理）<br>
+          ・<strong>Hook</strong>: PostToolUse で編集後に自動フォーマット・Lint実行<br>
+          ・<strong>Subagent</strong>: security-reviewer（認証・決済コードのセキュリティ監査）<br>
+          ・<strong>Skills</strong>: pr-check（PRチェックリスト）・release-notes（リリースノート生成）
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- 次回セッションへの引き継ぎ -->
   <div class="sec">
     <div class="sec-title">次回セッションへの引き継ぎ事項</div>
@@ -205,7 +291,7 @@
       </p>
     </div>
 
-    <h4 style="font-size:13px;font-weight:700;color:var(--accent2);margin:16px 0 8px;">🔲 残課題・次のアクション（最新版）</h4>
+    <h4 style="font-size:13px;font-weight:700;color:var(--accent2);margin:16px 0 8px;">🔲 残課題・次のアクション（最終版）</h4>
     <table class="tbl">
       <thead>
         <tr><th>優先度</th><th>タスク</th><th>担当</th><th>ステータス</th></tr>
@@ -219,7 +305,7 @@
         </tr>
         <tr>
           <td>⭐⭐⭐</td>
-          <td>AI_System_Architecture_v2 + Marketing_PMF_Map を NotebookLM に登録</td>
+          <td>AI_System_Architecture_v2 + Marketing_PMF_Map + Handoff_20260519 を NotebookLM に登録</td>
           <td>人間</td>
           <td><span class="badge b-todo">TODO</span></td>
         </tr>
@@ -231,15 +317,27 @@
         </tr>
         <tr>
           <td>⭐⭐</td>
-          <td>scripts/poll_inbox.py を稼働させ、GitHub API経由でのインボックス受信を自動化</td>
+          <td>update_master.py の SYNC_FILES に Marketing_PMF_Map.html を追加</td>
           <td>Claude Code</td>
-          <td><span class="badge b-hold">HOLD</span></td>
+          <td><span class="badge b-todo">TODO</span></td>
         </tr>
         <tr>
           <td>⭐⭐</td>
-          <td>update_master.py の SYNC_FILES に新規HTMLファイルを追加（Marketing_PMF_Map 含む）</td>
+          <td>The Great Migration 完了（scripts/・inbox/ を private-core へ移行・deploy_to_hub.ps1 新設）</td>
           <td>Claude Code</td>
-          <td><span class="badge b-done">完了（AI_Trend_Idea_List・AI_System_Architecture_v2）</span></td>
+          <td><span class="badge b-done">完了</span></td>
+        </tr>
+        <tr>
+          <td>⭐⭐</td>
+          <td>/handoff スキル作成 → 引き継ぎ資料生成の完全自動化</td>
+          <td>Claude Code</td>
+          <td><span class="badge b-done">完了</span></td>
+        </tr>
+        <tr>
+          <td>⭐⭐</td>
+          <td>scripts/poll_inbox.py を稼働させ、GitHub API経由でのインボックス受信を自動化</td>
+          <td>Claude Code</td>
+          <td><span class="badge b-hold">HOLD</span></td>
         </tr>
         <tr>
           <td>⭐</td>
