@@ -211,6 +211,24 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 
       <!-- ▼ ここから履歴エントリ。新しいものを上に追加してください ▼ -->
 
+      <div class="entry" data-actor="claude" data-cat="change">
+        <div class="entry-head">
+          <span class="entry-date">2026-05-19</span>
+          <span class="entry-actor actor-claude">Claude</span>
+          <span class="entry-cat cat-change">変更</span>
+        </div>
+        <div class="entry-title">Arch: 2リポジトリ商用構成への移行完了（The Great Migration）</div>
+        <div class="entry-body">
+          コア資産（scripts/・inbox/）を Public の hancho-docs から Private の -private-core へ移行。<br>
+          hancho-docs は「公開専用」、-private-core は「生成エンジン + 機密資産（client/・algo-trading/）」に役割分離。<br>
+          新設: private-core/scripts/deploy_to_hub.ps1 — 生成HTMLをhancho-docsへコピー→commit→pushする統合デプロイスクリプト。<br>
+          移行ファイル数: 3件（deploy.ps1, poll_inbox.py, next_request.json）。
+        </div>
+        <div class="entry-files">
+          <a class="entry-file" href="https://github.com/dx-nexus/-private-core" target="_blank" rel="noopener">-private-core (private)</a>
+        </div>
+      </div>
+
       <div class="entry" data-actor="claude" data-cat="add">
         <div class="entry-head">
           <span class="entry-date">2026-05-19</span>
