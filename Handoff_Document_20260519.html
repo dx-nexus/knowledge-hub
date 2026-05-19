@@ -156,10 +156,41 @@
         <tr>
           <td><a href="Handoff_Document_20260519.html">Handoff_Document_20260519.html</a></td>
           <td><span class="badge badge-live">新規</span></td>
-          <td>本引き継ぎ資料（このファイル）。</td>
+          <td>本引き継ぎ資料（このファイル）。セッション2の内容を追記更新済み。</td>
+        </tr>
+        <tr>
+          <td><a href="Marketing_PMF_Map.html">Marketing_PMF_Map.html</a></td>
+          <td><span class="badge badge-live">新規</span></td>
+          <td>PMFマトリクス2×2。3タブ（マトリクス図・戦略詳細・ブルーオーシャン詳細）。</td>
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <!-- セッション2追記 -->
+  <div class="sec">
+    <div class="sec-title">【セッション2追記】PMFマップ作成（2026-05-19）</div>
+
+    <div class="notice notice-green">
+      <p>
+        <strong>✅ 追加完了：</strong>
+        PMO（Gemini）＋人間の戦略会議で導出された「B2B×動的＝V-Consultant法人DX動画」を
+        ブルーオーシャン本命として特定し、2×2マトリクス図として可視化・公開済み。
+      </p>
+    </div>
+
+    <div class="roadmap-step" style="margin-top:14px;">
+      <div class="roadmap-num" style="background:var(--accent);">+1</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">Marketing_PMF_Map.html 作成・公開</div>
+        <div class="roadmap-body">
+          縦軸（静的↔動的）× 横軸（B2C↔B2B）の2×2マトリクスをCSS Gridで視覚化。<br>
+          ⭐ Q4（B2B×動的）をブルーオーシャン本命としてビジュアル強調。<br>
+          3タブ：マトリクス図 / 戦略詳細（ファネル設計・各象限詳細）/ ブルーオーシャン詳細（競合分析・収益シミュ・MVP計画）。<br>
+          index.html「AIトレンド・エコシステム設計」セクション先頭に追加。CHANGELOG自動追記済み。
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- 次回セッションへの引き継ぎ -->
@@ -168,13 +199,13 @@
 
     <div class="notice notice-amber">
       <p>
-        <strong>⚡ 最優先宿題：AI_Trend_Idea_List の継続更新</strong><br>
-        新しいトレンド・アイディアが発生した際は、inbox/next_request.json の <code>tabs</code> 配列に新しいタブ仕様を追加して
-        Claude Codeに投入するだけで自動的にHTMLが更新されます。人間の手動HTML編集は不要。
+        <strong>⚡ 最優先宿題：V-Consultant 法人DX動画 MVP の着手</strong><br>
+        Marketing_PMF_Map.html に記載のMVP計画（Week1〜2：七那華デモ動画作成）に進む。
+        v-consultant-lp リポジトリのサービスLPを更新し、七那華デモ動画を掲載する。
       </p>
     </div>
 
-    <h4 style="font-size:13px;font-weight:700;color:var(--accent2);margin:16px 0 8px;">🔲 残課題・次のアクション</h4>
+    <h4 style="font-size:13px;font-weight:700;color:var(--accent2);margin:16px 0 8px;">🔲 残課題・次のアクション（最新版）</h4>
     <table class="tbl">
       <thead>
         <tr><th>優先度</th><th>タスク</th><th>担当</th><th>ステータス</th></tr>
@@ -182,13 +213,19 @@
       <tbody>
         <tr>
           <td>⭐⭐⭐</td>
-          <td>AI_System_Architecture_v2 を NotebookLM に登録（外部記憶として追加）</td>
+          <td>七那華デモ動画（5分・AI研修入門）を1本作成 → v-consultant-lp に掲載</td>
+          <td>人間 + Claude Code</td>
+          <td><span class="badge b-todo">TODO</span></td>
+        </tr>
+        <tr>
+          <td>⭐⭐⭐</td>
+          <td>AI_System_Architecture_v2 + Marketing_PMF_Map を NotebookLM に登録</td>
           <td>人間</td>
           <td><span class="badge b-todo">TODO</span></td>
         </tr>
         <tr>
           <td>⭐⭐⭐</td>
-          <td>環境構築セット商材の出品準備（ココナラ等）を開始</td>
+          <td>環境構築セット商材（Q2）の出品準備（ococoナラ等）を開始</td>
           <td>人間 + Claude</td>
           <td><span class="badge b-todo">TODO</span></td>
         </tr>
@@ -200,9 +237,9 @@
         </tr>
         <tr>
           <td>⭐⭐</td>
-          <td>update_master.py の SYNC_FILES に AI_Trend_Idea_List.html と AI_System_Architecture_v2.html を追加</td>
+          <td>update_master.py の SYNC_FILES に新規HTMLファイルを追加（Marketing_PMF_Map 含む）</td>
           <td>Claude Code</td>
-          <td><span class="badge b-todo">TODO</span></td>
+          <td><span class="badge b-done">完了（AI_Trend_Idea_List・AI_System_Architecture_v2）</span></td>
         </tr>
         <tr>
           <td>⭐</td>
@@ -229,7 +266,7 @@
           <div class="card-icon">🌐</div>
           <div>
             <div class="card-title">Knowledge Hub</div>
-            <div class="card-sub">29ドキュメント公開中</div>
+            <div class="card-sub">30ドキュメント公開中</div>
           </div>
         </div>
         <div class="card-body">GitHub Pages自動デプロイ構成。全ドキュメントがassets/common.cssのPlan CデザインでUI統一済み。</div>

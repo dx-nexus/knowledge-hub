@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>商材PMFマップ ／ はんちょー Document Hub</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+/* ── Page-specific ── */
+h3 { font-size: 15px; font-weight: 700; color: var(--text); margin: 0 0 8px; }
+h4 { font-size: 13px; font-weight: 700; color: var(--accent2); margin: 14px 0 6px; }
+p  { font-size: 13px; color: var(--muted); line-height: 1.9; margin-bottom: 10px; }
+ul { padding-left: 18px; margin-bottom: 10px; }
+li { font-size: 13px; color: var(--muted); line-height: 1.9; margin-bottom: 3px; }
+li strong { color: var(--text); }
+
+/* ════════════════════════════════════════
+   2×2 MATRIX LAYOUT
+   ════════════════════════════════════════ */
+.matrix-wrap {
+  position: relative;
+  padding: 0 0 32px 0;
+  margin: 24px 0;
+}
+
+/* ── Axis title bars ── */
+.axis-y-label {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+  transform-origin: center center;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--accent2);
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.matrix-outer {
+  margin-left: 48px;
+}
+
+/* ── Y-axis top/bottom labels ── */
+.axis-y-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+}
+.axis-y-bar.top    { color: #7c3aed; }
+.axis-y-bar.bottom { color: var(--muted); }
+
+/* ── X-axis ── */
+.axis-x-bar {
+  display: grid;
+  grid-template-columns: 1fr 40px 1fr;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  height: 36px;
+}
+.axis-x-left, .axis-x-right {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-align: center;
+  text-transform: uppercase;
+}
+.axis-x-left  { color: #2563eb; }
+.axis-x-right { color: #059669; }
+.axis-x-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--muted);
+}
+
+/* ── Main 2×2 grid ── */
+.matrix-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 3px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--border);
+}
+
+/* ── Quadrant base ── */
+.quad {
+  background: var(--surface);
+  padding: 22px 24px 20px;
+  position: relative;
+  transition: .2s;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+}
+.quad:hover { z-index: 2; }
+
+/* Q1: B2C × Static (bottom-left) → blue-tinted */
+.quad-q1 {
+  background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%);
+  border-bottom-left-radius: 10px;
+}
+.quad-q1:hover { background: linear-gradient(135deg, #dbeafe 0%, #f1f5f9 100%); }
+
+/* Q2: B2B × Static (bottom-right) → green-tinted */
+.quad-q2 {
+  background: linear-gradient(135deg, #f0fdf4 0%, #f8fafc 100%);
+  border-bottom-right-radius: 10px;
+}
+.quad-q2:hover { background: linear-gradient(135deg, #dcfce7 0%, #f1f5f9 100%); }
+
+/* Q3: B2C × Dynamic (top-left) → purple-tinted */
+.quad-q3 {
+  background: linear-gradient(135deg, #faf5ff 0%, #f8fafc 100%);
+  border-top-left-radius: 10px;
+}
+.quad-q3:hover { background: linear-gradient(135deg, #ede9fe 0%, #f1f5f9 100%); }
+
+/* Q4: B2B × Dynamic (top-right) → BLUE OCEAN HERO ★ */
+.quad-q4 {
+  background: linear-gradient(135deg, #fffbeb 0%, #fff7ed 60%, #fefce8 100%);
+  border: none;
+  border-top-right-radius: 10px;
+  box-shadow: inset 0 0 0 2px var(--accent);
+  position: relative;
+  overflow: hidden;
+}
+.quad-q4::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 80% 20%, rgba(217,119,6,.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.quad-q4:hover {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a40 60%, #fffbeb 100%);
+}
+
+/* ── Quadrant header ── */
+.quad-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.quad-num {
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.quad-q1 .quad-num { background: rgba(37,99,235,.12); color: #1d4ed8; }
+.quad-q2 .quad-num { background: rgba(5,150,105,.12); color: #059669; }
+.quad-q3 .quad-num { background: rgba(124,58,237,.12); color: #7c3aed; }
+.quad-q4 .quad-num { background: var(--accent); color: #fff; }
+
+.quad-title {
+  font-size: 13px; font-weight: 700;
+  line-height: 1.4;
+}
+.quad-q1 .quad-title { color: #1e40af; }
+.quad-q2 .quad-title { color: #065f46; }
+.quad-q3 .quad-title { color: #5b21b6; }
+.quad-q4 .quad-title { color: var(--accent2); }
+
+/* ── Blue ocean badge ── */
+.bo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 9px; font-weight: 700;
+  letter-spacing: .1em;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+/* ── Quadrant content ── */
+.quad-desc {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.75;
+  margin-bottom: 10px;
+  flex: 1;
+}
+.quad-q4 .quad-desc { color: #78350f; }
+
+.quad-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: auto;
+}
+.quad-chip {
+  font-size: 10px;
+  font-family: var(--mono);
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+.quad-q1 .quad-chip { background: rgba(37,99,235,.06); color: #1d4ed8; border-color: rgba(37,99,235,.25); }
+.quad-q2 .quad-chip { background: rgba(5,150,105,.06); color: #059669; border-color: rgba(5,150,105,.25); }
+.quad-q3 .quad-chip { background: rgba(124,58,237,.06); color: #7c3aed; border-color: rgba(124,58,237,.25); }
+.quad-q4 .quad-chip { background: rgba(217,119,6,.1); color: var(--accent2); border-color: var(--border); }
+
+/* ── Center crosshair ── */
+.matrix-center {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 10;
+}
+.matrix-center-dot {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 3px solid var(--accent);
+  display: block;
+}
+
+/* ── Priority indicator in Q4 ── */
+.priority-star {
+  position: absolute;
+  top: 14px; right: 14px;
+  font-size: 20px;
+  opacity: .85;
+}
+
+/* ── Strategy cards below matrix ── */
+.strategy-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 20px 0;
+}
+.strategy-card {
+  background: var(--surface2);
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+  transition: .15s;
+}
+.strategy-card:hover { border-color: var(--accent); }
+.strategy-card.hero {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border: 1.5px solid var(--accent);
+  grid-column: 1 / -1;
+}
+.sc-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.sc-icon  { font-size: 22px; }
+.sc-label { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .1em; }
+.sc-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.sc-body  { font-size: 12px; color: var(--muted); line-height: 1.85; }
+.hero .sc-body { color: #78350f; }
+
+/* ── Positioning legend ── */
+.legend-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 16px 0;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+.legend-dot {
+  width: 12px; height: 12px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* ── Revenue path SVG area ── */
+.funnel-wrap {
+  background: var(--surface2);
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin: 16px 0;
+}
+.funnel-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.funnel-node {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 12px; font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+}
+.funnel-node.q1 { background: rgba(37,99,235,.06); border-color: rgba(37,99,235,.3); color: #1d4ed8; }
+.funnel-node.q2 { background: rgba(5,150,105,.06); border-color: rgba(5,150,105,.3); color: #059669; }
+.funnel-node.q3 { background: rgba(124,58,237,.06); border-color: rgba(124,58,237,.3); color: #7c3aed; }
+.funnel-node.q4 { background: rgba(217,119,6,.1); border-color: var(--border); color: var(--accent2); font-weight: 900; }
+.funnel-arr { color: var(--accent); font-size: 16px; flex-shrink: 0; }
+.funnel-label { font-size: 10px; color: var(--muted); font-family: var(--mono); }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .matrix-grid         { grid-template-columns: 1fr; grid-template-rows: repeat(4, auto); }
+  .quad                { min-height: 160px; border-radius: 8px !important; }
+  .strategy-grid       { grid-template-columns: 1fr; }
+  .strategy-card.hero  { grid-column: 1; }
+  .legend-grid         { grid-template-columns: 1fr 1fr; }
+  .matrix-outer        { margin-left: 0; }
+  .axis-y-label        { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hdr-top">
+    <div class="hdr-inner">
+      <div>
+        <h1>商材PMFマップ — 戦略ポジショニング 2×2</h1>
+        <p>「静的 vs 動的（動画）」×「B2C vs B2B」 ／ PMO（Gemini）＋人間の戦略会議アウトプット ／ 2026-05-19</p>
+      </div>
+    </div>
+  </div>
+  <div class="hdr-meta">
+    <span><a href="index.html">← Hub</a></span>
+    <span>🗓️ 2026-05-19</span>
+    <span>⭐ 本命：B2B×動的</span>
+    <span style="padding:4px 10px;border-radius:10px;font-family:var(--mono);font-size:10px;background:rgba(217,119,6,.12);color:var(--accent2);border:1px solid var(--border);">PMF MAP</span>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('matrix',this)">🗺️ PMFマトリクス図</button>
+  <button class="tab-btn" onclick="showTab('strategy',this)">🎯 戦略詳細 × 収益フロー</button>
+  <button class="tab-btn" onclick="showTab('blueocean',this)">⭐ ブルーオーシャン詳細</button>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB 1 ── PMFマトリクス図
+     ══════════════════════════════════════════ -->
+<div class="tab-pane active" id="tab-matrix">
+
+  <div class="sec">
+    <div class="sec-title">2×2 商材ポジショニングマップ</div>
+    <p style="margin-bottom:6px;">縦軸：<strong>コンテンツ形式</strong>（動的・動画系 ↔ 静的・Web系）　横軸：<strong>ターゲット市場</strong>（B2C 個人 ↔ B2B 法人）</p>
+  </div>
+
+  <!-- ─── Matrix ─── -->
+  <div class="matrix-wrap">
+
+    <!-- Y axis label (rotated, left side) -->
+    <div class="axis-y-label">
+      <span>↑ 動的・動画系</span>
+      <span style="font-size:16px;color:var(--border);">│</span>
+      <span>静的・Web系 ↓</span>
+    </div>
+
+    <div class="matrix-outer">
+      <!-- top label -->
+      <div class="axis-y-bar top">
+        <span>🎬</span>
+        <span>動的・動画系（ DYNAMIC / VIDEO ）</span>
+      </div>
+
+      <!-- X axis bar (top of grid) -->
+      <div class="axis-x-bar">
+        <div class="axis-x-left">← B2C 個人</div>
+        <div class="axis-x-center">⟷</div>
+        <div class="axis-x-right">B2B 法人 →</div>
+      </div>
+
+      <!-- 2×2 GRID -->
+      <div class="matrix-grid">
+
+        <!-- Q3: top-left / B2C × Dynamic -->
+        <div class="quad quad-q3">
+          <div class="quad-header">
+            <div class="quad-num">Q3</div>
+            <div>
+              <div class="quad-title">エンタメAI<br>アバター</div>
+            </div>
+          </div>
+          <div class="quad-desc">
+            SNS・動画プラットフォームを舞台にしたAIキャラクター。
+            フォロワー集客力は高いが、プラットフォーム依存リスクあり。
+            七那華のビジュアル担当として育てる副次利用が現実的。
+          </div>
+          <div class="quad-chips">
+            <span class="quad-chip">TikTok AI美女</span>
+            <span class="quad-chip">ゲーム実況VTuber</span>
+            <span class="quad-chip">IRIAMアバター</span>
+          </div>
+        </div>
+
+        <!-- Q4: top-right / B2B × Dynamic ★ HERO -->
+        <div class="quad quad-q4">
+          <div class="priority-star">⭐</div>
+          <div class="bo-badge">★ BLUE OCEAN ／ 本命</div>
+          <div class="quad-header">
+            <div class="quad-num">Q4</div>
+            <div>
+              <div class="quad-title">V-Consultant<br>法人DX動画</div>
+            </div>
+          </div>
+          <div class="quad-desc">
+            七那華（AIアバター）が法人向けのDX研修動画を自動生成する。
+            競合ほぼゼロのブルーオーシャン。LTVが高くスケーラブル。
+            AIネイティブな「AI営業担当（SDR）」による法人開拓も可能。
+          </div>
+          <div class="quad-chips">
+            <span class="quad-chip">七那華 DX研修動画</span>
+            <span class="quad-chip">AI-SDR ウェビナー</span>
+            <span class="quad-chip">パーソナライズ提案動画</span>
+          </div>
+        </div>
+
+        <!-- Q1: bottom-left / B2C × Static -->
+        <div class="quad quad-q1">
+          <div class="quad-header">
+            <div class="quad-num">Q1</div>
+            <div>
+              <div class="quad-title">AI量産型<br>ニッチコンテンツ</div>
+            </div>
+          </div>
+          <div class="quad-desc">
+            SEO×AIで特定ニッチを量産。参入障壁は低いが
+            月5万円規模の成功例あり。フロント集客の入り口として有効。
+            本命商材（Q4）へのファネルとして機能させる。
+          </div>
+          <div class="quad-chips">
+            <span class="quad-chip">AIエロ小説（月5万実績）</span>
+            <span class="quad-chip">占いポータル</span>
+            <span class="quad-chip">プロンプト100選</span>
+          </div>
+        </div>
+
+        <!-- Q2: bottom-right / B2B × Static -->
+        <div class="quad quad-q2">
+          <div class="quad-header">
+            <div class="quad-num">Q2</div>
+            <div>
+              <div class="quad-title">4Dガバナンス<br>自動化キット</div>
+            </div>
+          </div>
+          <div class="quad-desc">
+            Claude Code環境構築セット・AI運用規程雛形など、
+            「AIを組織に入れるための道具」を売るツルハシ戦略。
+            単品販売 → サブスク保守 へのアップセルが狙える。
+          </div>
+          <div class="quad-chips">
+            <span class="quad-chip">Claude Code 環境構築セット</span>
+            <span class="quad-chip">AI_System_Policy 雛形</span>
+            <span class="quad-chip">4Dガバナンスキット</span>
+          </div>
+        </div>
+
+      </div><!-- /matrix-grid -->
+
+      <!-- X axis bottom -->
+      <div class="axis-x-bar" style="margin-top:2px;">
+        <div class="axis-x-left">← B2C 個人</div>
+        <div class="axis-x-center" style="font-size:12px;color:var(--border);">┼</div>
+        <div class="axis-x-right">B2B 法人 →</div>
+      </div>
+
+      <!-- bottom Y label -->
+      <div class="axis-y-bar bottom">
+        <span>📄</span>
+        <span>静的・Web系（ STATIC / WEB ）</span>
+      </div>
+    </div><!-- /matrix-outer -->
+  </div><!-- /matrix-wrap -->
+
+  <!-- Legend -->
+  <div class="sec">
+    <div class="sec-title">象限サマリ</div>
+    <div class="legend-grid">
+      <div class="legend-item">
+        <div class="legend-dot" style="background:rgba(37,99,235,.2);border:1.5px solid rgba(37,99,235,.4);"></div>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:#1d4ed8;">Q1 B2C×静的</div>
+          <div style="font-size:11px;color:var(--muted);">集客フロント</div>
+        </div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:rgba(5,150,105,.2);border:1.5px solid rgba(5,150,105,.4);"></div>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:#059669;">Q2 B2B×静的</div>
+          <div style="font-size:11px;color:var(--muted);">ツルハシ商材</div>
+        </div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:rgba(124,58,237,.2);border:1.5px solid rgba(124,58,237,.4);"></div>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:#7c3aed;">Q3 B2C×動的</div>
+          <div style="font-size:11px;color:var(--muted);">七那華の副次利用</div>
+        </div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:rgba(217,119,6,.25);border:1.5px solid var(--accent);"></div>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--accent2);">⭐ Q4 B2B×動的</div>
+          <div style="font-size:11px;color:var(--muted);">【本命・Blue Ocean】</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- insight box -->
+  <div class="notice notice-amber" style="display:block;">
+    <p>
+      <strong>💡 戦略的インサイト：</strong>
+      Q4（B2B×動的）は「競合ほぼゼロ × 高LTV × 自動化可能」という3条件が揃うブルーオーシャン。
+      Q1（集客）→ Q2（ツルハシ販売）→ Q4（高額DX動画受注）という<strong>ファネル設計</strong>で、
+      低コスト集客から高収益契約への自然な流れを作れる。
+    </p>
+  </div>
+
+</div><!-- /tab-matrix -->
+
+<!-- ══════════════════════════════════════════
+     TAB 2 ── 戦略詳細 × 収益フロー
+     ══════════════════════════════════════════ -->
+<div class="tab-pane" id="tab-strategy">
+
+  <div class="sec">
+    <div class="sec-title">各象限の戦略詳細</div>
+
+    <div class="strategy-grid">
+
+      <!-- Q4 HERO -->
+      <div class="strategy-card hero">
+        <div class="sc-header">
+          <div class="sc-icon">⭐</div>
+          <div>
+            <div class="sc-label" style="color:var(--accent);">Q4 ／ B2B × 動的 ／ BLUE OCEAN</div>
+            <div class="sc-title">V-Consultant（七那華）× 法人DX動画自動生成</div>
+          </div>
+        </div>
+        <div class="sc-body">
+          <strong>なぜブルーオーシャンか：</strong>
+          「法人向けDX研修動画」はニーズが確実に存在するが、制作コストが高いため中小企業には手が届かなかった。
+          七那華（AIアバター）＋NotebookLM＋Claude Codeで<strong>1本あたりの制作コストを10分の1以下</strong>に圧縮できる。
+          競合のAI動画制作会社は存在するが「AIの知識を教える＋AIで作る」両面を持つプレイヤーはまだほぼいない。
+          <br><br>
+          <strong>具体的な商品形態：</strong><br>
+          ①&nbsp;月額サブスク型「AI研修動画 自動更新パック」（最新AI情報を月次で動画化・配信）<br>
+          ②&nbsp;スポット受注「社内AI規程・研修動画 一撃作成サービス」<br>
+          ③&nbsp;AI-SDR「七那華がウェビナー動画を見込み客ごとにパーソナライズして自動送付」<br><br>
+          <strong>LTV試算：</strong>月額5〜10万円 × 契約期間12ヶ月 = 1社あたり60〜120万円
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="strategy-card">
+        <div class="sc-header">
+          <div class="sc-icon">🛠️</div>
+          <div>
+            <div class="sc-label" style="color:#059669;">Q2 ／ B2B × 静的</div>
+            <div class="sc-title">4Dガバナンス＆自動化キット（ツルハシ戦略）</div>
+          </div>
+        </div>
+        <div class="sc-body">
+          「AIを組織に入れたいが方法が分からない」という層をターゲットに、<strong>Claude Code 環境構築セット</strong>（Win/Mac対応・一括スクリプト同梱）と <strong>AI_System_Policy 雛形</strong>（4Dフレームワーク準拠の社内AI規程テンプレ）をパッケージ販売。
+          ゴールドラッシュの「ツルハシ」を売るモデルで、AIブームが続く限り需要が衰えない。
+          <br><br>
+          <strong>販売チャネル：</strong>ococoナラ・note・自社LP（v-consultant-lp）<br>
+          <strong>単価目線：</strong>売り切り 3,000〜30,000円 ／ 保守サブスク 3,000円/月
+        </div>
+      </div>
+
+      <!-- Q1 -->
+      <div class="strategy-card">
+        <div class="sc-header">
+          <div class="sc-icon">📝</div>
+          <div>
+            <div class="sc-label" style="color:#1d4ed8;">Q1 ／ B2C × 静的</div>
+            <div class="sc-title">AI量産型ニッチコンテンツ（集客フロント）</div>
+          </div>
+        </div>
+        <div class="sc-body">
+          SEO集客とAI量産を掛け合わせた低コスト流入源。単体で月5万円の収益例（AIエロ小説）あり。
+          プロンプト100選・占いポータルなど<strong>完全自動化で粗利率90%超</strong>が可能。
+          本命（Q4）へのファネルとして：コンテンツ読者 → メルマガ登録 → 無料ウェビナー案内 → 有料研修動画受注。
+          <br><br>
+          <strong>注意：</strong>プラットフォームごとの規約変更リスクあり。Discernmentで注意深く運用。
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="strategy-card">
+        <div class="sc-header">
+          <div class="sc-icon">🎭</div>
+          <div>
+            <div class="sc-label" style="color:#7c3aed;">Q3 ／ B2C × 動的</div>
+            <div class="sc-title">エンタメAIアバター（七那華の副次利用）</div>
+          </div>
+        </div>
+        <div class="sc-body">
+          TikTok・YouTube Shortsを活用したAI美女アバターによる短尺動画。
+          単体マネタイズは規制リスクがあるため、<strong>七那華（Q4）を広める認知獲得チャネル</strong>として位置づける。
+          「AI研修のプロ・七那華さん」というブランドイメージをBtoC動画で醸成し、法人契約へ繋げる。
+          <br><br>
+          <strong>活用方針：</strong>七那華のビジュアル担当として育成。単独収益化は優先度低。
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 収益ファネル -->
+  <div class="sec">
+    <div class="sec-title">統合収益ファネル設計</div>
+    <div class="funnel-wrap">
+      <div class="funnel-row">
+        <div class="funnel-node q1">📝 Q1 ニッチコンテンツ<br><span style="font-size:10px;font-weight:400;color:#64748b;">SEO × AI量産で集客</span></div>
+        <div class="funnel-arr">→</div>
+        <div class="funnel-node q3">🎭 Q3 TikTok AI美女<br><span style="font-size:10px;font-weight:400;color:#64748b;">SNSフォロワー蓄積</span></div>
+        <div class="funnel-arr">→</div>
+        <div class="funnel-node" style="background:#fff8e6;border-color:var(--border);">📧 メルマガ・LINE登録<br><span style="font-size:10px;font-weight:400;color:#64748b;">リスト化・関係構築</span></div>
+      </div>
+      <div class="funnel-row" style="padding-left:0;">
+        <div class="funnel-node q2">🛠️ Q2 自動化キット<br><span style="font-size:10px;font-weight:400;color:#64748b;">ツルハシ単品販売</span></div>
+        <div class="funnel-arr">→</div>
+        <div class="funnel-node" style="background:#fff8e6;border-color:var(--border);">🤝 無料相談・デモ動画<br><span style="font-size:10px;font-weight:400;color:#64748b;">信頼構築・法人接触</span></div>
+        <div class="funnel-arr">→</div>
+        <div class="funnel-node q4">⭐ Q4 V-Consultant 法人契約<br><span style="font-size:10px;font-weight:400;color:#78350f;">月5〜10万円 × 長期LTV</span></div>
+      </div>
+    </div>
+    <p style="font-size:12px;margin-top:6px;">Q1・Q3は<strong>集客コストゼロ</strong>のオーガニック流入。Q2は<strong>信頼獲得と初収益</strong>。Q4が<strong>主収益</strong>となるファネル設計。</p>
+  </div>
+
+</div><!-- /tab-strategy -->
+
+<!-- ══════════════════════════════════════════
+     TAB 3 ── ブルーオーシャン詳細
+     ══════════════════════════════════════════ -->
+<div class="tab-pane" id="tab-blueocean">
+
+  <div class="sec">
+    <div class="sec-title">⭐ Q4 ブルーオーシャン詳細分析：V-Consultant 法人DX動画</div>
+
+    <div class="notice notice-amber" style="display:block;margin-bottom:20px;">
+      <p><strong>結論：</strong>
+      「AIネイティブなDX研修動画の自動生成・定期配信サービス」は、
+      現時点で本格参入プレイヤーがほぼ存在しない真のブルーオーシャン。
+      はんちょーの技術スタック（Claude Code × GitHub Actions × NotebookLM × 七那華）が
+      そのままサービスの競争優位になる。</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">競合分析と差別化</div>
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>競合カテゴリ</th>
+          <th>弱点</th>
+          <th>はんちょーの優位性</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>従来のDX研修会社</td>
+          <td>制作コスト高・更新遅延・内容が古い</td>
+          <td>Claude Code で最新AI情報を週次動画化。コスト10分の1以下。</td>
+        </tr>
+        <tr>
+          <td>AI動画生成SaaS（Synthesia等）</td>
+          <td>「AI知識を教える」コンテンツがない・テンプレ感が強い</td>
+          <td>はんちょーのDX・4Dフレームワーク知識 × 七那華のキャラクター性で差別化。</td>
+        </tr>
+        <tr>
+          <td>フリーランスDX講師</td>
+          <td>スケールしない・時間を売っている</td>
+          <td>七那華が24時間稼働。1契約が増えてもコストはほぼ変わらない。</td>
+        </tr>
+        <tr>
+          <td>他AIアバター系VTuber</td>
+          <td>エンタメ特化・法人向けコンテンツがない</td>
+          <td>「AI研修のプロ」というブランドで法人市場を独占ポジション狙い。</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">サービス提供フロー（MVP設計）</div>
+    <div class="roadmap-step">
+      <div class="roadmap-num">1</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">ヒアリング → config.json 生成（Claude ブラウザ）</div>
+        <div class="roadmap-body">
+          法人クライアントの「DX研修で伝えたいこと・社員のレベル感・研修テーマ」を対話でヒアリング。
+          Claude が構造化した動画台本仕様 JSON を生成。
+        </div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+    <div class="roadmap-step">
+      <div class="roadmap-num">2</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">台本自動生成 + 七那華ナレーション（Claude Code + NotebookLM）</div>
+        <div class="roadmap-body">
+          NotebookLM に蓄積した最新AI知識を参照し、Claude Code が動画台本 HTML を自動生成。
+          七那華のアバター（IRIAMまたはHeygen等）にテキストを読み上げさせる。
+        </div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+    <div class="roadmap-step">
+      <div class="roadmap-num">3</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">動画編集 → GitHub Pages or LMS にデプロイ（Claude Code）</div>
+        <div class="roadmap-body">
+          生成された動画をクライアント専用ページ（GitHub Pages または SCORM対応LMS）へ自動デプロイ。
+          月次更新を GitHub Actions のスケジュール実行で自動化。
+        </div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+    <div class="roadmap-step">
+      <div class="roadmap-num">4</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">AI-SDR：七那華がパーソナライズ提案動画を見込み客に自動送付</div>
+        <div class="roadmap-body">
+          見込み法人の業種・課題に合わせた「御社向けDX研修デモ動画」を自動生成し、
+          メール or SNS で自動アウトリーチ。七那華が24時間営業担当として稼働。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">収益シミュレーション（1年後目標）</div>
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>プラン</th>
+          <th>単価</th>
+          <th>目標契約数</th>
+          <th>月次売上</th>
+          <th>年間LTV</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>スタータープラン（月1本・自動更新）</td>
+          <td>3万円/月</td>
+          <td>5社</td>
+          <td>15万円</td>
+          <td>180万円</td>
+        </tr>
+        <tr>
+          <td>スタンダードプラン（月4本・カスタム対応）</td>
+          <td>8万円/月</td>
+          <td>3社</td>
+          <td>24万円</td>
+          <td>288万円</td>
+        </tr>
+        <tr>
+          <td>エンタープライズ（AI-SDR込・完全自動）</td>
+          <td>20万円/月</td>
+          <td>1社</td>
+          <td>20万円</td>
+          <td>240万円</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700;color:var(--accent2);">合計目標</td>
+          <td>—</td>
+          <td>9社</td>
+          <td style="font-weight:700;color:var(--accent2);">59万円/月</td>
+          <td style="font-weight:700;color:var(--accent2);">708万円</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:11px;margin-top:8px;color:var(--muted);">※上記はMVP稼働後の目標値。最初の1社獲得を最優先に、3ヶ月以内の試算。</p>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">最初の1社を獲得するロードマップ</div>
+    <div class="grid">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:rgba(217,119,6,.1);">📅</div>
+          <div><div class="card-title">Week 1〜2：デモ動画作成</div></div>
+        </div>
+        <div class="card-body">
+          七那華 × Claude Code で「AI活用入門：5分でわかるClaude Code」デモ動画を1本作成。
+          LPに掲載し、V-Consultant サービスサイトを公開。
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:rgba(217,119,6,.1);">📅</div>
+          <div><div class="card-title">Week 3〜4：SNS＋AI-SDR 展開</div></div>
+        </div>
+        <div class="card-body">
+          TikTok・Xに七那華デモ動画を投稿。同時にLinkedInで法人向けアウトリーチ（七那華がパーソナライズ動画で自己紹介）を開始。
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:rgba(217,119,6,.1);">📅</div>
+          <div><div class="card-title">Month 2：初契約獲得</div></div>
+        </div>
+        <div class="card-body">
+          無料トライアル（1ヶ月・3本まで）で価値を体験してもらい、スタータープランへのアップグレードを促進。
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:rgba(217,119,6,.1);">📅</div>
+          <div><div class="card-title">Month 3〜：スケールアップ</div></div>
+        </div>
+        <div class="card-body">
+          1社の成功事例を素材に、同業他社 × AI-SDR で横展開。七那華の「認知」がそのまま営業力に変換される。
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /tab-blueocean -->
+
+<footer class="doc-footer">
+  Marketing_PMF_Map.html ／ PMO戦略会議アウトプット ／ generated by Claude Code ／ 2026-05-19
+</footer>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+}
+</script>
+</body>
+</html>
