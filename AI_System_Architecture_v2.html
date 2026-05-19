@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>最新AI連携エコシステム構成図 v2 ／ はんちょー Document Hub</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+/* ── Architecture-specific overrides ── */
+h3 { font-size: 16px; font-weight: 700; color: var(--text); margin: 0 0 10px; }
+h4 { font-size: 13px; font-weight: 700; color: var(--accent2); margin: 16px 0 8px; }
+p  { font-size: 13px; color: var(--muted); line-height: 1.9; margin-bottom: 10px; }
+ul, ol { padding-left: 20px; margin-bottom: 12px; }
+li { font-size: 13px; color: var(--muted); line-height: 1.9; margin-bottom: 4px; }
+li strong { color: var(--text); }
+
+/* ── Ecosystem diagram ── */
+.eco-diagram {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 20px 0;
+}
+.eco-node {
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 22px;
+  position: relative;
+  transition: .15s;
+}
+.eco-node:hover { border-color: var(--accent); box-shadow: 0 2px 12px rgba(217,119,6,.1); }
+.eco-node .node-icon { font-size: 28px; margin-bottom: 8px; }
+.eco-node .node-name { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: .08em; margin-bottom: 6px; }
+.eco-node .node-role { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.eco-node .node-desc { font-size: 12px; color: var(--muted); line-height: 1.8; }
+.eco-node .node-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+
+.eco-center {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, rgba(217,119,6,.08) 0%, rgba(30,58,138,.08) 100%);
+  border: 1.5px solid var(--accent);
+  border-radius: 12px;
+  padding: 20px 24px;
+  text-align: center;
+}
+.eco-center .node-icon { font-size: 36px; }
+
+/* ── Flow arrows ── */
+.flow-wrap {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin: 16px 0;
+}
+.flow-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.flow-node {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+}
+.flow-node.gemini  { background: rgba(167,139,250,.08); border-color: rgba(167,139,250,.4); color: #7c3aed; }
+.flow-node.notebook{ background: rgba(16,185,129,.08); border-color: rgba(16,185,129,.4); color: #059669; }
+.flow-node.claude  { background: rgba(217,119,6,.08); border-color: var(--border); color: var(--accent2); }
+.flow-node.code    { background: rgba(30,58,138,.08); border-color: rgba(30,58,138,.3); color: #1e3a8a; }
+.flow-node.output  { background: rgba(239,68,68,.06); border-color: rgba(239,68,68,.3); color: #dc2626; }
+.flow-arrow { font-size: 16px; color: var(--accent); flex-shrink: 0; }
+.flow-label { font-size: 10px; color: var(--muted); font-family: var(--mono); }
+
+/* ── Paradigm shift ── */
+.shift-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 16px;
+  align-items: center;
+  margin: 16px 0;
+}
+.shift-before, .shift-after {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+.shift-before { border-left: 4px solid var(--muted); }
+.shift-after  { border-left: 4px solid var(--accent); }
+.shift-label { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .1em; margin-bottom: 8px; }
+.shift-label.before { color: var(--muted); }
+.shift-label.after  { color: var(--accent); }
+.shift-arrow { text-align: center; font-size: 28px; color: var(--accent); }
+
+/* ── 4D Framework box ── */
+.framework-4d {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 16px 0;
+}
+.d-card {
+  background: var(--surface2);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+.d-card .d-label { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: .1em; margin-bottom: 6px; }
+.d-card p { font-size: 12px; margin: 0; }
+
+/* ── Use case cards ── */
+.usecase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  margin: 16px 0;
+}
+.uc-card {
+  background: var(--surface2);
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+  transition: .15s;
+}
+.uc-card:hover { border-color: var(--accent); }
+.uc-card .uc-icon { font-size: 24px; margin-bottom: 8px; }
+.uc-card .uc-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.uc-card .uc-desc  { font-size: 12px; color: var(--muted); line-height: 1.8; }
+.uc-card .uc-agents { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 10px; }
+
+/* ── Role detail ── */
+.role-block {
+  background: var(--surface2);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin-bottom: 14px;
+}
+.role-block.gemini   { border-left-color: #a78bfa; }
+.role-block.notebook { border-left-color: #10b981; }
+.role-block.claude   { border-left-color: #d97706; }
+.role-block.code     { border-left-color: #1e3a8a; }
+.role-block .role-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.role-block .role-emoji  { font-size: 22px; }
+.role-block .role-name   { font-size: 15px; font-weight: 700; color: var(--text); }
+.role-block .role-sub    { font-size: 11px; color: var(--muted); font-family: var(--mono); }
+
+/* ── Responsibility table ── */
+.resp-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 16px;
+  margin: 12px 0;
+}
+.resp-key { font-family: var(--mono); font-size: 10px; color: var(--accent); font-weight: 700; white-space: nowrap; padding-top: 2px; }
+.resp-val { font-size: 12px; color: var(--muted); line-height: 1.8; }
+
+@media (max-width: 768px) {
+  .eco-diagram { grid-template-columns: 1fr; }
+  .shift-grid  { grid-template-columns: 1fr; }
+  .shift-arrow { font-size: 18px; transform: rotate(90deg); }
+  .framework-4d { grid-template-columns: 1fr; }
+  .usecase-grid { grid-template-columns: 1fr; }
+  .eco-center { grid-column: 1; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hdr-top">
+    <div class="hdr-inner">
+      <div>
+        <h1>最新AI連携エコシステム構成図 v2</h1>
+        <p>単一ツールから「自律型共有知能エコシステム」へのパラダイムシフト ／ 2026-05-19 現在</p>
+      </div>
+    </div>
+  </div>
+  <div class="hdr-meta">
+    <span><a href="index.html">← Hub</a></span>
+    <span>🗓️ 2026-05-19</span>
+    <span>📋 6タブ</span>
+    <span style="padding:4px 10px;border-radius:10px;font-family:var(--mono);font-size:10px;background:rgba(217,119,6,.12);color:var(--accent2);border:1px solid var(--border);">v2 NEW</span>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('paradigm',this)">🌐 全体像とパラダイムシフト</button>
+  <button class="tab-btn" onclick="showTab('gemini',this)">🧠 Geminiの役割</button>
+  <button class="tab-btn" onclick="showTab('notebooklm',this)">📚 NotebookLMの役割</button>
+  <button class="tab-btn" onclick="showTab('claude',this)">💬 Claude（ブラウザ）の役割</button>
+  <button class="tab-btn" onclick="showTab('claudecode',this)">⚙️ Claude Codeの役割</button>
+  <button class="tab-btn" onclick="showTab('usecases',this)">🚀 創出されるユースケース</button>
+</div>
+
+<!-- ─── Tab 1: パラダイムシフト ─── -->
+<div class="tab-pane active" id="tab-paradigm">
+
+  <div class="sec">
+    <div class="sec-title">Before → After：パラダイムシフトの全体像</div>
+    <div class="shift-grid">
+      <div class="shift-before">
+        <div class="shift-label before">BEFORE ／ v1</div>
+        <h4 style="margin-top:0;">単一商材を作る構造</h4>
+        <ul>
+          <li>1つのHTMLを1つのAIが作る</li>
+          <li>都度プロンプトを一から書く</li>
+          <li>AIは「ツール」として単発利用</li>
+          <li>人間が全ての意図・文脈を毎回伝達</li>
+          <li>成果物はフォルダに蓄積されるだけ</li>
+        </ul>
+      </div>
+      <div class="shift-arrow">→</div>
+      <div class="shift-after">
+        <div class="shift-label after">AFTER ／ v2（現在）</div>
+        <h4 style="margin-top:0;">4AI連携・自律型エコシステム</h4>
+        <ul>
+          <li>4つのAIが役割分担して協働</li>
+          <li>JSONドリブンで意図を構造化・引き継ぎ</li>
+          <li>AIは「組織の一員」として継続的に稼働</li>
+          <li>長期記憶（NotebookLM）で文脈を永続保持</li>
+          <li>GitHub Actionsで成果物を自動デプロイ</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">4AI連携エコシステム全体図</div>
+    <div class="eco-center">
+      <div class="node-icon">🌐</div>
+      <div class="node-role" style="font-size:16px;">自律型共有知能エコシステム</div>
+      <div class="node-desc" style="font-size:12px;max-width:600px;margin:8px auto 0;">
+        人間の意図を中心に、Gemini・NotebookLM・Claude・Claude Code が有機的に連携し、<br>
+        複数のユースケースを自律的に創出・公開・更新し続けるシステム
+      </div>
+    </div>
+
+    <div class="eco-diagram">
+      <div class="eco-node">
+        <div class="node-icon">🧠</div>
+        <div class="node-name">GEMINI</div>
+        <div class="node-role">PMO・アーキテクト・4Dガバナンス</div>
+        <div class="node-desc">プロジェクト全体の戦略立案、アーキテクチャ設計、4D Fluencyによるリスク評価・意思決定の統括</div>
+        <div class="node-tags">
+          <span class="tag">戦略</span>
+          <span class="tag">設計</span>
+          <span class="tag tag-amber">Discernment</span>
+        </div>
+      </div>
+
+      <div class="eco-node">
+        <div class="node-icon">📚</div>
+        <div class="node-name">NOTEBOOKLM</div>
+        <div class="node-role">外部長期記憶・知識ベース</div>
+        <div class="node-desc">全セッション・Handoff・設計書を記憶する外部メモリ。ソースベースの正確な知性で過去の文脈を正確に引き継ぐ</div>
+        <div class="node-tags">
+          <span class="tag tag-green">長期記憶</span>
+          <span class="tag">正確性</span>
+        </div>
+      </div>
+
+      <div class="eco-node">
+        <div class="node-icon">💬</div>
+        <div class="node-name">CLAUDE（ブラウザ）</div>
+        <div class="node-role">要件定義・構造化</div>
+        <div class="node-desc">人間との対話を通じて意図・目的をヒアリング。要件定義を行い、config.json（構造化データ）に落とし込む翻訳者</div>
+        <div class="node-tags">
+          <span class="tag tag-amber">要件定義</span>
+          <span class="tag">JSON生成</span>
+        </div>
+      </div>
+
+      <div class="eco-node">
+        <div class="node-icon">⚙️</div>
+        <div class="node-name">CLAUDE CODE</div>
+        <div class="node-role">自律実装・自動デプロイ</div>
+        <div class="node-desc">config.jsonを受け取り、自律的にコーディング・テスト・git push・GitHub Pages公開まで完結する実装エンジン</div>
+        <div class="node-tags">
+          <span class="tag tag-blue">自律実装</span>
+          <span class="tag">CI/CD</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">基盤思想：4D AI Fluency</div>
+    <div class="framework-4d">
+      <div class="d-card">
+        <div class="d-label">DISCERNMENT — 識別力</div>
+        <p>何をAIに任せ、何を人間が判断するかの見極め。AIの出力を盲目的に採用せず、人間の価値観でフィルタリングする能力。</p>
+      </div>
+      <div class="d-card">
+        <div class="d-label">DELEGATION — 委任力</div>
+        <p>AIへの適切なタスク分配。「どのAIに何を頼むか」を設計し、各AIの強みを最大化する組織設計能力。</p>
+      </div>
+      <div class="d-card">
+        <div class="d-label">DILIGENCE — 勤勉性</div>
+        <p>AI出力の品質チェック・ファクトチェック・法的倫理的確認。生成物を世に出す前の責任ある検証プロセス。</p>
+      </div>
+      <div class="d-card">
+        <div class="d-label">DEVELOPMENT — 開発力</div>
+        <p>AIを活用して自身・組織・システムを継続的に進化させる力。学習→実践→フィードバックのサイクルを高速回転させる。</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── Tab 2: Gemini ─── -->
+<div class="tab-pane" id="tab-gemini">
+
+  <div class="sec">
+    <div class="sec-title">Geminiの役割：PMO・ITアーキテクト・4Dガバナンス統括</div>
+
+    <div class="role-block gemini">
+      <div class="role-header">
+        <div class="role-emoji">🧠</div>
+        <div>
+          <div class="role-name">Gemini 2.5 Pro</div>
+          <div class="role-sub">STRATEGIC LEAD ／ ARCHITECT ／ GOVERNOR</div>
+        </div>
+      </div>
+      <p>このエコシステムにおける「PMO（プロジェクト管理統括）」と「ITアーキテクト」を兼務。単なる質問応答AIではなく、プロジェクト全体の設計思想・進化方向性・リスクマネジメントを担う中枢的存在。</p>
+    </div>
+
+    <h4>📋 具体的な担当領域</h4>
+    <div class="resp-grid">
+      <div class="resp-key">PMO</div>
+      <div class="resp-val">プロジェクト全体のスコープ管理・優先度付け・マイルストーン設計。複数プロジェクトの並行管理と相互依存関係の整理。</div>
+      <div class="resp-key">アーキテクト</div>
+      <div class="resp-val">4AI連携のシステム設計。各AIの役割定義・インターフェース（JSON仕様）の策定。スケーラブルな構成の維持。</div>
+      <div class="resp-key">戦略策定</div>
+      <div class="resp-val">AI収益化戦略の全体設計。ビジネスモデルの評価・検証・改善の繰り返し（専門家パネルレビュー主導）。</div>
+      <div class="resp-key">4Dガバナンス</div>
+      <div class="resp-val">Discernment（判断基準の設定）・Delegation（タスク分配設計）・Diligence（品質基準定義）・Development（学習ロードマップ）の統括。</div>
+      <div class="resp-key">コードレビュー</div>
+      <div class="resp-val">Claude Codeが生成したコードの設計レビュー。生ファイル渡しでの品質チェック（Anthropic_Academy_Plan_Internal レビュー事例）。</div>
+    </div>
+
+    <div class="notice notice-amber">
+      <p><strong>🔑 Geminiが適している理由：</strong>
+      大規模なコンテキストウィンドウ（200万トークン）により、複数の長大なドキュメントを同時参照しての俯瞰的な分析・設計が得意。
+      ProモデルはGemini APIでの呼び出し（無料枠あり）により自動化パイプラインへの組み込みも可能。</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── Tab 3: NotebookLM ─── -->
+<div class="tab-pane" id="tab-notebooklm">
+
+  <div class="sec">
+    <div class="sec-title">NotebookLMの役割：外部長期記憶（ライフログ型ナレッジベース）</div>
+
+    <div class="role-block notebook">
+      <div class="role-header">
+        <div class="role-emoji">📚</div>
+        <div>
+          <div class="role-name">NotebookLM</div>
+          <div class="role-sub">LONG-TERM MEMORY ／ SOURCE-GROUNDED INTELLIGENCE</div>
+        </div>
+      </div>
+      <p>AIには通常「文脈は会話内にしか存在しない」という制約がある。NotebookLMはこの制約を突破する「外部長期記憶」として機能。過去の全セッション・Handoff・設計書を保存し、新しいセッションでも文脈を正確に引き継ぐ。</p>
+    </div>
+
+    <h4>📂 保存される情報の種類</h4>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:rgba(16,185,129,.1);">📤</div>
+          <div><div class="card-title">Handoff Documents</div></div>
+        </div>
+        <div class="card-body">各セッション終了時のHandoff HTMLを登録。次回セッションでNotebookLMに「前回何をしたか」を確認することで文脈が即座に復元される。</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:rgba(16,185,129,.1);">📜</div>
+          <div><div class="card-title">CHANGELOG.html</div></div>
+        </div>
+        <div class="card-body">全変更履歴のサマリ。「このプロジェクトでこれまで何が起きたか」をNotebookLMが時系列で把握・回答できる。</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:rgba(16,185,129,.1);">📋</div>
+          <div><div class="card-title">設計書・計画書</div></div>
+        </div>
+        <div class="card-body">Project_Master_Document、AI_System_Architecture等の設計書を登録。「なぜこの設計にしたか」という意図をNotebookLMが保持。</div>
+      </div>
+    </div>
+
+    <h4>🎯 NotebookLMが特に優れている点</h4>
+    <div class="resp-grid">
+      <div class="resp-key">ハルシネーション防止</div>
+      <div class="resp-val">「ソースに基づいた回答のみ」という設計により、登録していない情報を勝手に生成しない。事実確認のリファレンスとして最適。</div>
+      <div class="resp-key">自動サマリ</div>
+      <div class="resp-val">複数のHTMLドキュメントを一括登録するだけで、自動的にポッドキャスト・FAQ・学習ガイドを生成。コンテンツ二次展開が容易。</div>
+      <div class="resp-key">Q&Aモード</div>
+      <div class="resp-val">「2026-05-15のセッションで何を決定したか？」という自然言語クエリで、過去の決定事項を即座に引き出せる。</div>
+      <div class="resp-key">引き継ぎ最適化</div>
+      <div class="resp-val">新しいAIセッションの開始時に「NotebookLMで現状確認 → 要約をコピペ → 新セッションに貼り付け」という引き継ぎフローを確立。</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── Tab 4: Claude ブラウザ ─── -->
+<div class="tab-pane" id="tab-claude">
+
+  <div class="sec">
+    <div class="sec-title">Claude（ブラウザ）の役割：要件定義・構造化・JSON生成</div>
+
+    <div class="role-block claude">
+      <div class="role-header">
+        <div class="role-emoji">💬</div>
+        <div>
+          <div class="role-name">Claude（claude.ai ブラウザ版）</div>
+          <div class="role-sub">REQUIREMENTS ANALYST ／ HUMAN-AI BRIDGE ／ JSON ARCHITECT</div>
+        </div>
+      </div>
+      <p>人間とClaude Code（実装エンジン）の「翻訳者・通訳者」。人間の曖昧な言葉を対話を通じて整理し、Claude Codeが確実に動作できる構造化データ（config.json）に変換する。</p>
+    </div>
+
+    <h4>🔄 クロードブラウザのワークフロー</h4>
+    <div class="flow-wrap">
+      <div class="flow-row">
+        <div class="flow-node">👤 人間の意図</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node claude">💬 Claude対話</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node claude">📝 要件定義</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node claude">🔧 config.json</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node code">⚙️ Claude Code</div>
+      </div>
+      <p style="margin-top:10px;font-size:11px;">「どんなHTMLを作りたいか」という自然言語の意図を、Claude Codeが処理できる構造化JSONに変換する</p>
+    </div>
+
+    <h4>📋 具体的な担当領域</h4>
+    <div class="resp-grid">
+      <div class="resp-key">ヒアリング</div>
+      <div class="resp-val">「何を作りたいか」「誰のためか」「なぜ必要か」「含めたい要素」「希望のトーン」を5項目で体系的にヒアリング。</div>
+      <div class="resp-key">要件定義</div>
+      <div class="resp-val">曖昧な要望を具体的な仕様に変換。タブ構成・カラーパレット・コンテンツ構造を明確化。</div>
+      <div class="resp-key">JSON生成</div>
+      <div class="resp-val">config.json / next_request.json 形式で構造化。Claude Codeへのブリーフィングドキュメントを自動生成。</div>
+      <div class="resp-key">レビュー</div>
+      <div class="resp-val">Claude Codeが生成したHTMLの内容レビュー・改善提案。設計意図との整合性チェック。</div>
+      <div class="resp-key">Handoff</div>
+      <div class="resp-val">セッション終了時のHandoff HTMLの作成。次回セッションへの文脈引き継ぎドキュメント生成。</div>
+    </div>
+
+    <div class="notice notice-blue">
+      <p><strong>💡 Claude ブラウザ版の強み：</strong>
+      長い対話の中でコンテキストを維持しながら、複雑な要件を段階的に整理する能力。
+      プロジェクト設計ファイル（Handoff、CHANGELOG等）を参照しながら一貫性のある要件定義が可能。</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── Tab 5: Claude Code ─── -->
+<div class="tab-pane" id="tab-claudecode">
+
+  <div class="sec">
+    <div class="sec-title">Claude Codeの役割：自律実装エンジン・CI/CD統合</div>
+
+    <div class="role-block code">
+      <div class="role-header">
+        <div class="role-emoji">⚙️</div>
+        <div>
+          <div class="role-name">Claude Code（CLI）</div>
+          <div class="role-sub">AUTONOMOUS ENGINEER ／ INFRASTRUCTURE BUILDER ／ DEPLOY AGENT</div>
+        </div>
+      </div>
+      <p>このエコシステムの「実装エンジン」。config.jsonを受け取り、コーディング・テスト・git push・GitHub Pages公開まで人間の介在なしに完結する。L4（完全自動化）レベルのAI駆動開発を実現。</p>
+    </div>
+
+    <h4>⚡ Claude Codeの実績（2026年5月時点）</h4>
+    <div class="grid">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:rgba(30,58,138,.1);">📄</div>
+          <div>
+            <div class="card-title">一撃HTML生成</div>
+            <div class="card-sub">3〜5分で本番品質のHTMLを生成</div>
+          </div>
+        </div>
+        <div class="card-body">config.jsonからタブ付きHTMLを自動生成。assets/common.cssのPlan Cデザインを自動適用。レスポンシブ対応まで含む。</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:rgba(30,58,138,.1);">🚀</div>
+          <div>
+            <div class="card-title">Algo Trading 環境</div>
+            <div class="card-sub">17ファイル・3分48秒で構築完了</div>
+          </div>
+        </div>
+        <div class="card-body">プライベートリポジトリ初期化からPaper Tradingシミュレーター・CI設定まで自動構築。</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:rgba(30,58,138,.1);">🔧</div>
+          <div>
+            <div class="card-title">自動デプロイ</div>
+            <div class="card-sub">git push → Pages反映まで自動完結</div>
+          </div>
+        </div>
+        <div class="card-body">deploy.ps1スクリプトによる自動push・GitHub Actions連携によるPages自動更新。</div>
+      </div>
+    </div>
+
+    <h4>🔄 自律実装フロー（L4 完全自動化）</h4>
+    <div class="flow-wrap">
+      <div class="flow-row">
+        <div class="flow-node claude">📁 inbox/next_request.json</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node code">📝 HTML生成</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node code">🔗 index.html更新</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node code">📜 CHANGELOG更新</div>
+      </div>
+      <div class="flow-row" style="margin-top:8px;">
+        <div class="flow-node code">📤 Handoff作成</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node code">git commit & push</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node output">🌐 GitHub Pages公開</div>
+      </div>
+    </div>
+
+    <div class="resp-grid">
+      <div class="resp-key">Inbox駆動</div>
+      <div class="resp-val">inbox/next_request.jsonを監視。JSONが更新されると自律的に実装サイクルを開始。人間の指示は不要。</div>
+      <div class="resp-key">両面更新</div>
+      <div class="resp-val">HTMLを生成するだけでなく、CHANGELOG追記・Handoff作成・index.htmlリンク追加まで一貫して実行。</div>
+      <div class="resp-key">自己テスト</div>
+      <div class="resp-val">生成したHTMLの構文チェック・リンク確認・レスポンシブ検証を自律的に実施。</div>
+      <div class="resp-key">GitHub Actions</div>
+      <div class="resp-val">ワークフローYAMLの自動生成・CI/CD パイプライン構築・定期実行スケジューリングが可能。</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── Tab 6: ユースケース ─── -->
+<div class="tab-pane" id="tab-usecases">
+
+  <div class="sec">
+    <div class="sec-title">このエコシステムが創出するユースケース</div>
+    <p>4AIが連携することで、単独のAIでは実現不可能な複数のユースケースが同時並行で創出されます。</p>
+
+    <div class="usecase-grid">
+
+      <div class="uc-card">
+        <div class="uc-icon">📧</div>
+        <div class="uc-title">自動営業（AI-SDR）</div>
+        <div class="uc-desc">
+          Geminiが営業戦略を設計し、ClaudeがアウトリーチメッセージをJSON化、Claude Codeがメール送信スクリプトを実装。
+          ターゲット企業のリストアップから初回アプローチまでAIが自律実行。
+        </div>
+        <div class="uc-agents">
+          <span class="tag" style="background:rgba(167,139,250,.1);color:#7c3aed;">Gemini</span>
+          <span class="tag tag-amber">Claude</span>
+          <span class="tag tag-blue">Code</span>
+        </div>
+      </div>
+
+      <div class="uc-card">
+        <div class="uc-icon">🏢</div>
+        <div class="uc-title">社内ナレッジハブの一撃量産</div>
+        <div class="uc-desc">
+          Claudeがヒアリング→JSON化、Claude Codeが本番品質HTMLを3〜5分で生成・デプロイ。
+          複数部門・複数テーマのナレッジサイトを並行量産。企業への横展開が可能。
+        </div>
+        <div class="uc-agents">
+          <span class="tag tag-amber">Claude</span>
+          <span class="tag tag-blue">Code</span>
+          <span class="tag tag-green">NotebookLM</span>
+        </div>
+      </div>
+
+      <div class="uc-card">
+        <div class="uc-icon">🎭</div>
+        <div class="uc-title">V-Consultant（七那華）への知識提供</div>
+        <div class="uc-desc">
+          NotebookLMに蓄積された全ナレッジを、七那華（AIアバター）が音声で提供するサービス。
+          NotebookLMのポッドキャスト機能 × IRIAMアバターで、AI知識コンサルタントとして活動。
+        </div>
+        <div class="uc-agents">
+          <span class="tag tag-green">NotebookLM</span>
+          <span class="tag tag-amber">Claude</span>
+          <span class="tag" style="background:rgba(167,139,250,.1);color:#7c3aed;">Gemini</span>
+        </div>
+      </div>
+
+      <div class="uc-card">
+        <div class="uc-icon">📦</div>
+        <div class="uc-title">環境構築セット商材の自動生成</div>
+        <div class="uc-desc">
+          Claude Codeが「環境構築セット」（設定スクリプト + 説明HTMLセット）を自動生成。
+          ターゲット環境（Win/Mac/Linux）ごとのバリエーション展開をJSON駆動で量産。
+        </div>
+        <div class="uc-agents">
+          <span class="tag tag-amber">Claude</span>
+          <span class="tag tag-blue">Code</span>
+        </div>
+      </div>
+
+      <div class="uc-card">
+        <div class="uc-icon">📈</div>
+        <div class="uc-title">Algo Trading 自動分析レポート</div>
+        <div class="uc-desc">
+          Geminiが市況データを分析し、Claude Codeが週次レポートHTMLを自動生成・公開。
+          Paper Tradingフェーズの記録・検証を完全自動化。実弾移行の判断材料を蓄積。
+        </div>
+        <div class="uc-agents">
+          <span class="tag" style="background:rgba(167,139,250,.1);color:#7c3aed;">Gemini</span>
+          <span class="tag tag-blue">Code</span>
+          <span class="tag tag-green">NotebookLM</span>
+        </div>
+      </div>
+
+      <div class="uc-card">
+        <div class="uc-icon">🎓</div>
+        <div class="uc-title">AI学習コンテンツの継続更新</div>
+        <div class="uc-desc">
+          Anthropic・Google等のAI最新情報をGeminiがキャッチし、Claudeが和訳・解説をJSON化、
+          Claude Codeが学習ガイドHTMLを自動更新。常に最新の情報を提供し続けるナレッジベース。
+        </div>
+        <div class="uc-agents">
+          <span class="tag" style="background:rgba(167,139,250,.1);color:#7c3aed;">Gemini</span>
+          <span class="tag tag-amber">Claude</span>
+          <span class="tag tag-blue">Code</span>
+          <span class="tag tag-green">NotebookLM</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">エコシステムの成熟ロードマップ</div>
+    <div class="roadmap-step">
+      <div class="roadmap-num">L1</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">手動協働（現在の運用基盤）</div>
+        <div class="roadmap-body">人間が中継役として各AIに指示。JSON経由での構造化引き継ぎを確立。Handoff・CHANGELOGによる文脈維持。</div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+    <div class="roadmap-step">
+      <div class="roadmap-num">L2</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">半自動（インボックス駆動）</div>
+        <div class="roadmap-body">inbox/next_request.json を置くだけでClaude Codeが自律実行。人間の作業はJSONの作成のみに集約。</div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+    <div class="roadmap-step">
+      <div class="roadmap-num">L3</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">準自動（GitHub Actions連携）</div>
+        <div class="roadmap-body">定期実行・トリガー実行・条件分岐を自動化。人間はレビューのみ。ファイア・アンド・フォーゲット運用。</div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+    <div class="roadmap-step">
+      <div class="roadmap-num">L4</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">完全自動化（今回達成）</div>
+        <div class="roadmap-body">意図を与えるだけで成果物が公開される状態。CHANGELOG・Handoffも自動追記。人間が介在するのは最終判断のみ。</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="doc-footer">
+  AI_System_Architecture_v2.html ／ generated by Claude Code ／ 2026-05-19
+</footer>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+}
+</script>
+</body>
+</html>
