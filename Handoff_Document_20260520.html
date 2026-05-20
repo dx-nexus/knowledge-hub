@@ -12,8 +12,8 @@
   <div class="hdr-top">
     <div class="hdr-inner">
       <div>
-        <h1>📤 引き継ぎ資料 2026-05-20</h1>
-        <p>PM知見共有会カード追加 + SnackableAI ロマンス V6文体改革版 全10話更新セッション</p>
+        <h1>📤 引き継ぎ資料 2026-05-20（最終版）</h1>
+        <p>SnackableAI V6更新 → Reader HTML構築 → PM知見ノート整備 → 戦略ドキュメント追加 — フルセッション統合版</p>
       </div>
     </div>
   </div>
@@ -28,9 +28,9 @@
 
   <!-- ミッションサマリ -->
   <div class="sec">
-    <div class="sec-title">今回セッションのミッションと成果</div>
+    <div class="sec-title">本日セッションのミッションと成果</div>
     <div class="notice notice-green">
-      <p><strong>🎯 完了：</strong>PM知見共有会の話のネタ整理カード（pm_chiken_card_20260520.html）を hancho-docs/notes/ に追加。SnackableAI ロマンス小説「半都市の結露、ペリエの栞」の ep01〜ep10.md を V6文体改革版で全話上書き更新し、両リポジトリへのコミット・プッシュを完了。</p>
+      <p><strong>🎯 完了：</strong>SnackableAI ロマンス V6文体改革版への全話更新・戦略評価ドキュメント整備・Snackable Romance Reader HTML（全6バージョン閲覧対応・269KB）の構築、PM知見共有会ノート2本の追加、そして全資産の両リポジトリへのコミット・プッシュを完了。本日の全成果が private-core と hancho-docs の両方に収録済み。</p>
     </div>
   </div>
 
@@ -41,12 +41,11 @@
     <div class="roadmap-step">
       <div class="roadmap-num">1</div>
       <div class="roadmap-content">
-        <div class="roadmap-title">PM知見共有会 話のネタ整理カード追加（hancho-docs）</div>
+        <div class="roadmap-title">PM知見共有会 話のネタ整理カード 配置・公開（hancho-docs）</div>
         <div class="roadmap-body">
-          ダウンロード済みの pm_chiken_card.html を
-          <code>hancho-docs/notes/pm_chiken_card_20260520.html</code> として配置。
-          notes/ ディレクトリが存在しなかったため新規作成し、git add → commit → push を実施。
-          コミット: <code>c456703</code>「docs: PM知見共有会 話のネタ整理カード追加 (2026-05-20)」
+          <code>notes/pm_chiken_card_20260520.html</code> を新規作成（notes/ ディレクトリも新設）。
+          index.html の「プロジェクト管理」セクション先頭にカード追加（PMO / キャリア）。
+          コミット: <code>c456703</code>
         </div>
       </div>
     </div>
@@ -55,13 +54,68 @@
     <div class="roadmap-step">
       <div class="roadmap-num">2</div>
       <div class="roadmap-content">
-        <div class="roadmap-title">SnackableAI ロマンス ep01〜ep10 V6文体改革版へ更新（private-core）</div>
+        <div class="roadmap-title">SnackableAI ロマンス ep01〜ep10 V6文体改革版へ全話更新（private-core）</div>
         <div class="roadmap-body">
-          Downloads の <code>snackable_romance_v6.md</code>（全10話・約47,000字）を PowerShell で自動分割。
-          各話を「## 第N話：」見出しで切り出し、既存フォーマット（シリーズタイトルヘッダー付き）で
-          <code>private-core/projects/snackable_ai/text/romance/output/ep01.md〜ep10.md</code> に上書き。
-          V6は文体の三段階構造が特徴：第1〜5話は純粋な処理言語、第6〜7話でエラー混入、第8〜10話で未知カテゴリの動作が出現。
-          コミット: <code>9cde2f2</code>「feat: snackable romance ep01-ep10 V6文体改革版に更新 (2026-05-20)」（367行追加 / 313行削除）
+          <code>snackable_romance_v6.md</code>（約47,000字）を PowerShell で「## 第N話：」見出しごとに自動分割。
+          <code>output/ep01.md〜ep10.md</code> に上書き。三段階文体崩壊構造（純粋観測→エラー混入→処理不能）が完成。
+          コミット: <code>9cde2f2</code>（367行追加 / 313行削除）
+        </div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">3</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">戦略＆評価ドキュメント追加（private-core）</div>
+        <div class="roadmap-body">
+          <code>private-core/docs/project_strategy_and_evaluation.md</code> を新規作成（docs/ ディレクトリも新設）。
+          V1〜V6の評価マトリクス、V7向け表現戦略（五感バースト・グロテスクな清潔さ・文学的リズム）、
+          note市場分析とポジショニング（880〜1,200円・ハイエンド純文学路線）を収録。
+          コミット: <code>aafe7f7</code>
+        </div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">4</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">開発手法比較・構造課題メモ 追加 → V2更新（hancho-docs）</div>
+        <div class="roadmap-body">
+          <code>notes/pm_methodology_note_20260520.html</code> を新規追加後、ツール列追加・AnserParaSOL構造・
+          リファクタリング提言を加えた V2 で即日上書き更新。
+          index.html に「PMO / 戦略」タグ付きカードを追加。
+          コミット: <code>5638c54</code>（新規）→ <code>15cd3b9</code>（V2更新）
+        </div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">5</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">Snackable Romance Reader HTML 構築（private-core）</div>
+        <div class="roadmap-body">
+          <code>Snackable_Romance_Reader.html</code>（269KB）を private-core 内に構築。
+          全6バージョン（v1〜v6、合計約240KB のマークダウンを JSON で埋め込み）・全10話を三層タブ構造で閲覧可能。
+          機能：バージョン比較カード・進化マップ・フォントサイズ調整・読了マーク・スクロール位置保存（localStorage）。
+          note公開予定のため本編は public リポジトリへの掲載なし。
+          コミット: <code>28ea27f</code>
+        </div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">6</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">Snackable Romance プロジェクトサマリーカード 公開（hancho-docs）</div>
+        <div class="roadmap-body">
+          <code>Snackable_Romance_Project.html</code> を新規作成。バージョン進化マップ・評価マトリクス・
+          note公開戦略・V7候補課題を公開（本編全文・キャラクター詳細・朔の真相は非公開）。
+          index.html の「個別プロジェクト」先頭にカード追加（純文学 / private本編）。
+          CHANGELOG.html にエントリ追加。コミット: <code>6ba184b</code>
         </div>
       </div>
     </div>
@@ -80,13 +134,49 @@
           <td><a href="notes/pm_chiken_card_20260520.html">notes/pm_chiken_card_20260520.html</a></td>
           <td>hancho-docs</td>
           <td><span class="badge badge-live">新規</span></td>
-          <td>PM知見共有会 話のネタ整理カード（272行）</td>
+          <td>PM知見共有会 話のネタ整理カード</td>
+        </tr>
+        <tr>
+          <td><a href="notes/pm_methodology_note_20260520.html">notes/pm_methodology_note_20260520.html</a></td>
+          <td>hancho-docs</td>
+          <td><span class="badge badge-live">新規→V2</span></td>
+          <td>開発手法比較 &amp; 構造課題メモ（ツール列・AnserParaSOL・リファクタリング提言）</td>
+        </tr>
+        <tr>
+          <td><a href="Snackable_Romance_Project.html">Snackable_Romance_Project.html</a></td>
+          <td>hancho-docs</td>
+          <td><span class="badge badge-live">新規</span></td>
+          <td>Snackable Romance プロジェクトサマリー（バージョン進化マップ・公開用）</td>
         </tr>
         <tr>
           <td>projects/snackable_ai/text/romance/output/ep01〜ep10.md</td>
           <td>private-core</td>
           <td><span class="badge badge-wip">更新</span></td>
-          <td>SnackableAI ロマンス V6文体改革版 全10話（各95〜135行）</td>
+          <td>SnackableAI ロマンス V6文体改革版 全10話</td>
+        </tr>
+        <tr>
+          <td>docs/project_strategy_and_evaluation.md</td>
+          <td>private-core</td>
+          <td><span class="badge badge-live">新規</span></td>
+          <td>V1〜V6評価マトリクス・V7表現戦略・note市場分析</td>
+        </tr>
+        <tr>
+          <td>projects/snackable_ai/text/romance/Snackable_Romance_Reader.html</td>
+          <td>private-core</td>
+          <td><span class="badge badge-live">新規</span></td>
+          <td>全6バージョン・全10話閲覧ビューア（269KB・noteライクデザイン）</td>
+        </tr>
+        <tr>
+          <td><a href="index.html">index.html</a></td>
+          <td>hancho-docs</td>
+          <td><span class="badge badge-wip">更新</span></td>
+          <td>カード3枚追加・docs数 30→34</td>
+        </tr>
+        <tr>
+          <td><a href="CHANGELOG.html">CHANGELOG.html</a></td>
+          <td>hancho-docs</td>
+          <td><span class="badge badge-wip">更新</span></td>
+          <td>本日分エントリ2件追加</td>
         </tr>
       </tbody>
     </table>
@@ -97,7 +187,7 @@
     <div class="sec-title">次回セッションへの引き継ぎ事項</div>
 
     <div class="notice notice-amber">
-      <p><strong>⚡ 最優先：</strong>ep01〜ep10 V6 を Plan C デザインで HTML 化し、snackable_ai の公開ページとして hancho-docs に追加する。</p>
+      <p><strong>⚡ 最優先：</strong>note公開の Go/No-Go 判断（v6のまま公開 vs v7完成まで待つ）と、Gemini へのセッション成果レビュー依頼（handoff指示書に Gemini 用プロンプトあり）。</p>
     </div>
 
     <h4 style="font-size:13px;font-weight:700;color:var(--accent2);margin:16px 0 8px;">🔲 残課題・次のアクション</h4>
@@ -108,24 +198,49 @@
       <tbody>
         <tr>
           <td>⭐⭐⭐</td>
-          <td>SnackableAI ロマンス ep01〜ep10 の HTML 化（Plan C デザイン適用）</td>
+          <td>note 公開 Go/No-Go 判断（v6 先行公開 vs v7 完成待ち）</td>
+          <td>はんちょー</td>
+          <td><span class="badge b-todo">TODO</span></td>
+        </tr>
+        <tr>
+          <td>⭐⭐⭐</td>
+          <td>Gemini へセッション成果レビュー依頼（V7優先課題・note戦略・メディアミックス相談）</td>
+          <td>はんちょー</td>
+          <td><span class="badge b-todo">TODO</span></td>
+        </tr>
+        <tr>
+          <td>⭐⭐</td>
+          <td>v7.0.0 改稿着手（タイトル再検討・第7話強化・社会構造描写）</td>
           <td>Claude Code</td>
           <td><span class="badge b-todo">TODO</span></td>
         </tr>
         <tr>
           <td>⭐⭐</td>
-          <td>notes/ ディレクトリの index.html へのリンク追加・整備</td>
+          <td>Reader HTML をローカルサーバーで動作確認（python -m http.server）</td>
+          <td>はんちょー</td>
+          <td><span class="badge b-todo">TODO</span></td>
+        </tr>
+        <tr>
+          <td>⭐</td>
+          <td>SnackableAI ai_tips ライン Phase1 計画立案</td>
           <td>Claude Code</td>
           <td><span class="badge b-todo">TODO</span></td>
         </tr>
         <tr>
           <td>⭐</td>
-          <td>pm_chiken_card_20260520.html を index.html の適切なセクションに追加</td>
+          <td>notes/ ディレクトリの目次 HTML 作成（notes/index.html）</td>
           <td>Claude Code</td>
           <td><span class="badge b-todo">TODO</span></td>
         </tr>
       </tbody>
     </table>
+
+    <div class="notice" style="margin-top:16px;">
+      <p><strong>📝 Reader ローカル確認方法：</strong><br>
+      <code>cd C:\git\private-core\projects\snackable_ai\text\romance</code><br>
+      <code>python -m http.server 8080</code><br>
+      ブラウザで <code>http://localhost:8080/Snackable_Romance_Reader.html</code> を開く。</p>
+    </div>
   </div>
 
 </main>
