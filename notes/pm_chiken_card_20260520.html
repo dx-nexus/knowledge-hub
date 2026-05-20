@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PM知見共有会 話のネタ整理 — 2026.05.20</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg-secondary: #f5f4f0;
+    --bg-info: #e6f1fb;
+    --bg-success: #eaf3de;
+    --bg-warning: #faeeda;
+    --text: #1a1a18;
+    --text-secondary: #5f5e5a;
+    --text-tertiary: #888780;
+    --text-info: #185fa5;
+    --text-success: #3b6d11;
+    --text-warning: #854f0b;
+    --border: rgba(0,0,0,0.12);
+    --border-secondary: rgba(0,0,0,0.22);
+    --border-info: #378add;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1e1e1c;
+      --bg-secondary: #2c2c2a;
+      --bg-info: #042c53;
+      --bg-success: #173404;
+      --bg-warning: #412402;
+      --text: #f0ede6;
+      --text-secondary: #b4b2a9;
+      --text-tertiary: #888780;
+      --text-info: #85b7eb;
+      --text-success: #97c459;
+      --text-warning: #ef9f27;
+      --border: rgba(255,255,255,0.10);
+      --border-secondary: rgba(255,255,255,0.20);
+      --border-info: #378add;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Hiragino Sans", "Meiryo", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 1.25rem 1rem 3rem;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+  .pm-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 99px;
+    background: var(--bg-info);
+    color: var(--text-info);
+    margin-bottom: 8px;
+  }
+  .pm-title {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text);
+    margin: 0 0 4px;
+  }
+  .pm-sub {
+    font-size: 13px;
+    color: var(--text-tertiary);
+  }
+  .anchor-box {
+    background: var(--bg-secondary);
+    border-left: 3px solid var(--border-info);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    padding: 0.9rem 1.1rem;
+    margin: 1.25rem 0;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.65;
+  }
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    margin: 1.5rem 0 0.6rem;
+  }
+  .card {
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem;
+    margin-bottom: 10px;
+  }
+  .card-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    margin: 0 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .card-body {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+  .pills { margin-top: 8px; }
+  .pill {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 99px;
+    margin-right: 4px;
+  }
+  .pill-blue { background: var(--bg-info); color: var(--text-info); }
+  .pill-green { background: var(--bg-success); color: var(--text-success); }
+  .pill-amber { background: var(--bg-warning); color: var(--text-warning); }
+  .card-accent {
+    border-left: 2px solid var(--border-info);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  }
+  .behave-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 9px 0;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .behave-row:last-child { border-bottom: none; }
+  .behave-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .behave-text { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .behave-text strong { font-weight: 500; color: var(--text); }
+  hr.divider {
+    border: none;
+    border-top: 0.5px solid var(--border);
+    margin: 1.5rem 0;
+  }
+  .quote {
+    font-size: 14px;
+    font-style: italic;
+    color: var(--text-secondary);
+    border-left: 2px solid var(--border-secondary);
+    padding-left: 12px;
+    line-height: 1.75;
+  }
+  .footer {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    text-align: right;
+    margin-top: 1.5rem;
+  }
+</style>
+</head>
+<body>
+
+<div style="margin-bottom:1.5rem">
+  <span class="pm-tag">第10回 PM知見共有会</span>
+  <h1 class="pm-title">外部PMとして持ち込む話のネタ</h1>
+  <p class="pm-sub">2026.05.20 — 外部参加者視点の整理メモ</p>
+</div>
+
+<div class="anchor-box">
+  立ち位置：<strong>2年間同じ案件を外から見続けた唯一の視点</strong><br>
+  内部では言いにくいことを、建設的に言える役割。
+</div>
+
+<p class="section-label">話せるテーマ候補</p>
+
+<div class="card">
+  <p class="card-title">
+    <span class="card-icon">👁</span>
+    ① 外から見た「PM知見が死ぬ」構造
+  </p>
+  <p class="card-body">
+    ・ドキュメントが人に紐づいている（担当者退場で消える）<br>
+    ・並行改修の衝突が見えない（バッファ設計が暗黙知）<br>
+    ・品質判断の根拠が残らない（誰がOKしたか追えない）
+  </p>
+  <div class="pills">
+    <span class="pill pill-blue">観察系</span>
+    <span class="pill pill-amber">共感を呼びやすい</span>
+  </div>
+</div>
+
+<div class="card">
+  <p class="card-title">
+    <span class="card-icon">🤖</span>
+    ② AI活用でPMO管理を変えた実験
+  </p>
+  <p class="card-body">
+    QA台帳・議事録・ナレッジ整理へのAI導入。「採用されないAIツール」と「使われ続ける仕組み」の差は何かを実感値で語れる。
+  </p>
+  <div class="pills">
+    <span class="pill pill-green">時流に乗る</span>
+    <span class="pill pill-blue">実務直結</span>
+  </div>
+</div>
+
+<div class="card">
+  <p class="card-title">
+    <span class="card-icon">🗺</span>
+    ③ 品質ストーリーの見える化
+  </p>
+  <p class="card-body">
+    IT1→IT2→ST→UAT→商用の各フェーズを「繋げる」ことで、品質判断がブラックボックス化しないようにする考え方。属人化解消の具体手法。
+  </p>
+  <div class="pills">
+    <span class="pill pill-amber">テクニカル</span>
+    <span class="pill pill-blue">PMO実践者向け</span>
+  </div>
+</div>
+
+<hr class="divider">
+<p class="section-label">今日の推奨スタンス</p>
+
+<div class="card card-accent">
+  <p class="card-title" style="margin-bottom:10px">発信より「良質な質問者」で場を回す</p>
+
+  <div class="behave-row">
+    <span class="behave-icon">💬</span>
+    <p class="behave-text">
+      <strong>枕詞を使う</strong><br>
+      「外部コンサル視点で言うと〜ですが、皆さんはどう捉えますか？」
+    </p>
+  </div>
+  <div class="behave-row">
+    <span class="behave-icon">👥</span>
+    <p class="behave-text">
+      <strong>グループDでは引き出し役に</strong><br>
+      仕切るより「Aさんはどう思いますか？」と回す側に回ると信頼が上がる
+    </p>
+  </div>
+  <div class="behave-row">
+    <span class="behave-icon">🙏</span>
+    <p class="behave-text">
+      <strong>最初に一言だけ謙遜</strong><br>
+      「内部の場に呼んでいただき光栄です」→以降は対等に話す
+    </p>
+  </div>
+  <div class="behave-row">
+    <span class="behave-icon">⭐</span>
+    <p class="behave-text">
+      <strong>場への貢献を言語化して投げる</strong><br>
+      「今日○○の話が特に刺さりました」→課長の顔が立つ
+    </p>
+  </div>
+</div>
+
+<hr class="divider">
+<p class="section-label">今日の目標（一言）</p>
+
+<div class="anchor-box">
+  <p class="quote">
+    「外部なのに場に価値を加えられる人」として記憶に残る。<br>
+    次回も呼ばれる理由をつくる会。
+  </p>
+</div>
+
+<p class="footer">はんちょー 出張メモ 2026.05.20</p>
+
+</body>
+</html>
