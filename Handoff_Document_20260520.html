@@ -12,8 +12,8 @@
   <div class="hdr-top">
     <div class="hdr-inner">
       <div>
-        <h1>📤 引き継ぎ資料 2026-05-20（最終版）</h1>
-        <p>SnackableAI V6更新 → Reader HTML構築 → PM知見ノート整備 → 戦略ドキュメント追加 — フルセッション統合版</p>
+        <h1>📤 引き継ぎ資料 2026-05-20（完全最終版）</h1>
+        <p>SnackableAI V6更新 → Reader HTML構築 → PM知見ノート整備 → 戦略ドキュメント → 公開ビューア（hancho-docs）— 全7タスク完結</p>
       </div>
     </div>
   </div>
@@ -30,7 +30,7 @@
   <div class="sec">
     <div class="sec-title">本日セッションのミッションと成果</div>
     <div class="notice notice-green">
-      <p><strong>🎯 完了：</strong>SnackableAI ロマンス V6文体改革版への全話更新・戦略評価ドキュメント整備・Snackable Romance Reader HTML（全6バージョン閲覧対応・269KB）の構築、PM知見共有会ノート2本の追加、そして全資産の両リポジトリへのコミット・プッシュを完了。本日の全成果が private-core と hancho-docs の両方に収録済み。</p>
+      <p><strong>🎯 完了：</strong>SnackableAI ロマンス V6文体改革版への全話更新・戦略評価ドキュメント整備・Snackable Romance Reader HTML（private-core・269KB）の構築、PM知見共有会ノート2本の追加に加え、<strong>公開ビューア Snackable_Romance.html（hancho-docs・276KB）を GitHub Pages に公開。</strong>全6バージョン・全10話・三層タブ・noteライクデザインをハブで閲覧可能。本日の全7タスクが完結し両リポジトリにプッシュ済み。</p>
     </div>
   </div>
 
@@ -119,6 +119,22 @@
         </div>
       </div>
     </div>
+    <div class="roadmap-connector"></div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">7</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">Snackable Romance 公開ビューア を hancho-docs に構築・GitHub Pages 公開</div>
+        <div class="roadmap-body">
+          <code>Snackable_Romance.html</code>（276KB）を hancho-docs に新規作成・公開。
+          private-core versions/ の v1〜v6（計6ファイル）と VERSIONS.md を PowerShell で JSON 化して埋め込み。
+          三層タブ構造（本編 / バージョン比較 / 進化マップ）・noteライクデザイン（白背景・680px・Hiragino）・
+          フォントサイズ調整・前後話ナビ・読了マーク・スクロール位置 localStorage 保存を搭載。
+          index.html にカード追加（docs 34→35）。CHANGELOG.html にエントリ追加。コミット: <code>bd4f6f8</code><br>
+          公開 URL: <code>https://dx-nexus.github.io/knowledge-hub/Snackable_Romance.html</code>
+        </div>
+      </div>
+    </div>
 
   </div>
 
@@ -167,16 +183,22 @@
           <td>全6バージョン・全10話閲覧ビューア（269KB・noteライクデザイン）</td>
         </tr>
         <tr>
+          <td><a href="Snackable_Romance.html">Snackable_Romance.html</a></td>
+          <td>hancho-docs</td>
+          <td><span class="badge badge-live">新規</span></td>
+          <td>公開ビューア（276KB）・全6バージョン・全10話・noteライク・GitHub Pages公開</td>
+        </tr>
+        <tr>
           <td><a href="index.html">index.html</a></td>
           <td>hancho-docs</td>
           <td><span class="badge badge-wip">更新</span></td>
-          <td>カード3枚追加・docs数 30→34</td>
+          <td>カード4枚追加・docs数 34→35</td>
         </tr>
         <tr>
           <td><a href="CHANGELOG.html">CHANGELOG.html</a></td>
           <td>hancho-docs</td>
           <td><span class="badge badge-wip">更新</span></td>
-          <td>本日分エントリ2件追加</td>
+          <td>本日分エントリ3件追加</td>
         </tr>
       </tbody>
     </table>
@@ -236,7 +258,9 @@
     </table>
 
     <div class="notice" style="margin-top:16px;">
-      <p><strong>📝 Reader ローカル確認方法：</strong><br>
+      <p><strong>🌐 公開 URL：</strong><br>
+      <code>https://dx-nexus.github.io/knowledge-hub/Snackable_Romance.html</code><br><br>
+      <strong>📝 private-core Reader ローカル確認方法：</strong><br>
       <code>cd C:\git\private-core\projects\snackable_ai\text\romance</code><br>
       <code>python -m http.server 8080</code><br>
       ブラウザで <code>http://localhost:8080/Snackable_Romance_Reader.html</code> を開く。</p>
