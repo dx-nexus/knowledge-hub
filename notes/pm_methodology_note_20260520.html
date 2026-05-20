@@ -3,105 +3,94 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>開発手法比較 & 構造課題メモ — 2026.05.20</title>
+<title>開発手法比較 & 構造課題メモ v2 — 2026.05.20</title>
 <style>
   :root {
-    --bg: #ffffff;
-    --bg-secondary: #f5f4f0;
-    --bg-info: #e6f1fb;
-    --bg-success: #eaf3de;
-    --bg-warning: #faeeda;
-    --bg-danger: #fcebeb;
-    --text: #1a1a18;
-    --text-secondary: #5f5e5a;
-    --text-tertiary: #888780;
-    --text-info: #185fa5;
-    --text-success: #3b6d11;
-    --text-warning: #854f0b;
-    --text-danger: #a32d2d;
-    --border: rgba(0,0,0,0.12);
-    --border-info: #378add;
-    --border-warning: #ba7517;
-    --border-danger: #e24b4a;
-    --radius-md: 8px;
-    --radius-lg: 12px;
+    --bg:#ffffff;--bg-secondary:#f5f4f0;--bg-info:#e6f1fb;--bg-success:#eaf3de;
+    --bg-warning:#faeeda;--bg-danger:#fcebeb;--text:#1a1a18;--text-secondary:#5f5e5a;
+    --text-tertiary:#888780;--text-info:#185fa5;--text-success:#3b6d11;
+    --text-warning:#854f0b;--text-danger:#a32d2d;--border:rgba(0,0,0,0.12);
+    --border-info:#378add;--border-warning:#ba7517;--border-danger:#e24b4a;
+    --border-success:#3b6d11;--radius-md:8px;--radius-lg:12px;
   }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #1e1e1c;
-      --bg-secondary: #2c2c2a;
-      --bg-info: #042c53;
-      --bg-success: #173404;
-      --bg-warning: #412402;
-      --bg-danger: #501313;
-      --text: #f0ede6;
-      --text-secondary: #b4b2a9;
-      --text-tertiary: #888780;
-      --text-info: #85b7eb;
-      --text-success: #97c459;
-      --text-warning: #ef9f27;
-      --text-danger: #f09595;
-      --border: rgba(255,255,255,0.10);
-      --border-info: #378add;
-      --border-warning: #ba7517;
-      --border-danger: #e24b4a;
+  @media(prefers-color-scheme:dark){
+    :root{
+      --bg:#1e1e1c;--bg-secondary:#2c2c2a;--bg-info:#042c53;--bg-success:#173404;
+      --bg-warning:#412402;--bg-danger:#501313;--text:#f0ede6;--text-secondary:#b4b2a9;
+      --text-tertiary:#888780;--text-info:#85b7eb;--text-success:#97c459;
+      --text-warning:#ef9f27;--text-danger:#f09595;--border:rgba(255,255,255,0.10);
+      --border-success:#639922;
     }
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: -apple-system, "Hiragino Sans", "Meiryo", sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    padding: 1.25rem 1rem 3rem;
-    max-width: 480px;
-    margin: 0 auto;
-    line-height: 1.7;
-  }
-  .tag { display: inline-block; font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 99px; background: var(--bg-info); color: var(--text-info); margin-bottom: 8px; }
-  h1 { font-size: 20px; font-weight: 500; margin: 0 0 4px; }
-  .sub { font-size: 13px; color: var(--text-tertiary); margin-bottom: 1.5rem; }
-  .section-label { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; color: var(--text-tertiary); text-transform: uppercase; margin: 1.75rem 0 0.6rem; }
-  .card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1rem 1.25rem; margin-bottom: 10px; }
-  .card-title { font-size: 14px; font-weight: 500; color: var(--text); margin: 0 0 8px; }
-  .card-body { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
-  .card-body li { margin-left: 1.1em; margin-bottom: 3px; }
-  .pill { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 99px; margin: 6px 3px 0 0; }
-  .pill-green { background: var(--bg-success); color: var(--text-success); }
-  .pill-amber { background: var(--bg-warning); color: var(--text-warning); }
-  .pill-red { background: var(--bg-danger); color: var(--text-danger); }
-  .pill-blue { background: var(--bg-info); color: var(--text-info); }
-  .anchor-box { background: var(--bg-secondary); border-left: 3px solid var(--border-info); border-radius: 0 var(--radius-md) var(--radius-md) 0; padding: 0.9rem 1.1rem; margin: 1rem 0; font-size: 14px; line-height: 1.65; }
-  .warn-box { background: var(--bg-warning); border-left: 3px solid var(--border-warning); border-radius: 0 var(--radius-md) var(--radius-md) 0; padding: 0.9rem 1.1rem; margin: 1rem 0; font-size: 13px; color: var(--text-warning); line-height: 1.65; }
-  .danger-box { background: var(--bg-danger); border-left: 3px solid var(--border-danger); border-radius: 0 var(--radius-md) var(--radius-md) 0; padding: 0.9rem 1.1rem; margin: 1rem 0; font-size: 13px; color: var(--text-danger); line-height: 1.65; }
-  hr { border: none; border-top: 0.5px solid var(--border); margin: 1.75rem 0; }
-  .two-col { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; margin-bottom: 10px; }
-  .mini-card { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 0.75rem 0.9rem; }
-  .mini-label { font-size: 11px; color: var(--text-tertiary); margin-bottom: 4px; }
-  .mini-val { font-size: 13px; font-weight: 500; color: var(--text); }
-  .bullet-list { font-size: 13px; color: var(--text-secondary); line-height: 1.75; padding-left: 1.1em; }
-  .bullet-list li { margin-bottom: 4px; }
-  table { width: 100%; font-size: 12px; border-collapse: collapse; margin-top: 8px; }
-  th { text-align: left; font-weight: 500; color: var(--text-secondary); padding: 6px 8px; border-bottom: 0.5px solid var(--border); font-size: 11px; }
-  td { padding: 7px 8px; border-bottom: 0.5px solid var(--border); color: var(--text-secondary); vertical-align: top; }
-  td:first-child { font-weight: 500; color: var(--text); white-space: nowrap; }
-  .footer { font-size: 12px; color: var(--text-tertiary); text-align: right; margin-top: 2rem; }
-  .strike { text-decoration: line-through; opacity: 0.5; }
-  .core-line { font-size: 15px; font-weight: 500; color: var(--text); line-height: 1.6; }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,"Hiragino Sans","Meiryo",sans-serif;background:var(--bg);color:var(--text);padding:1.25rem 1rem 3rem;max-width:520px;margin:0 auto;line-height:1.7;}
+  .tag{display:inline-block;font-size:11px;font-weight:500;padding:3px 10px;border-radius:99px;background:var(--bg-info);color:var(--text-info);margin-bottom:8px;}
+  h1{font-size:20px;font-weight:500;margin:0 0 4px;}
+  .sub{font-size:13px;color:var(--text-tertiary);margin-bottom:1.5rem;}
+  .section-label{font-size:11px;font-weight:500;letter-spacing:.06em;color:var(--text-tertiary);text-transform:uppercase;margin:1.75rem 0 .6rem;}
+  .card{background:var(--bg);border:.5px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.25rem;margin-bottom:10px;}
+  .card-title{font-size:14px;font-weight:500;color:var(--text);margin:0 0 8px;}
+  .bullet-list{font-size:13px;color:var(--text-secondary);line-height:1.75;padding-left:1.1em;}
+  .bullet-list li{margin-bottom:4px;}
+  .anchor-box{background:var(--bg-secondary);border-left:3px solid var(--border-info);border-radius:0 var(--radius-md) var(--radius-md) 0;padding:.9rem 1.1rem;margin:1rem 0;font-size:14px;line-height:1.65;}
+  .warn-box{background:var(--bg-warning);border-left:3px solid var(--border-warning);border-radius:0 var(--radius-md) var(--radius-md) 0;padding:.9rem 1.1rem;margin:1rem 0;font-size:13px;color:var(--text-warning);line-height:1.65;}
+  .danger-box{background:var(--bg-danger);border-left:3px solid var(--border-danger);border-radius:0 var(--radius-md) var(--radius-md) 0;padding:.9rem 1.1rem;margin:1rem 0;font-size:13px;color:var(--text-danger);line-height:1.65;}
+  .success-box{background:var(--bg-success);border-left:3px solid var(--border-success);border-radius:0 var(--radius-md) var(--radius-md) 0;padding:.9rem 1.1rem;margin:1rem 0;font-size:14px;color:var(--text-success);line-height:1.65;}
+  hr{border:none;border-top:.5px solid var(--border);margin:1.75rem 0;}
+  .two-col{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:10px;}
+  .mini-card{background:var(--bg-secondary);border-radius:var(--radius-md);padding:.75rem .9rem;}
+  .mini-label{font-size:11px;color:var(--text-tertiary);margin-bottom:4px;}
+  .mini-val{font-size:13px;font-weight:500;color:var(--text);line-height:1.5;}
+  .core-line{font-size:15px;font-weight:500;color:var(--text);line-height:1.6;}
+  .footer{font-size:12px;color:var(--text-tertiary);text-align:right;margin-top:2rem;}
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:8px 0;}
+  table{width:100%;font-size:11.5px;border-collapse:collapse;min-width:520px;}
+  th{text-align:left;font-weight:500;color:var(--text-secondary);padding:6px 8px;border-bottom:.5px solid var(--border);font-size:11px;white-space:nowrap;}
+  td{padding:7px 8px;border-bottom:.5px solid var(--border);color:var(--text-secondary);vertical-align:top;line-height:1.5;}
+  td:first-child{font-weight:500;color:var(--text);white-space:nowrap;}
+  .tbl-note{font-size:11px;color:var(--text-tertiary);margin-top:4px;}
+  .timeline{padding-left:0;list-style:none;margin:0;}
+  .tl-item{display:flex;gap:12px;padding:10px 0;border-bottom:.5px solid var(--border);}
+  .tl-item:last-child{border-bottom:none;}
+  .tl-dot{width:8px;height:8px;border-radius:50%;background:var(--border-info);flex-shrink:0;margin-top:6px;}
+  .tl-dot.warn{background:var(--border-warning);}
+  .tl-dot.danger{background:var(--border-danger);}
+  .tl-content{font-size:13px;color:var(--text-secondary);line-height:1.6;}
+  .tl-content strong{font-weight:500;color:var(--text);}
+  .phase-block{border:.5px solid var(--border);border-radius:var(--radius-md);padding:.75rem 1rem;margin-bottom:8px;}
+  .phase-num{font-size:11px;font-weight:500;color:var(--text-tertiary);margin-bottom:3px;}
+  .phase-title{font-size:14px;font-weight:500;color:var(--text);margin-bottom:4px;}
+  .phase-body{font-size:12px;color:var(--text-secondary);line-height:1.6;}
 </style>
 </head>
 <body>
 
-<span class="tag">PM知見共有会 補足メモ</span>
-<h1>開発手法比較 & 構造課題の核心</h1>
-<p class="sub">2026.05.20 — 統括部長出席時の備え含む</p>
+<span class="tag">PM知見共有会 補足メモ v2</span>
+<h1>開発手法比較 &amp; 構造課題の核心</h1>
+<p class="sub">2026.05.20 — 統括部長出席対応含む</p>
 
-<!-- ==================== PART 1 ==================== -->
-<p class="section-label">Part 1 — 主要開発手法の比較</p>
+<p class="section-label">大前提 — どんな手法も「現状把握」が先</p>
 
-<div class="anchor-box">
-  ウォーターフォールは「悪い手法」ではない。<strong>要件が固定・変更コストが高い・規制対応必須</strong>の領域では今も合理的な選択。問題は手法の選択ミスと、形骸化した運用にある。
+<div class="success-box">
+  <strong>「ツールや手法を変える前に、今何があるかを把握できているか」</strong><br><br>
+  アジャイルでもDevOpsでもAIでも、導入の前提は現状の把握。<br>
+  本番の開発資材・ソースコード・設定・依存関係を誰も把握できていない状態でどんな改善を重ねても、構造は変わらない。<br><br>
+  参画当初から2年間、この一点を言い続けている。
 </div>
 
+<div class="warn-box">
+  「NTTデータさんプロパで本番開発資材を把握できている人がいない」状態が出発点にある限り、CI/CD・Git移行・自動化・AI導入はすべて砂上に積み上がる。
+</div>
+
+<hr>
+<p class="section-label">Part 1 — 主要開発手法の比較（ツール列含む）</p>
+
+<div class="anchor-box">
+  ウォーターフォールは「悪い手法」ではない。<strong>要件固定・変更コスト高・規制対応必須</strong>の領域では今も合理的。問題は手法の選択ミスと、形骸化した運用にある。
+</div>
+
+<p class="tbl-note">← 横スクロールで全列表示</p>
+<div class="tbl-wrap">
 <table>
   <thead>
     <tr>
@@ -109,6 +98,10 @@
       <th>強み</th>
       <th>弱み</th>
       <th>合う領域</th>
+      <th>代表ツール</th>
+      <th>バージョン管理</th>
+      <th>コミュニケーション</th>
+      <th>トレンド</th>
     </tr>
   </thead>
   <tbody>
@@ -117,154 +110,191 @@
       <td>計画性・契約整合・監査対応</td>
       <td>変化に硬直・手戻りコスト大</td>
       <td>金融・官公庁・大規模基幹</td>
+      <td>MS Project, Redmine, Excel</td>
+      <td>SVN / Git（ブランチ少）</td>
+      <td>メール・会議・Excel台帳</td>
+      <td>縮小傾向。金融・公共では継続</td>
     </tr>
     <tr>
-      <td>アジャイル</td>
+      <td>アジャイル（一般）</td>
       <td>変化対応・早期価値提供</td>
-      <td>要件定義・契約が曖昧になりやすい</td>
+      <td>要件・契約が曖昧化しやすい</td>
       <td>SaaS・スタートアップ・社内DX</td>
+      <td>Jira, Linear, Notion</td>
+      <td>Git（feature branch）</td>
+      <td>Slack / Teams / 朝会</td>
+      <td>主流。"形だけアジャイル"が蔓延</td>
     </tr>
     <tr>
       <td>スクラム</td>
       <td>チーム自律・短サイクル改善</td>
-      <td>スクラムマスター質に依存・組織文化が前提</td>
-      <td>プロダクト開発・少人数精鋭チーム</td>
+      <td>スクラムマスター質・組織文化依存</td>
+      <td>プロダクト開発・少人数精鋭</td>
+      <td>Jira, Trello, GitHub Projects</td>
+      <td>Git（PR駆動）</td>
+      <td>Slack + スプリントレビュー</td>
+      <td>主流。人材選定と権限委譲がセット</td>
     </tr>
     <tr>
       <td>DevOps / CI-CD</td>
-      <td>自動化・品質の継続保証</td>
+      <td>自動化・品質継続保証・速度</td>
       <td>インフラ投資・文化変革が必要</td>
       <td>Web系・クラウドネイティブ</td>
+      <td>GitHub Actions, Jenkins, GitLab CI</td>
+      <td>Git（trunk-based）</td>
+      <td>Slack通知・PagerDuty</td>
+      <td>クラウド系では標準。金融は導入遅延</td>
     </tr>
     <tr>
-      <td>PMBOK（PMI）</td>
+      <td>PMBOK (PMI)</td>
       <td>標準化・資格・国際通用性</td>
-      <td>重厚・小規模PJへの適用は過剰</td>
+      <td>重厚・小規模PJへは過剰</td>
       <td>大規模・グローバル・公共</td>
+      <td>MS Project, Primavera</td>
+      <td>構成管理ツール（CM）</td>
+      <td>メール・報告書</td>
+      <td>大手SIer・官公庁で継続利用</td>
     </tr>
     <tr>
-      <td>ハイブリッド<br>（WF×Agile）</td>
+      <td>ハイブリッド（WF×Agile）</td>
       <td>両者の現実折衷</td>
-      <td>設計が難しく中途半端になりやすい</td>
+      <td>設計が難しく中途半端化しやすい</td>
       <td>金融DX・レガシー+新機能共存</td>
+      <td>Jira + Excel 併用が多い</td>
+      <td>Git + SVN 混在が現実</td>
+      <td>Teams + メール 混在</td>
+      <td>大規模SIで増加中。設計力が問われる</td>
+    </tr>
+    <tr>
+      <td>SAFe（大規模アジャイル）</td>
+      <td>大組織へのアジャイル適用</td>
+      <td>重厚・認定コスト高・形骸化リスク</td>
+      <td>大手金融・エンタープライズ</td>
+      <td>Jira Align</td>
+      <td>Git（複数チーム統合）</td>
+      <td>定例PI計画会議が核心</td>
+      <td>注目増。ただし実装難易度高</td>
     </tr>
   </tbody>
 </table>
-
-<div class="warn-box" style="margin-top:1rem">
-  スクラムマスターの有効性は「組織がその役割を本当に機能させられるか」次第。形式だけ導入して儀式化するケースが多い。人材選定と権限委譲がセットで必要。
 </div>
 
-<!-- ==================== PART 2 ==================== -->
+<div class="warn-box">
+  <strong>工夫次第でどの手法でも改善できる。</strong><br>
+  ただし前提条件（現状把握・権限・文化）が揃っていなければ、どれを選んでも同じ結果になる。ツール選定より先に「今何があるか」の棚卸しが必要。
+</div>
+
 <hr>
-<p class="section-label">Part 2 — 現案件の構造課題マップ</p>
+<p class="section-label">Part 2 — AnserParaSOL 固有の制約構造</p>
 
 <div class="card">
-  <p class="card-title">① グループ会社委託の固定化問題</p>
+  <p class="card-title">この案件特有の難しさ</p>
   <ul class="bullet-list">
-    <li>関連会社への随意委託が長期化→競争原理が働かない</li>
-    <li>コスト・品質の比較基準が形成されない</li>
-    <li>ベンダーロックインが知識・ツール・プロセス全層に及ぶ</li>
-    <li>第三者機関・優秀フリーランス投入を検討した経緯はあるが実行されていない</li>
+    <li>対象：約100行の金融機関へのサービス基盤。止められない</li>
+    <li>開発部署とリリース部署が<strong>組織として完全分離</strong>（セキュリティ要件上）</li>
+    <li>CI/CDは一時期検討されたが、この組織構造上の壁で断念</li>
+    <li>並行してオンプレ→クラウドの大型更改案件・維持ルーム移転が進行中</li>
+    <li>バージョン管理は<strong>SVNのスパゲッティブランチ</strong>が現実</li>
+    <li>営業との連携が不透明で<strong>急な追加案件が頻発</strong></li>
+    <li>障害発生時：属人化した有識者が人力で解決。プロパーは傍観構造</li>
   </ul>
-  <span class="pill pill-red">構造的リスク</span>
-  <span class="pill pill-amber">中長期で要戦略</span>
 </div>
 
-<div class="card">
-  <p class="card-title">② 7月組織変更による知識断絶</p>
-  <ul class="bullet-list">
-    <li>定期的な大規模組織変更（毎年7月）が上流の暗黙知を断ち切る</li>
-    <li>上流での属人化 → 引き継ぎが実務レベルで機能していない</li>
-    <li>「組織変更」が目的化しており、業務継続性の設計が後回し</li>
-    <li>外部から見ると「毎年リセット」が繰り返されている構造</li>
+<div class="card" style="border-left:2px solid var(--border-danger);border-radius:0 var(--radius-lg) var(--radius-lg) 0;">
+  <p class="card-title">現状の悪循環</p>
+  <ul class="timeline" style="margin-top:4px">
+    <li class="tl-item"><span class="tl-dot danger"></span><span class="tl-content"><strong>本番資材の把握者がいない</strong> → 影響確認が属人依存</span></li>
+    <li class="tl-item"><span class="tl-dot danger"></span><span class="tl-content"><strong>急な追加案件</strong> → 属人が力技で影響確認・本番反映</span></li>
+    <li class="tl-item"><span class="tl-dot warn"></span><span class="tl-content"><strong>7月組織変更</strong> → 上流の暗黙知が断絶。また新しい人が一から</span></li>
+    <li class="tl-item"><span class="tl-dot warn"></span><span class="tl-content"><strong>SVNスパゲッティ</strong> → 並行改修の衝突が人力管理。構成管理不備</span></li>
+    <li class="tl-item"><span class="tl-dot danger"></span><span class="tl-content"><strong>AI/DX推進</strong> → 土台が整わないまま重ねると複雑性が増すだけ</span></li>
   </ul>
-  <span class="pill pill-red">知識消滅サイクル</span>
-  <span class="pill pill-amber">引き継ぎ設計が未整備</span>
 </div>
 
-<div class="card">
-  <p class="card-title">③ BXO環境の生産性問題</p>
-  <ul class="bullet-list">
-    <li>仮想環境（リモートデスクトップ）でセキュリティは担保</li>
-    <li>一方でパフォーマンス低下・細かい制約の積み上げが慢性的</li>
-    <li>「働く環境」として総合評価すると優秀な外部人材の定着を阻害する可能性</li>
-    <li>セキュリティと生産性のトレードオフを定量的に議論した形跡がない</li>
-  </ul>
-  <span class="pill pill-amber">採用・定着リスク</span>
-  <span class="pill pill-blue">定量評価が必要</span>
+<div class="anchor-box">
+  「文学的ディスコミュニケーション」が核心。<br>
+  内容は正しい、方向性も合っている。でも<strong>現在地の共通認識がない</strong>から、同じことを話しているのにすれ違う。これは個人の問題ではなく、構造の問題。
 </div>
 
-<div class="card">
-  <p class="card-title">④ AI/DX推進と現場実態の乖離</p>
-  <ul class="bullet-list">
-    <li>トップダウンで「AI活用」が叫ばれている</li>
-    <li>一方で金融API連携システムという特性上、障害は日常的に発生</li>
-    <li>有識者が人力で対応する構造が変わっていない</li>
-    <li>プロパー社員が「指をくわえて見ている」構造 → 属人スキルの移転が起きていない</li>
-    <li>AIが入る前に、基本的な障害対応の標準化・自動化が先ではないか</li>
-  </ul>
-  <span class="pill pill-red">DX以前の問題</span>
-  <span class="pill pill-amber">優先順位の逆転</span>
-</div>
-
-<!-- ==================== PART 3 ==================== -->
 <hr>
-<p class="section-label">Part 3 — 統括部長に聞かれたら（核心一言）</p>
+<p class="section-label">Part 3 — 本質的な打ち手（リファクタリング提言）</p>
 
-<div class="danger-box">
-  ⚠ 以下は「忌憚ない意見を」と言われた場合のみ使用。場の空気を読んで判断する。
+<div class="success-box">
+  <strong>提言の核心：</strong><br>
+  プレスリリースレベルの意思決定で「計画的な立て直し期間」を設け、ソースコード・ドキュメント・仕様・可視化資料を一から整備する。これをやらない限り、改善は永遠に表面的にとどまる。
 </div>
 
-<div class="card" style="border-left: 2px solid var(--border-danger); border-radius: 0 var(--radius-lg) var(--radius-lg) 0; margin-top: 10px;">
-  <p class="card-title" style="margin-bottom: 12px">端的に核心を突く3点</p>
+<div class="phase-block">
+  <p class="phase-num">Phase 0 — 意思決定</p>
+  <p class="phase-title">経営層からの「一時休息宣言」</p>
+  <p class="phase-body">社長・事業責任者レベルから金融機関向けに正式アナウンス。内部整備のための計画的停止。根回しと合意形成が前提。</p>
+</div>
 
-  <div style="padding: 10px 0; border-bottom: 0.5px solid var(--border);">
-    <p style="font-size:12px; color:var(--text-tertiary); margin-bottom:4px">① 知識管理</p>
+<div class="phase-block">
+  <p class="phase-num">Phase 1 — 現状把握</p>
+  <p class="phase-title">ソースコード・資材の完全棚卸し</p>
+  <p class="phase-body">本番環境・開発資材・依存関係・設定ファイルを全件把握。「誰も知らない」を終わらせる最初の一手。外部第三者を入れる価値が最も高いフェーズ。</p>
+</div>
+
+<div class="phase-block">
+  <p class="phase-num">Phase 2 — リファクタリング</p>
+  <p class="phase-title">システム・コード・テスト環境の整備</p>
+  <p class="phase-body">ソースコードの整理・議事本番環境の整備・シミュレーター構築・SVNからの移行検討。複雑化した構造を解きほぐす。</p>
+</div>
+
+<div class="phase-block">
+  <p class="phase-num">Phase 3 — ドキュメント整備</p>
+  <p class="phase-title">仕様書・歴史資料・可視化資料の作成</p>
+  <p class="phase-body">
+    ・内部向け：設計仕様・構成図・障害対応手順<br>
+    ・外部向け：概念資料・イメージ図（目線合わせ用）<br>
+    ・歴史資料：何が積み上がってきて今どうなっているか<br>
+    ・現在地図：関わる全員が「今どこにいるか」を把握できる状態
+  </p>
+</div>
+
+<div class="phase-block">
+  <p class="phase-num">Phase 4 — 組織・プロセス改革</p>
+  <p class="phase-title">構成管理・引き継ぎ・調達の見直し</p>
+  <p class="phase-body">Git移行・ブランチ戦略の設計・開発/リリース間の連携プロセス整備・グループ外の第三者調達の検討・スキル移転の仕組み化。</p>
+</div>
+
+<hr>
+<p class="section-label">Part 4 — 統括部長に聞かれたら（核心3点）</p>
+
+<div class="danger-box">⚠ 「忌憚ない意見を」と言われた場合のみ。場の空気を読んで判断する。</div>
+
+<div class="card" style="border-left:2px solid var(--border-danger);border-radius:0 var(--radius-lg) var(--radius-lg) 0;margin-top:10px;">
+  <div style="padding:10px 0;border-bottom:.5px solid var(--border);">
+    <p style="font-size:11px;color:var(--text-tertiary);margin-bottom:4px">① 現状把握</p>
+    <p class="core-line">「本番資材を把握できているプロパーの方がいない、という状態が2年前から変わっていません。何をやるにもそこが起点です」</p>
+  </div>
+  <div style="padding:10px 0;border-bottom:.5px solid var(--border);">
+    <p style="font-size:11px;color:var(--text-tertiary);margin-bottom:4px">② 知識断絶</p>
     <p class="core-line">「毎年7月にリセットが起きています。組織変更の目的と、知識継承の設計が連動していない」</p>
   </div>
-
-  <div style="padding: 10px 0; border-bottom: 0.5px solid var(--border);">
-    <p style="font-size:12px; color:var(--text-tertiary); margin-bottom:4px">② 調達・競争原理</p>
-    <p class="core-line">「グループ内委託の継続に競争原理が働いていない。第三者が入ることで見えてくるものがあります」</p>
-  </div>
-
-  <div style="padding: 10px 0;">
-    <p style="font-size:12px; color:var(--text-tertiary); margin-bottom:4px">③ AI/DX推進の順序</p>
-    <p class="core-line">「障害対応が属人で人力のまま、AIを重ねても効果は限定的です。標準化が先です」</p>
+  <div style="padding:10px 0;">
+    <p style="font-size:11px;color:var(--text-tertiary);margin-bottom:4px">③ 改善の順序</p>
+    <p class="core-line">「AI・DX以前に、現在地の共有が必要です。計画的な立て直し期間を、経営判断として検討いただけないでしょうか」</p>
   </div>
 </div>
 
-<div class="anchor-box" style="margin-top:1rem">
-  <strong>立ち位置の枕詞：</strong><br>
-  「2年間外から見させていただいた立場で申し上げると——」<br>
-  批判でなく観察として出す。数字・事例は出さず構造で語る。
+<div class="anchor-box">
+  <strong>枕詞：</strong>「2年間外から見させていただいた立場で申し上げると——」<br>
+  批判でなく観察として出す。数字・固有名詞は出さず構造で語る。
 </div>
 
-<!-- ==================== PART 4 ==================== -->
 <hr>
-<p class="section-label">Part 4 — 中長期の戦略オプション（提言軸）</p>
+<p class="section-label">Part 5 — 中長期の戦略オプション</p>
 
 <div class="two-col">
-  <div class="mini-card">
-    <p class="mini-label">短期（〜1年）</p>
-    <p class="mini-val">引き継ぎ設計の義務化<br>知識管理基盤の整備</p>
-  </div>
-  <div class="mini-card">
-    <p class="mini-label">中期（1〜3年）</p>
-    <p class="mini-val">第三者機関・独立PMO<br>入口契約の見直し</p>
-  </div>
-  <div class="mini-card">
-    <p class="mini-label">調達改革</p>
-    <p class="mini-val">競争原理の導入<br>優秀フリーランス活用</p>
-  </div>
-  <div class="mini-card">
-    <p class="mini-label">DX優先順位</p>
-    <p class="mini-val">障害対応の標準化<br>→その後AI重ねる</p>
-  </div>
+  <div class="mini-card"><p class="mini-label">即時（今できる）</p><p class="mini-val">現状把握の着手<br>資材棚卸しの合意形成</p></div>
+  <div class="mini-card"><p class="mini-label">短期（〜1年）</p><p class="mini-val">引き継ぎ設計の義務化<br>ドキュメント整備開始</p></div>
+  <div class="mini-card"><p class="mini-label">中期（1〜3年）</p><p class="mini-val">第三者PMO導入<br>入口契約の見直し</p></div>
+  <div class="mini-card"><p class="mini-label">理想形</p><p class="mini-val">計画的リファクタリング<br>→その上でDX・AI</p></div>
 </div>
 
-<p class="footer">はんちょー 出張メモ 2026.05.20 / 統括部長出席対応含む</p>
+<p class="footer">はんちょー 出張メモ 2026.05.20 v2 / 統括部長出席対応含む</p>
 
 </body>
 </html>
