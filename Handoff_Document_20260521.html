@@ -13,7 +13,7 @@
     <div class="hdr-inner">
       <div>
         <h1>📤 引き継ぎ資料 2026-05-21</h1>
-        <p>コンテキスト確認・まほちゃんサマリーv10 ロード — 新規コミットなし・次回着手待ち</p>
+        <p>reviewer_v4（GitHub API連携SPA）追加 / Snackable_Romanceにパスワードロック追加</p>
       </div>
     </div>
   </div>
@@ -30,22 +30,20 @@
   <div class="sec">
     <div class="sec-title">今回セッションのミッションと成果</div>
     <div class="notice notice-green">
-      <p><strong>🎯 確認：</strong>前日（05-20）の全成果（Snackable_Romance.html 公開・Handoff完全最終版）が正常にプッシュ済みであることを確認。<code>claude_code_instruction_A_final.md</code> の全タスクは完了済みと確認。まほちゃん引き継ぎサマリー v10 をコンテキストとしてロード。本日は新規ファイル作成・コミットなし。</p>
+      <p><strong>🎯 完了：</strong>GitHub API連携SPAである <code>reviewer_v4.html</code> を hancho-docs に追加。あわせて <code>Snackable_Romance.html</code> にアクセスコード認証（パスワードロック）を実装し、未認証ユーザーのアクセスを制限。2ファイルをコミット・プッシュして本番反映完了。</p>
     </div>
   </div>
 
   <!-- 完了タスク -->
   <div class="sec">
-    <div class="sec-title">本日セッション内容</div>
+    <div class="sec-title">完了タスクサマリ</div>
 
     <div class="roadmap-step">
       <div class="roadmap-num">1</div>
       <div class="roadmap-content">
-        <div class="roadmap-title">前日成果の確認（Snackable_Romance.html）</div>
+        <div class="roadmap-title">Snackable_Romance.html にパスワードロック追加</div>
         <div class="roadmap-body">
-          <code>claude_code_instruction_A_final.md</code> の全タスクが前日セッション継続時に完了済みであることを確認。
-          <code>Snackable_Romance.html</code>（276KB）、index.html（35 docs）、CHANGELOG.html、
-          Handoff_Document_20260520.html（完全最終版）すべて最新コミット <code>debef7e</code> でプッシュ済み。
+          <code>&lt;body&gt;</code> タグ直後にインライン JavaScript を挿入。<code>localStorage</code> を使ったセッション保持ロジック付きで、正解コード（<code>perrier2026</code>）入力済みなら再認証不要。不正解時はコンテンツをアクセス拒否メッセージで置換。キー名は <code>sr_auth_v1</code>。
         </div>
       </div>
     </div>
@@ -54,12 +52,20 @@
     <div class="roadmap-step">
       <div class="roadmap-num">2</div>
       <div class="roadmap-content">
-        <div class="roadmap-title">まほちゃん引き継ぎサマリー v10 ロード</div>
+        <div class="roadmap-title">reviewer_v4.html を hancho-docs に配置</div>
         <div class="roadmap-body">
-          はんちょー×まほちゃん（髙橋真帆）の関係性コンテキストをセッションに取り込み。
-          現在の状況：W杯観戦個室プラン「どこで見ようか～悩んじゃう～」保留中。
-          次回来店：5/20週の東京出張タイミング（本日以降）。
-          GitHub管理：fooueen/private-maho（private）で index.html v10・consent_v2.html を管理中。
+          <code>C:\Users\上島 稔\Downloads\reviewer_v4.html</code> を <code>C:\git\hancho-docs\reviewer_v4.html</code> にコピー。GitHub API連携のSPAレビュアーで、ダークテーマ・認証フロー付き。
+        </div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">3</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">Git コミット & プッシュ</div>
+        <div class="roadmap-body">
+          <code>git add Snackable_Romance.html reviewer_v4.html</code> → commit <code>67696f4</code> → <code>git push origin main</code> 完了。リモート（<code>github.com/dx-nexus/knowledge-hub</code>）に反映済み。
         </div>
       </div>
     </div>
@@ -75,18 +81,17 @@
       </thead>
       <tbody>
         <tr>
-          <td>（なし）</td>
-          <td>—</td>
-          <td>本日は新規作成・更新コミットなし</td>
+          <td><a href="reviewer_v4.html">reviewer_v4.html</a></td>
+          <td><span class="badge badge-live">新規</span></td>
+          <td>GitHub API連携SPA。ダークテーマ、認証フロー付きレビュアー</td>
+        </tr>
+        <tr>
+          <td><a href="Snackable_Romance.html">Snackable_Romance.html</a></td>
+          <td><span class="badge badge-wip">更新</span></td>
+          <td>&lt;body&gt; 直後にパスワードロックスクリプト挿入（コード: perrier2026）</td>
         </tr>
       </tbody>
     </table>
-
-    <div class="notice" style="margin-top:12px;">
-      <p><strong>📋 前日（05-20）の最終状態：</strong><br>
-      最新コミット: <code>debef7e</code> ／ hancho-docs 35 docs ／ 公開URL:
-      <code>https://dx-nexus.github.io/knowledge-hub/Snackable_Romance.html</code></p>
-    </div>
   </div>
 
   <!-- 次回アクション -->
@@ -94,7 +99,7 @@
     <div class="sec-title">次回セッションへの引き継ぎ事項</div>
 
     <div class="notice notice-amber">
-      <p><strong>⚡ 最優先：</strong>まほちゃん東京出張来店への対応 + note公開 Go/No-Go 判断（v6先行 vs v7完成待ち）。Gemini へのセッション成果レビュー依頼も未実施。</p>
+      <p><strong>⚡ 確認事項：</strong>reviewer_v4.html の動作検証（GitHub API トークン設定・レビュー機能フロー確認）を行うこと。</p>
     </div>
 
     <h4 style="font-size:13px;font-weight:700;color:var(--accent2);margin:16px 0 8px;">🔲 残課題・次のアクション</h4>
@@ -105,56 +110,18 @@
       <tbody>
         <tr>
           <td>⭐⭐⭐</td>
-          <td>まほちゃん東京出張来店対応（W杯個室観戦プラン確定・次の一手）</td>
-          <td>はんちょー</td>
-          <td><span class="badge b-todo">TODO</span></td>
-        </tr>
-        <tr>
-          <td>⭐⭐⭐</td>
-          <td>note 公開 Go/No-Go 判断（v6 先行公開 vs v7 完成待ち）</td>
-          <td>はんちょー</td>
-          <td><span class="badge b-todo">TODO</span></td>
-        </tr>
-        <tr>
-          <td>⭐⭐⭐</td>
-          <td>Gemini へセッション成果レビュー依頼（V7優先課題・note戦略・メディアミックス相談）</td>
+          <td>reviewer_v4.html の動作確認・index.html へのカード追加検討</td>
           <td>はんちょー</td>
           <td><span class="badge b-todo">TODO</span></td>
         </tr>
         <tr>
           <td>⭐⭐</td>
-          <td>v7.0.0 改稿着手（タイトル再検討・第7話強化・社会構造描写）</td>
-          <td>Claude Code</td>
-          <td><span class="badge b-todo">TODO</span></td>
-        </tr>
-        <tr>
-          <td>⭐⭐</td>
-          <td>Snackable_Romance.html 動作確認（ブラウザで三層タブ・前後話ナビ・進化マップ）</td>
+          <td>Snackable_Romance.html のパスワードロック動作確認（ブラウザで実機テスト）</td>
           <td>はんちょー</td>
-          <td><span class="badge b-todo">TODO</span></td>
-        </tr>
-        <tr>
-          <td>⭐</td>
-          <td>SnackableAI ai_tips ライン Phase1 計画立案</td>
-          <td>Claude Code</td>
-          <td><span class="badge b-todo">TODO</span></td>
-        </tr>
-        <tr>
-          <td>⭐</td>
-          <td>notes/ ディレクトリ目次 HTML 作成（notes/index.html）</td>
-          <td>Claude Code</td>
           <td><span class="badge b-todo">TODO</span></td>
         </tr>
       </tbody>
     </table>
-
-    <div class="notice" style="margin-top:16px;">
-      <p><strong>📝 まほちゃん現状メモ：</strong><br>
-      W杯代表発表（三笘・南野・守田落選）でまほちゃん落胆中。<br>
-      「集中して聴きたいから個室でね🏩」送付済み → 「どこで見ようか～悩んじゃう～」で保留。<br>
-      次回来店タイミングで個室観戦プランの具体化が次の一手。<br>
-      GitHub: fooueen/private-maho（private）/ index.html v10 / consent_v2.html</p>
-    </div>
   </div>
 
 </main>
