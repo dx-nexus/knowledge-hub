@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V-Reviewer v4 - GitHub API連携</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Hiragino Kaku Gothic ProN","游ゴシック",YuGothic,"Noto Sans JP",sans-serif;
+  background: #1a1a2e; color: #e0e0e0; height: 100vh;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+
+/* ── Auth Screen ── */
+#authScreen {
+  display: flex; align-items: center; justify-content: center;
+  height: 100vh; background: #1a1a2e;
+}
+.auth-box {
+  background: #16213e; border-radius: 12px; padding: 40px;
+  max-width: 440px; width: 100%; text-align: center;
+  border: 1px solid #0f3460;
+}
+.auth-box h1 { font-size: 22px; margin-bottom: 8px; color: #e0e0e0; }
+.auth-box p { font-size: 13px; color: #888; margin-bottom: 24px; }
+.auth-box input {
+  width: 100%; background: #0f3460; border: 1px solid #4a4a7a;
+  color: #e0e0e0; padding: 12px; border-radius: 6px;
+  font-family: monospace; font-size: 14px; margin-bottom: 12px;
+}
+.auth-box .hint { font-size: 11px; color: #666; margin-bottom: 16px; }
+.auth-box label { display: flex; align-items: center; gap: 8px; justify-content: center; font-size: 12px; color: #888; margin-bottom: 20px; cursor: pointer; }
+.btn-primary {
+  background: #2eb872; color: #fff; border: none;
+  padding: 12px 32px; border-radius: 6px;
+  cursor: pointer; font-size: 14px; font-family: inherit; width: 100%;
+}
+.btn-primary:hover { background: #28a466; }
+
+/* ── Main UI ── */
+#mainApp { display: none; flex-direction: column; height: 100vh; }
+
+header {
+  background: #16213e; border-bottom: 1px solid #0f3460;
+  padding: 10px 16px; display: flex; gap: 12px;
+  align-items: center; flex-wrap: wrap;
+}
+header h1 { font-size: 16px; font-weight: 600; color: #2eb872; white-space: nowrap; }
+.header-auth {
+  font-size: 11px; background: #0f3460; padding: 4px 10px;
+  border-radius: 12px; color: #88aa88;
+}
+.header-controls {
+  display: flex; gap: 8px; align-items: center; flex-wrap: wrap; flex: 1;
+}
+.header-controls select, .header-controls input {
+  background: #0f3460; border: 1px solid #4a4a7a; color: #e0e0e0;
+  padding: 6px 10px; border-radius: 4px; font-family: inherit; font-size: 12px;
+}
+.header-controls button {
+  background: #2eb872; color: #fff; border: none;
+  padding: 6px 14px; border-radius: 4px; cursor: pointer;
+  font-size: 12px; font-family: inherit; white-space: nowrap;
+}
+.header-controls button:hover { background: #28a466; }
+.header-controls button.secondary { background: #555; }
+.header-controls button.secondary:hover { background: #444; }
+
+/* ── Editor Area ── */
+.editor-area {
+  flex: 1; display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0; overflow: hidden;
+}
+@media (max-width: 800px) {
+  .editor-area { grid-template-columns: 1fr; }
+}
+
+.pane {
+  display: flex; flex-direction: column; border-right: 1px solid #0f3460; overflow: hidden;
+}
+.pane:last-child { border-right: none; }
+.pane-header {
+  background: #16213e; padding: 8px 12px;
+  font-size: 11px; color: #888; border-bottom: 1px solid #0f3460;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.pane-header .pane-title { font-weight: 600; color: #aaa; }
+.pane-content {
+  flex: 1; overflow-y: auto; padding: 16px;
+  font-size: 14px; line-height: 1.8; color: #ccc;
+  white-space: pre-wrap; word-break: break-word;
+  background: #12121f;
+}
+.pane-content.editable {
+  background: #13132a;
+  border: none; resize: none; outline: none;
+  font-family: "Hiragino Kaku Gothic ProN","游ゴシック",YuGothic,"Noto Sans JP",sans-serif;
+  color: #e0e0e0;
+}
+textarea.pane-content {
+  flex: 1; width: 100%; overflow-y: auto;
+}
+
+/* ── Commit Bar ── */
+.commit-bar {
+  background: #16213e; border-top: 1px solid #0f3460;
+  padding: 10px 16px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+}
+.commit-bar input[type="text"] {
+  flex: 1; background: #0f3460; border: 1px solid #4a4a7a; color: #e0e0e0;
+  padding: 8px 12px; border-radius: 4px; font-family: inherit; font-size: 13px;
+  min-width: 200px;
+}
+.commit-bar .new-ver-label { font-size: 11px; color: #888; white-space: nowrap; }
+.commit-bar input[type="text"].version-input { flex: 0 0 120px; min-width: 0; }
+.btn-commit {
+  background: #4a90e2; color: #fff; border: none;
+  padding: 8px 20px; border-radius: 4px; cursor: pointer;
+  font-size: 13px; font-family: inherit; white-space: nowrap;
+}
+.btn-commit:hover { background: #3a7bc8; }
+.btn-commit:disabled { background: #333; color: #666; cursor: default; }
+
+/* ── Toast ── */
+.toast {
+  position: fixed; bottom: 80px; right: 20px;
+  background: #2c2c2c; color: #fff; padding: 12px 20px;
+  border-radius: 6px; font-size: 13px;
+  opacity: 0; transition: opacity 0.3s; z-index: 999;
+}
+.toast.show { opacity: 1; }
+.toast.error { background: #c0392b; }
+.toast.success { background: #27ae60; }
+
+/* ── Loading ── */
+.loading-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6); align-items: center; justify-content: center;
+  z-index: 500; flex-direction: column; gap: 12px;
+}
+.loading-overlay.show { display: flex; }
+.spinner {
+  width: 40px; height: 40px; border: 3px solid #333;
+  border-top-color: #2eb872; border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-msg { font-size: 13px; color: #aaa; }
+
+/* ── Diff highlight ── */
+.diff-added { background: rgba(46,184,114,0.15); }
+.diff-removed { background: rgba(220,50,50,0.15); text-decoration: line-through; color: #888; }
+</style>
+</head>
+<body>
+
+<!-- Auth Screen -->
+<div id="authScreen">
+  <div class="auth-box">
+    <h1>🔗 V-Reviewer v4</h1>
+    <p>GitHub Personal Access Token を入力してください<br>（Contents: read &amp; write 権限が必要）</p>
+    <input type="password" id="patInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+    <div class="hint">PATは <a href="https://github.com/settings/tokens" target="_blank" style="color:#2eb872;">github.com/settings/tokens</a> で発行できます</div>
+    <label>
+      <input type="checkbox" id="rememberPat" checked>
+      LocalStorageに保存する（次回省略）
+    </label>
+    <button class="btn-primary" onclick="initApp()">接続する</button>
+  </div>
+</div>
+
+<!-- Main App -->
+<div id="mainApp">
+  <header>
+    <h1>V-Reviewer v4</h1>
+    <span class="header-auth" id="authStatus">認証済み</span>
+    <div class="header-controls">
+      <select id="versionSelect" onchange="onVersionChange()">
+        <option value="">バージョン読込中...</option>
+      </select>
+      <select id="episodeSelect">
+        <option value="ep01">第1話</option>
+        <option value="ep02">第2話</option>
+        <option value="ep03">第3話</option>
+        <option value="ep04">第4話</option>
+        <option value="ep05">第5話</option>
+        <option value="ep06">第6話</option>
+        <option value="ep07" selected>第7話</option>
+        <option value="ep08">第8話</option>
+        <option value="ep09">第9話</option>
+        <option value="ep10">第10話</option>
+        <option value="spinoff_saku">スピンオフ：朔</option>
+      </select>
+      <button onclick="loadFile()">📂 読み込む</button>
+      <button class="secondary" onclick="clearPat()">🔓 再認証</button>
+    </div>
+  </header>
+
+  <div class="editor-area">
+    <div class="pane">
+      <div class="pane-header">
+        <span class="pane-title">📖 ベース（読取専用）</span>
+        <span id="baseLabel" style="font-size:10px;color:#666;"></span>
+      </div>
+      <div class="pane-content" id="basePane"></div>
+    </div>
+    <div class="pane">
+      <div class="pane-header">
+        <span class="pane-title">✏️ 編集エリア</span>
+        <span id="editLabel" style="font-size:10px;color:#666;"></span>
+      </div>
+      <textarea class="pane-content editable" id="editPane" placeholder="ファイルを読み込むと編集できます"></textarea>
+    </div>
+  </div>
+
+  <div class="commit-bar">
+    <span class="new-ver-label">コミット先バージョン：</span>
+    <input type="text" class="version-input" id="newVersion" placeholder="例：v7.2.0">
+    <input type="text" id="commitMsg" placeholder="コミットメッセージを入力（必須）">
+    <button class="btn-commit" id="commitBtn" onclick="commitFile()" disabled>
+      🚀 コミット
+    </button>
+  </div>
+</div>
+
+<!-- Loading -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-msg" id="loadingMsg">処理中...</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const OWNER = 'dx-nexus';
+const REPO = '-private-core';
+const BASE_PATH = 'projects/snackable_ai/text/romance';
+const PAT_KEY = 'vr4_pat';
+
+let currentPat = '';
+let currentFileSha = '';
+let currentVersion = '';
+let currentEpisode = '';
+
+// ── Utility ──────────────────────────────
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (type ? ' ' + type : '');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function setLoading(show, msg = '処理中...') {
+  const el = document.getElementById('loadingOverlay');
+  document.getElementById('loadingMsg').textContent = msg;
+  el.classList.toggle('show', show);
+}
+
+function decodeBase64Utf8(b64) {
+  const binary = atob(b64.replace(/\s/g, ''));
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return new TextDecoder('utf-8').decode(bytes);
+}
+
+function encodeUtf8Base64(str) {
+  const bytes = new TextEncoder().encode(str);
+  let binary = '';
+  bytes.forEach(b => binary += String.fromCharCode(b));
+  return btoa(binary);
+}
+
+async function ghFetch(path, options = {}) {
+  const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/${path}`, {
+    ...options,
+    headers: {
+      Authorization: `token ${currentPat}`,
+      Accept: 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json',
+      ...(options.headers || {})
+    }
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || `HTTP ${res.status}`);
+  return data;
+}
+
+// ── Auth ──────────────────────────────
+async function initApp() {
+  const pat = document.getElementById('patInput').value.trim();
+  if (!pat) { showToast('PATを入力してください', 'error'); return; }
+  
+  setLoading(true, 'GitHub API に接続中...');
+  try {
+    currentPat = pat;
+    // 接続テスト
+    await ghFetch('git/refs/tags');
+    
+    if (document.getElementById('rememberPat').checked) {
+      localStorage.setItem(PAT_KEY, pat);
+    }
+    
+    document.getElementById('authScreen').style.display = 'none';
+    document.getElementById('mainApp').style.display = 'flex';
+    
+    await loadTags();
+    showToast('接続成功', 'success');
+  } catch (e) {
+    showToast('接続失敗：' + e.message, 'error');
+  } finally {
+    setLoading(false);
+  }
+}
+
+function clearPat() {
+  localStorage.removeItem(PAT_KEY);
+  currentPat = '';
+  document.getElementById('mainApp').style.display = 'none';
+  document.getElementById('authScreen').style.display = 'flex';
+  document.getElementById('patInput').value = '';
+}
+
+// ── Tags ──────────────────────────────
+async function loadTags() {
+  setLoading(true, 'バージョン一覧を取得中...');
+  try {
+    const tags = await ghFetch('git/refs/tags');
+    const sel = document.getElementById('versionSelect');
+    sel.innerHTML = '<option value="">-- バージョンを選択 --</option>';
+    
+    // 降順ソート（最新を上に）
+    const sorted = [...tags]
+      .filter(t => t.ref.startsWith('refs/tags/v'))
+      .map(t => t.ref.replace('refs/tags/', ''))
+      .sort((a, b) => {
+        const pa = a.replace(/v/,'').split('.').map(Number);
+        const pb = b.replace(/v/,'').split('.').map(Number);
+        for (let i = 0; i < 3; i++) {
+          if ((pa[i]||0) !== (pb[i]||0)) return (pb[i]||0) - (pa[i]||0);
+        }
+        return 0;
+      });
+    
+    sorted.forEach(tag => {
+      const opt = document.createElement('option');
+      opt.value = tag;
+      opt.textContent = tag;
+      sel.appendChild(opt);
+    });
+    
+    // 最新を選択
+    if (sorted.length > 0) {
+      sel.value = sorted[0];
+      onVersionChange();
+    }
+  } catch (e) {
+    showToast('タグ取得失敗：' + e.message, 'error');
+  } finally {
+    setLoading(false);
+  }
+}
+
+function onVersionChange() {
+  const ver = document.getElementById('versionSelect').value;
+  if (!ver) return;
+  
+  // 次のバージョン番号を自動提案
+  const m = ver.match(/v?(\d+)\.(\d+)\.(\d+)/);
+  if (m) {
+    document.getElementById('newVersion').value = `v${m[1]}.${parseInt(m[2])}.${parseInt(m[3])+1}`;
+  }
+}
+
+// ── File Load ──────────────────────────────
+async function loadFile() {
+  const version = document.getElementById('versionSelect').value;
+  const episode = document.getElementById('episodeSelect').value;
+  
+  if (!version) { showToast('バージョンを選択してください', 'error'); return; }
+  
+  currentVersion = version;
+  currentEpisode = episode;
+  
+  // versions/ フォルダから全体ファイルを取得
+  const filePath = `${BASE_PATH}/versions/${version}.md`;
+  
+  setLoading(true, `${version} / ${episode} を取得中...`);
+  
+  try {
+    let data;
+    try {
+      data = await ghFetch(`contents/${filePath}`);
+    } catch (e) {
+      // バージョンファイルが見つからない場合は output/ から直接取得
+      const epPath = `${BASE_PATH}/output/${episode}.md`;
+      data = await ghFetch(`contents/${epPath}`);
+    }
+    
+    const fullText = decodeBase64Utf8(data.content);
+    currentFileSha = data.sha;
+    
+    // 指定エピソードを抽出（## 第N話 で分割）
+    const extracted = extractEpisode(fullText, episode);
+    
+    document.getElementById('basePane').textContent = extracted || fullText;
+    document.getElementById('editPane').value = extracted || fullText;
+    
+    document.getElementById('baseLabel').textContent = `${version} / ${episode} / sha:${data.sha.substring(0,7)}`;
+    document.getElementById('editLabel').textContent = '編集中';
+    
+    document.getElementById('commitBtn').disabled = false;
+    
+    showToast('読み込み完了', 'success');
+  } catch (e) {
+    showToast('読み込み失敗：' + e.message, 'error');
+  } finally {
+    setLoading(false);
+  }
+}
+
+function extractEpisode(fullText, episode) {
+  // episode が "ep01"〜"ep10" の場合、番号を取得
+  const epNum = parseInt(episode.replace('ep', ''));
+  if (isNaN(epNum)) return fullText;
+  
+  // 「## 第N話」で分割
+  const regex = /^## 第(\d+)話[：:]/m;
+  const parts = fullText.split(/^(?=## 第\d+話)/m);
+  
+  for (const part of parts) {
+    const m = part.match(regex);
+    if (m && parseInt(m[1]) === epNum) {
+      return part.trim();
+    }
+  }
+  return fullText;
+}
+
+// ── Commit ──────────────────────────────
+async function commitFile() {
+  const newVersion = document.getElementById('newVersion').value.trim();
+  const commitMsg = document.getElementById('commitMsg').value.trim();
+  const editContent = document.getElementById('editPane').value;
+  
+  if (!commitMsg) {
+    showToast('コミットメッセージを入力してください', 'error');
+    document.getElementById('commitMsg').focus();
+    return;
+  }
+  
+  if (!newVersion) {
+    showToast('コミット先バージョンを入力してください', 'error');
+    document.getElementById('newVersion').focus();
+    return;
+  }
+  
+  if (editContent === document.getElementById('basePane').textContent) {
+    showToast('変更がありません', 'error');
+    return;
+  }
+  
+  // ── 確認ダイアログ ──
+  const confirmed = confirm(
+    `以下の内容でコミットします。\n\n` +
+    `📁 リポジトリ: ${OWNER}/${REPO}\n` +
+    `📂 バージョン: ${currentVersion} → ${newVersion}\n` +
+    `📄 エピソード: ${currentEpisode}\n` +
+    `💬 メッセージ: ${commitMsg}\n\n` +
+    `本当に実行しますか？`
+  );
+  
+  if (!confirmed) {
+    showToast('キャンセルしました');
+    return;
+  }
+  
+  setLoading(true, 'コミット中...');
+  
+  try {
+    // output/${episode}.md を更新
+    const outputPath = `${BASE_PATH}/output/${currentEpisode}.md`;
+    
+    // 現在のshaを取得（最新）
+    let sha = currentFileSha;
+    try {
+      const current = await ghFetch(`contents/${outputPath}`);
+      sha = current.sha;
+    } catch (e) {
+      // ファイルが存在しない場合は新規作成
+      sha = undefined;
+    }
+    
+    const body = {
+      message: `${commitMsg} [${newVersion}]`,
+      content: encodeUtf8Base64(editContent)
+    };
+    if (sha) body.sha = sha;
+    
+    await ghFetch(`contents/${outputPath}`, {
+      method: 'PUT',
+      body: JSON.stringify(body)
+    });
+    
+    // ベースペインを更新
+    document.getElementById('basePane').textContent = editContent;
+    document.getElementById('baseLabel').textContent = `${newVersion} / ${currentEpisode} / committed`;
+    
+    // 次のバージョンを自動更新
+    const m = newVersion.match(/v?(\d+)\.(\d+)\.(\d+)/);
+    if (m) {
+      document.getElementById('newVersion').value = `v${m[1]}.${m[2]}.${parseInt(m[3])+1}`;
+    }
+    document.getElementById('commitMsg').value = '';
+    
+    showToast(`コミット完了: ${newVersion}`, 'success');
+    
+    // タグ一覧を再取得
+    await loadTags();
+    
+  } catch (e) {
+    showToast('コミット失敗：' + e.message, 'error');
+    console.error(e);
+  } finally {
+    setLoading(false);
+  }
+}
+
+// ── Auto Login ──────────────────────────────
+window.addEventListener('load', () => {
+  const saved = localStorage.getItem(PAT_KEY);
+  if (saved) {
+    document.getElementById('patInput').value = saved;
+    // 自動接続
+    initApp();
+  }
+});
+
+// Enterキーでコミット
+document.addEventListener('keydown', e => {
+  if (e.ctrlKey && e.key === 'Enter') {
+    const btn = document.getElementById('commitBtn');
+    if (!btn.disabled) commitFile();
+  }
+});
+</script>
+
+</body>
+</html>

@@ -110,6 +110,23 @@ body{background:#fafafa;font-family:"Hiragino Kaku Gothic ProN","ヒラギノ角
 </style>
 </head>
 <body>
+<script>
+(function() {
+  var CORRECT = 'perrier2026';
+  var KEY = 'sr_auth_v1';
+  if (localStorage.getItem(KEY) === CORRECT) return;
+  var body = document.body;
+  body.style.visibility = 'hidden';
+  var answer = prompt('🔒 アクセスコードを入力してください。');
+  if (answer === CORRECT) {
+    localStorage.setItem(KEY, CORRECT);
+    body.style.visibility = 'visible';
+  } else {
+    body.innerHTML = '<div style="font-family:sans-serif;text-align:center;padding:80px 20px;color:#999;"><p style="font-size:24px;">🔒</p><p style="font-size:14px;">アクセスが拒否されました。</p></div>';
+    body.style.visibility = 'visible';
+  }
+})();
+</script>
 
 <div class="hub-nav"><a href="index.html">← Hub</a></div>
 
