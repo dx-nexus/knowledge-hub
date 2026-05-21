@@ -137,6 +137,13 @@ textarea.pane-content {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 .loading-msg { font-size: 13px; color: #aaa; }
+.lock-btn {
+  background: none; border: 1px solid #4a4a7a; color: #888;
+  padding: 2px 8px; border-radius: 3px; cursor: pointer;
+  font-size: 12px; line-height: 1.4; transition: all 0.15s;
+}
+.lock-btn:hover { border-color: #888; color: #ccc; }
+.lock-btn.locked { background: #4a3030; border-color: #c0392b; color: #e88; }
 </style>
 </head>
 <body>
@@ -194,14 +201,20 @@ textarea.pane-content {
     <div class="pane">
       <div class="pane-header">
         <span class="pane-title">📖 ベース（読取専用）</span>
-        <span id="baseLabel" style="font-size:10px;color:#666;"></span>
+        <span style="display:flex;align-items:center;gap:8px;">
+          <span id="baseLabel" style="font-size:10px;color:#666;"></span>
+          <button class="lock-btn" id="baseLockBtn" onclick="toggleLock('base')" title="このペインを独立スクロールにする">🔓</button>
+        </span>
       </div>
       <div class="pane-content" id="basePane"></div>
     </div>
     <div class="pane">
       <div class="pane-header">
         <span class="pane-title">✏️ 編集エリア</span>
-        <span id="editLabel" style="font-size:10px;color:#666;"></span>
+        <span style="display:flex;align-items:center;gap:8px;">
+          <span id="editLabel" style="font-size:10px;color:#666;"></span>
+          <button class="lock-btn" id="editLockBtn" onclick="toggleLock('edit')" title="このペインを独立スクロールにする">🔓</button>
+        </span>
       </div>
       <textarea class="pane-content" id="editPane"
         placeholder="ファイルを読み込むと編集できます"></textarea>
@@ -467,9 +480,27 @@ function setupSyncScroll() {
   const edit   = document.getElementById('editPane');
   const toggle = document.getElementById('syncScrollEnabled');
   let syncing  = false;
+  let baseLocked = false;
+  let editLocked = false;
 
-  function sync(source, target) {
+  window.toggleLock = function(pane) {
+    if (pane === 'base') {
+      baseLocked = !baseLocked;
+      const btn = document.getElementById('baseLockBtn');
+      btn.textContent = baseLocked ? '🔒' : '🔓';
+      btn.classList.toggle('locked', baseLocked);
+    } else {
+      editLocked = !editLocked;
+      const btn = document.getElementById('editLockBtn');
+      btn.textContent = editLocked ? '🔒' : '🔓';
+      btn.classList.toggle('locked', editLocked);
+    }
+  };
+
+  function sync(source, target, targetName) {
     if (syncing || !toggle.checked) return;
+    if (targetName === 'edit' && editLocked) return;
+    if (targetName === 'base' && baseLocked) return;
     syncing = true;
     const srcMax = source.scrollHeight - source.clientHeight;
     const tgtMax = target.scrollHeight - target.clientHeight;
@@ -479,8 +510,8 @@ function setupSyncScroll() {
     requestAnimationFrame(() => { syncing = false; });
   }
 
-  base.addEventListener('scroll', () => sync(base, edit));
-  edit.addEventListener('scroll', () => sync(edit, base));
+  base.addEventListener('scroll', () => sync(base, edit, 'edit'));
+  edit.addEventListener('scroll', () => sync(edit, base, 'base'));
 }
 
 window.addEventListener('load', () => {
