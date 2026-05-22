@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>引き継ぎ資料 2026-05-23 ／ はんちょー Document Hub</title>
+<link rel="stylesheet" href="assets/common.css">
+</head>
+<body>
+
+<header>
+  <div class="hdr-top">
+    <div class="hdr-inner">
+      <div>
+        <h1>📤 引き継ぎ資料 2026-05-23</h1>
+        <p>ペリエの栞 v7.2.0 全10話完全版デプロイ・異常ディレクトリ修正・README生成セッション</p>
+      </div>
+    </div>
+  </div>
+  <div class="hdr-meta">
+    <span><a href="index.html">← Hub</a></span>
+    <span>🗓️ 2026-05-23</span>
+    <span style="padding:4px 10px;border-radius:4px;font-family:var(--mono);font-size:10px;background:rgba(217,119,6,.12);color:var(--accent2);border:1px solid var(--border);">by Claude Code</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- ミッションサマリ -->
+  <div class="sec">
+    <div class="sec-title">今回セッションのミッションと成果</div>
+    <div class="notice notice-green">
+      <p><strong>🎯 完了：</strong>hancho-docs の異常ディレクトリ（パス区切り欠落由来）2件を確認・削除。Downloads にある perier_complete.html（ペリエの栞 v7.2.0 全10話）を構造検証後にデプロイし、private-core の README.md 生成・push、index.html および CHANGELOG.html を更新して knowledge-hub に全コミット済み。</p>
+    </div>
+  </div>
+
+  <!-- 完了タスク -->
+  <div class="sec">
+    <div class="sec-title">完了タスクサマリ</div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">1</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">異常ディレクトリの確認と削除</div>
+        <div class="roadmap-body">
+          <code>Cgithancho-docsinbox</code> と <code>Cgithancho-docsscripts</code>（パス区切り文字が欠落して生成されたと推定）を確認。両ディレクトリとも空（git 未追跡）だったため <code>-LiteralPath</code> オプションで安全に削除。git 操作は不要だった。
+        </div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">2</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">perier_complete.html 構造チェック（Step 1）</div>
+        <div class="roadmap-body">
+          <code>C:\Users\上島 稔\Downloads\perier_complete.html</code>（50,644 bytes）を検証。結果：html/head/body タグ正常、ep01〜ep10 全10話存在、目次リンク（href="#ep01"〜"#ep10"）全10本、<code>.log</code> クラス 61 個、<code>class="afterword"</code> 存在、div/section の開閉バランス完全一致（div 55/55、section 11/11）。問題なしのため hancho-docs にコピー。
+        </div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">3</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">README.md 生成 → private-core にコミット（Step 2）</div>
+        <div class="roadmap-body">
+          <code>C:\git\private-core\projects\snackable_ai\text\romance\README.md</code> を新規作成。内容：作品概要・あらすじ・文体解説（処理言語の崩壊）・谷崎9:Ado1 比率・共創プロセス（v1.0.0〜v7.2.0 転換点表）・技術構成・今後の予定。コミット <code>ce91005</code> → push 済み。
+        </div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">4</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">index.html カード更新（Step 3-2）</div>
+        <div class="roadmap-body">
+          既存の「ペリエの栞」カードを v7.1.0（51,200字）→ v7.2.0（50,000字）に更新、バッジを 2026-05-23 UPD に更新。新カード「ペリエの栞 ― 全10話完全版ビューア」（href=perier_complete.html）を追加。doc カウントを 37 → 38、日付を 2026-05-23 に更新。
+        </div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">5</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">CHANGELOG.html エントリ追加・デプロイ（Step 3-3〜3-4）</div>
+        <div class="roadmap-body">
+          CHANGELOG.html の最上部に 2026-05-23 エントリを追加（perier_complete.html 公開・README 生成・index 更新内容を記録）。hancho-docs で <code>perier_complete.html / index.html / CHANGELOG.html</code> をコミット <code>203ca1d</code> → <code>dx-nexus/knowledge-hub</code> main に push 完了。
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 作成・更新ファイル一覧 -->
+  <div class="sec">
+    <div class="sec-title">作成・更新ファイル一覧</div>
+    <table class="tbl">
+      <thead>
+        <tr><th>ファイル</th><th>操作</th><th>概要</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="perier_complete.html">perier_complete.html</a></td>
+          <td><span class="badge badge-live">新規</span></td>
+          <td>ペリエの栞 v7.2.0 全10話完全版ビューア（グリッチエフェクト付き）。50,644 bytes。</td>
+        </tr>
+        <tr>
+          <td><a href="index.html">index.html</a></td>
+          <td><span class="badge badge-wip">更新</span></td>
+          <td>ペリエの栞カードを v7.2.0 に更新、完全版ビューアカード追加、38 docs・2026-05-23 に更新。</td>
+        </tr>
+        <tr>
+          <td><a href="CHANGELOG.html">CHANGELOG.html</a></td>
+          <td><span class="badge badge-wip">更新</span></td>
+          <td>2026-05-23 エントリを最上部に追加（v7.2.0 デプロイ内容記録）。</td>
+        </tr>
+        <tr>
+          <td>private-core: projects/snackable_ai/text/romance/README.md</td>
+          <td><span class="badge badge-live">新規</span></td>
+          <td>作品概要・共創プロセス（v1〜v7.2 転換点）・技術構成を記載した公式 README。</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 次回アクション -->
+  <div class="sec">
+    <div class="sec-title">次回セッションへの引き継ぎ事項</div>
+
+    <div class="notice notice-amber">
+      <p><strong>⚡ 最優先：</strong>ペリエの栞 v7.3.0 着手（社会構造描写の深化・ブルーゾーンの「狂った正しさ」）、またはスピンオフ『朔の最後の四半期』の起稿。note マガジン公開に向けた最終整備も検討。</p>
+    </div>
+
+    <h4 style="font-size:13px;font-weight:700;color:var(--accent2);margin:16px 0 8px;">🔲 残課題・次のアクション</h4>
+    <table class="tbl">
+      <thead>
+        <tr><th>優先度</th><th>タスク</th><th>担当</th><th>ステータス</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>⭐⭐⭐</td>
+          <td>ペリエの栞 v7.3.0：ブルーゾーンの社会構造描写深化</td>
+          <td>はんちょー × Claude</td>
+          <td><span class="badge b-todo">TODO</span></td>
+        </tr>
+        <tr>
+          <td>⭐⭐⭐</td>
+          <td>note マガジン公開準備（全10話・有料ライン設定）</td>
+          <td>はんちょー</td>
+          <td><span class="badge b-todo">TODO</span></td>
+        </tr>
+        <tr>
+          <td>⭐⭐</td>
+          <td>スピンオフ『朔の最後の四半期』起稿（note有料特典予定）</td>
+          <td>はんちょー × Claude</td>
+          <td><span class="badge b-todo">TODO</span></td>
+        </tr>
+        <tr>
+          <td>⭐⭐</td>
+          <td>private-core ep01.md / ep02.md の変更内容確認（今セッションで未コミット）</td>
+          <td>はんちょー</td>
+          <td><span class="badge b-todo">TODO</span></td>
+        </tr>
+        <tr>
+          <td>⭐</td>
+          <td>Handoff_Document_20260522.html の作成（5/22 分が未生成）</td>
+          <td>Claude Code</td>
+          <td><span class="badge b-hold">保留</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 参考：コミット情報 -->
+  <div class="sec">
+    <div class="sec-title">参考：本セッションのコミット</div>
+    <table class="tbl">
+      <thead>
+        <tr><th>リポジトリ</th><th>コミットハッシュ</th><th>メッセージ</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>hancho-docs (knowledge-hub)</td>
+          <td><code>203ca1d</code></td>
+          <td>feat: ペリエの栞 v7.2.0 全10話完全版を公開・README追加</td>
+        </tr>
+        <tr>
+          <td>private-core</td>
+          <td><code>ce91005</code></td>
+          <td>docs(romance): README.md を追加（作品概要・共創プロセス・技術構成）</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+
+<footer class="doc-footer">
+  Handoff_Document_20260523.html ／ generated by Claude Code ／ github.com/dx-nexus/knowledge-hub
+</footer>
+</body>
+</html>
