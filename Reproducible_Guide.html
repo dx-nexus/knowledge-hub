@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reproducible Guide: PMO Automation ／ はんちょー Document Hub</title>
+<link rel="stylesheet" href="assets/common.css">
+</head>
+<body>
+
+<header>
+  <div class="hdr-top">
+    <div class="hdr-inner">
+      <div>
+        <h1>Reproducible Guide — PMO業務自動化＆AI議事録クロスインテリジェンス</h1>
+        <p>他メンバーがゼロからノーエラーで再現できる本番品質の手順書（5タブ構成）</p>
+      </div>
+    </div>
+  </div>
+  <div class="hdr-meta">
+    <span>🗓️ 2026-05-25</span>
+    <span>📋 5タブ</span>
+    <span style="padding:4px 10px;border-radius:10px;font-family:var(--mono);font-size:10px;background:rgba(16,185,129,.12);color:#059669;border:1px solid var(--border);">v1.0 NEW</span>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('overview',this)">🌐 全体像とアーキテクチャ</button>
+  <button class="tab-btn" onclick="showTab('setup',this)">⚙️ 環境構築と事前設定</button>
+  <button class="tab-btn" onclick="showTab('autobuild',this)">🧠 自律ビルドとAI間の対話</button>
+  <button class="tab-btn" onclick="showTab('troubleshoot',this)">🛠️ トラブルシューティング</button>
+  <button class="tab-btn" onclick="showTab('remote',this)">📤 リモート連携とハブ統合</button>
+</div>
+
+<!-- Tab 1 -->
+<div class="tab-pane active" id="tab-overview">
+  <div class="sec">
+    <div class="sec-title">全体像とアーキテクチャ</div>
+    <h4>思想：隔離ワークスペース管理の重要性</h4>
+    <p>本PoCは、作業領域を<strong>完全に独立した箱</strong>として用意することで、親リポジトリとのGitネストを100%回避します。実働コンポーネントは <code>C:\git\pmo-automation\</code> に配置し、ここでのみコード生成・実行・テストを行います。</p>
+
+    <h4>ポータル疎結合（マイクロサービス的ガバナンス）</h4>
+    <p>表示系（`hancho-docs`）は参照用ポータルにとどめ、実行系（`pmo-automation`）と疎結合に維持します。変更は実働箱側で完結し、ポータルはリンクカードで誘導します。</p>
+
+    <h4>視覚概念図</h4>
+    <div class="eco-center" style="margin-top:12px;">
+      <div style="font-size:28px">🤖 ↔️ 👤</div>
+      <div style="margin-top:6px;">AI Agents (Copilot / Claude) —> pmo-automation (独立箱) —> output -> hancho-docs (ポータル)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Tab 2 -->
+<div class="tab-pane" id="tab-setup">
+  <div class="sec">
+    <div class="sec-title">環境構築と事前設定</div>
+
+    <h4>画面操作（VS Code 推奨配置）</h4>
+    <ul>
+      <li>左: Explorer（フォルダーツリー）</li>
+      <li>右: Copilot Chat（常時表示）</li>
+      <li>下: Terminal（PowerShell）</li>
+    </ul>
+
+    <h4>モデル選択とモード（Auto 設定）</h4>
+    <p>チャット下部のモデル選択を「Auto」に設定すると、環境に応じて低遅延かつ効率の良い軽量モデル（例: Haiku相当）を優先します。これにより、反復的なコマンド実行やドキュメント生成のコストを最小化します。</p>
+
+    <h4>自律実行の許可（設定手順）</h4>
+    <ol>
+      <li>Ctrl + , を押して Settings を開く</li>
+      <li>検索欄に <code>Copilot Terminal: Auto Approval</code> を入力</li>
+      <li>トグルを <strong>オン</strong> にする（運用では必ずログ監査を有効化）</li>
+    </ol>
+
+    <h4>初期コマンド（確実に実行）</h4>
+    <pre><code>mkdir C:\git\pmo-automation
+cd C:\git\pmo-automation
+git init</code></pre>
+
+    <h4>視覚挿絵（位置指示）</h4>
+    <p>画面の右上に小さな注記で <em>Copilot Chat</em> の位置、下部に <em>Terminal</em>、左に <em>Explorer</em> を示す図を追加しています（本HTMLは軽量のため、実線図をテキストで示します）。</p>
+  </div>
+</div>
+
+<!-- Tab 3 -->
+<div class="tab-pane" id="tab-autobuild">
+  <div class="sec">
+    <div class="sec-title">自律ビルドとAI間の対話</div>
+
+    <h4>SYSTEM CONTEXT（計画インジェクション）</h4>
+    <pre><code>{
+  "SYSTEM": "You are MinutesAgent orchestrator. Workspace: C:\\git\\pmo-automation. Generate transcripts, implement minutes_agent.py, run tests, and produce: Summary, Tasks, Details, cross_check_report.txt, glossary_db.json. Separate facts from AI insights."
+}</code></pre>
+
+    <h4>AIのタスク分解と実行ログ（再現テーブル）</h4>
+    <table>
+      <tr><th>時刻</th><th>タスク</th><th>コマンド</th><th>結果</th></tr>
+      <tr><td>10:00</td><td>フォルダ生成</td><td><code>mkdir transcripts output_minutes</code></td><td>完了</td></tr>
+      <tr><td>10:01</td><td>ダミー文字起こし生成</td><td><code>create transcripts/20260525*.txt</code></td><td>2本生成</td></tr>
+      <tr><td>10:03</td><td>`minutes_agent.py` 実装</td><td><code>write minutes_agent.py</code></td><td>実装完了</td></tr>
+      <tr><td>10:05</td><td>テスト実行</td><td><code>python minutes_agent.py</code></td><td>出力8ファイル生成</td></tr>
+    </table>
+
+    <h4>成果物のファクトと価値</h4>
+    <ul>
+      <li>Summary/Tasks/Details（各2本）: 意思決定・リスク・次アクションを明確化</li>
+      <li>cross_check_report.txt: 複数会議のタスク重複・期限矛盾を自動検出</li>
+      <li>glossary_db.json: 34語の専門用語を抽出、ナレッジDBとして活用可能</li>
+    </ul>
+
+    <h4>視覚要素（処理フロー図）</h4>
+    <div class="flow-wrap">
+      <div class="flow-row">
+        <div class="flow-node">Teams transcript</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node claude">minutes_agent.py</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node output">Summary / Tasks / Details</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tab 4 -->
+<div class="tab-pane" id="tab-troubleshoot">
+  <div class="sec">
+    <div class="sec-title">トラブルシューティングと掃除</div>
+
+    <h4>404エラーA: Pages表口とPushの違い</h4>
+    <p>Pagesの公開URL（例: <code>https://dx-nexus.github.io/knowledge-hub/</code>）は静的ホスティングURLであり、Gitのpush先ではありません。pushは裏口（例: <code>https://github.com/dx-nexus/pmo-automation.git</code>）を指定してください。</p>
+
+    <h4>404エラーB: Privateリポジトリの可視性</h4>
+    <p>リポジトリをPrivateにしていると、権限がないと404が返る仕様です。公開化する場合は <strong>Settings → Danger Zone → Change repository visibility</strong> を操作してください（社内規程に従う）。</p>
+
+    <h4>ワーキングツリー掃除</h4>
+    <p>一時ファイルの削除例:</p>
+    <pre><code>del /f /q commit_msg.txt
+git status --short</code></pre>
+  </div>
+</div>
+
+<!-- Tab 5 -->
+<div class="tab-pane" id="tab-remote">
+  <div class="sec">
+    <div class="sec-title">リモート連携とハブ統合</div>
+
+    <h4>リモート登録コマンド</h4>
+    <pre><code>git remote remove origin
+git remote add origin https://github.com/dx-nexus/pmo-automation.git
+git push -u origin main</code></pre>
+
+    <h4>README化によるトップページ表示</h4>
+    <p>`PROJECT_TOTAL_SUMMARY.md` を `README.md` にリネームすると、GitHubのリポジトリトップに内容が自動でレンダリングされます。手順は以下の通りです。</p>
+    <pre><code>git mv PROJECT_TOTAL_SUMMARY.md README.md
+git commit -m "docs: rename summary to README for GitHub rendering"
+git push</code></pre>
+
+    <h4>ポータル統合のまとめ</h4>
+    <p>今回、`hancho-docs/index.html` には「PMO自動化完全再現マニュアル」へのカードを追加済みです。これにより、利用者はドキュメントハブからワンクリックで再現ガイドへアクセスできます。</p>
+  </div>
+</div>
+
+<footer class="doc-footer">
+  Reproducible_Guide.html ／ generated for reproducible PoC ／ 2026-05-25
+</footer>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+}
+</script>
+</body>
+</html>
