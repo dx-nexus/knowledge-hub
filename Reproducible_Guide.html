@@ -20,9 +20,61 @@
   <div class="hdr-meta">
     <span>🗓️ 2026-05-25</span>
     <span>📋 5タブ</span>
-    <span style="padding:4px 10px;border-radius:10px;font-family:var(--mono);font-size:10px;background:rgba(16,185,129,.12);color:#059669;border:1px solid var(--border);">v1.0 NEW</span>
+    <span style="padding:4px 10px;border-radius:10px;font-family:var(--mono);font-size:10px;background:rgba(16,185,129,.12);color:#059669;border:1px solid var(--border);">v1.1 GRAPHIC</span>
   </div>
 </header>
+
+<style>
+  .graphic-panel {
+    background: linear-gradient(135deg, rgba(254,243,199,.35), rgba(255,250,230,.92));
+    border: 1px solid rgba(253,230,138,.7);
+    border-radius: 18px;
+    padding: 22px;
+    margin-bottom: 22px;
+  }
+  .graphic-grid { display:grid; gap:18px; }
+  .visual-grid { display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap:16px; margin-top:18px; }
+  .visual-box {
+    background: #ffffff;
+    border: 1px solid rgba(245,158,11,.24);
+    border-radius: 16px;
+    padding: 18px 16px;
+    box-shadow: 0 12px 40px rgba(217,119,6,.08);
+    min-height: 120px;
+  }
+  .visual-box .title { font-size: 12px; font-weight: 700; color: #92400e; letter-spacing:.08em; margin-bottom: 10px; }
+  .visual-box .caption { font-size: 12px; color: var(--muted); line-height:1.6; }
+  .pipe-row { display:flex; align-items:center; justify-content:center; gap:10px; margin-top: 8px; }
+  .pipe-node { background: linear-gradient(180deg, #fef3c7, #fff7ed); border: 1px solid #fcd34d; border-radius: 14px; padding: 14px 16px; min-width: 160px; text-align:center; font-size:13px; font-weight:700; color:#92400e; box-shadow: 0 12px 26px rgba(249,115,22,.12); }
+  .pipe-node small { display:block; margin-top:4px; font-size:11px; font-weight:400; color:#475569; }
+  .svg-connector { width: 100%; height: 28px; }
+  .screen-layout { display:grid; grid-template-columns: 180px 1fr 180px; grid-template-rows: 120px 160px; gap: 12px; margin-top: 16px; }
+  .screen-card { background:#ffffff; border:1px solid rgba(245,158,11,.22); border-radius:16px; box-shadow:0 10px 28px rgba(217,119,6,.08); padding:14px; position:relative; }
+  .screen-label { font-family: var(--mono); font-size:10px; color:#92400e; letter-spacing:.1em; margin-bottom:8px; display:block; }
+  .screen-inner { min-height:70px; border:1px dashed rgba(245,158,11,.45); border-radius:12px; background: linear-gradient(180deg,#fffaf0,#fff7ed); padding:10px; }
+  .screen-pill { display:inline-flex; align-items:center; gap:6px; background:#fee2b3; color:#92400e; border-radius:999px; padding:4px 10px; font-size:11px; font-weight:700; margin-top:10px; }
+  .screen-ui { display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; margin-top: 10px; }
+  .ui-box { border-radius: 12px; background: rgba(244,205,151,.18); border:1px solid rgba(245,158,11,.2); padding:10px; font-size:12px; color:#475569; }
+  .ui-highlight { background: linear-gradient(90deg, rgba(16,185,129,.15), rgba(253,230,138,.24)); border-color: rgba(16,185,129,.25); box-shadow:0 0 0 4px rgba(16,185,129,.08); }
+  .roadmap-step { display:flex; gap:14px; align-items:flex-start; margin-top: 18px; }
+  .roadmap-num { width:32px; height:32px; border-radius:50%; background:#f59e0b; color:white; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; flex-shrink:0; }
+  .roadmap-content { flex:1; background:#ffffff; border:1px solid rgba(245,158,11,.2); border-radius:14px; padding:16px; box-shadow:0 16px 30px rgba(249,115,22,.08); }
+  .roadmap-title { font-size:13px; font-weight:700; color:#92400e; margin-bottom:8px; }
+  .roadmap-body { font-size:12px; color:#475569; line-height:1.75; }
+  .split-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:18px; }
+  .split-box { position:relative; border-radius:18px; padding:20px; min-height:180px; color:#0c1a2e; }
+  .split-box.danger { background:linear-gradient(180deg, rgba(254,202,202,.18), rgba(254,230,230,.9)); border:1px solid rgba(239,68,68,.25); box-shadow:0 10px 28px rgba(239,68,68,.08); }
+  .split-box.safe { background:linear-gradient(180deg, rgba(217,249,157,.2), rgba(240,253,244,.95)); border:1px solid rgba(16,185,129,.2); box-shadow:0 10px 28px rgba(16,185,129,.08); }
+  .split-icon { width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:14px; }
+  .split-label { font-size:12px; font-weight:700; letter-spacing:.08em; color:#92400e; margin-bottom:10px; }
+  .split-text { font-size:12px; color:#475569; line-height:1.8; }
+  .remote-hero { margin-top:18px; background: linear-gradient(180deg, rgba(254,243,199,.5), rgba(255,250,230,.98)); border:1px solid rgba(245,158,11,.25); border-radius:18px; padding:22px; box-shadow:0 18px 36px rgba(217,119,6,.08); }
+  .remote-row { display:flex; gap:16px; flex-wrap:wrap; align-items:center; justify-content:space-between; }
+  .remote-box { flex:1; min-width:220px; background:#ffffff; border:1px solid rgba(245,158,11,.2); border-radius:16px; padding:18px; }
+  .remote-title { font-size:13px; font-weight:700; color:#92400e; margin-bottom:10px; }
+  .remote-body { font-size:12px; color:#475569; line-height:1.8; }
+  .remote-badge { display:inline-block; margin-top:12px; background:rgba(16,185,129,.12); color:#059669; border:1px solid rgba(16,185,129,.25); border-radius:999px; padding:4px 10px; font-size:11px; }
+</style>
 
 <div class="tab-bar">
   <button class="tab-btn active" onclick="showTab('overview',this)">🌐 全体像とアーキテクチャ</button>
@@ -35,25 +87,58 @@
 <!-- Tab 1 -->
 <div class="tab-pane active" id="tab-overview">
   <div class="sec">
-    <div class="sec-title">全体像とアーキテクチャ</div>
+    <div class="graphic-panel">
+      <div class="pipe-row">
+        <div class="pipe-node">👤<br><small>人間（PMO）</small></div>
+        <svg class="svg-connector" viewBox="0 0 100 24" preserveAspectRatio="none"><path d="M2 12 Q50 2 98 12" stroke="#d97706" stroke-width="4" fill="none" marker-end="url(#arrow)"/></svg>
+        <div class="pipe-node">🤖<br><small>VS Code AI Agent (Auto)</small></div>
+        <svg class="svg-connector" viewBox="0 0 100 24" preserveAspectRatio="none"><path d="M2 12 Q50 22 98 12" stroke="#d97706" stroke-width="4" fill="none" marker-end="url(#arrow)"/></svg>
+        <div class="pipe-node">🛠️<br><small>pmo-automation</small></div>
+        <svg class="svg-connector" viewBox="0 0 100 24" preserveAspectRatio="none"><path d="M2 12 Q50 2 98 12" stroke="#d97706" stroke-width="4" fill="none" marker-end="url(#arrow)"/></svg>
+        <div class="pipe-node">📘<br><small>hancho-docs</small></div>
+      </div>
+      <svg width="0" height="0"><defs><marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#d97706" /></marker></defs></svg>
+      <p class="sec-lead">4者が安全なパイプラインで接続され、参照・実行・公開の責任が明確に分離されています。AIは実働箱を動かし、ドキュメントハブは参照口としてのみ機能します。</p>
+    </div>
+
     <h4>思想：隔離ワークスペース管理の重要性</h4>
     <p>本PoCは、作業領域を<strong>完全に独立した箱</strong>として用意することで、親リポジトリとのGitネストを100%回避します。実働コンポーネントは <code>C:\git\pmo-automation\</code> に配置し、ここでのみコード生成・実行・テストを行います。</p>
 
     <h4>ポータル疎結合（マイクロサービス的ガバナンス）</h4>
     <p>表示系（`hancho-docs`）は参照用ポータルにとどめ、実行系（`pmo-automation`）と疎結合に維持します。変更は実働箱側で完結し、ポータルはリンクカードで誘導します。</p>
-
-    <h4>視覚概念図</h4>
-    <div class="eco-center" style="margin-top:12px;">
-      <div style="font-size:28px">🤖 ↔️ 👤</div>
-      <div style="margin-top:6px;">AI Agents (Copilot / Claude) —> pmo-automation (独立箱) —> output -> hancho-docs (ポータル)</div>
-    </div>
   </div>
 </div>
 
 <!-- Tab 2 -->
 <div class="tab-pane" id="tab-setup">
   <div class="sec">
-    <div class="sec-title">環境構築と事前設定</div>
+    <div class="graphic-panel">
+      <div class="screen-layout">
+        <div class="screen-card">
+          <span class="screen-label">Explorer</span>
+          <div class="screen-inner">左側にプロジェクトフォルダーとファイル構造を表示</div>
+        </div>
+        <div class="screen-card" style="grid-row:1 / span 2; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+          <span class="screen-label">VS Code 空白エリア</span>
+          <div style="width:80%; height:80%; border-radius:16px; background: linear-gradient(180deg,#fffaf0,#fff1cc); display:flex; align-items:center; justify-content:center; color:#92400e; font-size:13px; font-weight:700; text-align:center;">ここにエディタ / タブ / 生成結果が入る</div>
+        </div>
+        <div class="screen-card">
+          <span class="screen-label">Copilot Chat</span>
+          <div class="screen-inner">右側にAIチャットとモデル選択が常駐</div>
+          <div class="screen-pill ui-highlight">Auto モデル選択</div>
+        </div>
+        <div class="screen-card" style="grid-column:1 / span 3;">
+          <span class="screen-label">Terminal</span>
+          <div class="screen-inner" style="min-height:90px; display:flex; flex-direction:column; justify-content:space-between;">
+            <div style="font-size:12px; color:#475569;">PowerShell / コマンド実行ログ</div>
+            <div class="screen-ui">
+              <div class="ui-box ui-highlight">Terminal Auto-Approval</div>
+              <div class="ui-box">git init / git push</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <h4>画面操作（VS Code 推奨配置）</h4>
     <ul>
@@ -76,16 +161,42 @@
     <pre><code>mkdir C:\git\pmo-automation
 cd C:\git\pmo-automation
 git init</code></pre>
-
-    <h4>視覚挿絵（位置指示）</h4>
-    <p>画面の右上に小さな注記で <em>Copilot Chat</em> の位置、下部に <em>Terminal</em>、左に <em>Explorer</em> を示す図を追加しています（本HTMLは軽量のため、実線図をテキストで示します）。</p>
   </div>
 </div>
 
 <!-- Tab 3 -->
 <div class="tab-pane" id="tab-autobuild">
   <div class="sec">
-    <div class="sec-title">自律ビルドとAI間の対話</div>
+    <div class="graphic-panel">
+      <div class="roadmap-step">
+        <div class="roadmap-num">1</div>
+        <div class="roadmap-content">
+          <div class="roadmap-title">インプット: Teams文字起こし×2本</div>
+          <div class="roadmap-body">会議記録2本を自律的に受け取り、AIが次の作業を自動分解します。</div>
+        </div>
+      </div>
+      <div class="roadmap-step">
+        <div class="roadmap-num">2</div>
+        <div class="roadmap-content">
+          <div class="roadmap-title">解析エンジン: minutes_agent.py</div>
+          <div class="roadmap-body">議事録の要約・アクション抽出・用語集生成までを一気通貫で実行。</div>
+        </div>
+      </div>
+      <div class="roadmap-step">
+        <div class="roadmap-num">3</div>
+        <div class="roadmap-content">
+          <div class="roadmap-title">自律テスト＆検証</div>
+          <div class="roadmap-body">生成結果を自己検証し、出力の整合性とフォーマットを確認します。</div>
+        </div>
+      </div>
+      <div class="roadmap-step">
+        <div class="roadmap-num">4</div>
+        <div class="roadmap-content">
+          <div class="roadmap-title">3層分解とナレッジ出力</div>
+          <div class="roadmap-body">Summary/Tasks/Details + 重複タスク検知 + 34語の用語集json を同時生成。</div>
+        </div>
+      </div>
+    </div>
 
     <h4>SYSTEM CONTEXT（計画インジェクション）</h4>
     <pre><code>{
@@ -93,7 +204,7 @@ git init</code></pre>
 }</code></pre>
 
     <h4>AIのタスク分解と実行ログ（再現テーブル）</h4>
-    <table>
+    <table class="tbl">
       <tr><th>時刻</th><th>タスク</th><th>コマンド</th><th>結果</th></tr>
       <tr><td>10:00</td><td>フォルダ生成</td><td><code>mkdir transcripts output_minutes</code></td><td>完了</td></tr>
       <tr><td>10:01</td><td>ダミー文字起こし生成</td><td><code>create transcripts/20260525*.txt</code></td><td>2本生成</td></tr>
@@ -107,24 +218,26 @@ git init</code></pre>
       <li>cross_check_report.txt: 複数会議のタスク重複・期限矛盾を自動検出</li>
       <li>glossary_db.json: 34語の専門用語を抽出、ナレッジDBとして活用可能</li>
     </ul>
-
-    <h4>視覚要素（処理フロー図）</h4>
-    <div class="flow-wrap">
-      <div class="flow-row">
-        <div class="flow-node">Teams transcript</div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node claude">minutes_agent.py</div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-node output">Summary / Tasks / Details</div>
-      </div>
-    </div>
   </div>
 </div>
 
 <!-- Tab 4 -->
 <div class="tab-pane" id="tab-troubleshoot">
   <div class="sec">
-    <div class="sec-title">トラブルシューティングと掃除</div>
+    <div class="graphic-panel">
+      <div class="split-grid">
+        <div class="split-box danger">
+          <div class="split-icon">❌</div>
+          <div class="split-label">表口（ディスプレイ）</div>
+          <div class="split-text"><code>https://dx-nexus.github.io/knowledge-hub/</code><br>ここは見るだけのビューです。Push先ではないため、ここに直接Git操作を行うとエラーになります。</div>
+        </div>
+        <div class="split-box safe">
+          <div class="split-icon">⭕</div>
+          <div class="split-label">裏口（本当の倉庫）</div>
+          <div class="split-text"><code>https://github.com/dx-nexus/pmo-automation.git</code><br>ここがデータの搬入口です。実際のpushはこのURLに対して行われます。</div>
+        </div>
+      </div>
+    </div>
 
     <h4>404エラーA: Pages表口とPushの違い</h4>
     <p>Pagesの公開URL（例: <code>https://dx-nexus.github.io/knowledge-hub/</code>）は静的ホスティングURLであり、Gitのpush先ではありません。pushは裏口（例: <code>https://github.com/dx-nexus/pmo-automation.git</code>）を指定してください。</p>
@@ -134,7 +247,7 @@ git init</code></pre>
 
     <h4>ワーキングツリー掃除</h4>
     <p>一時ファイルの削除例:</p>
-    <pre><code>del /f /q commit_msg.txt
+    <pre class="cmd"><code>del /f /q commit_msg.txt
 git status --short</code></pre>
   </div>
 </div>
@@ -142,16 +255,35 @@ git status --short</code></pre>
 <!-- Tab 5 -->
 <div class="tab-pane" id="tab-remote">
   <div class="sec">
-    <div class="sec-title">リモート連携とハブ統合</div>
+    <div class="graphic-panel remote-hero">
+      <div class="remote-row">
+        <div class="remote-box">
+          <div class="remote-title">クリーンなローカルツリー</div>
+          <div class="remote-body">未コミット変更がない状態から、必要なファイルを一撃でpushします。</div>
+          <div class="remote-badge">git push -u origin main</div>
+        </div>
+        <div class="remote-box">
+          <div class="remote-title">README化で自動表紙化</div>
+          <div class="remote-body">`PROJECT_TOTAL_SUMMARY.md` を `README.md` にリネームすると、GitHubリポジトリのトップページに内容が自動的に表紙として公開されます。</div>
+          <div class="remote-badge">git mv PROJECT_TOTAL_SUMMARY.md README.md</div>
+        </div>
+      </div>
+      <div style="margin-top:18px; display:flex; align-items:center; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <span style="font-size:24px;">📤</span>
+        <span style="font-size:14px; font-weight:700; color:#92400e;">Push →</span>
+        <span style="font-size:24px;">🖼️</span>
+        <span style="font-size:12px; color:#475569;">GitHubが自動的にレポートを公開ページとしてレンダリングします。</span>
+      </div>
+    </div>
 
     <h4>リモート登録コマンド</h4>
-    <pre><code>git remote remove origin
+    <pre class="cmd"><code>git remote remove origin
 git remote add origin https://github.com/dx-nexus/pmo-automation.git
 git push -u origin main</code></pre>
 
     <h4>README化によるトップページ表示</h4>
     <p>`PROJECT_TOTAL_SUMMARY.md` を `README.md` にリネームすると、GitHubのリポジトリトップに内容が自動でレンダリングされます。手順は以下の通りです。</p>
-    <pre><code>git mv PROJECT_TOTAL_SUMMARY.md README.md
+    <pre class="cmd"><code>git mv PROJECT_TOTAL_SUMMARY.md README.md
 git commit -m "docs: rename summary to README for GitHub rendering"
 git push</code></pre>
 
