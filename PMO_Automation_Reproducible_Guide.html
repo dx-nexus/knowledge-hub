@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PMO自動化 再現ガイド ／ はんちょー Document Hub</title>
+<link rel="stylesheet" href="assets/common.css">
+</head>
+<body>
+
+<header>
+  <div class="hdr-top">
+    <div class="hdr-inner">
+      <div>
+        <h1>PMO業務自動化＆AI議事録クロスインテリジェンス — 再現ガイド</h1>
+        <p>ゼロからノーエラーで再現するための本番品質手順書（5タブ構成）</p>
+      </div>
+    </div>
+  </div>
+  <div class="hdr-meta">
+    <span>🗓️ 2026-05-25</span>
+    <span>📋 5タブ</span>
+    <span style="padding:4px 10px;border-radius:10px;font-family:var(--mono);font-size:10px;background:rgba(16,185,129,.12);color:#059669;border:1px solid var(--border);">v1.0 NEW</span>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('overview',this)">🌐 全体像とアーキテクチャ</button>
+  <button class="tab-btn" onclick="showTab('setup',this)">⚙️ 環境構築と事前設定</button>
+  <button class="tab-btn" onclick="showTab('autobuild',this)">🧠 自律ビルドとAI間の対話</button>
+  <button class="tab-btn" onclick="showTab('troubleshoot',this)">🛠️ トラブルシューティング</button>
+  <button class="tab-btn" onclick="showTab('remote',this)">📤 リモート連携とハブ統合</button>
+</div>
+
+<!-- Tab 1 -->
+<div class="tab-pane active" id="tab-overview">
+  <div class="sec">
+    <div class="sec-title">思想：分離された作業箱と疎結合ポータル</div>
+    <p><strong>隔離ワークスペース管理の重要性：</strong>本PoCでは、作業箱を <code>C:\git\pmo-automation\</code> に完全に独立して作成します。親ディレクトリや既存リポジトリとGitネストを生じさせず、AI処理（大量コンテキスト）の崩壊や依存関係混在を防止します。実務的には以下の利点があります：</p>
+    <ul>
+      <li>Gitネスト回避により意図しないコミット範囲拡散を防ぐ</li>
+      <li>VDIやセキュア環境での運用ポリシーに合わせた最小権限導入が可能</li>
+      <li>障害切り分けが容易になり、監査ログが明瞭化</li>
+    </ul>
+
+    <h4>ポータル疎結合の設計</h4>
+    <p>ツール実行系（実働箱：`pmo-automation`）と人間向けナレッジハブ（`hancho-docs`）は疎結合に保ちます。ポータルはリンクカードで機能を参照するだけに留め、実装変更は実働箱側で完結させる“マイクロサービス的ガバナンス”を採用します。</p>
+
+    <h4>運用手順（概略）</h4>
+    <ol>
+      <li>端末で `mkdir C:\git\pmo-automation` を作成。</li>
+      <li>全作業は `C:\git\pmo-automation` 内で行い、成果物のみ `hancho-docs` のカード経由で参照させる。</li>
+      <li>リモートは実働箱専用のリポジトリ（例：https://github.com/dx-nexus/pmo-automation.git）を利用する。</li>
+    </ol>
+  </div>
+</div>
+
+<!-- Tab 2 -->
+<div class="tab-pane" id="tab-setup">
+  <div class="sec">
+    <div class="sec-title">環境構築と事前設定（画面操作とコマンド）</div>
+
+    <h4>VS Code 推奨画面配置</h4>
+    <p>再現性のため、画面配置を固定します：</p>
+    <ul>
+      <li>左：Explorer（フォルダー表示）</li>
+      <li>右：Copilot Chat（拡張パネル、常時表示）</li>
+      <li>下：Terminal（PowerShell）</li>
+    </ul>
+
+    <h4>モデル・モード選択（最適化の理由）</h4>
+    <p>チャット下部のモデル選択を「Auto（自動）」に設定します。Auto選択は低遅延・高スループットな軽量モデル（例: Claude Haiku 4.5 相当）を優先し、コマンド実行やドキュメント生成のコストと速度のバランスを最大化します。</p>
+
+    <h4>自律実行の許可（設定）</h4>
+    <p>VS Code の設定（Ctrl + ,）で以下を有効にしてください（管理者承認が必要な組織では事前に申請）：</p>
+    <ul>
+      <li><strong>Copilot Terminal: Auto Approval</strong> — AIがターミナルコマンドを実行する自動承認（運用上はログ監査を必須化すること）。</li>
+    </ul>
+
+    <h4>初期コマンド（正確に実行）</h4>
+    <pre><code class="language-powershell">mkdir C:\git\pmo-automation
+cd C:\git\pmo-automation
+git init</code></pre>
+
+    <p>上記で作成された空箱にスクリプトやトランスクリプトを置き、以降の自律実行はこの箱内のみで完結します。</p>
+  </div>
+</div>
+
+<!-- Tab 3 -->
+<div class="tab-pane" id="tab-autobuild">
+  <div class="sec">
+    <div class="sec-title">自律ビルドとAI間の対話（計画注入と実行ログ）</div>
+
+    <h4>SYSTEM CONTEXT（計画インジェクション）</h4>
+    <p>AIにPoC計画を記憶させるため、以下のSYSTEMプロンプトを最初に注入してください（そのままコピペ可能）：</p>
+    <pre><code>{
+  "SYSTEM": "You are MinutesAgent orchestrator. Workspace: C:\\git\\pmo-automation. Generate transcripts, implement minutes_agent.py, run tests, and produce outputs: Summary, Tasks, Details, cross_check_report.txt, glossary_db.json. Strictly separate facts from AI in outputs."
+}</code></pre>
+
+    <h4>AIによるタスク分解の例（人は1行指示）</h4>
+    <p>人間指示: <em>"Run PoC generation"</em></p>
+    <p>AIが内部で分解して行うタスク（例）:</p>
+    <ol>
+      <li>フォルダ生成: `transcripts/`, `output_minutes/`</li>
+      <li>ダミー文字起こし 2 本を生成</li>
+      <li>`minutes_agent.py` を実装（3層出力、クロスチェック、用語DB）</li>
+      <li>Python 実行テスト: `python minutes_agent.py`</li>
+    </ol>
+
+    <h4>自律実行ログの再現（テーブル）</h4>
+    <table>
+      <tr><th>時刻</th><th>実行</th><th>結果（要旨）</th></tr>
+      <tr><td>10:01</td><td>mkdir, create transcripts</td><td>transcripts フォルダ作成・ダミー2本生成</td></tr>
+      <tr><td>10:03</td><td>create minutes_agent.py</td><td>3層出力ロジック実装</td></tr>
+      <tr><td>10:05</td><td>python minutes_agent.py</td><td>Summary/Tasks/Details 各2本、cross_check_report.txt、glossary_db.json 生成</td></tr>
+    </table>
+
+    <h4>生成物の価値（コンサル品質の解説）</h4>
+    <ul>
+      <li><strong>Summary/Tasks/Details</strong>: 上層部に提出可能な経営意思決定・リスク・次アクションを3行で抽出</li>
+      <li><strong>cross_check_report.txt</strong>: 複数会議に跨るタスクの重複や期限矛盾を自動検知し、調整が必要な担当者と該当タスクを一覧化</li>
+      <li><strong>glossary_db.json</strong>: 34語の専門用語を抽出し、ナレッジ管理と監査対応に即活用可能な辞書を構築</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Tab 4 -->
+<div class="tab-pane" id="tab-troubleshoot">
+  <div class="sec">
+    <div class="sec-title">トラブルシューティングとワーキングツリーの掃除</div>
+
+    <h4>404エラーA：URL誤指定（Pagesの表口/裏口）</h4>
+    <p>間違ったURL（例: https://dx-nexus.github.io/knowledge-hub/ は Pages の公開 URL であり、Git push の対象ではありません）。Git push にはリポジトリの裏口 URL（例: https://github.com/dx-nexus/pmo-automation.git）を使用してください。</p>
+
+    <h4>404エラーB：権限/公開設定</h4>
+    <p>リポジトリをPrivateで作成した場合、未ログインまたは権限のないブラウザからアクセスすると404になります。<strong>Settings → Danger Zone → Change repository visibility</strong> でPublic化する手順を実行してください（社内ポリシーとの整合は要確認）。</p>
+
+    <h4>ワーキングツリーの掃除（例）</h4>
+    <p>AIが一時的に生成した `commit_msg.txt` のようなファイルは追跡せず削除してください：</p>
+    <pre><code class="language-powershell">del /f /q commit_msg.txt</code></pre>
+
+    <p>その後、`git status --short` でワーキングツリーがクリーンになっていることを確認します。</p>
+  </div>
+</div>
+
+<!-- Tab 5 -->
+<div class="tab-pane" id="tab-remote">
+  <div class="sec">
+    <div class="sec-title">リモート連携とハブ統合（コマンド一覧）</div>
+
+    <h4>リモート登録とPush</h4>
+    <p>リモートの宛先を設定し、mainブランチへPushする標準コマンド：</p>
+    <pre><code class="language-bash">git remote remove origin
+git remote add origin https://github.com/dx-nexus/pmo-automation.git
+git push -u origin main</code></pre>
+
+    <h4>READMEの法則</h4>
+    <p>`PROJECT_TOTAL_SUMMARY.md` を `README.md` にリネームすることで、GitHub のリポジトリトップに内容が自動でレンダリングされます。コマンド例：</p>
+    <pre><code class="language-bash">git mv PROJECT_TOTAL_SUMMARY.md README.md
+git commit -m "docs: rename summary to README for GitHub rendering"
+git push</code></pre>
+
+    <h4>ポータル統合（index.htmlへのカード追加）</h4>
+    <p>今回、`hancho-docs/index.html` のプロジェクト管理セクションに以下のカードを追加しました：
+    <strong>PMO自動化完全再現マニュアル</strong>（⚡ アイコン、NEWバッジ）。これにより、実働箱へ自然に誘導できます。</p>
+
+  </div>
+</div>
+
+<footer class="doc-footer">
+  PMO_Automation_Reproducible_Guide.html ／ generated for reproducible PoC ／ 2026-05-25
+</footer>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+}
+</script>
+</body>
+</html>
