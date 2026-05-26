@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>事実タイムライン — はんちょーナレッジ基盤</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+.tl-wrap { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+.tl-item { display: flex; gap: 20px; padding: 18px 0;
+            border-bottom: 0.5px solid #e5e7eb; }
+.tl-date { font-size: 11px; color: #999; min-width: 88px;
+            padding-top: 3px; font-family: monospace; }
+.tl-content { flex: 1; }
+.tl-title { font-size: 14px; font-weight: 600; margin-bottom: 6px;
+             color: #1a1a1a; }
+.tl-line { font-size: 12px; color: #555; line-height: 1.8; }
+.meta { font-size: 11px; color: #bbb; margin-bottom: 24px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="hdr-top">
+    <div class="hdr-inner">
+      <div>
+        <h1>事実タイムライン</h1>
+        <p>PMO議事録・会議ログから自動生成された時系列記録</p>
+      </div>
+    </div>
+  </div>
+  <div class="hdr-meta">
+    <span>最終更新: 2026-05-26 14:06</span>
+    <span><a href="index.html">← ポータルに戻る</a></span>
+  </div>
+</header>
+<main>
+<div class="tl-wrap">
+  <div class="meta">
+    minutes_agent.py が実行されるたびに自動更新されます。
+    Raw: <a href="https://raw.githubusercontent.com/dx-nexus/hancho-kb/main/knowledge/timeline.md">timeline.md</a> /
+    <a href="https://raw.githubusercontent.com/dx-nexus/hancho-kb/main/knowledge/CONTEXT.md">CONTEXT.md</a>
+  </div>
+  
+<div class="tl-item">
+  <div class="tl-date">2026年5月26日</div>
+  <div class="tl-content">
+    <div class="tl-title">インフラストラクチャ・セキュリティ会議 - 2026年5月26日</div>
+    <div class="tl-line">参加者: 鈴木（インフラ）, 伊藤（QA）, 山田（セキュリティ責任者）, 木村（ネットワーク）</div><div class="tl-line">用語抽出数: 16</div><div class="tl-line">Summary: 2026526_B_Infrastructure_Summary.txt</div>
+  </div>
+</div>
+<div class="tl-item">
+  <div class="tl-date">2026年5月25日</div>
+  <div class="tl-content">
+    <div class="tl-title">システム基盤チーム 定期会議 - 2026年5月25日</div>
+    <div class="tl-line">参加者: 佐藤（PM）, 田中（開発リード）, 鈴木（インフラ）, 伊藤（QA）</div><div class="tl-line">用語抽出数: 16</div><div class="tl-line">Summary: 2026525_A_System_Meeting_Summary.txt</div>
+  </div>
+</div>
+</div>
+</main>
+<footer class="doc-footer">
+  dx-nexus/knowledge-hub — 自動生成 / minutes_agent.py
+</footer>
+</body>
+</html>
