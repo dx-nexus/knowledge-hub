@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Ecosystem Catalog ／ はんちょー Document Hub</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+/* ── Catalog-specific visual system ── */
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 20px;
+}
+.layer-card {
+  position: relative;
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: 18px;
+  padding: 24px;
+  overflow: hidden;
+  transition: transform .2s, border-color .2s, box-shadow .2s;
+}
+.layer-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(217,119,6,.8);
+  box-shadow: 0 22px 44px rgba(217,119,6,.14);
+}
+.layer-card::before {
+  content: '';
+  position: absolute;
+  inset: -30px;
+  background: radial-gradient(circle at top left, rgba(249,168,38,.12), transparent 34%), radial-gradient(circle at bottom right, rgba(37,99,235,.08), transparent 28%);
+  pointer-events: none;
+}
+.layer-icon {
+  display: inline-flex;
+  width: 50px;
+  height: 50px;
+  border-radius: 16px;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 16px;
+  background: rgba(245,158,11,.12);
+  border: 1px solid rgba(217,119,6,.15);
+}
+.layer-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: .1em;
+  margin-bottom: 10px;
+}
+.layer-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.layer-lead {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+.comp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 20px;
+}
+.comp-box {
+  background: #ffffff;
+  border: 1px solid rgba(14,77,121,.12);
+  border-radius: 14px;
+  padding: 16px;
+  min-height: 116px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.comp-box strong { display: block; margin-bottom: 8px; color: var(--text); font-size: 13px; }
+.comp-box p { font-size: 12px; color: var(--muted); line-height: 1.7; margin: 0; }
+.comp-box.neutral { border-color: rgba(37,99,235,.18); }
+.comp-box.action  { border-color: rgba(16,185,129,.18); }
+.comp-box.strategy { border-color: rgba(167,139,250,.18); }
+.comp-box.express  { border-color: rgba(249,115,22,.18); }
+.highlight {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-family: var(--mono);
+  background: rgba(217,119,6,.08);
+  color: var(--accent);
+  margin-top: 14px;
+}
+.section-figure {
+  margin-top: 22px;
+  display: flex;
+  justify-content: center;
+}
+.figure-stack {
+  display: grid;
+  gap: 8px;
+}
+.figure-block {
+  width: 180px;
+  height: 46px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(255,251,235,.95), rgba(255,243,205,.85));
+  border: 1px solid rgba(253,230,138,.8);
+  box-shadow: 0 16px 28px rgba(12,26,46,.08);
+  padding: 12px 14px;
+  font-size: 12px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+}
+.figure-block:nth-child(2) { transform: translateX(16px); }
+.figure-block:nth-child(3) { transform: translateX(32px); }
+.figure-caption { font-size: 11px; color: var(--muted); margin-top: 12px; text-align: center; }
+@media (max-width: 880px) {
+  .catalog-grid { grid-template-columns: 1fr; }
+  .comp-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="hdr-top">
+    <div class="hdr-inner">
+      <div>
+        <h1>AI Ecosystem Catalog</h1>
+        <p>ニュートラル実行環境としてのVS Codeを起点に、Claude/Gemini/Codex/Sparkの役割を4大カテゴリで直感構造化</p>
+      </div>
+    </div>
+  </div>
+  <div class="hdr-meta">
+    <span><a href="index.html">← Hub</a></span>
+    <span>🗓️ 2026-05-25</span>
+    <span>📋 4大カテゴリ</span>
+    <span style="padding:4px 10px;border-radius:10px;font-family:var(--mono);font-size:10px;background:rgba(217,119,6,.12);color:var(--accent2);border:1px solid var(--border);">v1.0</span>
+  </div>
+</header>
+
+<main>
+  <div class="sec">
+    <div class="sec-title">ニュートラル実行空間を中心とした4層構造</div>
+    <p class="sec-lead">VS Code / ローカル端末を「ニュートラルな実行ステージ」と定義し、戦略・実装・表現のAIを可視化。サルでも直感理解できるように、左右／上下の対比で役割を整理しました。</p>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">4つの役割カテゴリ</div>
+    <div class="catalog-grid">
+      <div class="layer-card">
+        <div class="layer-icon">🧭</div>
+        <div class="layer-label">カテゴリ1</div>
+        <div class="layer-title">ニュートラル実行空間 / コックピット</div>
+        <p class="layer-lead">VS Code とローカルターミナルが、AIたちの手足を与える「唯一無二のステージ」。知能は持たないが、すべてのAIを公平に動かす基盤であり、生成と実行の出発点。</p>
+        <div class="comp-grid">
+          <div class="comp-box neutral">
+            <strong>VS Code</strong>
+            <p>タグ管理・ファイル編集・ターミナル操作を中立に提供。あらゆるAIがアクセスしうる「実行環境の司令台」。</p>
+          </div>
+          <div class="comp-box action">
+            <strong>ローカルターミナル</strong>
+            <p>git・ビルド・デプロイ・スクリプト実行を担当。AIの命令を外部システムに橋渡しする肉体的な作業領域。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="layer-card">
+        <div class="layer-icon">🧠</div>
+        <div class="layer-label">カテゴリ2</div>
+        <div class="layer-title">戦略・思考型LLM / 総括司令官</div>
+        <p class="layer-lead">Claude と Gemini が「戦略立案と要件設計」を担う最高頭脳。曖昧な人間の意図を解像度高く翻訳し、プロジェクト全体の方向性を描きます。</p>
+        <div class="comp-grid">
+          <div class="comp-box strategy">
+            <strong>Gemini</strong>
+            <p>200万トークンの俯瞰力で全体を把握し、長大ドキュメントを横断的に整理。戦略設計・依存関係・進化ロードマップの統括。</p>
+          </div>
+          <div class="comp-box strategy">
+            <strong>Claude</strong>
+            <p>高精度な文章構成力でプロンプト・要件定義・設計書を生成。意図を正確に構造化し、実装エージェントへの橋渡しを行う。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="layer-card">
+        <div class="layer-icon">⚙️</div>
+        <div class="layer-label">カテゴリ3</div>
+        <div class="layer-title">実装・執行エージェント / 爆速パイロット</div>
+        <p class="layer-lead">Claude Code と GitHub Copilot (Codex) が、設計図を受けて実際にコードとファイルを変更する現場の職人。Terminal Auto-Approval と組み合わせることで、自律実行が成立します。</p>
+        <div class="comp-grid">
+          <div class="comp-box action">
+            <strong>Claude Code</strong>
+            <p>構造化された要件をもとにHTML・スクリプト・CI設定を生成し、git操作まで自動化する実装エンジン。</p>
+          </div>
+          <div class="comp-box action">
+            <strong>GitHub Copilot (Codex)</strong>
+            <p>エディタ内での補完・リファクタリング・修正提案を提供。実装速度を加速しつつ、開発フローに自然に溶け込む。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="layer-card">
+        <div class="layer-icon">✨</div>
+        <div class="layer-label">カテゴリ4</div>
+        <div class="layer-title">マルチモーダル・インターフェース / 表現エンジン</div>
+        <p class="layer-lead">Google Spark が音声・映像・リアルタイムインタラクションを司るフロント表現。成果物を人間に見せるためのプレゼンターとして、直感的なデモと翻訳を担当します。</p>
+        <div class="comp-grid">
+          <div class="comp-box express">
+            <strong>音声・映像表現</strong>
+            <p>完成物を対話的に説明し、実演やデモを自然な形で提示。ユーザーの理解を助けるプレゼンテーション層。</p>
+          </div>
+          <div class="comp-box express">
+            <strong>リアルタイム変換</strong>
+            <p>生成結果を即座に翻訳・再構成し、AIの出力を人間にとって意味ある形に再提示する。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">構造化カタログの視覚化</div>
+    <div class="section-figure">
+      <div class="figure-stack">
+        <div class="figure-block">ニュートラル実行空間</div>
+        <div class="figure-block">戦略・思考型LLM</div>
+        <div class="figure-block">実装・執行エージェント</div>
+        <div class="figure-block">マルチモーダル・表現エンジン</div>
+      </div>
+    </div>
+    <div class="figure-caption">上下構造で理解する、4つの役割レイヤ。VS Code を最下段に置き、上部に戦略と表現を重ねるイメージ。</div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">4大カテゴリの対比</div>
+    <div class="comp-grid">
+      <div class="comp-box neutral">
+        <strong>カテゴリ1 vs カテゴリ2</strong>
+        <p>「実行ステージ」と「思考司令官」。前者は中立的な土台、後者は意図を解像度高く翻訳する頭脳。</p>
+      </div>
+      <div class="comp-box strategy">
+        <strong>カテゴリ2 vs カテゴリ3</strong>
+        <p>「戦略設計」と「成果実装」。Gemini/Claudeが描いた設計図を、Claude Code/Codexが具体的なコードとディレクトリに落とし込む。</p>
+      </div>
+      <div class="comp-box action">
+        <strong>カテゴリ3 vs カテゴリ4</strong>
+        <p>「実装」と「表現」。生成された成果物を、Sparkが視覚・音声で直感的に伝えるプレゼンテーション層につなぐ。</p>
+      </div>
+      <div class="comp-box express">
+        <strong>カテゴリ4 vs カテゴリ1</strong>
+        <p>「表現」と「基盤」。表現エンジンは、最終的にVS Code / ターミナルで作られた成果物を人間に届ける役目を果たす。</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="doc-footer">
+  AI_Ecosystem_Catalog.html ／ generated by Claude Code ／ 2026-05-25
+</footer>
+</body>
+</html>
