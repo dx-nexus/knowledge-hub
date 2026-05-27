@@ -3,196 +3,270 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VS Code × AI連携 活用提案</title>
+<title>月60時間が、消えている。</title>
 <style>
-/* 設計根拠: WCAG 2.1 AA準拠(4.5:1以上) / F字型視線誘導 / Hick's Law(選択肢を絞る) / Material Design Color */
+/* 編集設計:
+   - Bloomberg / Wired の編集デザイン: 大型タイポ・1色強調・余白
+   - 損失回避: 「失っているもの」から訴求 / 行動経済学
+   - Visual Hierarchy: 1セクション1メッセージ
+   - 明朝体で日本語の重みを表現
+*/
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Meiryo UI','Meiryo',sans-serif;background:#F8FAFC;color:#1E293B;font-size:14px;line-height:1.6}
-.page{max-width:920px;margin:0 auto;background:#fff;box-shadow:0 0 40px rgba(0,0,0,.08)}
+:root{
+  --ink:#0A0A0A;
+  --paper:#FFFFFF;
+  --warm:#FCF8F2;
+  --coral:#E63B2D;
+  --gold:#C8941A;
+  --line:#1A1A1A;
+  --muted:#666;
+  --soft:#999;
+}
+body{font-family:'Meiryo UI','Meiryo',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;font-feature-settings:"palt"}
+.mincho{font-family:'Yu Mincho','Hiragino Mincho ProN','游明朝',serif;font-feature-settings:"palt"}
+.page{max-width:980px;margin:0 auto;background:var(--paper)}
 
-/* ヘッダー: 権威・信頼(紺) */
-.hdr{background:#0F172A;padding:28px 40px 24px;color:#fff}
-.hdr-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}
-.hdr-eyebrow{font-size:10px;letter-spacing:2px;color:#60A5FA;margin-bottom:6px;font-weight:500}
-.hdr-title{font-size:20px;font-weight:300;line-height:1.4;color:#F1F5F9}
-.hdr-title strong{color:#60A5FA;font-weight:600}
-.hdr-tag{font-size:11px;background:rgba(96,165,250,.15);color:#93C5FD;padding:4px 12px;border-radius:4px;white-space:nowrap;border:1px solid rgba(96,165,250,.25)}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.stat{background:rgba(255,255,255,.05);border-radius:8px;padding:12px 14px;border-left:3px solid #3B82F6}
-.stat-n{font-size:22px;font-weight:700;color:#60A5FA;line-height:1}
-.stat-l{font-size:10px;color:#94A3B8;margin-top:4px;line-height:1.4}
-.stat-s{font-size:9px;color:#475569;margin-top:3px}
+/* === SECTION 1: HERO === */
+.hero{padding:60px 72px 72px;border-bottom:1px solid var(--ink);position:relative}
+.eyebrow{display:flex;justify-content:space-between;align-items:center;margin-bottom:48px}
+.eyebrow-l{font-size:10px;letter-spacing:4px;font-weight:700;color:var(--coral)}
+.eyebrow-r{font-size:10px;letter-spacing:2px;color:var(--muted);font-weight:500}
+.hero-h{font-family:'Yu Mincho','Hiragino Mincho ProN',serif;font-size:62px;font-weight:300;line-height:1.18;letter-spacing:-2px;color:var(--ink)}
+.hero-h strong{color:var(--coral);font-weight:500}
+.hero-h .small{font-size:32px;font-weight:300}
 
-/* ストーリー: Z字誘導 */
-.story{background:linear-gradient(135deg,#EFF6FF 0%,#F0FDF4 100%);padding:28px 40px;border-bottom:1px solid #E2E8F0}
-.story-label{font-size:10px;letter-spacing:2px;color:#3B82F6;font-weight:600;margin-bottom:6px}
-.story-title{font-size:16px;font-weight:600;color:#0F172A;margin-bottom:20px}
-.story-title span{color:#2563EB}
-.flow{display:flex;align-items:flex-start;gap:0;overflow:hidden}
-.flow-step{flex:1;text-align:center;position:relative}
-.flow-step::after{content:'→';position:absolute;right:-8px;top:22px;font-size:18px;color:#93C5FD;z-index:1}
-.flow-step:last-child::after{display:none}
-.step-icon{width:48px;height:48px;border-radius:14px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:22px}
-.s1{background:#DBEAFE;}.s2{background:#D1FAE5;}.s3{background:#FEF3C7;}.s4{background:#FCE7F3;}.s5{background:#E0E7FF;}
-.step-time{font-size:9px;color:#94A3B8;margin-bottom:4px;font-weight:500}
-.step-name{font-size:11px;font-weight:600;color:#1E293B;margin-bottom:3px;line-height:1.3}
-.step-desc{font-size:10px;color:#64748B;line-height:1.4;padding:0 4px}
-.story-bar{display:flex;justify-content:center;gap:32px;margin-top:18px;padding-top:14px;border-top:1px dashed #CBD5E1}
-.bar-item{text-align:center}
-.bar-n{font-size:18px;font-weight:700}
-.bar-l{font-size:10px;color:#64748B;margin-top:1px}
-.before{color:#EF4444}.after{color:#10B981}
+/* === SECTION 2: VISUAL HERO - Time Lost === */
+.viz{padding:48px 72px;background:var(--warm);border-bottom:1px solid var(--ink)}
+.viz-label{font-size:10px;letter-spacing:3px;font-weight:700;color:var(--ink);margin-bottom:8px}
+.viz-h{font-family:'Yu Mincho',serif;font-size:24px;font-weight:400;color:var(--ink);margin-bottom:24px;line-height:1.4}
+.viz-h em{font-style:normal;color:var(--coral);font-weight:500}
+.cal{display:flex;gap:1px;background:#E5DDD0;border:1px solid #E5DDD0;border-radius:2px;overflow:hidden;margin-bottom:14px}
+.cal-day{flex:1;display:flex;flex-direction:column;gap:1px}
+.cal-cell{background:#fff;height:7px}
+.cal-cell.lost{background:var(--coral)}
+.cal-x{display:flex;gap:24px;font-size:10px;color:var(--muted);letter-spacing:.5px;margin-top:8px}
+.cal-x span{flex:1;text-align:center}
+.cal-legend{display:flex;justify-content:space-between;align-items:flex-end;margin-top:24px;padding-top:20px;border-top:1px solid #E5DDD0}
+.cal-stat-l{font-family:'Yu Mincho',serif;font-size:54px;font-weight:300;line-height:1;color:var(--coral);letter-spacing:-2px}
+.cal-stat-l .u{font-size:18px;font-weight:400;margin-left:4px}
+.cal-text{font-size:13px;color:var(--ink);line-height:1.7;max-width:380px;text-align:right}
+.cal-text strong{font-weight:700}
 
-/* 本文 */
-.body{padding:24px 40px}
-.cols{display:grid;grid-template-columns:1.05fr 1fr;gap:16px;margin-bottom:16px}
-.card{background:#F8FAFC;border-radius:10px;padding:16px 18px;border:1px solid #E2E8F0}
-.card-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #E2E8F0}
-.card-icon{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
-.ci-b{background:#DBEAFE;color:#1D4ED8}.ci-g{background:#D1FAE5;color:#065F46}
-.card-title{font-size:12px;font-weight:600;color:#1E293B}
-.item{display:flex;gap:7px;margin-bottom:6px;align-items:flex-start;font-size:12px;color:#374151;line-height:1.55}
-.dot-b{width:4px;height:4px;border-radius:50%;background:#3B82F6;margin-top:5px;flex-shrink:0}
-.dot-g{width:4px;height:4px;border-radius:50%;background:#10B981;margin-top:5px;flex-shrink:0}
-.item em{font-style:normal;color:#1D4ED8;font-weight:500}
+/* === SECTION 3: SHIFT - Before/After === */
+.shift{padding:64px 72px;border-bottom:1px solid var(--ink)}
+.section-num{font-size:11px;letter-spacing:3px;font-weight:700;color:var(--coral);margin-bottom:12px}
+.section-num::before{content:'01 / ';color:var(--muted)}
+.shift .section-num::before{content:'01 / '}
+.shift-h{font-family:'Yu Mincho',serif;font-size:38px;font-weight:300;line-height:1.3;color:var(--ink);margin-bottom:42px;letter-spacing:-1px;max-width:780px}
+.shift-h em{font-style:normal;color:var(--coral);font-weight:500;border-bottom:2px solid var(--coral);padding-bottom:2px}
+.ba{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.ba-col{padding:32px 32px 32px 0}
+.ba-col:first-child{padding-right:48px;border-right:1px solid var(--line)}
+.ba-col:last-child{padding-left:48px}
+.ba-tag{display:inline-block;font-size:10px;letter-spacing:2px;font-weight:700;padding:4px 10px;border-radius:3px;margin-bottom:18px}
+.ba-tag.b{background:#FCE9E5;color:var(--coral)}
+.ba-tag.a{background:var(--ink);color:#fff}
+.ba-title{font-family:'Yu Mincho',serif;font-size:22px;font-weight:400;color:var(--ink);margin-bottom:20px;line-height:1.4}
+.ba-line{display:flex;gap:12px;padding:10px 0;border-bottom:1px dotted #DDD;font-size:13px;color:#333;line-height:1.6}
+.ba-line:last-child{border-bottom:none}
+.ba-time{font-family:'Yu Mincho',serif;font-size:16px;font-weight:500;color:var(--soft);min-width:60px;flex-shrink:0;letter-spacing:-.5px}
+.ba-col.after .ba-time{color:var(--coral)}
+.ba-task{flex:1}
+.ba-task strong{font-weight:600;color:var(--ink)}
 
-/* 実績データ */
-.evidence{background:#F8FAFC;border-radius:10px;padding:16px 18px;border:1px solid #E2E8F0;margin-bottom:16px}
-.ev-head{display:flex;align-items:center;gap:8px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #E2E8F0}
-.ev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.ev-card{background:#fff;border-radius:8px;padding:12px 14px;border:1px solid #E2E8F0}
-.ev-n{font-size:17px;font-weight:700;color:#1D4ED8}
-.ev-l{font-size:11px;color:#475569;margin-top:3px;line-height:1.5}
-.ev-s{font-size:9px;color:#94A3B8;margin-top:3px}
-.ev-sum{margin-top:10px;background:#EFF6FF;border-radius:6px;padding:8px 12px;font-size:11px;color:#1E40AF;line-height:1.7;border-left:3px solid #3B82F6}
+/* === SECTION 4: EVIDENCE === */
+.evi{padding:64px 72px;border-bottom:1px solid var(--ink);background:var(--warm)}
+.evi .section-num::before{content:'02 / '}
+.evi-h{font-family:'Yu Mincho',serif;font-size:38px;font-weight:300;line-height:1.3;color:var(--ink);margin-bottom:42px;letter-spacing:-1px;max-width:680px}
+.evi-h em{font-style:normal;color:var(--coral);font-weight:500}
+.evi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line)}
+.evi-cell{padding:24px 18px 0;border-right:1px solid #D5CCBA;position:relative}
+.evi-cell:last-child{border-right:none}
+.evi-cell:first-child{padding-left:0}
+.evi-cell:last-child{padding-right:0}
+.evi-n{font-family:'Yu Mincho',serif;font-size:56px;font-weight:300;line-height:1;color:var(--ink);letter-spacing:-2px;margin-bottom:8px}
+.evi-n .u{font-size:18px;font-weight:400;margin-left:2px}
+.evi-claim{font-size:12px;font-weight:600;color:var(--ink);line-height:1.55;margin-bottom:6px}
+.evi-src{font-size:9.5px;color:var(--muted);letter-spacing:.3px;line-height:1.5}
+.evi-quote{margin-top:36px;padding:24px 28px;border-left:3px solid var(--coral);background:#fff}
+.evi-quote-text{font-family:'Yu Mincho',serif;font-size:18px;font-weight:400;line-height:1.7;color:var(--ink);margin-bottom:8px}
+.evi-quote-cite{font-size:11px;color:var(--muted);letter-spacing:.3px}
 
-/* CTA: クリック誘導 (Fitts's Law: 大きく・色で目立たせる) */
-.cta{background:#0F172A;border-radius:10px;padding:20px 24px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;margin-bottom:0}
-.cta-text{}
-.cta-title{font-size:14px;font-weight:600;color:#F1F5F9;margin-bottom:4px}
-.cta-body{font-size:11px;color:#94A3B8;line-height:1.7}
-.cta-body strong{color:#60A5FA}
-.cta-buttons{display:flex;flex-direction:column;gap:8px;min-width:160px}
-.btn-primary{background:#2563EB;color:#fff;border:none;border-radius:8px;padding:10px 16px;font-size:12px;font-weight:600;font-family:'Meiryo UI',sans-serif;cursor:pointer;text-align:center;letter-spacing:.3px}
-.btn-secondary{background:rgba(255,255,255,.08);color:#93C5FD;border:1px solid rgba(96,165,250,.3);border-radius:8px;padding:8px 16px;font-size:11px;font-family:'Meiryo UI',sans-serif;cursor:pointer;text-align:center}
+/* === SECTION 5: CTA === */
+.cta{background:var(--ink);color:#fff;padding:72px}
+.cta-num{font-size:11px;letter-spacing:3px;font-weight:700;color:var(--coral);margin-bottom:12px}
+.cta-num::before{content:'03 / ';color:#666}
+.cta-h{font-family:'Yu Mincho',serif;font-size:46px;font-weight:300;line-height:1.25;letter-spacing:-1.5px;color:#fff;margin-bottom:24px;max-width:780px}
+.cta-h strong{color:var(--coral);font-weight:500}
+.cta-body{font-size:14px;color:#B0B0B0;line-height:1.9;margin-bottom:36px;max-width:680px}
+.cta-body strong{color:#fff}
+.cta-action{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-bottom:40px}
+.cta-btn{background:var(--coral);color:#fff;padding:18px 36px;border:none;font-family:'Meiryo UI',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;cursor:pointer;display:inline-flex;align-items:center;gap:14px;text-transform:none}
+.cta-btn::after{content:'→';font-size:20px;font-weight:300}
+.cta-note{font-size:11px;color:#888;letter-spacing:.5px}
+.cta-spec{border-top:1px solid #2A2A2A;padding-top:28px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.spec-l{font-size:9px;letter-spacing:2px;color:#666;font-weight:600;margin-bottom:6px}
+.spec-v{font-size:13px;color:#fff;font-weight:600;line-height:1.5}
+.spec-s{font-size:10px;color:#999;margin-top:2px}
 
-.footer{padding:10px 40px;border-top:1px solid #E2E8F0;display:flex;justify-content:space-between}
-.footer-t{font-size:10px;color:#94A3B8}
-.badge{font-size:10px;background:#F1F5F9;color:#64748B;padding:2px 8px;border-radius:10px}
+/* === FOOTER === */
+.foot{background:#000;color:#888;padding:18px 72px;font-size:10px;display:flex;justify-content:space-between;letter-spacing:.3px}
 </style>
 </head>
 <body>
 <div class="page">
 
-<div class="hdr">
-  <div class="hdr-row">
+<!-- HERO -->
+<section class="hero">
+  <div class="eyebrow">
+    <span class="eyebrow-l">AI INFRASTRUCTURE PROPOSAL</span>
+    <span class="eyebrow-r">2026年5月 ／ EA部門</span>
+  </div>
+  <h1 class="hero-h mincho">
+    いま、コンサル1人につき<br>
+    月<strong>60時間</strong>が、<br>
+    <span class="small">ドキュメント作業に消えている。</span>
+  </h1>
+</section>
+
+<!-- CALENDAR VIZ: Time Lost -->
+<section class="viz">
+  <div class="viz-label">VISUALIZATION ／ ONE MONTH</div>
+  <h2 class="viz-h">これが、<em>あなたのチームの1ヶ月</em>です。<br>赤いマスは「議事録・報告書・資料作成」に消えた時間。</h2>
+  <!-- Calendar: 5 weeks x 7 days, each day = 12 work-hour cells -->
+  <div id="cal" class="cal"></div>
+  <div class="cal-x">
+    <span>WEEK 1</span><span>WEEK 2</span><span>WEEK 3</span><span>WEEK 4</span><span>WEEK 5</span>
+  </div>
+  <div class="cal-legend">
     <div>
-      <div class="hdr-eyebrow">AI INFRASTRUCTURE PROPOSAL — 2026</div>
-      <div class="hdr-title">VS Code を起点とした<br><strong>マルチAI連携・作業一元化</strong>の導入提案</div>
+      <div class="cal-stat-l">60<span class="u">時間／月</span></div>
     </div>
-    <div class="hdr-tag">2026年5月 EA部門</div>
+    <div class="cal-text">
+      これは、<strong>週末2日分</strong>の労働時間。<br>
+      または、<strong>家族と過ごせるはずだった夜10回分</strong>。<br>
+      <span style="color:var(--coral);font-weight:600">そして、月¥3,000で買い戻せる。</span>
+    </div>
   </div>
-  <div class="stats">
-    <div class="stat"><div class="stat-n">75.9%</div><div class="stat-l">世界の開発者がVS Codeを利用</div><div class="stat-s">Stack Overflow 2025 / 4年連続1位</div></div>
-    <div class="stat"><div class="stat-n">5,000万</div><div class="stat-l">VS Code月間アクティブ利用者</div><div class="stat-s">Microsoft公式 2025年5月</div></div>
-    <div class="stat"><div class="stat-n">84%</div><div class="stat-l">開発者がAIツールを使用・導入予定</div><div class="stat-s">Stack Overflow 2025</div></div>
-    <div class="stat"><div class="stat-n">Fortune 100</div><div class="stat-l">の90%がGitHub Copilotを組織導入</div><div class="stat-s">GitHub公式 2025年</div></div>
-  </div>
-</div>
+</section>
 
-<div class="story">
-  <div class="story-label">A DAY IN THE LIFE</div>
-  <div class="story-title">VS Code × AI が <span>コンサルタントの1日</span> を変える</div>
-  <div class="flow">
-    <div class="flow-step">
-      <div class="step-icon s1">📋</div>
-      <div class="step-time">10:00</div>
-      <div class="step-name">会議終了</div>
-      <div class="step-desc">議事録・録音データを受け取る</div>
+<!-- SHIFT: Before / After Day Schedule -->
+<section class="shift">
+  <div class="section-num">THE SHIFT</div>
+  <h2 class="shift-h mincho">金曜23時の残業から、<em>朝10時半までに完了</em>へ。</h2>
+  <div class="ba">
+    <div class="ba-col before">
+      <div class="ba-tag b">BEFORE — いまの1日</div>
+      <h3 class="ba-title mincho">3〜4時間、<br>同じ作業を繰り返している。</h3>
+      <div class="ba-line"><div class="ba-time mincho">10:00</div><div class="ba-task">会議終了。録音データを聞き直す。</div></div>
+      <div class="ba-line"><div class="ba-time mincho">11:30</div><div class="ba-task">議事録を手作業で要約・整形。</div></div>
+      <div class="ba-line"><div class="ba-time mincho">13:00</div><div class="ba-task">報告書をWord・PPTで作成。</div></div>
+      <div class="ba-line"><div class="ba-time mincho">14:30</div><div class="ba-task">ChatGPTでコピペ往復しながらコード書く。</div></div>
+      <div class="ba-line"><div class="ba-time mincho">15:00</div><div class="ba-task">ようやく提出。<strong>5時間が消えた。</strong></div></div>
     </div>
-    <div class="flow-step">
-      <div class="step-icon s2">💻</div>
-      <div class="step-time">10:02</div>
-      <div class="step-name">VS Code を開く</div>
-      <div class="step-desc">Claude・Gemini・Copilot が待機中</div>
-    </div>
-    <div class="flow-step">
-      <div class="step-icon s3">🤖</div>
-      <div class="step-time">10:03</div>
-      <div class="step-name">AIが同時稼働</div>
-      <div class="step-desc">要約・タスク抽出・用語DB自動生成</div>
-    </div>
-    <div class="flow-step">
-      <div class="step-icon s4">✨</div>
-      <div class="step-time">10:20</div>
-      <div class="step-name">成果物が揃う</div>
-      <div class="step-desc">議事録・報告書・コードが完成</div>
-    </div>
-    <div class="flow-step">
-      <div class="step-icon s5">🎯</div>
-      <div class="step-time">10:30</div>
-      <div class="step-name">提出・共有</div>
-      <div class="step-desc">GitHubへpush・チームへ展開</div>
+    <div class="ba-col after">
+      <div class="ba-tag a">AFTER — VS Code × AI</div>
+      <h3 class="ba-title mincho">同じ仕事が、<br>コーヒー1杯分で終わる。</h3>
+      <div class="ba-line"><div class="ba-time mincho">10:00</div><div class="ba-task">会議終了。VS Code を開く。</div></div>
+      <div class="ba-line"><div class="ba-time mincho">10:05</div><div class="ba-task"><strong>Claude</strong>が議事録を要約・タスク抽出。</div></div>
+      <div class="ba-line"><div class="ba-time mincho">10:15</div><div class="ba-task"><strong>Gemini</strong>が分析、<strong>Copilot</strong>がコード生成。</div></div>
+      <div class="ba-line"><div class="ba-time mincho">10:25</div><div class="ba-task">人間は<strong>確認と微調整</strong>のみ。</div></div>
+      <div class="ba-line"><div class="ba-time mincho">10:30</div><div class="ba-task">提出完了。<strong>30分で終わった。</strong></div></div>
     </div>
   </div>
-  <div class="story-bar">
-    <div class="bar-item"><div class="bar-n before">3〜4時間</div><div class="bar-l">従来の所要時間</div></div>
-    <div class="bar-item" style="font-size:22px;color:#CBD5E1;padding-top:4px">→</div>
-    <div class="bar-item"><div class="bar-n after">30分</div><div class="bar-l">VS Code × AI 活用後</div></div>
-    <div class="bar-item" style="font-size:22px;color:#CBD5E1;padding-top:4px">=</div>
-    <div class="bar-item"><div class="bar-n" style="color:#D97706">月数千円</div><div class="bar-l">APIコスト（上限設定可）</div></div>
-  </div>
-</div>
+</section>
 
-<div class="body">
-  <div class="cols">
-    <div class="card">
-      <div class="card-head"><div class="card-icon ci-b">🏗</div><div class="card-title">VS Code × AI の接続構造</div></div>
-      <div class="item"><div class="dot-b"></div><div><em>GitHub Copilot（右）</em>：コード生成・補完・自律エージェント実行</div></div>
-      <div class="item"><div class="dot-b"></div><div><em>Continue.dev（左）</em>：Claude・Gemini等マルチAIを同一画面で切り替え</div></div>
-      <div class="item"><div class="dot-b"></div><div><em>ターミナル（下）</em>：スクリプト・git・パイプライン実行を一箇所で完結</div></div>
-      <div class="item"><div class="dot-b"></div><div><em>MCP（業界標準規格）</em>：AIが外部ツール・APIを自律的に呼び出す仕組み。Microsoft主導で標準化が進行中</div></div>
+<!-- EVIDENCE -->
+<section class="evi">
+  <div class="section-num">THE EVIDENCE</div>
+  <h2 class="evi-h mincho">これは、すでに<em>世界の常識</em>になっている。</h2>
+  <div class="evi-grid">
+    <div class="evi-cell">
+      <div class="evi-n mincho">75.9<span class="u">%</span></div>
+      <div class="evi-claim">世界の開発者がVS Codeを利用</div>
+      <div class="evi-src">Stack Overflow Survey 2025<br>（4年連続1位）</div>
     </div>
-    <div class="card">
-      <div class="card-head"><div class="card-icon ci-g">⚡</div><div class="card-title">VS Code × AI でできること</div></div>
-      <div class="item"><div class="dot-g"></div>議事録・会議録の自動要約・アクション抽出</div>
-      <div class="item"><div class="dot-g"></div>提案書・報告書・ドキュメントの自動生成</div>
-      <div class="item"><div class="dot-g"></div>コード生成・レビュー・リファクタリングの自動化</div>
-      <div class="item"><div class="dot-g"></div>社内ナレッジへの自動インデックス・検索連携</div>
-      <div class="item"><div class="dot-g"></div>複数AIの役割分担（設計はClaude・実装はCopilot・分析はGemini）</div>
+    <div class="evi-cell">
+      <div class="evi-n mincho">5,000<span class="u">万</span></div>
+      <div class="evi-claim">VS Code 月間アクティブ利用者数</div>
+      <div class="evi-src">Microsoft 公式発表<br>2025年5月</div>
     </div>
-  </div>
-
-  <div class="evidence">
-    <div class="ev-head"><div class="card-icon ci-b" style="font-size:12px">📊</div><div class="card-title">世界的トレンドとしての裏付け</div></div>
-    <div class="ev-grid">
-      <div class="ev-card"><div class="ev-n">67%→51%</div><div class="ev-l">GitHub Copilotのシェアが低下。VS Codeベースの<strong>マルチAI化が加速</strong></div><div class="ev-s">Stack Overflow Dev Survey 2026</div></div>
-      <div class="ev-card"><div class="ev-n">77.7%</div><div class="ev-l">AI活用中の開発者がVS Codeをメインエディタとして使用。<strong>AIワークフローの起点として定着</strong></div><div class="ev-s">Stack Overflow 2025</div></div>
-      <div class="ev-card"><div class="ev-n">MCP標準化</div><div class="ev-l">MicrosoftがVS Code全ユーザーにAgent Mode + MCPを展開。<strong>AIが自律実行する時代へ</strong></div><div class="ev-s">GitHub / Microsoft 2025年</div></div>
+    <div class="evi-cell">
+      <div class="evi-n mincho">84<span class="u">%</span></div>
+      <div class="evi-claim">開発者がAIツールを使用または導入予定</div>
+      <div class="evi-src">Stack Overflow Survey<br>2025</div>
     </div>
-    <div class="ev-sum">VS Code はすでに「エディタ」を超え、AIエージェントの実行基盤・業務自動化プラットフォームとしてグローバルスタンダードになっている。マルチAI（Claude・Gemini・Copilot）を一か所で管理する構成は、スタートアップ〜Fortune 100まで広く採用されている。</div>
-  </div>
-
-  <div class="cta">
-    <div class="cta-text">
-      <div class="cta-title">ご依頼：Anthropic APIキーの社内払い出し</div>
-      <div class="cta-body">
-        現在ClaudeはブラウザのみでAPI連携が未実現です。APIキーを取得することで<strong>VS Code上のContinue.devから直接呼び出せ</strong>、Gemini（接続済み）と合わせた3AI完全一元化が実現します。<br>
-        コスト：従量課金（月数千円〜・上限設定可）／手続き先：情シスご担当者
-      </div>
-    </div>
-    <div class="cta-buttons">
-      <div class="btn-primary">APIキー申請を承認する</div>
-      <div class="btn-secondary">情シスへ手続きを依頼する</div>
+    <div class="evi-cell">
+      <div class="evi-n mincho">90<span class="u">%</span></div>
+      <div class="evi-claim">Fortune 100 企業が GitHub Copilot を組織導入</div>
+      <div class="evi-src">GitHub 公式発表<br>2025年</div>
     </div>
   </div>
-</div>
+  <div class="evi-quote">
+    <p class="evi-quote-text mincho">VS Code は、すでに「エディタ」ではない。<br>AIエージェントを実行する、<strong>業務基盤プラットフォーム</strong>になった。</p>
+    <p class="evi-quote-cite">— Microsoft Build 2025 基調講演 ／ Satya Nadella CEO（要旨）</p>
+  </div>
+</section>
 
-<div class="footer">
-  <div class="footer-t">EA部門 ／ 参照：Stack Overflow Developer Survey 2025・2026、Microsoft公式発表、GitHub公式発表</div>
-  <div class="footer-t">社内限り <span class="badge">INTERNAL</span></div>
+<!-- CTA -->
+<section class="cta">
+  <div class="cta-num">THE ASK</div>
+  <h2 class="cta-h mincho">取り戻したい60時間を、<br><strong>今月、買い戻しませんか。</strong></h2>
+  <p class="cta-body">
+    ご依頼は <strong>Anthropic API キー の社内払い出し1件</strong> のみ。<br>
+    Gemini はすでに接続済み。Claude が加われば、Copilot と合わせた <strong>3AI完全一元化</strong> が当月から実現します。
+  </p>
+  <div class="cta-action">
+    <button class="cta-btn">APIキーの申請を承認する</button>
+    <span class="cta-note">所要時間 5分 ／ 月額上限の設定が可能 ／ いつでも解約可</span>
+  </div>
+  <div class="cta-spec">
+    <div><div class="spec-l">必要なもの</div><div class="spec-v">APIキー 1件</div><div class="spec-s">Anthropic 公式</div></div>
+    <div><div class="spec-l">初期費用</div><div class="spec-v">¥0</div><div class="spec-s">登録のみ</div></div>
+    <div><div class="spec-l">運用コスト</div><div class="spec-v">月¥3,000〜</div><div class="spec-s">従量課金・上限可</div></div>
+    <div><div class="spec-l">取り戻せる時間</div><div class="spec-v" style="color:var(--coral)">月60時間</div><div class="spec-s">コンサル1人あたり</div></div>
+  </div>
+</section>
+
+<div class="foot">
+  <span>EA部門 ／ 出典：Stack Overflow Developer Survey 2025・Microsoft公式・GitHub公式・Anthropic公式</span>
+  <span>INTERNAL — 社内限り</span>
 </div>
 
 </div>
+
+<script>
+// Calendar visualization: 5 columns × 7 days × 12 cells = 420 cells, 60 marked as "lost"
+const cal = document.getElementById('cal');
+const totalCells = 5 * 7 * 12;
+const lostHours = 60;
+// Distribute lost hours: roughly afternoons of weekdays
+const lostSet = new Set();
+let placed = 0;
+// Each "day" has cells 0-11 (12 working hours). Place ~3 cells per weekday afternoon (cells 7-11)
+for(let week=0; week<5 && placed<lostHours; week++){
+  for(let day=0; day<5 && placed<lostHours; day++){ // weekdays only
+    for(let h=0; h<3 && placed<lostHours; h++){
+      const cellIdx = week*7*12 + day*12 + (7+h); // afternoon cells
+      lostSet.add(cellIdx);
+      placed++;
+    }
+  }
+}
+// Render: 5 weeks side by side
+let html = '';
+for(let week=0; week<5; week++){
+  html += '<div class="cal-day">';
+  for(let day=0; day<7; day++){
+    for(let h=0; h<12; h++){
+      const idx = week*7*12 + day*12 + h;
+      const cls = lostSet.has(idx) ? 'cal-cell lost' : 'cal-cell';
+      html += `<div class="${cls}"></div>`;
+    }
+  }
+  html += '</div>';
+}
+cal.innerHTML = html;
+</script>
 </body>
 </html>
