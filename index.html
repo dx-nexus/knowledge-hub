@@ -3,551 +3,150 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>はんちょー ドキュメントハブ</title>
+<title>はんちょー ／ Document Hub</title>
 <link rel="stylesheet" href="assets/common.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
+<style>
+.search-wrap{position:relative;margin-bottom:1.25rem}
+.search-wrap input{width:100%;box-sizing:border-box;padding-left:38px;font-size:14px}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--color-text-tertiary);font-size:16px;pointer-events:none}
+.quick-links{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem}
+.quick-link{font-size:12px;color:var(--color-text-secondary);text-decoration:none;border:0.5px solid var(--color-border-tertiary);border-radius:6px;padding:4px 10px;display:inline-flex;align-items:center;gap:5px;transition:border-color .12s,color .12s}
+.quick-link:hover{color:var(--color-text-primary);border-color:var(--color-border-primary)}
+.filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
+.filter-btn{background:none;border:0.5px solid var(--color-border-tertiary);border-radius:20px;padding:5px 14px;font-size:12px;cursor:pointer;color:var(--color-text-secondary);font-family:var(--font-sans);transition:all .12s;display:inline-flex;align-items:center;gap:4px}
+.filter-btn:hover{border-color:var(--color-border-primary);color:var(--color-text-primary)}
+.filter-btn.active{background:var(--color-text-primary);color:var(--color-background-primary);border-color:var(--color-text-primary)}
+.filter-btn .cnt{font-size:10px;opacity:.6}
+.result-info{font-size:12px;color:var(--color-text-tertiary);margin-bottom:1rem}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:10px}
+.doc-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px 14px 12px;text-decoration:none;display:flex;flex-direction:column;gap:5px;transition:border-color .12s,box-shadow .12s}
+.doc-card:hover{border-color:var(--color-border-secondary)}
+.card-cat{font-size:10px;font-weight:500;letter-spacing:.5px}
+.card-cat.life{color:#3B6D11}.card-cat.work{color:#185FA5}.card-cat.hub{color:#534AB7}.card-cat.wk{color:#854F0B}
+.card-title{font-size:13px;font-weight:500;color:var(--color-text-primary);line-height:1.4}
+.card-desc{font-size:11px;color:var(--color-text-secondary);line-height:1.6;margin-top:2px}
+.empty{text-align:center;padding:3rem 1rem;color:var(--color-text-tertiary);font-size:13px;grid-column:1/-1}
+.changelog-card{border-left:2px solid var(--color-border-warning)}
+</style>
 </head>
 <body>
-
 <header>
   <div class="hdr-top">
     <div class="hdr-inner">
       <div>
         <h1>はんちょー ／ Document Hub</h1>
-        <p>AI収益化プロジェクト・学習計画・V-Consultant の共有ドキュメント置き場</p>
+        <p>AI活用・ナレッジ基盤・ライフ&ワーク設計の統合ポータル</p>
       </div>
     </div>
   </div>
   <div class="hdr-meta">
-    <span>📄 42 docs</span>
-    <span>🗓️ 2026-05-26</span>
-    <span><a href="search.html">🔍 全文検索</a></span>
-    <span><a href="Personal_Dashboard.html">📌 ダッシュボード</a></span>
-    <span><a href="CHANGELOG.html">📜 CHANGELOG</a></span>
+    <span id="total-count">34 docs</span>
+    <span>2026-05-26</span>
+    <span><a href="search.html"><i class="ti ti-search"></i> 全文検索</a></span>
+    <span><a href="timeline.html"><i class="ti ti-timeline"></i> タイムライン</a></span>
+    <span><a href="CHANGELOG.html"><i class="ti ti-history"></i> CHANGELOG</a></span>
   </div>
 </header>
 
 <main>
-
-  <div class="sec">
-    <div class="sec-title">プロジェクト管理</div>
-    <div class="grid">
-
-      <a class="card" href="notes/pm_methodology_note_20260520.html">
-        <div class="card-head">
-          <div class="card-icon">📋</div>
-          <div>
-            <div class="card-title">開発手法比較 &amp; 構造課題メモ</div>
-            <div class="card-sub">2026.05.20 / 統括部長出席対応含む</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-20 NEW</span><span class="badge badge-wip" style="margin-left:4px;">PMO / 戦略</span></div>
-      </a>
-
-      <a class="card" href="AI_Ecosystem_Catalog.html">
-        <div class="card-head">
-          <div class="card-icon">🧠</div>
-          <div>
-            <div class="card-title">マルチAI・役割構造化カタログ</div>
-            <div class="card-sub">ニュートラル環境（VS Code）を基盤に、Claude/Gemini/Codex/Sparkの得意領域と連携システムを4大カテゴリで完全可視化。</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-25 NEW</span></div>
-      </a>
-
-      <a class="card" href="notes/pm_chiken_card_20260520.html">
-        <div class="card-head">
-          <div class="card-icon">📝</div>
-          <div>
-            <div class="card-title">PM知見共有会 話のネタ整理</div>
-            <div class="card-sub">2026.05.20 / 外部PM視点メモ</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-20 NEW</span><span class="badge badge-wip" style="margin-left:4px;">PMO / キャリア</span></div>
-      </a>
-
-      <a class="card" href="Project_Master_Document.html">
-        <div class="card-head">
-          <div class="card-icon">📊</div>
-          <div>
-            <div class="card-title">Project Master Document</div>
-            <div class="card-sub">AI収益化プロジェクト全体の計画・作業ログ・課題台帳</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">LIVE</span></div>
-      </a>
-
-      <a class="card" href="Pipeline_SystemReview_20260507.html">
-        <div class="card-head">
-          <div class="card-icon">⚙️</div>
-          <div>
-            <div class="card-title">Pipeline System Review</div>
-            <div class="card-sub">AI記事生成パイプラインのシステムレビュー</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">LIVE</span></div>
-      </a>
-
-      <a class="card" href="Personal_Dashboard.html">
-        <div class="card-head">
-          <div class="card-icon">📌</div>
-          <div>
-            <div class="card-title">パーソナル・コマンドセンター</div>
-            <div class="card-sub">AI副業・投資・キャリア・英語の4軸進捗ダッシュボード</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-18</span></div>
-      </a>
-
-      <a class="card" href="Demo_Script_Department_Meeting.html">
-        <div class="card-head">
-          <div class="card-icon">🎤</div>
-          <div>
-            <div class="card-title">部内勉強会デモ進行台本</div>
-            <div class="card-sub">部内勉強会向けAIデモの進行台本・実演手順</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-16</span></div>
-      </a>
-
-      <a class="card" href="Handoff_Document_20260515.html">
-        <div class="card-head">
-          <div class="card-icon">📤</div>
-          <div>
-            <div class="card-title">引き継ぎ資料 2026-05-15</div>
-            <div class="card-sub">セッション 2026-05-15 の作業状況・次アクション引き継ぎ</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-15</span></div>
-      </a>
-
-      <a class="card" href="Handoff_AI_Prompts_20260516.html">
-        <div class="card-head">
-          <div class="card-icon">📋</div>
-          <div>
-            <div class="card-title">他AI引き継ぎプロンプト集 v2</div>
-            <div class="card-sub">2026-05-16 版 他AI向け引き継ぎプロンプト集</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-16</span></div>
-      </a>
-
-      <a class="card" href="Handoff_Document_20260518.html">
-        <div class="card-head">
-          <div class="card-icon">📤</div>
-          <div>
-            <div class="card-title">引き継ぎ資料 2026-05-18</div>
-            <div class="card-sub">L4アップグレードセッション 2026-05-18 の引き継ぎ</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-18</span></div>
-      </a>
-
-      <a class="card" href="Handoff_Document_20260523.html">
-        <div class="card-head">
-          <div class="card-icon">📤</div>
-          <div>
-            <div class="card-title">引き継ぎ資料 2026-05-23</div>
-            <div class="card-sub">ペリエの栞 v7.2.0 全10話完全版デプロイ・異常ディレクトリ修正・README生成</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-23 NEW</span></div>
-      </a>
-
-      <a class="card" href="Handoff_Document_20260521.html">
-        <div class="card-head">
-          <div class="card-icon">📤</div>
-          <div>
-            <div class="card-title">引き継ぎ資料 2026-05-21</div>
-            <div class="card-sub">reviewer_v4（GitHub API連携SPA）追加 / Snackable_Romanceにパスワードロック追加</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-21 NEW</span></div>
-      </a>
-
-      <a class="card" href="Handoff_Document_20260520.html">
-        <div class="card-head">
-          <div class="card-icon">📤</div>
-          <div>
-            <div class="card-title">引き継ぎ資料 2026-05-20</div>
-            <div class="card-sub">V6更新・Reader構築・PM知見ノート・戦略ドキュメント — 2026-05-20 フルセッション</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-20 NEW</span></div>
-      </a>
-
-      <a class="card" href="Handoff_Document_20260519.html">
-        <div class="card-head">
-          <div class="card-icon">📤</div>
-          <div>
-            <div class="card-title">引き継ぎ資料 2026-05-19</div>
-            <div class="card-sub">トレンドリスト+エコシステムv2作成セッション 2026-05-19 の引き継ぎ</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-19 NEW</span></div>
-      </a>
-
-      <a class="card" href="Reproducible_Guide.html">
-        <div class="card-head">
-          <div class="card-icon">⚡</div>
-          <div>
-            <div class="card-title">マルチAI協働・PMO業務自動化マニュアル</div>
-            <div class="card-sub">Claude/Gemini/Spark等の特性を結集。Jira自動集計、複数会議を跨ぐ重複タスクのAI自律検知・構造化パイプライン（セキュアVDI対応）</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-25 NEW</span></div>
-      </a>
-
-    </div>
+  <div class="search-wrap">
+    <i class="ti ti-search search-icon" aria-hidden="true"></i>
+    <input type="text" id="q" placeholder="ドキュメントを検索…" oninput="onSearch(this.value)" autocomplete="off">
   </div>
 
-  <div class="sec">
-    <div class="sec-title">学習計画</div>
-    <div class="grid">
-
-      <a class="card" href="AI_Learning_Plan.html">
-        <div class="card-head">
-          <div class="card-icon">🎓</div>
-          <div>
-            <div class="card-title">AI統合学習計画</div>
-            <div class="card-sub">ユニコスクール × Anthropic Academy × GitHub Courses</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">LIVE</span></div>
-      </a>
-
-      <a class="card" href="Unicorn_School_Plan.html">
-        <div class="card-head">
-          <div class="card-icon">🦄</div>
-          <div>
-            <div class="card-title">ユニコスクール受講計画書</div>
-            <div class="card-sub">AIエージェント開発コース 受講進捗管理</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">LIVE</span></div>
-      </a>
-
-      <a class="card" href="Anthropic_Academy_Plan_Internal.html">
-        <div class="card-head">
-          <div class="card-icon">🏢</div>
-          <div>
-            <div class="card-title">Anthropic Academy 活用ガイド（社内版）</div>
-            <div class="card-sub">全コース概要・用語集・システム連携・役割別ロードマップ</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">LIVE</span></div>
-      </a>
-
-      <a class="card" href="Troubleshooting_QA.html">
-        <div class="card-head">
-          <div class="card-icon">🛠️</div>
-          <div>
-            <div class="card-title">トラブルシュート &amp; QA一覧</div>
-            <div class="card-sub">ハマりやすい問題14件・AI自動改善目標付き</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">LIVE</span></div>
-      </a>
-
-      <a class="card" href="Anthropic_Academy_Plan.html">
-        <div class="card-head">
-          <div class="card-icon">🤖</div>
-          <div>
-            <div class="card-title">Anthropic Academy 計画書</div>
-            <div class="card-sub">17コース受講ロードマップ</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">LIVE</span></div>
-      </a>
-
-    </div>
+  <div class="quick-links">
+    <a class="quick-link" href="CHANGELOG.html"><i class="ti ti-history" aria-hidden="true"></i>AI引継ぎログ・変更履歴</a>
+    <a class="quick-link" href="timeline.html"><i class="ti ti-calendar" aria-hidden="true"></i>会議タイムライン</a>
+    <a class="quick-link" href="CONTEXT.md" target="_blank"><i class="ti ti-robot" aria-hidden="true"></i>CONTEXT.md（AI参照）</a>
+    <a class="quick-link" href="https://github.com/dx-nexus/pmo-automation" target="_blank"><i class="ti ti-brand-github" aria-hidden="true"></i>pmo-automation</a>
   </div>
 
-  <div class="sec">
-    <div class="sec-title">V-Consultant</div>
-    <div class="grid">
-
-      <a class="card" href="V_Consultant_System_Overview.html">
-        <div class="card-head">
-          <div class="card-icon">🎭</div>
-          <div>
-            <div class="card-title">V-Consultant システム概要</div>
-            <div class="card-sub">AIアバター×声質変換環境の全体構成</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">LIVE</span></div>
-      </a>
-
-      <a class="card" href="V_Consultant_Project_Definition.html">
-        <div class="card-head">
-          <div class="card-icon">📋</div>
-          <div>
-            <div class="card-title">V-Consultant プロジェクト定義書</div>
-            <div class="card-sub">プロジェクトスコープ・要件・アクション</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">LIVE</span></div>
-      </a>
-
-      <a class="card" href="Universal_Generation_Flow_v1.html">
-        <div class="card-head">
-          <div class="card-icon">🔄</div>
-          <div>
-            <div class="card-title">JSON駆動 HTML自動生成 汎用フロー</div>
-            <div class="card-sub">JSON入力からHTML自動生成する汎用フロー・手順・テンプレート</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-16</span></div>
-      </a>
-
-      <a class="card" href="Hancho_Sample_Filled_v1.html">
-        <div class="card-head">
-          <div class="card-icon">📝</div>
-          <div>
-            <div class="card-title">汎用フロー・はんちょう実例ページ</div>
-            <div class="card-sub">JSON駆動生成フローではんちょーを実際に作成した実例</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-16</span></div>
-      </a>
-
-      <a class="card" href="Hancho_Business_AI_Practice_v1.html">
-        <div class="card-head">
-          <div class="card-icon">💼</div>
-          <div>
-            <div class="card-title">はんちょー業務AI活用集</div>
-            <div class="card-sub">DXコンサル業務AI活用ガイド v1・フレームワーク活用ノウハウ</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-16</span></div>
-      </a>
-
-    </div>
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="setFilter('all',this)">すべて <span class="cnt" id="cnt-all"></span></button>
+    <button class="filter-btn" onclick="setFilter('life',this)">ライフプラン <span class="cnt" id="cnt-life"></span></button>
+    <button class="filter-btn" onclick="setFilter('work',this)">ワークプラン <span class="cnt" id="cnt-work"></span></button>
+    <button class="filter-btn" onclick="setFilter('hub',this)">ナレッジハブ <span class="cnt" id="cnt-hub"></span></button>
+    <button class="filter-btn" onclick="setFilter('wk',this)">WK（進行中） <span class="cnt" id="cnt-wk"></span></button>
   </div>
 
-  <div class="sec">
-    <div class="sec-title">ツール・自動化</div>
-    <div class="grid">
-
-      <div class="card" style="cursor:default;opacity:.75;">
-        <div class="card-head">
-          <div class="card-icon">✏️</div>
-          <div>
-            <div class="card-title">V-Reviewer v3（相互編集ツール）</div>
-            <div class="card-sub">SnackableAI 作品の相互編集・CHANGELOG生成ツール</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-wip">private管理</span><span class="badge" style="margin-left:4px;background:#eee;color:#888;border:1px solid #ddd;padding:2px 8px;border-radius:12px;font-size:10px;">private-core/tools/reviewer_v3.html</span></div>
-      </div>
-
-      <a class="card" href="search.html">
-        <div class="card-head">
-          <div class="card-icon">🔍</div>
-          <div>
-            <div class="card-title">全文検索</div>
-            <div class="card-sub">27本のドキュメントをキーワードで横断検索</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-18</span></div>
-      </a>
-
-      <a class="card" href="Navigator_Generator.html">
-        <div class="card-head">
-          <div class="card-icon">🚀</div>
-          <div>
-            <div class="card-title">ナビゲーター・ジェネレーター</div>
-            <div class="card-sub">基本情報入力でClaude Code投入用プロンプトを自動生成</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-wip">PROTOTYPE</span></div>
-      </a>
-
-      <a class="card" href="Generator_Concept_Draft.html">
-        <div class="card-head">
-          <div class="card-icon">🚧</div>
-          <div>
-            <div class="card-title">ジェネレーター構想ドラフト</div>
-            <div class="card-sub">ナビゲーター・ジェネレーターの認証連携・セキュリティ要件</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-wip">WIP</span></div>
-      </a>
-
-      <a class="card" href="AI_Monetization_Strategy.html">
-        <div class="card-head">
-          <div class="card-icon">🏗️</div>
-          <div>
-            <div class="card-title">AI×マネタイズ自動化戦略</div>
-            <div class="card-sub">AI活用マネタイズの自動化戦略とシステムアーキテクチャ設計書</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-17</span></div>
-      </a>
-
-      <a class="card" href="ClaudeCode_Launch_Environment_Guide_v1.html">
-        <div class="card-head">
-          <div class="card-icon">🛠️</div>
-          <div>
-            <div class="card-title">Claude Code 起動環境ガイド</div>
-            <div class="card-sub">Claude Code の起動・環境構築・初期設定手順ガイド</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-17</span></div>
-      </a>
-
-      <a class="card" href="Claude_Code_Practical_Guide_v1.html">
-        <div class="card-head">
-          <div class="card-icon">⌨️</div>
-          <div>
-            <div class="card-title">Claude Code 実践運用ガイド</div>
-            <div class="card-sub">Claude Code の実務活用・コマンド・ベストプラクティス集</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-15</span></div>
-      </a>
-
-      <a class="card" href="KnowledgeHub_Management_Prompt_v1.html">
-        <div class="card-head">
-          <div class="card-icon">🗂️</div>
-          <div>
-            <div class="card-title">knowledge-hub 全体管理メタプロンプト</div>
-            <div class="card-sub">ドキュメントハブ運用・更新・整合性管理プロンプト集</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-16</span></div>
-      </a>
-
-    </div>
-  </div>
-
-  <div class="sec">
-    <div class="sec-title">AIトレンド・エコシステム設計</div>
-    <div class="grid">
-
-      <a class="card" href="Marketing_PMF_Map.html">
-        <div class="card-head">
-          <div class="card-icon">🗺️</div>
-          <div>
-            <div class="card-title">商材PMFマップ — 戦略ポジショニング 2×2</div>
-            <div class="card-sub">B2C/B2B × 静的/動的マトリクス ／ ⭐ 本命：V-Consultant 法人DX動画</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-19 NEW</span></div>
-      </a>
-
-      <a class="card" href="AI_Trend_Idea_List.html">
-        <div class="card-head">
-          <div class="card-icon">💡</div>
-          <div>
-            <div class="card-title">AIトレンド・アイディア多角評価リスト</div>
-            <div class="card-sub">4Dフレームワーク × 専門家パネルによる収益化アイディア評価</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-19</span></div>
-      </a>
-
-      <a class="card" href="AI_System_Architecture_v2.html">
-        <div class="card-head">
-          <div class="card-icon">🌐</div>
-          <div>
-            <div class="card-title">最新AI連携エコシステム構成図 v2</div>
-            <div class="card-sub">Gemini・NotebookLM・Claude・Claude Codeの4AI連携全体設計</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-19</span></div>
-      </a>
-
-    </div>
-  </div>
-
-  <div class="sec">
-    <div class="sec-title">個別プロジェクト</div>
-    <div class="grid">
-
-      <a class="card" href="Snackable_Romance.html">
-        <div class="card-head">
-          <div class="card-icon">📚</div>
-          <div>
-            <div class="card-title">ペリエの栞</div>
-            <div class="card-sub">2026-05-19 開始 / 現行 v7.2.0 / 全10話完結 / 約50,000字</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-23 UPD</span><span class="badge badge-wip" style="margin-left:4px;">純文学</span><span class="badge badge-wip" style="margin-left:4px;">AI文学</span><span class="badge badge-wip" style="margin-left:4px;">商業決定版</span></div>
-      </a>
-
-      <a class="card" href="perier_complete.html">
-        <div class="card-head">
-          <div class="card-icon">📖</div>
-          <div>
-            <div class="card-title">ペリエの栞 ― 全10話完全版ビューア</div>
-            <div class="card-sub">全10話完結 ／ v7.2.0 ／ 約50,000字　AI文学・サイバーパンク純文学ロマンス。境界線に建つ古書店の野良AIと、毎週金曜夜に訪れる女性の記録。</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-23 NEW</span><span class="badge badge-wip" style="margin-left:4px;">完全版ビューア</span><span class="badge badge-wip" style="margin-left:4px;">グリッチエフェクト</span></div>
-      </a>
-
-      <a class="card" href="Snackable_Romance_Project.html">
-        <div class="card-head">
-          <div class="card-icon">📖</div>
-          <div>
-            <div class="card-title">Snackable Romance プロジェクト</div>
-            <div class="card-sub">2026-05-19 開始 / 現行 v6.0.0 / 全10話完結</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-20 NEW</span><span class="badge badge-wip" style="margin-left:4px;">純文学 / private本編</span></div>
-      </a>
-
-      <a class="card" href="Setouchi_Space_Project_v1.html">
-        <div class="card-head">
-          <div class="card-icon">🌊</div>
-          <div>
-            <div class="card-title">瀬戸内スペース Webプロジェクト記録</div>
-            <div class="card-sub">Astro + Decap CMS + Netlify による Jamstack 構成</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-17</span></div>
-      </a>
-
-      <a class="card" href="Hancho_Algo_Trading_Project_v1.html">
-        <div class="card-head">
-          <div class="card-icon">📈</div>
-          <div>
-            <div class="card-title">Algo Trading Project</div>
-            <div class="card-sub">アルゴリズムトレーディングプロジェクト詳細</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">LIVE</span></div>
-      </a>
-
-      <a class="card" href="Algo_Trading_Decision_Report_v1.html">
-        <div class="card-head">
-          <div class="card-icon">📊</div>
-          <div>
-            <div class="card-title">Algo Trading 実弾判断レポート</div>
-            <div class="card-sub">専門家パネル8名による多角検証・実弾投入判断</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">2026-05-16</span></div>
-      </a>
-
-      <a class="card" href="Hancho_Life_Portfolio_v1.html">
-        <div class="card-head">
-          <div class="card-icon">🎯</div>
-          <div>
-            <div class="card-title">Life Portfolio</div>
-            <div class="card-sub">はんちょーのライフポートフォリオ・キャリア設計</div>
-          </div>
-        </div>
-        <div class="card-foot"><span class="badge badge-live">LIVE</span></div>
-      </a>
-
-    </div>
-  </div>
-
+  <div class="result-info" id="result-info"></div>
+  <div class="card-grid" id="grid"></div>
 </main>
 
-<footer class="doc-footer">
-  github.com/dx-nexus/knowledge-hub ／ GitHubにpushすると自動更新
-</footer>
+<footer class="doc-footer">github.com/dx-nexus/knowledge-hub ／ GitHubにpushすると自動更新</footer>
 
+<script>
+const DOCS = [
+  {t:"人生ポートフォリオ",          f:"Hancho_Life_Portfolio_v1.html",             c:"life", d:"人生全体をポートフォリオとして設計する戦略文書"},
+  {t:"パーソナルダッシュボード",     f:"Personal_Dashboard.html",                   c:"life", d:"個人KPI・資産・健康の統合ダッシュボード"},
+  {t:"瀬戸内スペース計画",          f:"Setouchi_Space_Project_v1.html",             c:"life", d:"尾道周辺の拠点運用計画"},
+  {t:"Vコンサルタント 定義書",      f:"V_Consultant_Project_Definition.html",       c:"work", d:"Vコンサルタントプロジェクトの定義・スコープ"},
+  {t:"Vコンサルタント 概要",        f:"V_Consultant_System_Overview.html",          c:"work", d:"システム全体像とアーキテクチャ概要"},
+  {t:"ビジネスAI実践",             f:"Hancho_Business_AI_Practice_v1.html",        c:"work", d:"コンサルティング業務へのAI適用実践録"},
+  {t:"部門会議 デモスクリプト",     f:"Demo_Script_Department_Meeting.html",        c:"work", d:"EA事業部向けのAIデモ台本"},
+  {t:"パイプラインレビュー",        f:"Pipeline_SystemReview_20260507.html",        c:"work", d:"2026-05-07 システムパイプライン評価"},
+  {t:"トラブルシューティングQA",    f:"Troubleshooting_QA.html",                   c:"work", d:"現場でよくある問題と対処法"},
+  {t:"マーケティングPMFマップ",     f:"Marketing_PMF_Map.html",                    c:"work", d:"プロダクト・マーケット・フィット分析"},
+  {t:"Claude Code 実践ガイド",     f:"Claude_Code_Practical_Guide_v1.html",        c:"hub",  d:"Claude Codeの日常運用フローと実践Tips"},
+  {t:"起動環境ガイド",             f:"ClaudeCode_Launch_Environment_Guide_v1.html",c:"hub",  d:"Claude Code環境構築の完全手順"},
+  {t:"Anthropicアカデミー計画",    f:"Anthropic_Academy_Plan.html",                c:"hub",  d:"Anthropic学習コースのナビゲーション"},
+  {t:"アカデミー計画（内部版）",    f:"Anthropic_Academy_Plan_Internal.html",       c:"hub",  d:"社内向けAnthropicアカデミー活用計画"},
+  {t:"PMO再現ガイド",              f:"Reproducible_Guide.html",                    c:"hub",  d:"マルチAI協働・PMO業務自動化マニュアル（5タブ）"},
+  {t:"ハブ管理プロンプト",         f:"KnowledgeHub_Management_Prompt_v1.html",     c:"hub",  d:"ナレッジハブ運用のためのAIプロンプト集"},
+  {t:"汎用生成フロー",             f:"Universal_Generation_Flow_v1.html",          c:"hub",  d:"JSON駆動HTML自動生成の汎用フロー"},
+  {t:"AIシステム設計 v2",          f:"AI_System_Architecture_v2.html",             c:"hub",  d:"マルチAIエコシステムのアーキテクチャ設計"},
+  {t:"ナビゲーター生成ツール",      f:"Navigator_Generator.html",                  c:"hub",  d:"ドキュメントナビゲーターの自動生成ツール"},
+  {t:"プロジェクトマスター",        f:"Project_Master_Document.html",               c:"hub",  d:"全プロジェクトの統合マスタードキュメント"},
+  {t:"レビュワー v4（GitHub連携）", f:"reviewer_v4.html",                           c:"hub",  d:"GitHub API連携コードレビューツール"},
+  {t:"JSON生成フロー サンプル",     f:"Hancho_Sample_Filled_v1.html",               c:"hub",  d:"JSON駆動生成フローの記入例"},
+  {t:"AIエコシステムカタログ",      f:"AI_Ecosystem_Catalog.html",                  c:"wk",   d:"AI各社のサービス・ツールの体系的カタログ"},
+  {t:"AI学習計画",                 f:"AI_Learning_Plan.html",                      c:"wk",   d:"AI技術習得のロードマップ"},
+  {t:"AI収益化戦略",               f:"AI_Monetization_Strategy.html",              c:"wk",   d:"AI副業・収益化の戦略設計"},
+  {t:"AIトレンド・アイデアリスト",  f:"AI_Trend_Idea_List.html",                   c:"wk",   d:"最新AIトレンドとビジネスアイデアの集積"},
+  {t:"アルゴトレード 判断レポート", f:"Algo_Trading_Decision_Report_v1.html",       c:"wk",   d:"実弾投入判断の専門家パネル評価"},
+  {t:"アルゴトレード プロジェクト", f:"Hancho_Algo_Trading_Project_v1.html",        c:"wk",   d:"アルゴ取引システムの設計・開発記録"},
+  {t:"ジェネレーター構想 ドラフト", f:"Generator_Concept_Draft.html",               c:"wk",   d:"ナビゲーター・ジェネレーターの構想段階ドラフト"},
+  {t:"ユニコスクール計画",          f:"Unicorn_School_Plan.html",                   c:"wk",   d:"ユニコスクール受講計画・学習記録"},
+  {t:"スナッカブルロマンス",        f:"Snackable_Romance.html",                     c:"wk",   d:"AI文芸プロジェクト 完成版"},
+  {t:"スナッカブルロマンス プロジェクト", f:"Snackable_Romance_Project.html",        c:"wk",   d:"SnackableAI Romance Line プロジェクト管理"},
+  {t:"Perier（内容確認中）",        f:"perier_complete.html",                       c:"wk",   d:"作成経緯確認中 — WK仮置き"},
+  {t:"AI引継ぎログ → CHANGELOG",   f:"CHANGELOG.html",                             c:"wk",   d:"全AIハンドオフ・変更履歴の統合ログ。Handoffドキュメントはこちらを参照", cl:"changelog-card"},
+];
+
+const LABEL = {life:"ライフプラン", work:"ワークプラン", hub:"ナレッジハブ", wk:"WK"};
+let cat = 'all', q = '';
+
+function setFilter(c, btn) {
+  cat = c;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+function onSearch(v) { q = v.trim().toLowerCase(); render(); }
+
+function render() {
+  const filtered = DOCS.filter(d => {
+    const cOk = cat === 'all' || d.c === cat;
+    const qOk = !q || d.t.toLowerCase().includes(q) || d.d.toLowerCase().includes(q);
+    return cOk && qOk;
+  });
+  const grid = document.getElementById('grid');
+  document.getElementById('result-info').textContent = q || cat !== 'all'
+    ? `${filtered.length} / ${DOCS.length} 件表示` : `${DOCS.length} 件`;
+  grid.innerHTML = filtered.length
+    ? filtered.map(d => `<a class="doc-card${d.cl?' '+d.cl:''}" href="${d.f}">
+        <div class="card-cat ${d.c}">${LABEL[d.c]}</div>
+        <div class="card-title">${d.t}</div>
+        <div class="card-desc">${d.d}</div>
+      </a>`).join('')
+    : '<div class="empty">該当するドキュメントが見つかりません</div>';
+  ['all','life','work','hub','wk'].forEach(c => {
+    const n = c === 'all' ? DOCS.length : DOCS.filter(d => d.c === c).length;
+    document.getElementById('cnt-'+c).textContent = n;
+  });
+}
+render();
+</script>
 </body>
 </html>
