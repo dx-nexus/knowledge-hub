@@ -7,27 +7,50 @@
 <link rel="stylesheet" href="assets/common.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
 <style>
-.search-wrap{position:relative;margin-bottom:1.25rem}
+.search-wrap{position:relative;margin-bottom:1.5rem}
 .search-wrap input{width:100%;box-sizing:border-box;padding-left:38px;font-size:14px}
 .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--color-text-tertiary);font-size:16px;pointer-events:none}
-.quick-links{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem}
-.quick-link{font-size:12px;color:var(--color-text-secondary);text-decoration:none;border:0.5px solid var(--color-border-tertiary);border-radius:6px;padding:4px 10px;display:inline-flex;align-items:center;gap:5px;transition:border-color .12s,color .12s}
+.quick-links{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:2rem}
+.quick-link{font-size:12px;color:var(--color-text-secondary);text-decoration:none;border:0.5px solid var(--color-border-tertiary);border-radius:6px;padding:4px 10px;display:inline-flex;align-items:center;gap:4px;transition:all .12s}
 .quick-link:hover{color:var(--color-text-primary);border-color:var(--color-border-primary)}
-.filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
-.filter-btn{background:none;border:0.5px solid var(--color-border-tertiary);border-radius:20px;padding:5px 14px;font-size:12px;cursor:pointer;color:var(--color-text-secondary);font-family:var(--font-sans);transition:all .12s;display:inline-flex;align-items:center;gap:4px}
-.filter-btn:hover{border-color:var(--color-border-primary);color:var(--color-text-primary)}
-.filter-btn.active{background:var(--color-text-primary);color:var(--color-background-primary);border-color:var(--color-text-primary)}
-.filter-btn .cnt{font-size:10px;opacity:.6}
+.sections{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:1.5rem}
+.section{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;transition:border-color .12s}
+.section:hover{border-color:var(--color-border-secondary)}
+.sec-head{padding:14px 16px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:0.5px solid var(--color-border-tertiary);cursor:pointer}
+.sec-label{display:flex;align-items:center;gap:8px}
+.sec-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.sec-icon.life{background:#EAF3DE;color:#3B6D11}
+.sec-icon.work{background:#E6F1FB;color:#185FA5}
+.sec-icon.hub{background:#EEEDFE;color:#534AB7}
+.sec-icon.wk{background:#FAEEDA;color:#854F0B}
+.sec-name{font-size:14px;font-weight:500;color:var(--color-text-primary)}
+.sec-count{font-size:11px;color:var(--color-text-tertiary);background:var(--color-background-secondary);padding:2px 8px;border-radius:10px}
+.sec-body{padding:10px 12px}
+.mini-card{display:flex;align-items:flex-start;gap:8px;padding:8px 4px;border-bottom:0.5px solid var(--color-border-tertiary);text-decoration:none;transition:background .1s;border-radius:4px}
+.mini-card:last-of-type{border-bottom:none}
+.mini-card:hover{background:var(--color-background-secondary)}
+.mini-dot{width:4px;height:4px;border-radius:50%;margin-top:6px;flex-shrink:0}
+.mini-dot.life{background:#3B6D11}.mini-dot.work{background:#185FA5}.mini-dot.hub{background:#534AB7}.mini-dot.wk{background:#854F0B}
+.mini-title{font-size:12px;font-weight:500;color:var(--color-text-primary);line-height:1.4}
+.mini-desc{font-size:11px;color:var(--color-text-secondary);line-height:1.5;margin-top:1px}
+.expanded-cards{display:none;flex-direction:column}
+.expanded-cards.open{display:flex}
+.see-all{display:flex;align-items:center;justify-content:flex-end;gap:4px;padding:8px 4px 2px;font-size:12px;color:var(--color-text-secondary);cursor:pointer;border:none;background:none;font-family:var(--font-sans);width:100%;border-radius:4px;transition:color .12s}
+.see-all:hover{color:var(--color-text-primary)}
+#search-view{display:none}
+#search-view.active{display:block}
+#sections-view.hidden{display:none}
 .result-info{font-size:12px;color:var(--color-text-tertiary);margin-bottom:1rem}
 .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:10px}
-.doc-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px 14px 12px;text-decoration:none;display:flex;flex-direction:column;gap:5px;transition:border-color .12s,box-shadow .12s}
+.doc-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px;text-decoration:none;display:flex;flex-direction:column;gap:4px;transition:border-color .12s}
 .doc-card:hover{border-color:var(--color-border-secondary)}
 .card-cat{font-size:10px;font-weight:500;letter-spacing:.5px}
 .card-cat.life{color:#3B6D11}.card-cat.work{color:#185FA5}.card-cat.hub{color:#534AB7}.card-cat.wk{color:#854F0B}
 .card-title{font-size:13px;font-weight:500;color:var(--color-text-primary);line-height:1.4}
-.card-desc{font-size:11px;color:var(--color-text-secondary);line-height:1.6;margin-top:2px}
-.empty{text-align:center;padding:3rem 1rem;color:var(--color-text-tertiary);font-size:13px;grid-column:1/-1}
-.changelog-card{border-left:2px solid var(--color-border-warning)}
+.card-desc{font-size:11px;color:var(--color-text-secondary);line-height:1.6}
+.empty{text-align:center;padding:3rem;color:var(--color-text-tertiary);font-size:13px;grid-column:1/-1}
+.back-btn{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--color-text-secondary);background:none;border:none;cursor:pointer;font-family:var(--font-sans);padding:0;margin-bottom:1rem;transition:color .12s}
+.back-btn:hover{color:var(--color-text-primary)}
 </style>
 </head>
 <body>
@@ -41,112 +64,138 @@
     </div>
   </div>
   <div class="hdr-meta">
-    <span id="total-count">34 docs</span>
+    <span>34 docs</span>
     <span>2026-05-26</span>
     <span><a href="search.html"><i class="ti ti-search"></i> 全文検索</a></span>
     <span><a href="timeline.html"><i class="ti ti-timeline"></i> タイムライン</a></span>
     <span><a href="CHANGELOG.html"><i class="ti ti-history"></i> CHANGELOG</a></span>
   </div>
 </header>
-
 <main>
   <div class="search-wrap">
     <i class="ti ti-search search-icon" aria-hidden="true"></i>
     <input type="text" id="q" placeholder="ドキュメントを検索…" oninput="onSearch(this.value)" autocomplete="off">
   </div>
-
   <div class="quick-links">
-    <a class="quick-link" href="CHANGELOG.html"><i class="ti ti-history" aria-hidden="true"></i>AI引継ぎログ・変更履歴</a>
+    <a class="quick-link" href="CHANGELOG.html"><i class="ti ti-history" aria-hidden="true"></i>AI引継ぎログ</a>
     <a class="quick-link" href="timeline.html"><i class="ti ti-calendar" aria-hidden="true"></i>会議タイムライン</a>
-    <a class="quick-link" href="CONTEXT.md" target="_blank"><i class="ti ti-robot" aria-hidden="true"></i>CONTEXT.md（AI参照）</a>
+    <a class="quick-link" href="CONTEXT.md" target="_blank"><i class="ti ti-robot" aria-hidden="true"></i>CONTEXT.md</a>
     <a class="quick-link" href="https://github.com/dx-nexus/pmo-automation" target="_blank"><i class="ti ti-brand-github" aria-hidden="true"></i>pmo-automation</a>
   </div>
-
-  <div class="filter-row">
-    <button class="filter-btn active" onclick="setFilter('all',this)">すべて <span class="cnt" id="cnt-all"></span></button>
-    <button class="filter-btn" onclick="setFilter('life',this)">ライフプラン <span class="cnt" id="cnt-life"></span></button>
-    <button class="filter-btn" onclick="setFilter('work',this)">ワークプラン <span class="cnt" id="cnt-work"></span></button>
-    <button class="filter-btn" onclick="setFilter('hub',this)">ナレッジハブ <span class="cnt" id="cnt-hub"></span></button>
-    <button class="filter-btn" onclick="setFilter('wk',this)">WK（進行中） <span class="cnt" id="cnt-wk"></span></button>
+  <div id="sections-view">
+    <div class="sections" id="sections-grid"></div>
   </div>
-
-  <div class="result-info" id="result-info"></div>
-  <div class="card-grid" id="grid"></div>
+  <div id="search-view">
+    <button class="back-btn" onclick="clearSearch()"><i class="ti ti-arrow-left"></i> 戻る</button>
+    <div class="result-info" id="result-info"></div>
+    <div class="card-grid" id="search-grid"></div>
+  </div>
 </main>
-
 <footer class="doc-footer">github.com/dx-nexus/knowledge-hub ／ GitHubにpushすると自動更新</footer>
-
 <script>
-const DOCS = [
-  {t:"人生ポートフォリオ",          f:"Hancho_Life_Portfolio_v1.html",             c:"life", d:"人生全体をポートフォリオとして設計する戦略文書"},
-  {t:"パーソナルダッシュボード",     f:"Personal_Dashboard.html",                   c:"life", d:"個人KPI・資産・健康の統合ダッシュボード"},
-  {t:"瀬戸内スペース計画",          f:"Setouchi_Space_Project_v1.html",             c:"life", d:"尾道周辺の拠点運用計画"},
-  {t:"Vコンサルタント 定義書",      f:"V_Consultant_Project_Definition.html",       c:"work", d:"Vコンサルタントプロジェクトの定義・スコープ"},
-  {t:"Vコンサルタント 概要",        f:"V_Consultant_System_Overview.html",          c:"work", d:"システム全体像とアーキテクチャ概要"},
-  {t:"ビジネスAI実践",             f:"Hancho_Business_AI_Practice_v1.html",        c:"work", d:"コンサルティング業務へのAI適用実践録"},
-  {t:"部門会議 デモスクリプト",     f:"Demo_Script_Department_Meeting.html",        c:"work", d:"EA事業部向けのAIデモ台本"},
-  {t:"パイプラインレビュー",        f:"Pipeline_SystemReview_20260507.html",        c:"work", d:"2026-05-07 システムパイプライン評価"},
-  {t:"トラブルシューティングQA",    f:"Troubleshooting_QA.html",                   c:"work", d:"現場でよくある問題と対処法"},
-  {t:"マーケティングPMFマップ",     f:"Marketing_PMF_Map.html",                    c:"work", d:"プロダクト・マーケット・フィット分析"},
-  {t:"Claude Code 実践ガイド",     f:"Claude_Code_Practical_Guide_v1.html",        c:"hub",  d:"Claude Codeの日常運用フローと実践Tips"},
-  {t:"起動環境ガイド",             f:"ClaudeCode_Launch_Environment_Guide_v1.html",c:"hub",  d:"Claude Code環境構築の完全手順"},
-  {t:"Anthropicアカデミー計画",    f:"Anthropic_Academy_Plan.html",                c:"hub",  d:"Anthropic学習コースのナビゲーション"},
-  {t:"アカデミー計画（内部版）",    f:"Anthropic_Academy_Plan_Internal.html",       c:"hub",  d:"社内向けAnthropicアカデミー活用計画"},
-  {t:"PMO再現ガイド",              f:"Reproducible_Guide.html",                    c:"hub",  d:"マルチAI協働・PMO業務自動化マニュアル（5タブ）"},
-  {t:"ハブ管理プロンプト",         f:"KnowledgeHub_Management_Prompt_v1.html",     c:"hub",  d:"ナレッジハブ運用のためのAIプロンプト集"},
-  {t:"汎用生成フロー",             f:"Universal_Generation_Flow_v1.html",          c:"hub",  d:"JSON駆動HTML自動生成の汎用フロー"},
-  {t:"AIシステム設計 v2",          f:"AI_System_Architecture_v2.html",             c:"hub",  d:"マルチAIエコシステムのアーキテクチャ設計"},
-  {t:"ナビゲーター生成ツール",      f:"Navigator_Generator.html",                  c:"hub",  d:"ドキュメントナビゲーターの自動生成ツール"},
-  {t:"プロジェクトマスター",        f:"Project_Master_Document.html",               c:"hub",  d:"全プロジェクトの統合マスタードキュメント"},
-  {t:"レビュワー v4（GitHub連携）", f:"reviewer_v4.html",                           c:"hub",  d:"GitHub API連携コードレビューツール"},
-  {t:"JSON生成フロー サンプル",     f:"Hancho_Sample_Filled_v1.html",               c:"hub",  d:"JSON駆動生成フローの記入例"},
-  {t:"AIエコシステムカタログ",      f:"AI_Ecosystem_Catalog.html",                  c:"wk",   d:"AI各社のサービス・ツールの体系的カタログ"},
-  {t:"AI学習計画",                 f:"AI_Learning_Plan.html",                      c:"wk",   d:"AI技術習得のロードマップ"},
-  {t:"AI収益化戦略",               f:"AI_Monetization_Strategy.html",              c:"wk",   d:"AI副業・収益化の戦略設計"},
-  {t:"AIトレンド・アイデアリスト",  f:"AI_Trend_Idea_List.html",                   c:"wk",   d:"最新AIトレンドとビジネスアイデアの集積"},
-  {t:"アルゴトレード 判断レポート", f:"Algo_Trading_Decision_Report_v1.html",       c:"wk",   d:"実弾投入判断の専門家パネル評価"},
-  {t:"アルゴトレード プロジェクト", f:"Hancho_Algo_Trading_Project_v1.html",        c:"wk",   d:"アルゴ取引システムの設計・開発記録"},
-  {t:"ジェネレーター構想 ドラフト", f:"Generator_Concept_Draft.html",               c:"wk",   d:"ナビゲーター・ジェネレーターの構想段階ドラフト"},
-  {t:"ユニコスクール計画",          f:"Unicorn_School_Plan.html",                   c:"wk",   d:"ユニコスクール受講計画・学習記録"},
-  {t:"スナッカブルロマンス",        f:"Snackable_Romance.html",                     c:"wk",   d:"AI文芸プロジェクト 完成版"},
-  {t:"スナッカブルロマンス プロジェクト", f:"Snackable_Romance_Project.html",        c:"wk",   d:"SnackableAI Romance Line プロジェクト管理"},
-  {t:"Perier（内容確認中）",        f:"perier_complete.html",                       c:"wk",   d:"作成経緯確認中 — WK仮置き"},
-  {t:"AI引継ぎログ → CHANGELOG",   f:"CHANGELOG.html",                             c:"wk",   d:"全AIハンドオフ・変更履歴の統合ログ。Handoffドキュメントはこちらを参照", cl:"changelog-card"},
+const DOCS=[
+{t:"人生ポートフォリオ",f:"Hancho_Life_Portfolio_v1.html",c:"life",d:"人生全体をポートフォリオとして設計する戦略文書"},
+{t:"パーソナルダッシュボード",f:"Personal_Dashboard.html",c:"life",d:"個人KPI・資産・健康の統合ダッシュボード"},
+{t:"瀬戸内スペース計画",f:"Setouchi_Space_Project_v1.html",c:"life",d:"尾道周辺の拠点運用計画"},
+{t:"Vコンサルタント 定義書",f:"V_Consultant_Project_Definition.html",c:"work",d:"Vコンサルタントプロジェクトの定義・スコープ"},
+{t:"Vコンサルタント 概要",f:"V_Consultant_System_Overview.html",c:"work",d:"システム全体像とアーキテクチャ概要"},
+{t:"ビジネスAI実践",f:"Hancho_Business_AI_Practice_v1.html",c:"work",d:"コンサルティング業務へのAI適用実践録"},
+{t:"部門会議 デモスクリプト",f:"Demo_Script_Department_Meeting.html",c:"work",d:"EA事業部向けのAIデモ台本"},
+{t:"パイプラインレビュー",f:"Pipeline_SystemReview_20260507.html",c:"work",d:"2026-05-07 システムパイプライン評価"},
+{t:"トラブルシューティングQA",f:"Troubleshooting_QA.html",c:"work",d:"現場でよくある問題と対処法"},
+{t:"マーケティングPMFマップ",f:"Marketing_PMF_Map.html",c:"work",d:"プロダクト・マーケット・フィット分析"},
+{t:"Claude Code 実践ガイド",f:"Claude_Code_Practical_Guide_v1.html",c:"hub",d:"Claude Codeの日常運用フローと実践Tips"},
+{t:"起動環境ガイド",f:"ClaudeCode_Launch_Environment_Guide_v1.html",c:"hub",d:"Claude Code環境構築の完全手順"},
+{t:"Anthropicアカデミー計画",f:"Anthropic_Academy_Plan.html",c:"hub",d:"Anthropic学習コースのナビゲーション"},
+{t:"アカデミー計画（内部版）",f:"Anthropic_Academy_Plan_Internal.html",c:"hub",d:"社内向けAnthropicアカデミー活用計画"},
+{t:"PMO再現ガイド",f:"Reproducible_Guide.html",c:"hub",d:"マルチAI協働・PMO業務自動化マニュアル（5タブ）"},
+{t:"ハブ管理プロンプト",f:"KnowledgeHub_Management_Prompt_v1.html",c:"hub",d:"ナレッジハブ運用のためのAIプロンプト集"},
+{t:"汎用生成フロー",f:"Universal_Generation_Flow_v1.html",c:"hub",d:"JSON駆動HTML自動生成の汎用フロー"},
+{t:"AIシステム設計 v2",f:"AI_System_Architecture_v2.html",c:"hub",d:"マルチAIエコシステムのアーキテクチャ設計"},
+{t:"ナビゲーター生成ツール",f:"Navigator_Generator.html",c:"hub",d:"ドキュメントナビゲーターの自動生成ツール"},
+{t:"プロジェクトマスター",f:"Project_Master_Document.html",c:"hub",d:"全プロジェクトの統合マスタードキュメント"},
+{t:"レビュワー v4",f:"reviewer_v4.html",c:"hub",d:"GitHub API連携コードレビューツール"},
+{t:"JSON生成フロー サンプル",f:"Hancho_Sample_Filled_v1.html",c:"hub",d:"JSON駆動生成フローの記入例"},
+{t:"AIエコシステムカタログ",f:"AI_Ecosystem_Catalog.html",c:"wk",d:"AI各社のサービス・ツールの体系的カタログ"},
+{t:"AI学習計画",f:"AI_Learning_Plan.html",c:"wk",d:"AI技術習得のロードマップ"},
+{t:"AI収益化戦略",f:"AI_Monetization_Strategy.html",c:"wk",d:"AI副業・収益化の戦略設計"},
+{t:"AIトレンド・アイデアリスト",f:"AI_Trend_Idea_List.html",c:"wk",d:"最新AIトレンドとビジネスアイデアの集積"},
+{t:"アルゴトレード 判断レポート",f:"Algo_Trading_Decision_Report_v1.html",c:"wk",d:"実弾投入判断の専門家パネル評価"},
+{t:"アルゴトレード プロジェクト",f:"Hancho_Algo_Trading_Project_v1.html",c:"wk",d:"アルゴ取引システムの設計・開発記録"},
+{t:"ジェネレーター構想",f:"Generator_Concept_Draft.html",c:"wk",d:"ナビゲーター・ジェネレーターの構想段階ドラフト"},
+{t:"ユニコスクール計画",f:"Unicorn_School_Plan.html",c:"wk",d:"ユニコスクール受講計画・学習記録"},
+{t:"スナッカブルロマンス",f:"Snackable_Romance.html",c:"wk",d:"AI文芸プロジェクト 完成版"},
+{t:"スナッカブルロマンス プロジェクト",f:"Snackable_Romance_Project.html",c:"wk",d:"SnackableAI Romance Line プロジェクト管理"},
+{t:"ペリエの栞（完成版）",f:"perier_complete.html",c:"wk",d:"AI文芸小説・全10話（Claude×はんちょー共同制作）"},
+{t:"AI引継ぎログ → CHANGELOG",f:"CHANGELOG.html",c:"wk",d:"全AIハンドオフ・変更履歴の統合ログ"},
 ];
+const SECTIONS=[
+{c:"life",name:"ライフプラン",icon:"ti-home"},
+{c:"work",name:"ワークプラン",icon:"ti-briefcase"},
+{c:"hub",name:"ナレッジハブ",icon:"ti-database"},
+{c:"wk",name:"WK（進行中）",icon:"ti-rocket"},
+];
+const LABEL={life:"ライフプラン",work:"ワークプラン",hub:"ナレッジハブ",wk:"WK"};
 
-const LABEL = {life:"ライフプラン", work:"ワークプラン", hub:"ナレッジハブ", wk:"WK"};
-let cat = 'all', q = '';
-
-function setFilter(c, btn) {
-  cat = c;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  render();
+function buildSections(){
+  const grid=document.getElementById('sections-grid');
+  grid.innerHTML=SECTIONS.map(s=>{
+    const items=DOCS.filter(d=>d.c===s.c);
+    const pre=items.slice(0,3);
+    const rest=items.slice(3);
+    return`<div class="section">
+<div class="sec-head" onclick="showCat('${s.c}')">
+  <div class="sec-label">
+    <div class="sec-icon ${s.c}"><i class="ti ${s.icon}" aria-hidden="true"></i></div>
+    <span class="sec-name">${s.name}</span>
+  </div>
+  <span class="sec-count">${items.length}</span>
+</div>
+<div class="sec-body">
+${pre.map(d=>mc(d)).join('')}
+${rest.length?`<div class="expanded-cards" id="exp-${s.c}">${rest.map(d=>mc(d)).join('')}</div>
+<button class="see-all" id="btn-${s.c}" onclick="event.stopPropagation();tog('${s.c}',${rest.length})">すべて見る（あと${rest.length}件）<i class="ti ti-chevron-down" aria-hidden="true"></i></button>`:''}
+</div></div>`;
+  }).join('');
 }
-function onSearch(v) { q = v.trim().toLowerCase(); render(); }
 
-function render() {
-  const filtered = DOCS.filter(d => {
-    const cOk = cat === 'all' || d.c === cat;
-    const qOk = !q || d.t.toLowerCase().includes(q) || d.d.toLowerCase().includes(q);
-    return cOk && qOk;
-  });
-  const grid = document.getElementById('grid');
-  document.getElementById('result-info').textContent = q || cat !== 'all'
-    ? `${filtered.length} / ${DOCS.length} 件表示` : `${DOCS.length} 件`;
-  grid.innerHTML = filtered.length
-    ? filtered.map(d => `<a class="doc-card${d.cl?' '+d.cl:''}" href="${d.f}">
-        <div class="card-cat ${d.c}">${LABEL[d.c]}</div>
-        <div class="card-title">${d.t}</div>
-        <div class="card-desc">${d.d}</div>
-      </a>`).join('')
-    : '<div class="empty">該当するドキュメントが見つかりません</div>';
-  ['all','life','work','hub','wk'].forEach(c => {
-    const n = c === 'all' ? DOCS.length : DOCS.filter(d => d.c === c).length;
-    document.getElementById('cnt-'+c).textContent = n;
-  });
+function mc(d){
+  return`<a class="mini-card" href="${d.f}"><div class="mini-dot ${d.c}"></div><div><div class="mini-title">${d.t}</div><div class="mini-desc">${d.d}</div></div></a>`;
 }
-render();
+
+function tog(cat,cnt){
+  const el=document.getElementById('exp-'+cat);
+  const btn=document.getElementById('btn-'+cat);
+  const o=el.classList.toggle('open');
+  btn.innerHTML=o?`折りたたむ <i class="ti ti-chevron-up"></i>`:`すべて見る（あと${cnt}件）<i class="ti ti-chevron-down"></i>`;
+}
+
+function showCat(cat){
+  renderResults(DOCS.filter(d=>d.c===cat),LABEL[cat]);
+}
+
+function onSearch(val){
+  const q=val.trim().toLowerCase();
+  if(!q){clearSearch();return;}
+  renderResults(DOCS.filter(d=>d.t.toLowerCase().includes(q)||d.d.toLowerCase().includes(q)),`"${val}" の検索結果`);
+}
+
+function renderResults(items,label){
+  document.getElementById('sections-view').classList.add('hidden');
+  document.getElementById('search-view').classList.add('active');
+  document.getElementById('result-info').textContent=`${label} — ${items.length}件`;
+  document.getElementById('search-grid').innerHTML=items.length
+    ?items.map(d=>`<a class="doc-card" href="${d.f}"><div class="card-cat ${d.c}">${LABEL[d.c]}</div><div class="card-title">${d.t}</div><div class="card-desc">${d.d}</div></a>`).join('')
+    :'<div class="empty">該当するドキュメントが見つかりません</div>';
+}
+
+function clearSearch(){
+  document.getElementById('q').value='';
+  document.getElementById('sections-view').classList.remove('hidden');
+  document.getElementById('search-view').classList.remove('active');
+}
+
+buildSections();
 </script>
 </body>
 </html>
