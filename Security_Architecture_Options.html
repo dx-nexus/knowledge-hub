@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>セキュリティ基盤 比較検討カタログ — Vercel vs Cloudflare</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+/* ネオン風スタイル on top of common.css */
+:root{
+  --neon-cyan:#00D4FF;
+  --neon-purple:#A855F7;
+  --neon-green:#00FF88;
+  --neon-amber:#FFB800;
+  --dark:#050510;
+  --dark2:#0A0A1A;
+  --dark3:#111128;
+  --card-v:#0A1628;
+  --card-cf:#120A28;
+  --border-v:rgba(0,212,255,.3);
+  --border-cf:rgba(168,85,247,.3);
+}
+body{background:var(--dark);color:#E0E0F0;font-family:'Meiryo UI','Meiryo',sans-serif;line-height:1.7;min-height:100vh}
+.page{max-width:1100px;margin:0 auto;padding:48px 40px}
+
+/* Header */
+.page-header{text-align:center;margin-bottom:56px;padding-bottom:32px;border-bottom:1px solid #1A1A3A}
+.page-eyebrow{font-size:10px;letter-spacing:4px;font-weight:700;color:var(--neon-cyan);margin-bottom:14px;text-transform:uppercase}
+.page-title{font-family:'Yu Mincho','Hiragino Mincho ProN',serif;font-size:38px;font-weight:300;line-height:1.3;color:#fff;margin-bottom:12px;letter-spacing:-1px}
+.page-title strong{color:var(--neon-cyan)}
+.page-sub{font-size:14px;color:#888;line-height:1.8;max-width:600px;margin:0 auto}
+.page-badge{display:inline-flex;align-items:center;gap:8px;background:#0A0A2A;border:1px solid #1A1A4A;padding:6px 14px;border-radius:20px;font-size:11px;color:#888;margin-top:14px}
+.page-badge strong{color:var(--neon-amber)}
+
+/* セクションヘッダー */
+.sec-label{font-size:10px;letter-spacing:3px;font-weight:700;color:var(--neon-purple);margin-bottom:10px;text-transform:uppercase}
+.sec-title{font-family:'Yu Mincho',serif;font-size:22px;font-weight:400;color:#fff;margin-bottom:24px;letter-spacing:-.5px}
+.sec-title em{font-style:normal;color:var(--neon-cyan)}
+
+/* 例え話セクション */
+.analogy-section{margin-bottom:48px}
+.analogy-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.analogy-card{padding:28px;border-radius:4px;position:relative;overflow:hidden}
+.analogy-card.v{background:linear-gradient(135deg,var(--card-v) 0%,#0A1E38 100%);border:1px solid var(--border-v)}
+.analogy-card.cf{background:linear-gradient(135deg,var(--card-cf) 0%,#1A0A38 100%);border:1px solid var(--border-cf)}
+.analogy-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.analogy-card.v::before{background:linear-gradient(to right,var(--neon-cyan),transparent)}
+.analogy-card.cf::before{background:linear-gradient(to right,var(--neon-purple),transparent)}
+.analogy-icon{font-size:36px;margin-bottom:14px}
+.analogy-name{font-size:10px;letter-spacing:3px;font-weight:700;margin-bottom:6px}
+.analogy-name.v{color:var(--neon-cyan)}
+.analogy-name.cf{color:var(--neon-purple)}
+.analogy-product{font-family:'Yu Mincho',serif;font-size:20px;color:#fff;margin-bottom:10px;font-weight:400}
+.analogy-metaphor{font-size:13px;color:#AAA;line-height:1.7;margin-bottom:14px;font-style:italic}
+.analogy-metaphor strong{color:#CCC;font-style:normal}
+.analogy-why{font-size:12px;color:#888;line-height:1.7;padding:10px 14px;background:rgba(255,255,255,.04);border-radius:4px}
+
+/* メイン比較ボックス */
+.compare-section{margin-bottom:48px}
+.compare-grid{display:grid;grid-template-columns:180px 1fr 1fr;gap:1px;background:#1A1A3A;border:1px solid #1A1A3A;border-radius:4px;overflow:hidden}
+.cg-header{padding:16px 20px;font-size:11px;font-weight:700;letter-spacing:1px;display:flex;align-items:center;justify-content:center;text-align:center}
+.cg-header.label{background:var(--dark3);color:#555}
+.cg-header.v{background:rgba(0,212,255,.08);color:var(--neon-cyan);flex-direction:column;gap:4px}
+.cg-header.cf{background:rgba(168,85,247,.08);color:var(--neon-purple);flex-direction:column;gap:4px}
+.cg-header .product-name{font-size:14px;font-weight:700}
+.cg-header .product-sub{font-size:10px;font-weight:400;opacity:.7}
+.cg-row-label{padding:14px 20px;background:var(--dark3);font-size:11px;font-weight:600;color:#666;letter-spacing:.5px;display:flex;align-items:center;border-top:1px solid #1A1A3A}
+.cg-cell{padding:14px 20px;font-size:12px;line-height:1.7;border-top:1px solid #1A1A3A;display:flex;align-items:flex-start;gap:8px}
+.cg-cell.v{background:rgba(0,212,255,.03)}
+.cg-cell.cf{background:rgba(168,85,247,.03)}
+.cg-cell strong{font-weight:700}
+.cg-cell .val{color:#DDD}
+.cg-cell .badge{font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;flex-shrink:0}
+.badge-free{background:rgba(0,255,136,.15);color:var(--neon-green)}
+.badge-paid{background:rgba(255,184,0,.15);color:var(--neon-amber)}
+.badge-high{background:rgba(168,85,247,.2);color:var(--neon-purple)}
+.badge-mid{background:rgba(0,212,255,.15);color:var(--neon-cyan)}
+.badge-easy{background:rgba(0,255,136,.15);color:var(--neon-green)}
+.badge-hard{background:rgba(255,100,100,.15);color:#FF8888}
+.win-badge{font-size:9px;font-weight:700;padding:2px 8px;border-radius:2px;background:rgba(0,255,136,.2);color:var(--neon-green)}
+
+/* 詳細フロー比較 */
+.flow-section{margin-bottom:48px}
+.flow-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.flow-card{padding:24px;border-radius:4px;border:1px solid}
+.flow-card.v{background:var(--card-v);border-color:var(--border-v)}
+.flow-card.cf{background:var(--card-cf);border-color:var(--border-cf)}
+.flow-card-title{font-size:11px;letter-spacing:2px;font-weight:700;margin-bottom:16px}
+.flow-card.v .flow-card-title{color:var(--neon-cyan)}
+.flow-card.cf .flow-card-title{color:var(--neon-purple)}
+.flow-step{display:flex;gap:12px;margin-bottom:10px;font-size:12px;line-height:1.7;align-items:flex-start}
+.flow-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;margin-top:1px}
+.flow-card.v .flow-num{background:rgba(0,212,255,.2);color:var(--neon-cyan)}
+.flow-card.cf .flow-num{background:rgba(168,85,247,.2);color:var(--neon-purple)}
+.flow-text{color:#BBB}
+.flow-text strong{color:#fff}
+.flow-time{display:inline-block;font-size:9px;font-weight:700;padding:1px 6px;border-radius:2px;margin-left:6px}
+.flow-card.v .flow-time{background:rgba(0,212,255,.15);color:var(--neon-cyan)}
+.flow-card.cf .flow-time{background:rgba(168,85,247,.15);color:var(--neon-purple)}
+
+/* 推奨セクション */
+.rec-section{margin-bottom:48px}
+.rec-box{background:linear-gradient(135deg,#0A1628 0%,#120A28 100%);border:1px solid rgba(168,85,247,.4);padding:32px;border-radius:4px;position:relative}
+.rec-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--neon-cyan),var(--neon-purple))}
+.rec-title{font-family:'Yu Mincho',serif;font-size:20px;font-weight:400;color:#fff;margin-bottom:16px}
+.rec-title strong{color:var(--neon-purple)}
+.rec-body{font-size:13px;color:#AAA;line-height:1.9;margin-bottom:20px}
+.rec-body strong{color:#fff}
+.rec-decision{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
+.rd-card{padding:16px 18px;border-radius:4px;border:1px solid}
+.rd-card.v{background:rgba(0,212,255,.05);border-color:var(--border-v)}
+.rd-card.cf{background:rgba(168,85,247,.05);border-color:var(--border-cf)}
+.rd-label{font-size:9px;letter-spacing:2px;font-weight:700;margin-bottom:8px}
+.rd-card.v .rd-label{color:var(--neon-cyan)}
+.rd-card.cf .rd-label{color:var(--neon-purple)}
+.rd-when{font-size:11px;color:#BBB;line-height:1.7}
+.rd-when strong{color:#fff}
+
+/* PoCセクション */
+.poc-section{margin-bottom:48px}
+.poc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.poc-card{padding:18px;border:1px solid #1A1A3A;background:var(--dark3);border-radius:4px}
+.poc-num{font-family:'Yu Mincho',serif;font-size:28px;font-weight:300;color:var(--neon-cyan);line-height:1;margin-bottom:6px}
+.poc-title{font-size:12px;font-weight:700;color:#DDD;margin-bottom:6px}
+.poc-desc{font-size:11px;color:#666;line-height:1.6}
+.poc-tag{display:inline-block;font-size:9px;font-weight:700;padding:2px 7px;border-radius:2px;margin-top:6px}
+.poc-tag.gemini{background:rgba(0,212,255,.15);color:var(--neon-cyan)}
+.poc-tag.vercel{background:rgba(255,184,0,.15);color:var(--neon-amber)}
+.poc-tag.cf{background:rgba(168,85,247,.15);color:var(--neon-purple)}
+
+/* Footer */
+.page-footer{border-top:1px solid #1A1A3A;padding-top:20px;display:flex;justify-content:space-between;font-size:10px;color:#444;letter-spacing:.3px}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<div class="page-header">
+  <div class="page-eyebrow">Security Architecture Comparison Catalog</div>
+  <h1 class="page-title">セキュリティ基盤、<br><strong>どちらを選ぶか。</strong></h1>
+  <p class="page-sub">Vercel Pro + Basic認証 vs Cloudflare Pages + Zero Trust Access。<br>2つのアーキテクチャを「サルでもわかる」レベルで徹底比較。PoC前の判断材料として使え。</p>
+  <div class="page-badge">
+    <span>📍 作成経緯：</span>
+    <strong>Geminiのレビューを受け、はんちょーが自分で触って納得するためのPoC資料</strong>
+  </div>
+</div>
+
+<!-- SECTION 1: 例え話 -->
+<div class="analogy-section">
+  <div class="sec-label">Analogy — 01</div>
+  <h2 class="sec-title">一言でいうと、<em>どんな鍵か</em>。</h2>
+  <div class="analogy-grid">
+    <div class="analogy-card v">
+      <div class="analogy-icon">🔐</div>
+      <div class="analogy-name v">OPTION A</div>
+      <div class="analogy-product">Vercel Pro + Basic認証</div>
+      <div class="analogy-metaphor">「<strong>マンション全体に南京錠を1つ</strong>かけた状態」<br>— ドアの前に来た人全員が同じ鍵を持っている。</div>
+      <div class="analogy-why">合言葉を知っている人は誰でも入れる。家族全員に合言葉を渡す感覚。合言葉が漏れたら全員アウト。でも設置は5分でできる。</div>
+    </div>
+    <div class="analogy-card cf">
+      <div class="analogy-icon">🏰</div>
+      <div class="analogy-name cf">OPTION B</div>
+      <div class="analogy-product">Cloudflare Pages + Zero Trust</div>
+      <div class="analogy-metaphor">「<strong>顔認証＋玄関カメラ＋入館証</strong>のある要塞」<br>— 登録したメールアドレスの持ち主だけが、ワンタイムPINで入れる。</div>
+      <div class="analogy-why">NTTデータ社員など特定ドメインのメール保有者だけを許可できる。1人ずつの入退記録が残る。設定に3〜5時間かかるが、50名まで無料。</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 2: 比較テーブル -->
+<div class="compare-section">
+  <div class="sec-label">Comparison — 02</div>
+  <h2 class="sec-title">コスト・堅牢性・構築難易度で<em>並べると</em>。</h2>
+  <div class="compare-grid">
+    <div class="cg-header label"></div>
+    <div class="cg-header v"><span class="product-name">🔐 Vercel Pro</span><span class="product-sub">Basic認証</span></div>
+    <div class="cg-header cf"><span class="product-name">🏰 Cloudflare</span><span class="product-sub">Zero Trust Access</span></div>
+
+    <div class="cg-row-label">月額コスト</div>
+    <div class="cg-cell v"><span class="badge badge-paid">有料</span><span class="val"> $20/月（¥3,000〜）<br>個人プロ同等</span></div>
+    <div class="cg-cell cf"><span class="badge badge-free">無料</span><span class="val"> 50名まで完全無料<br>（51名〜 $7/名/月）</span><span class="win-badge">WIN</span></div>
+
+    <div class="cg-row-label">認証方式</div>
+    <div class="cg-cell v"><span class="val">共有パスワード<br>（全員が同じ文字列を入力）</span></div>
+    <div class="cg-cell cf"><span class="val">メールドメイン認証 + ワンタイムPIN<br>（例: @nttdata.com のみ許可）</span><span class="win-badge">WIN</span></div>
+
+    <div class="cg-row-label">堅牢性</div>
+    <div class="cg-cell v"><span class="badge badge-mid">中</span><span class="val"> パスワード漏洩で全員アウト。Chromeへの保存・共有での流出リスクあり。</span></div>
+    <div class="cg-cell cf"><span class="badge badge-high">高</span><span class="val"> エンタープライズ級ゼロトラスト。個人単位で入退記録。1人のPIN漏洩が全体に波及しない。</span><span class="win-badge">WIN</span></div>
+
+    <div class="cg-row-label">構築難易度</div>
+    <div class="cg-cell v"><span class="badge badge-easy">簡単</span><span class="val"> Vercelダッシュボードで3クリック。約1時間で完了。</span><span class="win-badge">WIN</span></div>
+    <div class="cg-cell cf"><span class="badge badge-hard">中程度</span><span class="val"> Cloudflareの設定が複数箇所。DNS変更含め3〜5時間。初見は迷いやすい。</span></div>
+
+    <div class="cg-row-label">カスタムドメイン</div>
+    <div class="cg-cell v"><span class="val">対応（独自ドメイン接続可）</span></div>
+    <div class="cg-cell cf"><span class="val">対応（独自ドメイン接続可）</span></div>
+
+    <div class="cg-row-label">CI/CD連携</div>
+    <div class="cg-cell v"><span class="val">GitHub連携・push自動デプロイ</span></div>
+    <div class="cg-cell cf"><span class="val">GitHub連携・push自動デプロイ</span></div>
+
+    <div class="cg-row-label">入退記録・監査</div>
+    <div class="cg-cell v"><span class="val">なし（誰が来たか不明）</span></div>
+    <div class="cg-cell cf"><span class="val">あり（いつ・誰が・どこから）</span><span class="win-badge">WIN</span></div>
+
+    <div class="cg-row-label">向いている用途</div>
+    <div class="cg-cell v"><span class="val">少人数・信頼できるメンバー限定・社内ツール（緊急対応・試験運用）</span></div>
+    <div class="cg-cell cf"><span class="val">クライアント共有・外部アクセス・本番運用・コンプライアンスが必要な組織</span></div>
+  </div>
+</div>
+
+<!-- SECTION 3: 構築フロー比較 -->
+<div class="flow-section">
+  <div class="sec-label">Setup Flow — 03</div>
+  <h2 class="sec-title">実際に作るとき、<em>何をする</em>のか。</h2>
+  <div class="flow-grid">
+    <div class="flow-card v">
+      <div class="flow-card-title">VERCEL PRO + BASIC認証 — 構築ステップ</div>
+      <div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><strong>Vercelアカウント作成</strong>（Pro契約: $20/月）<span class="flow-time">5分</span></div></div>
+      <div class="flow-step"><div class="flow-num">2</div><div class="flow-text"><strong>GitHubリポジトリを接続</strong>（hancho-docsをPrivateに変更してから）<span class="flow-time">10分</span></div></div>
+      <div class="flow-step"><div class="flow-num">3</div><div class="flow-text"><strong>Password Protection を有効化</strong>（Settings → Security → Password）<span class="flow-time">3分</span></div></div>
+      <div class="flow-step"><div class="flow-num">4</div><div class="flow-text"><strong>GitHub Pagesを無効化</strong>（旧URLへのアクセス遮断）<span class="flow-time">2分</span></div></div>
+      <div class="flow-step"><div class="flow-num">5</div><div class="flow-text"><strong>チームにパスワード周知</strong>（Slackで共有）<span class="flow-time">即時</span></div></div>
+    </div>
+    <div class="flow-card cf">
+      <div class="flow-card-title">CLOUDFLARE ZERO TRUST — 構築ステップ</div>
+      <div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><strong>Cloudflareアカウント作成</strong>（無料）<span class="flow-time">5分</span></div></div>
+      <div class="flow-step"><div class="flow-num">2</div><div class="flow-text"><strong>Cloudflare PagesにGitHub接続</strong>（hancho-docsをPrivate化後）<span class="flow-time">15分</span></div></div>
+      <div class="flow-step"><div class="flow-num">3</div><div class="flow-text"><strong>Zero Trust Access アプリを作成</strong>（ドメイン設定・ポリシー設定）<span class="flow-time">30分</span></div></div>
+      <div class="flow-step"><div class="flow-num">4</div><div class="flow-text"><strong>メールドメインポリシー設定</strong>（例: @qolony.co.jp のみ許可 + OTP）<span class="flow-time">20分</span></div></div>
+      <div class="flow-step"><div class="flow-num">5</div><div class="flow-text"><strong>DNS切り替え・動作確認</strong><span class="flow-time">30分〜</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4: 推奨と判断基準 -->
+<div class="rec-section">
+  <div class="sec-label">Recommendation — 04</div>
+  <h2 class="sec-title">Gemini + Claudeの<em>推奨</em>。</h2>
+  <div class="rec-box">
+    <h3 class="rec-title">長期的に見れば、<strong>Cloudflare Zero Trustが圧倒的に有利</strong>。<br>だが今すぐ動きたいならVercelから始めて移行も選択肢。</h3>
+    <p class="rec-body">
+      コスト面では<strong>Cloudflareが50名まで無料</strong>と明確に優位。Vercelは$20/月かかるうえ、Basic認証は共有パスワードという根本的な弱さを持つ。<br>
+      一方でCloudflareの設定は初見では複雑で、特にZero TrustのPolicy設定はCloudflareの独自UIに慣れが必要。<br>
+      <strong>Geminiの強い推奨はCloudflare</strong>。Claudeも同意見。
+    </p>
+    <div class="rec-decision">
+      <div class="rd-card v">
+        <div class="rd-label">VERCEL を選ぶなら</div>
+        <div class="rd-when">
+          ・<strong>今週中に動かしたい</strong>ときの暫定措置<br>
+          ・アクセスするのが完全に信頼できる社内メンバーのみ<br>
+          ・将来的にCloudflareへの移行前提でOK<br>
+          ・とにかく設定を簡単に済ませたい
+        </div>
+      </div>
+      <div class="rd-card cf">
+        <div class="rd-label">CLOUDFLARE を選ぶなら</div>
+        <div class="rd-when">
+          ・<strong>本番運用の最終形</strong>として最初から正しく作りたい<br>
+          ・NTTデータ等のクライアントに共有する可能性がある<br>
+          ・コンプライアンス上、入退記録が必要<br>
+          ・無料で企業レベルのセキュリティを実現したい
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 5: PoCステップ -->
+<div class="poc-section">
+  <div class="sec-label">PoC Approach — 05</div>
+  <h2 class="sec-title">「触って納得してから決める」<em>PoCの進め方</em>。</h2>
+  <div class="poc-grid">
+    <div class="poc-card">
+      <div class="poc-num">01</div>
+      <div class="poc-title">Vercelで試験環境を作る</div>
+      <div class="poc-desc">hancho-docsを一時的にVercelにデプロイ。Password Protectionを有効化して実際に動きを確認。<br>所要時間: 1時間</div>
+      <div class="poc-tag vercel">VERCEL</div>
+    </div>
+    <div class="poc-card">
+      <div class="poc-num">02</div>
+      <div class="poc-title">Cloudflareで並行構築</div>
+      <div class="poc-desc">同じコンテンツをCloudflare Pagesにもデプロイ。Zero Trustのメール認証を自分で体験する。<br>所要時間: 3〜5時間</div>
+      <div class="poc-tag cf">CLOUDFLARE</div>
+    </div>
+    <div class="poc-card">
+      <div class="poc-num">03</div>
+      <div class="poc-title">比較・判断・移行</div>
+      <div class="poc-desc">両方を触った後に最終決定。本番データ（実議事録）の投入はPoC完了後。リポジトリのPrivate化も同時実施。</div>
+      <div class="poc-tag gemini">Gemini推奨</div>
+    </div>
+  </div>
+</div>
+
+<div class="page-footer">
+  <span>作成：EA部門 ／ Claude × Gemini 協働設計 ／ 2026年5月</span>
+  <span>INTERNAL — 社内限り</span>
+</div>
+
+</div>
+</body>
+</html>
