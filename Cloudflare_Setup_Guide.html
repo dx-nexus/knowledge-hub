@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloudflare Pages + Zero Trust 初期構築手順</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+body{font-family:'Meiryo UI','Meiryo',sans-serif;background:#F8FAFC;color:#1E293B;line-height:1.7}
+.page{max-width:900px;margin:0 auto;background:#fff;padding:0 0 60px}
+.page-header{background:#0F172A;color:#fff;padding:40px 48px 36px}
+.page-eyebrow{font-size:10px;letter-spacing:3px;font-weight:700;color:#60A5FA;margin-bottom:10px}
+.page-title{font-family:'Yu Mincho',serif;font-size:28px;font-weight:300;color:#fff;margin-bottom:8px;letter-spacing:-.5px}
+.page-title strong{color:#60A5FA;font-weight:500}
+.page-meta{font-size:11px;color:#64748B;margin-top:12px;display:flex;gap:20px;flex-wrap:wrap}
+.page-meta span{display:flex;align-items:center;gap:5px}
+.body{padding:36px 48px}
+.overview{background:#F0F9FF;border:1px solid #BAE6FD;border-radius:4px;padding:18px 22px;margin-bottom:32px;font-size:13px;color:#0C4A6E;line-height:1.9}
+.overview strong{font-weight:600}
+
+/* フェーズ */
+.phase{margin-bottom:36px}
+.phase-head{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #E2E8F0}
+.phase-num{width:28px;height:28px;border-radius:50%;background:#0F172A;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.phase-title{font-family:'Yu Mincho',serif;font-size:18px;font-weight:400;color:#0F172A}
+.phase-sub{font-size:11px;color:#94A3B8;margin-left:auto;letter-spacing:.5px}
+
+/* ステップ */
+.step{margin-bottom:14px;border:1px solid #E2E8F0;border-radius:6px;overflow:hidden}
+.step-head{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#F8FAFC;border-bottom:1px solid #E2E8F0}
+.step-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;flex-shrink:0}
+.step-badge.done{background:#D1FAE5;color:#065F46}
+.step-badge.action{background:#DBEAFE;color:#1E40AF}
+.step-title{font-size:13px;font-weight:600;color:#1E293B}
+.step-body{padding:12px 16px}
+.sub-step{display:flex;gap:10px;padding:5px 0;font-size:12px;color:#374151;line-height:1.7;border-bottom:1px dotted #E5E7EB}
+.sub-step:last-child{border-bottom:none}
+.sub-num{font-size:10px;font-weight:700;color:#94A3B8;min-width:22px;flex-shrink:0;margin-top:2px}
+.sub-content{flex:1}
+.ui-path{display:inline-block;background:#F1F5F9;border:1px solid #CBD5E1;border-radius:3px;padding:0px 6px;font-size:11px;color:#334155;font-family:'Courier New',monospace;margin:0 2px}
+.input-val{display:inline-block;background:#FFF7ED;border:1px solid #FED7AA;border-radius:3px;padding:0px 6px;font-size:11px;color:#9A3412;font-family:'Courier New',monospace;margin:0 2px}
+.note{font-size:11px;color:#64748B;background:#F8FAFC;border-left:2px solid #CBD5E1;padding:6px 10px;margin-top:6px;line-height:1.6}
+.note.warn{background:#FFF7ED;border-left-color:#F59E0B;color:#78350F}
+.note.info{background:#EFF6FF;border-left-color:#3B82F6;color:#1E40AF}
+.url-box{font-family:'Courier New',monospace;font-size:12px;background:#F1F5F9;border:1px solid #CBD5E1;border-radius:4px;padding:8px 12px;margin:6px 0;color:#334155;word-break:break-all}
+
+/* 完了サマリー */
+.summary{background:#0F172A;color:#fff;padding:28px 32px;border-radius:6px;margin-top:32px}
+.summary-title{font-family:'Yu Mincho',serif;font-size:16px;font-weight:400;color:#60A5FA;margin-bottom:14px}
+.summary-url{font-family:'Courier New',monospace;font-size:14px;color:#34D399;padding:10px 14px;background:rgba(255,255,255,.05);border-radius:4px;margin-bottom:10px}
+.summary-note{font-size:12px;color:#94A3B8;line-height:1.8}
+
+.footer{padding:20px 48px;border-top:1px solid #E2E8F0;font-size:10px;color:#94A3B8;display:flex;justify-content:space-between}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="page-header">
+  <div class="page-eyebrow">INFRASTRUCTURE SETUP GUIDE</div>
+  <h1 class="page-title">Cloudflare Pages + Zero Trust<br><strong>初期構築手順</strong></h1>
+  <div class="page-meta">
+    <span>📅 作成: 2026年5月</span>
+    <span>🎯 対象: knowledge-hub ポータル</span>
+    <span>⏱ 所要時間: 約60〜90分</span>
+    <span>💰 コスト: $0/月（50名まで無料）</span>
+  </div>
+</div>
+
+<div class="body">
+
+  <div class="overview">
+    <strong>目的：</strong> GitHub Pages（公開・認証なし）から Cloudflare Pages + Zero Trust（認証付き・承認メアドのみアクセス可）へ移行する。<br>
+    <strong>完了後のURL：</strong> <code>https://knowledge-hub-7ih.pages.dev</code>（OTPメール認証で保護）<br>
+    <strong>前提：</strong> GitHubアカウント（個人）・ポータルリポジトリ（dx-nexus/knowledge-hub）が存在すること。
+  </div>
+
+  <!-- フェーズ1 -->
+  <div class="phase">
+    <div class="phase-head">
+      <div class="phase-num">1</div>
+      <div class="phase-title">Cloudflareアカウント作成</div>
+      <div class="phase-sub">所要: 約5分</div>
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <span class="step-badge action">操作</span>
+        <span class="step-title">1-1. アカウント登録</span>
+      </div>
+      <div class="step-body">
+        <div class="sub-step"><div class="sub-num">①</div><div class="sub-content">ブラウザで以下URLを開く<div class="url-box">https://dash.cloudflare.com/sign-up</div></div></div>
+        <div class="sub-step"><div class="sub-num">②</div><div class="sub-content">Googleアカウント連携でサインアップ（メール・パスワード入力不要）</div></div>
+        <div class="sub-step"><div class="sub-num">③</div><div class="sub-content">「Welcome! How do you plan to use Cloudflare?」画面 → <span class="ui-path">Personal</span> を選択</div></div>
+        <div class="sub-step"><div class="sub-num">④</div><div class="sub-content">「What best describes your role?」画面 → <span class="ui-path">Information technology (IT)</span> を選択</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- フェーズ2 -->
+  <div class="phase">
+    <div class="phase-head">
+      <div class="phase-num">2</div>
+      <div class="phase-title">Cloudflare Pages デプロイ</div>
+      <div class="phase-sub">所要: 約15分</div>
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <span class="step-badge action">操作</span>
+        <span class="step-title">2-1. Pages作成画面へ遷移</span>
+      </div>
+      <div class="step-body">
+        <div class="sub-step"><div class="sub-num">①</div><div class="sub-content">ダッシュボード左メニュー → <span class="ui-path">Workers & Pages</span> をクリック</div></div>
+        <div class="sub-step"><div class="sub-num">②</div><div class="sub-content">右上 <span class="ui-path">Create application</span> をクリック</div></div>
+        <div class="sub-step"><div class="sub-num">③</div><div class="sub-content">画面下部「Looking to deploy Pages?」横の <span class="ui-path">Get started</span> をクリック</div></div>
+        <div class="note warn">⚠ 「Create a Worker」ではなく必ず下部の「Get started（Pages用）」を選ぶこと。Worker経由でデプロイするとURLに個人アカウント名が含まれる。</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <span class="step-badge action">操作</span>
+        <span class="step-title">2-2. GitHubリポジトリ接続</span>
+      </div>
+      <div class="step-body">
+        <div class="sub-step"><div class="sub-num">①</div><div class="sub-content"><span class="ui-path">Import an existing Git repository</span> → <span class="ui-path">Get started</span> をクリック</div></div>
+        <div class="sub-step"><div class="sub-num">②</div><div class="sub-content"><span class="ui-path">Continue with GitHub</span> をクリック（GitHub OAuth認証が走る）</div></div>
+        <div class="sub-step"><div class="sub-num">③</div><div class="sub-content">左上アカウントドロップダウンで <span class="input-val">fooueen</span> → <span class="input-val">dx-nexus</span> に切り替え</div></div>
+        <div class="sub-step"><div class="sub-num">④</div><div class="sub-content">検索欄に <span class="input-val">knowledge-hub</span> と入力 → 表示されたリポジトリをクリック</div></div>
+        <div class="sub-step"><div class="sub-num">⑤</div><div class="sub-content">右下 <span class="ui-path">Next</span> をクリック</div></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <span class="step-badge action">操作</span>
+        <span class="step-title">2-3. デプロイ設定・実行</span>
+      </div>
+      <div class="step-body">
+        <div class="sub-step"><div class="sub-num">①</div><div class="sub-content">「Set up builds and deployments」画面 → すべてデフォルトのまま</div></div>
+        <div class="sub-step"><div class="sub-num">②</div><div class="sub-content">右下 <span class="ui-path">Save and Deploy</span> をクリック</div></div>
+        <div class="sub-step"><div class="sub-num">③</div><div class="sub-content">「Building and deploying」画面で全ステップが ✓ になるまで待機</div></div>
+        <div class="sub-step"><div class="sub-num">④</div><div class="sub-content">「Success! Your project is deployed」と表示されたら完了。表示されたURLを控える<div class="url-box">例: https://knowledge-hub-7ih.pages.dev</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- フェーズ3 -->
+  <div class="phase">
+    <div class="phase-head">
+      <div class="phase-num">3</div>
+      <div class="phase-title">Zero Trust 認証設定</div>
+      <div class="phase-sub">所要: 約20分</div>
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <span class="step-badge action">操作</span>
+        <span class="step-title">3-1. Zero Trust有効化</span>
+      </div>
+      <div class="step-body">
+        <div class="sub-step"><div class="sub-num">①</div><div class="sub-content">左メニュー下部 <span class="ui-path">Zero Trust</span> をクリック</div></div>
+        <div class="sub-step"><div class="sub-num">②</div><div class="sub-content">右上 <span class="ui-path">Get started</span> をクリック</div></div>
+        <div class="sub-step"><div class="sub-num">③</div><div class="sub-content">「Choose a plan」画面 → 左列 <span class="ui-path">Zero Trust Free</span> の <span class="ui-path">Select plan</span> をクリック</div></div>
+        <div class="sub-step"><div class="sub-num">④</div><div class="sub-content">「Activate Zero Trust Free」画面でクレジットカード情報を入力（請求額: $0/月）</div></div>
+        <div class="sub-step"><div class="sub-num">⑤</div><div class="sub-content">「Purchase complete」と表示されたら完了</div></div>
+        <div class="note info">ℹ カード登録は必須ですが、Zero Trust Freeは50名まで完全無料です。</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <span class="step-badge action">操作</span>
+        <span class="step-title">3-2. ポリシー作成</span>
+      </div>
+      <div class="step-body">
+        <div class="sub-step"><div class="sub-num">①</div><div class="sub-content">Zero Trustダッシュボード左メニュー → <span class="ui-path">Access controls</span> → <span class="ui-path">Policies</span></div></div>
+        <div class="sub-step"><div class="sub-num">②</div><div class="sub-content">左下 <span class="ui-path">Add a policy</span> をクリック</div></div>
+        <div class="sub-step"><div class="sub-num">③</div><div class="sub-content"><span class="ui-path">Policy name</span> 欄に <span class="input-val">approved-users</span> と入力</div></div>
+        <div class="sub-step"><div class="sub-num">④</div><div class="sub-content"><span class="ui-path">Action</span>: <span class="input-val">Allow</span>（デフォルト）</div></div>
+        <div class="sub-step"><div class="sub-num">⑤</div><div class="sub-content">「Configure rules」→ <span class="ui-path">Include</span> セクション → <span class="ui-path">Selector</span>: <span class="input-val">Emails</span> を選択</div></div>
+        <div class="sub-step"><div class="sub-num">⑥</div><div class="sub-content"><span class="ui-path">Value</span> 欄にアクセスを許可するメールアドレスを1件ずつ入力</div></div>
+        <div class="sub-step"><div class="sub-num">⑦</div><div class="sub-content">右下 <span class="ui-path">Save policy</span> をクリック</div></div>
+        <div class="note info">ℹ ドメイン縛り（@会社名.co.jp）ではなく個別メアド方式を推奨。社外関係者への個別付与・削除が柔軟に行える。</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <span class="step-badge action">操作</span>
+        <span class="step-title">3-3. Accessアプリ作成</span>
+      </div>
+      <div class="step-body">
+        <div class="sub-step"><div class="sub-num">①</div><div class="sub-content">左メニュー → <span class="ui-path">Access controls</span> → <span class="ui-path">Applications</span></div></div>
+        <div class="sub-step"><div class="sub-num">②</div><div class="sub-content">右上 <span class="ui-path">+ Create new application</span> をクリック</div></div>
+        <div class="sub-step"><div class="sub-num">③</div><div class="sub-content">「Add an application」モーダル → 内側タブ <span class="ui-path">Public DNS</span> をクリック</div></div>
+        <div class="sub-step"><div class="sub-num">④</div><div class="sub-content">下部 <span class="ui-path">Continue with Self-hosted and private</span> をクリック</div></div>
+        <div class="sub-step"><div class="sub-num">⑤</div><div class="sub-content">「Destinations」セクション → <span class="ui-path">Switch to custom input</span> をクリック</div></div>
+        <div class="sub-step"><div class="sub-num">⑥</div><div class="sub-content">入力欄に <span class="input-val">knowledge-hub-7ih.pages.dev</span> と入力（フェーズ2で控えたURL）</div></div>
+        <div class="sub-step"><div class="sub-num">⑦</div><div class="sub-content">下にスクロール → 「Details」セクション</div></div>
+        <div class="sub-step"><div class="sub-num">⑧</div><div class="sub-content"><span class="ui-path">Details &gt; Name</span>: <span class="input-val">knowledge-hub</span> と入力</div></div>
+        <div class="sub-step"><div class="sub-num">⑨</div><div class="sub-content"><span class="ui-path">Details &gt; Session Duration</span>: <span class="input-val">24 hours</span>（デフォルト）</div></div>
+        <div class="sub-step"><div class="sub-num">⑩</div><div class="sub-content">右下 <span class="ui-path">Create</span> をクリック</div></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <span class="step-badge action">操作</span>
+        <span class="step-title">3-4. ポリシーをアプリに紐付け</span>
+      </div>
+      <div class="step-body">
+        <div class="sub-step"><div class="sub-num">①</div><div class="sub-content">Applications一覧 → <span class="ui-path">knowledge-hub</span> をクリック</div></div>
+        <div class="sub-step"><div class="sub-num">②</div><div class="sub-content">上部タブ <span class="ui-path">Policies</span> をクリック</div></div>
+        <div class="sub-step"><div class="sub-num">③</div><div class="sub-content">中央右 <span class="ui-path">Add current policies</span> ドロップダウンをクリック → <span class="input-val">approved-users</span> を選択</div></div>
+        <div class="sub-step"><div class="sub-num">④</div><div class="sub-content">右下 <span class="ui-path">Save</span> をクリック</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- フェーズ4 -->
+  <div class="phase">
+    <div class="phase-head">
+      <div class="phase-num">4</div>
+      <div class="phase-title">旧環境の整理</div>
+      <div class="phase-sub">所要: 約10分</div>
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <span class="step-badge action">操作</span>
+        <span class="step-title">4-1. GitHub Pages無効化</span>
+      </div>
+      <div class="step-body">
+        <div class="sub-step"><div class="sub-num">①</div><div class="sub-content">以下URLを開く<div class="url-box">https://github.com/dx-nexus/knowledge-hub/settings/pages</div></div></div>
+        <div class="sub-step"><div class="sub-num">②</div><div class="sub-content">ページ上部の <span class="ui-path">Unpublish site</span> ボタンをクリック</div></div>
+        <div class="sub-step"><div class="sub-num">③</div><div class="sub-content">「GitHub Pages unpublished.」と表示されたら完了</div></div>
+        <div class="note warn">⚠ Source欄に「None」オプションは表示されない。必ず「Unpublish site」ボタンを使用すること。</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <span class="step-badge action">操作</span>
+        <span class="step-title">4-2. リポジトリPrivate化</span>
+      </div>
+      <div class="step-body">
+        <div class="sub-step"><div class="sub-num">①</div><div class="sub-content">GitHub リポジトリ Settings → 左メニュー <span class="ui-path">General</span> をクリック</div></div>
+        <div class="sub-step"><div class="sub-num">②</div><div class="sub-content">ページ最下部「Danger Zone」まで スクロール</div></div>
+        <div class="sub-step"><div class="sub-num">③</div><div class="sub-content"><span class="ui-path">Change visibility</span> → <span class="ui-path">Make private</span> をクリック</div></div>
+        <div class="sub-step"><div class="sub-num">④</div><div class="sub-content">確認ダイアログに <span class="input-val">dx-nexus/knowledge-hub</span> と入力</div></div>
+        <div class="sub-step"><div class="sub-num">⑤</div><div class="sub-content"><span class="ui-path">I understand, change repository visibility</span> をクリック → GitHub認証</div></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <span class="step-badge action">操作</span>
+        <span class="step-title">4-3. 旧Worker削除</span>
+      </div>
+      <div class="step-body">
+        <div class="sub-step"><div class="sub-num">①</div><div class="sub-content">Cloudflareダッシュボード → <span class="ui-path">Workers & Pages</span></div></div>
+        <div class="sub-step"><div class="sub-num">②</div><div class="sub-content">リストの <span class="input-val">knowledge-hub.fooueen.workers.dev</span>（Worker版）右端 <span class="ui-path">…</span> をクリック</div></div>
+        <div class="sub-step"><div class="sub-num">③</div><div class="sub-content"><span class="ui-path">View settings</span> をクリック</div></div>
+        <div class="sub-step"><div class="sub-num">④</div><div class="sub-content">設定画面最下部の <span class="ui-path">Delete</span> をクリック → 確認入力 → 削除実行</div></div>
+        <div class="note warn">⚠ 「…」メニューに直接「Delete」は表示されない。必ず「View settings」経由で最下部のDeleteを使用すること。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- フェーズ5 -->
+  <div class="phase">
+    <div class="phase-head">
+      <div class="phase-num">5</div>
+      <div class="phase-title">動作確認</div>
+      <div class="phase-sub">所要: 約5分</div>
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <span class="step-badge action">操作</span>
+        <span class="step-title">5-1. OTP認証テスト</span>
+      </div>
+      <div class="step-body">
+        <div class="sub-step"><div class="sub-num">①</div><div class="sub-content">Chromeのシークレットウィンドウ（Ctrl+Shift+N）を開く</div></div>
+        <div class="sub-step"><div class="sub-num">②</div><div class="sub-content">以下URLにアクセス<div class="url-box">https://knowledge-hub-7ih.pages.dev</div></div></div>
+        <div class="sub-step"><div class="sub-num">③</div><div class="sub-content">「Cloudflare Access」のメールアドレス入力画面が表示されることを確認</div></div>
+        <div class="sub-step"><div class="sub-num">④</div><div class="sub-content">approved-usersに登録したメールアドレスを入力 → <span class="ui-path">Send me a code</span></div></div>
+        <div class="sub-step"><div class="sub-num">⑤</div><div class="sub-content">メール受信ボックスにOTPコード（6桁）が届いていることを確認</div></div>
+        <div class="sub-step"><div class="sub-num">⑥</div><div class="sub-content">コードを入力 → <span class="ui-path">Verify</span> → ポータルが表示されることを確認</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 完了サマリー -->
+  <div class="summary">
+    <div class="summary-title">✅ 構築完了 — 正式URL</div>
+    <div class="summary-url">https://knowledge-hub-7ih.pages.dev</div>
+    <div class="summary-note">
+      ・認証なしではアクセス不可（Zero Trust保護）<br>
+      ・approved-usersポリシーに登録したメアドのみOTP認証でアクセス可能<br>
+      ・GitHubリポジトリはPrivate化済み（ソースコード非公開）<br>
+      ・GitHub Pages旧URLは無効化済み<br>
+      ・新規メンバー追加：Cloudflare Zero Trust → Access controls → Policies → approved-users → メアドを追加
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <span>EA部門 ／ Claude × Gemini 協働設計 ／ 2026年5月</span>
+  <span>INTERNAL — 社内限り</span>
+</div>
+
+</div>
+</body>
+</html>
