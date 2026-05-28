@@ -7,124 +7,123 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --ink:#0A0A0A; --paper:#FFFFFF; --warm:#FCF8F2; --coral:#E63B2D;
-  --gold:#C8941A; --line:#1A1A1A; --muted:#666; --soft:#999;
+  --ink:#0A0A0A;--paper:#FFFFFF;--warm:#FCF8F2;--coral:#E63B2D;
+  --gold:#C8941A;--line:#1A1A1A;--muted:#666;--soft:#999;--blue:#1E4ED8;--green:#0A6E3A;
 }
 html,body{height:100%;overflow:hidden}
-body{font-family:'Meiryo UI','Meiryo',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;font-feature-settings:"palt";display:flex;flex-direction:column}
-.mincho{font-family:'Yu Mincho','Hiragino Mincho ProN','游明朝',serif;font-feature-settings:"palt"}
+body{font-family:'Meiryo UI','Meiryo',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
 
-/* === 固定タブヘッダー === */
-.topbar{background:var(--ink);color:#fff;flex-shrink:0;border-bottom:2px solid var(--coral)}
-.topbar-inner{max-width:1100px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:56px}
-.brand{font-size:11px;letter-spacing:3px;font-weight:700;color:var(--coral)}
-.brand span{color:#fff;margin-left:8px;font-weight:400;letter-spacing:1.5px}
+/* === FIXED TOP === */
+.topbar{background:var(--ink);flex-shrink:0;border-bottom:2px solid var(--coral)}
+.topbar-inner{max-width:1200px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:50px}
+.brand{font-size:10px;letter-spacing:3px;font-weight:700;color:var(--coral)}
+.brand span{color:#fff;margin-left:8px;font-weight:400}
 .meta{font-size:10px;color:#888;letter-spacing:1px}
 .tabs{background:#1A1A1A;flex-shrink:0;border-bottom:1px solid #2A2A2A}
-.tabs-inner{max-width:1100px;margin:0 auto;padding:0 32px;display:flex;gap:0;height:54px;align-items:stretch}
-.tab{background:none;border:none;color:#888;font-family:'Meiryo UI',sans-serif;font-size:13px;font-weight:500;padding:0 24px;cursor:pointer;letter-spacing:.5px;display:flex;align-items:center;gap:10px;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s}
-.tab .num{font-family:'Yu Mincho',serif;font-size:11px;color:#555;font-weight:400}
-.tab:hover{color:#fff}
+.tabs-inner{max-width:1200px;margin:0 auto;padding:0 32px;display:flex;height:50px;align-items:stretch}
+.tab{background:none;border:none;color:#888;font-family:'Meiryo UI',sans-serif;font-size:12px;font-weight:500;padding:0 22px;cursor:pointer;letter-spacing:.5px;display:flex;align-items:center;gap:8px;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s}
+.tab .num{font-size:10px;color:#555}
+.tab:hover{color:#ccc}
 .tab.active{color:#fff;border-bottom-color:var(--coral)}
 .tab.active .num{color:var(--coral)}
 
-/* === パネル領域（スクロール可・タブ切替）=== */
-.stage{flex:1;overflow:hidden;position:relative;background:var(--paper)}
-.panel{position:absolute;inset:0;overflow-y:auto;opacity:0;pointer-events:none;transition:opacity .3s ease}
+/* === STAGE === */
+.stage{flex:1;overflow:hidden;position:relative}
+.panel{position:absolute;inset:0;overflow-y:auto;opacity:0;pointer-events:none;transition:opacity .25s ease}
 .panel.active{opacity:1;pointer-events:auto;z-index:2}
-.panel-inner{max-width:1100px;margin:0 auto;padding:48px 64px}
 
-/* === 共通要素 === */
-.eyebrow{font-size:10px;letter-spacing:3px;font-weight:700;color:var(--coral);margin-bottom:14px;text-transform:uppercase}
-.h1{font-family:'Yu Mincho','Hiragino Mincho ProN',serif;font-size:54px;font-weight:300;line-height:1.2;letter-spacing:-2px;color:var(--ink)}
+/* === 2カラムレイアウト === */
+.panel-body{max-width:1200px;margin:0 auto;padding:40px 48px;display:grid;grid-template-columns:1fr 380px;gap:48px;min-height:calc(100vh - 140px);align-items:start}
+.panel-left{}
+.panel-right{display:flex;align-items:center;justify-content:center;position:sticky;top:40px}
+
+/* === 共通テキスト要素 === */
+.eyebrow{font-size:10px;letter-spacing:3px;font-weight:700;color:var(--coral);margin-bottom:12px}
+.h1{font-family:'Yu Mincho','Hiragino Mincho ProN',serif;font-size:46px;font-weight:300;line-height:1.2;letter-spacing:-2px;color:var(--ink)}
 .h1 strong{color:var(--coral);font-weight:500}
-.h2{font-family:'Yu Mincho',serif;font-size:34px;font-weight:300;line-height:1.3;color:var(--ink);letter-spacing:-1px;margin-bottom:32px}
+.h2{font-family:'Yu Mincho',serif;font-size:30px;font-weight:300;line-height:1.3;color:var(--ink);letter-spacing:-1px;margin-bottom:24px}
 .h2 em{font-style:normal;color:var(--coral);font-weight:500}
+.rule{height:1px;background:var(--ink);width:60px;margin:24px 0}
+.lead{font-family:'Yu Mincho',serif;font-size:16px;color:var(--muted);line-height:2;max-width:560px}
+.lead strong{color:var(--ink);font-weight:500}
 
-/* === パネル1: 問題提起 === */
-.panel-problem .panel-inner{padding-top:80px}
-.problem-body{font-family:'Yu Mincho',serif;font-size:18px;color:var(--muted);line-height:2;margin-top:48px;max-width:680px}
-.problem-body strong{color:var(--ink);font-weight:500;border-bottom:1px solid var(--coral);padding-bottom:1px}
-.rule{height:1px;background:var(--ink);width:80px;margin:32px 0}
+/* === 01 問題 === */
+.prob-stat{margin-top:32px;padding:24px 28px;background:var(--warm);border-left:3px solid var(--coral)}
+.prob-stat-n{font-family:'Yu Mincho',serif;font-size:52px;font-weight:300;color:var(--coral);line-height:1;letter-spacing:-2px}
+.prob-stat-n span{font-size:18px;margin-left:4px}
+.prob-stat-l{font-size:13px;color:var(--ink);margin-top:8px;line-height:1.7}
 
-/* === パネル2: カレンダー === */
-.cal-wrap{background:var(--warm);border:1px solid var(--line);padding:32px;border-radius:0}
-.cal{display:flex;gap:1px;background:#E5DDD0;border:1px solid #E5DDD0;border-radius:2px;overflow:hidden;margin-bottom:14px}
+/* === 02 可視化 === */
+.cal{display:flex;gap:1px;background:#E5DDD0;border:1px solid #E5DDD0;border-radius:2px;overflow:hidden;margin-bottom:12px}
 .cal-day{flex:1;display:flex;flex-direction:column;gap:1px}
-.cal-cell{background:#fff;height:8px}
+.cal-cell{background:#fff;height:9px}
 .cal-cell.lost{background:var(--coral)}
-.cal-x{display:flex;gap:24px;font-size:10px;color:var(--muted);letter-spacing:.5px}
+.cal-x{display:flex;font-size:9px;color:var(--muted);letter-spacing:.5px}
 .cal-x span{flex:1;text-align:center}
-.cal-legend{display:flex;justify-content:space-between;align-items:flex-end;margin-top:28px;padding-top:24px;border-top:1px solid #E5DDD0}
-.cal-stat-l{font-family:'Yu Mincho',serif;font-size:64px;font-weight:300;line-height:1;color:var(--coral);letter-spacing:-2px}
-.cal-stat-l .u{font-size:20px;font-weight:400;margin-left:4px}
-.cal-text{font-size:14px;color:var(--ink);line-height:1.9;max-width:400px;text-align:right}
+.cal-foot{display:flex;justify-content:space-between;align-items:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid #E5DDD0}
+.cal-n{font-family:'Yu Mincho',serif;font-size:56px;font-weight:300;color:var(--coral);letter-spacing:-2px;line-height:1}
+.cal-n span{font-size:18px;margin-left:3px}
+.cal-note{font-size:12px;color:var(--ink);line-height:1.8;text-align:right;max-width:280px}
 
-/* === パネル3: Before/After === */
-.ba{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:8px}
-.ba-col{padding:28px 0}
-.ba-col:first-child{padding-right:40px;border-right:1px solid var(--line)}
-.ba-col:last-child{padding-left:40px}
-.ba-tag{display:inline-block;font-size:10px;letter-spacing:2px;font-weight:700;padding:4px 10px;border-radius:2px;margin-bottom:14px}
+/* === 03 Before/After === */
+.ba{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:8px}
+.ba-col{padding:24px 0}
+.ba-col:first-child{padding-right:28px;border-right:1px solid var(--line)}
+.ba-col:last-child{padding-left:28px}
+.ba-tag{display:inline-block;font-size:9px;letter-spacing:2px;font-weight:700;padding:3px 8px;border-radius:2px;margin-bottom:12px}
 .ba-tag.b{background:#FCE9E5;color:var(--coral)}
 .ba-tag.a{background:var(--ink);color:#fff}
-.ba-title{font-family:'Yu Mincho',serif;font-size:20px;font-weight:400;color:var(--ink);margin-bottom:18px;line-height:1.4}
-.ba-line{display:flex;gap:14px;padding:9px 0;border-bottom:1px dotted #DDD;font-size:13px;color:#333;line-height:1.6}
+.ba-title{font-family:'Yu Mincho',serif;font-size:17px;font-weight:400;color:var(--ink);margin-bottom:14px;line-height:1.4}
+.ba-line{display:flex;gap:10px;padding:8px 0;border-bottom:1px dotted #DDD;font-size:12px;color:#333;line-height:1.6}
 .ba-line:last-child{border-bottom:none}
-.ba-time{font-family:'Yu Mincho',serif;font-size:16px;font-weight:500;color:var(--soft);min-width:54px;flex-shrink:0;letter-spacing:-.5px}
+.ba-time{font-family:'Yu Mincho',serif;font-size:14px;color:var(--soft);min-width:46px;flex-shrink:0}
 .ba-col.after .ba-time{color:var(--coral)}
-.ba-task{flex:1}
-.ba-task strong{font-weight:600;color:var(--ink)}
 
-/* === パネル4: Evidence === */
-.evi-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.evi-cell{padding:24px 20px;border-right:1px solid #D5CCBA}
-.evi-cell:last-child{border-right:none}
-.evi-cell:first-child{padding-left:0}
-.evi-cell:last-child{padding-right:0}
-.evi-n{font-family:'Yu Mincho',serif;font-size:50px;font-weight:300;line-height:1;color:var(--ink);letter-spacing:-1.5px;margin-bottom:10px}
-.evi-n .u{font-size:18px;font-weight:400;margin-left:2px}
-.evi-claim{font-size:13px;font-weight:600;color:var(--ink);line-height:1.5;margin-bottom:6px}
-.evi-src{font-size:10px;color:var(--muted);letter-spacing:.3px;line-height:1.5}
-.evi-quote{margin-top:32px;padding:24px 28px;border-left:3px solid var(--coral);background:var(--warm)}
-.evi-quote-text{font-family:'Yu Mincho',serif;font-size:18px;font-weight:400;line-height:1.7;color:var(--ink);margin-bottom:8px}
-.evi-quote-text strong{font-weight:600}
-.evi-quote-cite{font-size:11px;color:var(--muted);letter-spacing:.3px}
+/* === 04 Evidence === */
+.ev-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--line);margin-top:8px}
+.ev{padding:20px 16px;border-right:1px solid #DDD;border-bottom:1px solid #DDD}
+.ev:nth-child(even){border-right:none}
+.ev:nth-last-child(-n+2){border-bottom:none}
+.ev-n{font-family:'Yu Mincho',serif;font-size:42px;font-weight:300;line-height:1;color:var(--ink);letter-spacing:-1px}
+.ev-n .u{font-size:15px;margin-left:2px}
+.ev-claim{font-size:12px;font-weight:600;color:var(--ink);margin:6px 0 4px;line-height:1.5}
+.ev-src{font-size:9px;color:var(--muted);letter-spacing:.3px}
+.ev-quote{margin-top:20px;padding:18px 22px;border-left:3px solid var(--coral);background:var(--warm)}
+.ev-qt{font-family:'Yu Mincho',serif;font-size:16px;font-weight:400;line-height:1.7;color:var(--ink)}
+.ev-qt strong{font-weight:600}
+.ev-cite{font-size:10px;color:var(--muted);margin-top:6px;letter-spacing:.3px}
 
-/* === パネル5: CTA === */
-.panel-cta{background:var(--ink)}
-.panel-cta .panel-inner{padding-top:80px}
-.panel-cta .eyebrow{color:var(--coral)}
-.panel-cta .h1{color:#fff}
-.panel-cta .h1 strong{color:var(--coral)}
-.cta-body{font-size:14px;color:#B0B0B0;line-height:1.9;margin:24px 0 28px;max-width:680px}
-.cta-body strong{color:#fff;font-weight:600}
-.cta-action{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:36px}
-.cta-btn{background:var(--coral);color:#fff;padding:16px 32px;border:none;font-family:'Meiryo UI',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;cursor:pointer;display:inline-flex;align-items:center;gap:14px}
+/* === 05 CTA === */
+.cta-left .h1{color:#fff}
+.cta-left .h1 strong{color:var(--coral)}
+.cta-body{font-size:13px;color:#B0B0B0;line-height:1.9;margin:20px 0 24px;max-width:560px}
+.cta-body strong{color:#fff}
+.cta-btn{background:var(--coral);color:#fff;padding:16px 28px;border:none;font-family:'Meiryo UI',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;cursor:pointer;display:inline-flex;align-items:center;gap:12px}
 .cta-btn::after{content:'→';font-size:18px;font-weight:300}
-.cta-note{font-size:11px;color:#888;letter-spacing:.5px}
-.cta-spec{border-top:1px solid #2A2A2A;padding-top:24px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:8px}
-.spec-l{font-size:9px;letter-spacing:2px;color:#666;font-weight:600;margin-bottom:5px}
-.spec-v{font-size:14px;color:#fff;font-weight:600;line-height:1.4}
-.spec-s{font-size:10px;color:#999;margin-top:2px}
+.cta-note{font-size:11px;color:#888;margin-top:10px;letter-spacing:.5px}
+.cta-spec{border-top:1px solid #2A2A2A;padding-top:20px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:20px}
+.sl{font-size:9px;letter-spacing:2px;color:#666;font-weight:600;margin-bottom:4px}
+.sv{font-size:13px;color:#fff;font-weight:600}
+.ss{font-size:10px;color:#999;margin-top:2px}
 
-/* === ナビゲーション === */
-.nav-bottom{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #E0E0E0;padding:8px 32px;display:flex;justify-content:space-between;align-items:center;font-size:11px;z-index:10}
-.nav-btn{background:none;border:1px solid #DDD;padding:8px 16px;font-family:'Meiryo UI',sans-serif;font-size:11px;color:var(--ink);cursor:pointer;letter-spacing:.5px}
-.nav-btn:hover{border-color:var(--coral);color:var(--coral)}
-.nav-btn:disabled{opacity:.3;cursor:default}
-.nav-progress{font-family:'Yu Mincho',serif;font-size:13px;color:var(--muted);letter-spacing:1px}
-.nav-progress strong{color:var(--coral);font-weight:500}
+/* === パネル固有背景 === */
+.panel-cta{background:var(--ink)}
 
-/* スクロールバー控えめ */
-.panel::-webkit-scrollbar{width:6px}
-.panel::-webkit-scrollbar-track{background:transparent}
+/* === ナビ === */
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-top:1px solid #E0E0E0;padding:8px 40px;display:flex;justify-content:space-between;align-items:center;z-index:10}
+.panel-cta~.nav{background:rgba(10,10,10,.95);border-top-color:#2A2A2A}
+.nbtn{background:none;border:1px solid #DDD;padding:7px 16px;font-family:'Meiryo UI',sans-serif;font-size:11px;color:var(--ink);cursor:pointer;letter-spacing:.5px;transition:all .12s}
+.nbtn:hover{border-color:var(--coral);color:var(--coral)}
+.nbtn:disabled{opacity:.25;cursor:default}
+.nprog{font-family:'Yu Mincho',serif;font-size:13px;color:var(--muted);letter-spacing:2px}
+.nprog strong{color:var(--coral)}
+
+.panel::-webkit-scrollbar{width:5px}
 .panel::-webkit-scrollbar-thumb{background:#DDD;border-radius:3px}
 </style>
 </head>
 <body>
 
-<!-- ブランドバー -->
 <div class="topbar">
   <div class="topbar-inner">
     <div class="brand">AI INFRASTRUCTURE PROPOSAL<span>VS Code × AI 導入提案</span></div>
@@ -132,7 +131,6 @@ body{font-family:'Meiryo UI','Meiryo',sans-serif;background:var(--paper);color:v
   </div>
 </div>
 
-<!-- タブ -->
 <div class="tabs">
   <div class="tabs-inner">
     <button class="tab active" data-tab="0"><span class="num">01</span>問題</button>
@@ -143,201 +141,343 @@ body{font-family:'Meiryo UI','Meiryo',sans-serif;background:var(--paper);color:v
   </div>
 </div>
 
-<!-- パネル -->
 <div class="stage">
 
-  <!-- 01: 問題提起 -->
-  <section class="panel active panel-problem" data-panel="0">
-    <div class="panel-inner">
-      <div class="eyebrow">THE PROBLEM ／ 01</div>
-      <h1 class="h1">
-        いま、コンサル1人につき<br>
-        月<strong>60時間</strong>が、<br>
-        ドキュメント作業に消えている。
-      </h1>
-      <div class="rule"></div>
-      <p class="problem-body">
-        会議の議事録、報告書、提案資料、コードの修正。<br>
-        一つひとつは小さな作業でも、<strong>1ヶ月で60時間</strong>に達する。<br>
-        それは週末2日分の労働時間であり、家族と過ごせるはずだった夜10回分。<br><br>
-        — そして、これは<strong>月¥3,000</strong>で取り戻せる時間です。
-      </p>
+  <!-- 01 問題 -->
+  <section class="panel active" data-panel="0">
+    <div class="panel-body">
+      <div class="panel-left">
+        <div class="eyebrow">THE PROBLEM ／ 01</div>
+        <h1 class="h1">いま、コンサル1人につき<br>月<strong>60時間</strong>が、<br>消えている。</h1>
+        <div class="rule"></div>
+        <p class="lead">議事録、報告書、提案資料、コードの修正。<br>一つひとつは小さくても、<strong>1ヶ月で60時間</strong>に達する。<br>週末2日分。家族と過ごせるはずだった夜10回分。<br><br>— そして、これは<strong>月¥3,000</strong>で取り戻せる時間です。</p>
+        <div class="prob-stat">
+          <div class="prob-stat-n">60<span>時間／月</span></div>
+          <div class="prob-stat-l">コンサルタント1人あたりのドキュメント作業時間<br>= 週末2日分 = 月¥3,000で削減可能</div>
+        </div>
+      </div>
+      <div class="panel-right">
+        <!-- SVG: 時計が崩れていくイラスト -->
+        <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" style="width:300px;height:300px">
+          <!-- 背景円（薄） -->
+          <circle cx="160" cy="160" r="130" fill="#FFF3F0" stroke="#FBBCB5" stroke-width="1.5"/>
+          <!-- 時計の文字盤 -->
+          <circle cx="160" cy="160" r="110" fill="none" stroke="#E0C8C4" stroke-width="1" stroke-dasharray="4 4"/>
+          <!-- 60hの扇形（赤：失われた時間） -->
+          <path d="M160,160 L160,50 A110,110 0 1,1 50,160 Z" fill="#E63B2D" opacity=".15"/>
+          <path d="M160,160 L160,50 A110,110 0 1,1 50,160 Z" fill="none" stroke="#E63B2D" stroke-width="2"/>
+          <!-- 時計の針（11時方向・止まっている） -->
+          <line x1="160" y1="160" x2="120" y2="75" stroke="#0A0A0A" stroke-width="3" stroke-linecap="round"/>
+          <line x1="160" y1="160" x2="195" y2="105" stroke="#0A0A0A" stroke-width="2" stroke-linecap="round"/>
+          <!-- 中心 -->
+          <circle cx="160" cy="160" r="6" fill="#E63B2D"/>
+          <!-- 60h テキスト -->
+          <text x="160" y="195" text-anchor="middle" font-family="Yu Mincho,serif" font-size="32" font-weight="300" fill="#E63B2D">60h</text>
+          <text x="160" y="215" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="11" fill="#999" letter-spacing="1">ドキュメント作業</text>
+          <!-- 崩れる破片（右下） -->
+          <rect x="240" y="220" width="16" height="16" rx="3" fill="#E63B2D" opacity=".3" transform="rotate(25,248,228)"/>
+          <rect x="268" y="200" width="10" height="10" rx="2" fill="#E63B2D" opacity=".2" transform="rotate(45,273,205)"/>
+          <rect x="255" y="245" width="8" height="8" rx="2" fill="#E63B2D" opacity=".15" transform="rotate(15,259,249)"/>
+          <!-- 矢印（右上） -->
+          <text x="255" y="85" text-anchor="middle" font-family="Yu Mincho,serif" font-size="11" fill="#999">月</text>
+          <text x="258" y="100" text-anchor="middle" font-family="Yu Mincho,serif" font-size="11" fill="#999">30日間</text>
+        </svg>
+      </div>
     </div>
   </section>
 
-  <!-- 02: カレンダー可視化 -->
+  <!-- 02 可視化 -->
   <section class="panel" data-panel="1">
-    <div class="panel-inner">
-      <div class="eyebrow">VISUALIZATION ／ 02</div>
-      <h2 class="h2">これが、<em>あなたのチームの1ヶ月</em>です。</h2>
-      <div class="cal-wrap">
-        <div id="cal" class="cal"></div>
-        <div class="cal-x">
-          <span>WEEK 1</span><span>WEEK 2</span><span>WEEK 3</span><span>WEEK 4</span><span>WEEK 5</span>
+    <div class="panel-body">
+      <div class="panel-left">
+        <div class="eyebrow">VISUALIZATION ／ 02</div>
+        <h2 class="h2">これが、<em>あなたのチームの1ヶ月</em>です。</h2>
+        <div class="cal" id="cal"></div>
+        <div class="cal-x"><span>W1</span><span>W2</span><span>W3</span><span>W4</span><span>W5</span></div>
+        <div class="cal-foot">
+          <div class="cal-n">60<span>h</span></div>
+          <div class="cal-note">赤いマスが消えた時間。<br><strong style="color:var(--coral)">週末2日分の労働時間</strong>に相当。<br>月¥3,000で買い戻せる。</div>
         </div>
-        <div class="cal-legend">
-          <div>
-            <div class="cal-stat-l mincho">60<span class="u">時間／月</span></div>
-          </div>
-          <div class="cal-text">
-            赤いマスが「議事録・報告書・資料作成」に消えた時間。<br>
-            これは <strong style="color:var(--coral)">週末2日分の労働時間</strong> に相当します。
-          </div>
-        </div>
+      </div>
+      <div class="panel-right">
+        <!-- SVG: カレンダーの意味を補足するビジュアル -->
+        <svg viewBox="0 0 280 340" xmlns="http://www.w3.org/2000/svg" style="width:260px">
+          <!-- 人物シルエット（疲弊している） -->
+          <circle cx="140" cy="60" r="28" fill="#F5E8E5" stroke="#FBBCB5" stroke-width="1.5"/>
+          <text x="140" y="67" text-anchor="middle" font-size="26">😓</text>
+          <!-- 体 -->
+          <path d="M115,88 Q140,85 165,88 L170,150 Q140,160 110,150 Z" fill="#F5E8E5" stroke="#FBBCB5" stroke-width="1"/>
+          <!-- 書類の山 -->
+          <rect x="60" y="165" width="60" height="8" rx="2" fill="#FBBCB5" opacity=".8"/>
+          <rect x="55" y="175" width="65" height="8" rx="2" fill="#E63B2D" opacity=".5"/>
+          <rect x="62" y="185" width="55" height="8" rx="2" fill="#FBBCB5" opacity=".6"/>
+          <rect x="58" y="195" width="60" height="8" rx="2" fill="#E63B2D" opacity=".4"/>
+          <text x="90" y="220" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="10" fill="#999">議事録・報告書の山</text>
+          <!-- 時計 -->
+          <circle cx="210" cy="185" r="30" fill="none" stroke="#DDD" stroke-width="1.5"/>
+          <line x1="210" y1="185" x2="210" y2="163" stroke="#E63B2D" stroke-width="2" stroke-linecap="round"/>
+          <line x1="210" y1="185" x2="228" y2="192" stroke="#666" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="210" cy="185" r="3" fill="#E63B2D"/>
+          <text x="210" y="228" text-anchor="middle" font-family="Yu Mincho,serif" font-size="11" fill="#999">23:00</text>
+          <text x="210" y="242" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="10" fill="#E63B2D">残業中</text>
+          <!-- 吹き出し -->
+          <rect x="80" y="260" width="130" height="36" rx="8" fill="#FFF3F0" stroke="#FBBCB5" stroke-width="1"/>
+          <text x="145" y="278" text-anchor="middle" font-family="Yu Mincho,serif" font-size="12" fill="#E63B2D">また金曜の夜が…</text>
+          <text x="145" y="292" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="10" fill="#999">毎週繰り返すルーティン</text>
+          <polygon points="135,260 145,248 155,260" fill="#FFF3F0" stroke="#FBBCB5" stroke-width="1"/>
+        </svg>
       </div>
     </div>
   </section>
 
-  <!-- 03: Before/After -->
+  <!-- 03 解決策 -->
   <section class="panel" data-panel="2">
-    <div class="panel-inner">
-      <div class="eyebrow">THE SHIFT ／ 03</div>
-      <h2 class="h2">金曜23時の残業から、<em>朝10時半までに完了</em>へ。</h2>
-      <div class="ba">
-        <div class="ba-col before">
-          <div class="ba-tag b">BEFORE — いまの1日</div>
-          <h3 class="ba-title">3〜4時間、同じ作業を繰り返している。</h3>
-          <div class="ba-line"><div class="ba-time">10:00</div><div class="ba-task">会議終了。録音データを聞き直す。</div></div>
-          <div class="ba-line"><div class="ba-time">11:30</div><div class="ba-task">議事録を手作業で要約・整形。</div></div>
-          <div class="ba-line"><div class="ba-time">13:00</div><div class="ba-task">報告書をWord・PPTで作成。</div></div>
-          <div class="ba-line"><div class="ba-time">14:30</div><div class="ba-task">ChatGPTでコピペ往復しながらコード書く。</div></div>
-          <div class="ba-line"><div class="ba-time">15:00</div><div class="ba-task">ようやく提出。<strong>5時間が消えた。</strong></div></div>
+    <div class="panel-body">
+      <div class="panel-left">
+        <div class="eyebrow">THE SHIFT ／ 03</div>
+        <h2 class="h2">金曜23時の残業から、<em>朝10時半完了</em>へ。</h2>
+        <div class="ba">
+          <div class="ba-col before">
+            <div class="ba-tag b">BEFORE</div>
+            <h3 class="ba-title">3〜4時間、同じ作業を繰り返す。</h3>
+            <div class="ba-line"><div class="ba-time">10:00</div><div>会議終了。録音を聞き直す。</div></div>
+            <div class="ba-line"><div class="ba-time">11:30</div><div>議事録を手作業で要約。</div></div>
+            <div class="ba-line"><div class="ba-time">13:00</div><div>報告書をWord・PPTで作成。</div></div>
+            <div class="ba-line"><div class="ba-time">14:30</div><div>ChatGPTとコピペ往復。</div></div>
+            <div class="ba-line"><div class="ba-time">15:00</div><div><strong>5時間が消えた。</strong></div></div>
+          </div>
+          <div class="ba-col after">
+            <div class="ba-tag a">AFTER — VS Code × AI</div>
+            <h3 class="ba-title">コーヒー1杯分で終わる。</h3>
+            <div class="ba-line"><div class="ba-time">10:00</div><div>会議終了。VS Code を開く。</div></div>
+            <div class="ba-line"><div class="ba-time">10:05</div><div><strong>Claude</strong> が議事録を自動要約。</div></div>
+            <div class="ba-line"><div class="ba-time">10:15</div><div><strong>Gemini</strong> 分析 + <strong>Copilot</strong> コード生成。</div></div>
+            <div class="ba-line"><div class="ba-time">10:25</div><div>人間は確認と微調整のみ。</div></div>
+            <div class="ba-line"><div class="ba-time">10:30</div><div><strong>提出完了。</strong></div></div>
+          </div>
         </div>
-        <div class="ba-col after">
-          <div class="ba-tag a">AFTER — VS Code × AI</div>
-          <h3 class="ba-title">同じ仕事が、コーヒー1杯分で終わる。</h3>
-          <div class="ba-line"><div class="ba-time">10:00</div><div class="ba-task">会議終了。VS Code を開く。</div></div>
-          <div class="ba-line"><div class="ba-time">10:05</div><div class="ba-task"><strong>Claude</strong> が議事録を要約・タスク抽出。</div></div>
-          <div class="ba-line"><div class="ba-time">10:15</div><div class="ba-task"><strong>Gemini</strong> が分析、<strong>Copilot</strong> がコード生成。</div></div>
-          <div class="ba-line"><div class="ba-time">10:25</div><div class="ba-task">人間は<strong>確認と微調整</strong>のみ。</div></div>
-          <div class="ba-line"><div class="ba-time">10:30</div><div class="ba-task">提出完了。<strong>30分で終わった。</strong></div></div>
-        </div>
+      </div>
+      <div class="panel-right">
+        <!-- SVG: Before→After 人物変化 -->
+        <svg viewBox="0 0 280 360" xmlns="http://www.w3.org/2000/svg" style="width:260px">
+          <!-- BEFORE: 疲弊 -->
+          <text x="70" y="22" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="9" letter-spacing="2" fill="#E63B2D">BEFORE</text>
+          <circle cx="70" cy="55" r="22" fill="#F5E8E5" stroke="#FBBCB5" stroke-width="1.5"/>
+          <text x="70" y="63" text-anchor="middle" font-size="20">😩</text>
+          <rect x="40" y="82" width="60" height="50" rx="4" fill="#F5E8E5" stroke="#FBBCB5" stroke-width="1"/>
+          <line x1="48" y1="95" x2="92" y2="95" stroke="#FBBCB5" stroke-width="1.5"/>
+          <line x1="48" y1="104" x2="92" y2="104" stroke="#FBBCB5" stroke-width="1.5"/>
+          <line x1="48" y1="113" x2="80" y2="113" stroke="#FBBCB5" stroke-width="1.5"/>
+          <text x="70" y="152" text-anchor="middle" font-family="Yu Mincho,serif" font-size="13" fill="#E63B2D">5時間</text>
+          <text x="70" y="168" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="10" fill="#999">ひとりで格闘</text>
+
+          <!-- 矢印 -->
+          <path d="M130,120 L150,120" stroke="#CCC" stroke-width="1.5" stroke-dasharray="3 2"/>
+          <polygon points="150,115 162,120 150,125" fill="#CCC"/>
+
+          <!-- AFTER: 明るい -->
+          <text x="210" y="22" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="9" letter-spacing="2" fill="#0A6E3A">AFTER</text>
+          <circle cx="210" cy="55" r="22" fill="#E8F5EE" stroke="#6ECFA0" stroke-width="1.5"/>
+          <text x="210" y="63" text-anchor="middle" font-size="20">😊</text>
+          <!-- VS Code画面 -->
+          <rect x="180" y="82" width="60" height="50" rx="4" fill="#0A0A0A"/>
+          <rect x="184" y="86" width="52" height="4" rx="1" fill="#E63B2D" opacity=".8"/>
+          <text x="210" y="102" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="7" fill="#60A5FA">Claude ✓</text>
+          <text x="210" y="113" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="7" fill="#6ECFA0">Gemini ✓</text>
+          <text x="210" y="124" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="7" fill="#FCA5A5">Copilot ✓</text>
+          <text x="210" y="152" text-anchor="middle" font-family="Yu Mincho,serif" font-size="13" fill="#0A6E3A">30分</text>
+          <text x="210" y="168" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="10" fill="#999">3AIが並列稼働</text>
+
+          <!-- 時間比較 -->
+          <rect x="30" y="195" width="220" height="60" rx="8" fill="#F8F8F5" stroke="#E0E0DC" stroke-width="1"/>
+          <text x="80" y="220" text-anchor="middle" font-family="Yu Mincho,serif" font-size="26" fill="#E63B2D">5h</text>
+          <text x="80" y="240" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="9" fill="#999">従来</text>
+          <text x="140" y="230" text-anchor="middle" font-size="18" fill="#CCC">→</text>
+          <text x="200" y="220" text-anchor="middle" font-family="Yu Mincho,serif" font-size="26" fill="#0A6E3A">30m</text>
+          <text x="200" y="240" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="9" fill="#999">AI活用後</text>
+
+          <!-- コスト -->
+          <rect x="30" y="275" width="220" height="50" rx="8" fill="#FFF8EE" stroke="#F5DCA0" stroke-width="1"/>
+          <text x="140" y="298" text-anchor="middle" font-family="Yu Mincho,serif" font-size="15" fill="#C8941A">月 ¥3,000 で実現</text>
+          <text x="140" y="316" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="10" fill="#999">APIコスト（上限設定可）</text>
+        </svg>
       </div>
     </div>
   </section>
 
-  <!-- 04: Evidence -->
+  <!-- 04 実績 -->
   <section class="panel" data-panel="3">
-    <div class="panel-inner">
-      <div class="eyebrow">THE EVIDENCE ／ 04</div>
-      <h2 class="h2">これは、すでに<em>世界の常識</em>になっている。</h2>
-      <div class="evi-grid">
-        <div class="evi-cell">
-          <div class="evi-n">75.9<span class="u">%</span></div>
-          <div class="evi-claim">世界の開発者がVS Codeを利用</div>
-          <div class="evi-src">Stack Overflow Survey 2025<br>（4年連続1位）</div>
+    <div class="panel-body">
+      <div class="panel-left">
+        <div class="eyebrow">THE EVIDENCE ／ 04</div>
+        <h2 class="h2">これは、すでに<em>世界の常識</em>になっている。</h2>
+        <div class="ev-grid">
+          <div class="ev"><div class="ev-n">75.9<span class="u">%</span></div><div class="ev-claim">世界の開発者がVS Codeを利用</div><div class="ev-src">Stack Overflow 2025（4年連続1位）</div></div>
+          <div class="ev"><div class="ev-n">5,000<span class="u">万</span></div><div class="ev-claim">VS Code月間アクティブ利用者</div><div class="ev-src">Microsoft公式 2025年5月</div></div>
+          <div class="ev"><div class="ev-n">84<span class="u">%</span></div><div class="ev-claim">開発者がAIツールを使用・導入予定</div><div class="ev-src">Stack Overflow 2025</div></div>
+          <div class="ev"><div class="ev-n">90<span class="u">%</span></div><div class="ev-claim">Fortune 100がGitHub Copilotを導入</div><div class="ev-src">GitHub公式 2025年</div></div>
         </div>
-        <div class="evi-cell">
-          <div class="evi-n">5,000<span class="u">万</span></div>
-          <div class="evi-claim">VS Code 月間アクティブ利用者数</div>
-          <div class="evi-src">Microsoft 公式発表<br>2025年5月</div>
-        </div>
-        <div class="evi-cell">
-          <div class="evi-n">84<span class="u">%</span></div>
-          <div class="evi-claim">開発者がAIツールを使用または導入予定</div>
-          <div class="evi-src">Stack Overflow Survey<br>2025</div>
-        </div>
-        <div class="evi-cell">
-          <div class="evi-n">90<span class="u">%</span></div>
-          <div class="evi-claim">Fortune 100 企業が GitHub Copilot を組織導入</div>
-          <div class="evi-src">GitHub 公式発表<br>2025年</div>
+        <div class="ev-quote">
+          <p class="ev-qt">VS Code は、すでに「エディタ」ではない。AIエージェントを実行する、<strong>業務基盤プラットフォーム</strong>になった。</p>
+          <p class="ev-cite">— Microsoft Build 2025 ／ Satya Nadella CEO（要旨）</p>
         </div>
       </div>
-      <div class="evi-quote">
-        <p class="evi-quote-text">VS Code は、すでに「エディタ」ではない。<br>AIエージェントを実行する、<strong>業務基盤プラットフォーム</strong>になった。</p>
-        <p class="evi-quote-cite">— Microsoft Build 2025 基調講演 ／ Satya Nadella CEO（要旨）</p>
+      <div class="panel-right">
+        <!-- SVG: 地球儀＋企業採用の広がり -->
+        <svg viewBox="0 0 280 340" xmlns="http://www.w3.org/2000/svg" style="width:260px">
+          <!-- 地球儀ベース -->
+          <circle cx="140" cy="130" r="90" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1.5"/>
+          <ellipse cx="140" cy="130" rx="90" ry="30" fill="none" stroke="#BFDBFE" stroke-width="1" stroke-dasharray="4 3"/>
+          <ellipse cx="140" cy="130" rx="50" ry="88" fill="none" stroke="#BFDBFE" stroke-width="1" stroke-dasharray="4 3"/>
+          <line x1="50" y1="130" x2="230" y2="130" stroke="#BFDBFE" stroke-width="1"/>
+          <!-- VS Code中心 -->
+          <circle cx="140" cy="130" r="22" fill="#0A0A0A"/>
+          <text x="140" y="126" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="8" fill="#60A5FA" font-weight="700">VS</text>
+          <text x="140" y="138" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="8" fill="#60A5FA" font-weight="700">Code</text>
+          <!-- 企業ノード -->
+          <circle cx="80" cy="75" r="16" fill="#DBEAFE" stroke="#93C5FD" stroke-width="1"/>
+          <text x="80" y="79" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="8" fill="#1E4ED8">MS</text>
+          <line x1="118" y1="114" x2="94" y2="88" stroke="#93C5FD" stroke-width="1" stroke-dasharray="3 2"/>
+          <circle cx="200" cy="70" r="16" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1"/>
+          <text x="200" y="74" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="8" fill="#065F46">Google</text>
+          <line x1="160" y1="112" x2="188" y2="83" stroke="#6EE7B7" stroke-width="1" stroke-dasharray="3 2"/>
+          <circle cx="52" cy="150" r="14" fill="#FCE7F3" stroke="#F9A8D4" stroke-width="1"/>
+          <text x="52" y="154" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="7" fill="#9D174D">GitHub</text>
+          <line x1="118" y1="133" x2="64" y2="150" stroke="#F9A8D4" stroke-width="1" stroke-dasharray="3 2"/>
+          <circle cx="228" cy="145" r="14" fill="#FEF3C7" stroke="#FCD34D" stroke-width="1"/>
+          <text x="228" y="149" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="7" fill="#92400E">Anthropic</text>
+          <line x1="162" y1="133" x2="216" y2="145" stroke="#FCD34D" stroke-width="1" stroke-dasharray="3 2"/>
+          <circle cx="105" cy="185" r="14" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1"/>
+          <text x="105" y="189" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="7" fill="#5B21B6">Gemini</text>
+          <line x1="130" y1="150" x2="112" y2="173" stroke="#C4B5FD" stroke-width="1" stroke-dasharray="3 2"/>
+          <!-- Fortune 100 -->
+          <rect x="30" y="240" width="220" height="40" rx="6" fill="#0A0A0A"/>
+          <text x="140" y="258" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="11" fill="#60A5FA" font-weight="700">Fortune 100 の 90%</text>
+          <text x="140" y="273" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="10" fill="#888">すでにGitHub Copilotを導入済み</text>
+          <!-- 75.9% バー -->
+          <rect x="30" y="295" width="220" height="20" rx="4" fill="#F1F5F9"/>
+          <rect x="30" y="295" width="167" height="20" rx="4" fill="#1E4ED8" opacity=".8"/>
+          <text x="42" y="310" font-family="Meiryo UI,sans-serif" font-size="10" fill="#fff" font-weight="700">75.9% VS Code利用率</text>
+          <text x="260" y="310" text-anchor="end" font-family="Meiryo UI,sans-serif" font-size="9" fill="#999">2025</text>
+        </svg>
       </div>
     </div>
   </section>
 
-  <!-- 05: CTA -->
+  <!-- 05 CTA -->
   <section class="panel panel-cta" data-panel="4">
-    <div class="panel-inner">
-      <div class="eyebrow">THE ASK ／ 05</div>
-      <h1 class="h1">取り戻したい60時間を、<br><strong>今月、買い戻しませんか。</strong></h1>
-      <p class="cta-body">
-        ご依頼は <strong>Anthropic API キーの社内払い出し1件</strong> のみ。<br>
-        Gemini はすでに接続済み。Claude が加われば、Copilot と合わせた <strong>3AI完全一元化</strong> が当月から実現します。
-      </p>
-      <div class="cta-action">
+    <div class="panel-body">
+      <div class="panel-left cta-left">
+        <div class="eyebrow">THE ASK ／ 05</div>
+        <h1 class="h1">取り戻したい60時間を、<br><strong>今月、買い戻しませんか。</strong></h1>
+        <p class="cta-body">ご依頼は <strong>Anthropic APIキーの社内払い出し1件</strong> のみ。<br>Geminiはすでに接続済み。Claudeが加われば、Copilotと合わせた<strong>3AI完全一元化</strong>が当月から実現します。</p>
         <button class="cta-btn">APIキーの申請を承認する</button>
-        <span class="cta-note">所要時間 5分 ／ 月額上限の設定が可能 ／ いつでも解約可</span>
+        <div class="cta-note">所要時間 5分 ／ 月額上限の設定が可能 ／ いつでも解約可</div>
+        <div class="cta-spec">
+          <div><div class="sl">必要なもの</div><div class="sv">APIキー 1件</div><div class="ss">Anthropic公式</div></div>
+          <div><div class="sl">初期費用</div><div class="sv">¥0</div><div class="ss">登録のみ</div></div>
+          <div><div class="sl">運用コスト</div><div class="sv">月¥3,000〜</div><div class="ss">従量課金・上限可</div></div>
+          <div><div class="sl">取り戻せる時間</div><div class="sv" style="color:var(--coral)">月60時間</div><div class="ss">コンサル1人あたり</div></div>
+        </div>
       </div>
-      <div class="cta-spec">
-        <div><div class="spec-l">必要なもの</div><div class="spec-v">APIキー 1件</div><div class="spec-s">Anthropic 公式</div></div>
-        <div><div class="spec-l">初期費用</div><div class="spec-v">¥0</div><div class="spec-s">登録のみ</div></div>
-        <div><div class="spec-l">運用コスト</div><div class="spec-v">月¥3,000〜</div><div class="spec-s">従量課金・上限可</div></div>
-        <div><div class="spec-l">取り戻せる時間</div><div class="spec-v" style="color:var(--coral)">月60時間</div><div class="spec-s">コンサル1人あたり</div></div>
+      <div class="panel-right">
+        <!-- SVG: 承認フロー -->
+        <svg viewBox="0 0 260 360" xmlns="http://www.w3.org/2000/svg" style="width:240px">
+          <!-- ステップ1 -->
+          <circle cx="130" cy="40" r="28" fill="#E63B2D"/>
+          <text x="130" y="36" text-anchor="middle" font-size="18">✅</text>
+          <text x="130" y="52" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="9" fill="#fff" font-weight="700">承認</text>
+          <text x="130" y="80" text-anchor="middle" font-family="Yu Mincho,serif" font-size="12" fill="#fff">経営層・EA部長</text>
+          <!-- 矢印 -->
+          <line x1="130" y1="68" x2="130" y2="98" stroke="#444" stroke-width="1.5" stroke-dasharray="3 2"/>
+          <polygon points="124,98 130,110 136,98" fill="#444"/>
+          <!-- ステップ2 -->
+          <circle cx="130" cy="130" r="28" fill="#2A2A2A" stroke="#444" stroke-width="1.5"/>
+          <text x="130" y="126" text-anchor="middle" font-size="18">🔑</text>
+          <text x="130" y="142" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="9" fill="#888" font-weight="700">申請</text>
+          <text x="130" y="170" text-anchor="middle" font-family="Yu Mincho,serif" font-size="12" fill="#888">情シス（島森さん）</text>
+          <!-- 矢印 -->
+          <line x1="130" y1="158" x2="130" y2="188" stroke="#444" stroke-width="1.5" stroke-dasharray="3 2"/>
+          <polygon points="124,188 130,200 136,188" fill="#444"/>
+          <!-- ステップ3 -->
+          <circle cx="130" cy="220" r="28" fill="#2A2A2A" stroke="#444" stroke-width="1.5"/>
+          <text x="130" y="216" text-anchor="middle" font-size="18">🚀</text>
+          <text x="130" y="232" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="9" fill="#888" font-weight="700">接続</text>
+          <text x="130" y="260" text-anchor="middle" font-family="Yu Mincho,serif" font-size="12" fill="#888">VS Code + Claude</text>
+          <!-- 完了 -->
+          <rect x="50" y="285" width="160" height="50" rx="8" fill="#1A1A1A" stroke="#E63B2D" stroke-width="1"/>
+          <text x="130" y="308" text-anchor="middle" font-family="Yu Mincho,serif" font-size="14" fill="#E63B2D">3AI 完全一元化</text>
+          <text x="130" y="326" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="10" fill="#666">Claude + Gemini + Copilot</text>
+          <!-- 所要時間 -->
+          <text x="130" y="356" text-anchor="middle" font-family="Meiryo UI,sans-serif" font-size="10" fill="#555" letter-spacing=".5px">承認から完了まで 約5分</text>
+        </svg>
       </div>
     </div>
   </section>
 
 </div>
 
-<!-- フッターナビゲーション -->
-<div class="nav-bottom">
-  <button class="nav-btn" id="prev">← 前へ</button>
-  <div class="nav-progress"><strong id="cur">01</strong> ／ 05</div>
-  <button class="nav-btn" id="next">次へ →</button>
+<div class="nav" id="nav">
+  <button class="nbtn" id="prev">← 前へ</button>
+  <div class="nprog"><strong id="cur">01</strong> ／ 05</div>
+  <button class="nbtn" id="next">次へ →</button>
 </div>
 
 <script>
-const tabs = document.querySelectorAll('.tab');
-const panels = document.querySelectorAll('.panel');
-const prevBtn = document.getElementById('prev');
-const nextBtn = document.getElementById('next');
-const curEl = document.getElementById('cur');
-let current = 0;
+const tabs=document.querySelectorAll('.tab');
+const panels=document.querySelectorAll('.panel');
+const prev=document.getElementById('prev');
+const next=document.getElementById('next');
+const cur=document.getElementById('cur');
+const nav=document.getElementById('nav');
+let idx=0;
 
-function show(idx) {
-  if (idx < 0 || idx >= panels.length) return;
-  current = idx;
-  tabs.forEach((t,i) => t.classList.toggle('active', i === idx));
-  panels.forEach((p,i) => p.classList.toggle('active', i === idx));
-  curEl.textContent = String(idx + 1).padStart(2, '0');
-  prevBtn.disabled = idx === 0;
-  nextBtn.disabled = idx === panels.length - 1;
-  // パネル先頭にスクロールリセット
-  panels[idx].scrollTop = 0;
+function show(i){
+  if(i<0||i>=panels.length)return;
+  idx=i;
+  tabs.forEach((t,n)=>t.classList.toggle('active',n===i));
+  panels.forEach((p,n)=>p.classList.toggle('active',n===i));
+  cur.textContent=String(i+1).padStart(2,'0');
+  prev.disabled=i===0;
+  next.disabled=i===panels.length-1;
+  panels[i].scrollTop=0;
+  nav.style.background=i===4?'rgba(10,10,10,.95)':'rgba(255,255,255,.95)';
+  nav.style.borderTopColor=i===4?'#2A2A2A':'#E0E0E0';
+  nav.querySelectorAll('.nbtn').forEach(b=>{
+    b.style.color=i===4?'#888':'';
+    b.style.borderColor=i===4?'#444':'';
+  });
+  cur.style.color=i===4?'#888':'';
 }
 
-tabs.forEach((t,i) => t.addEventListener('click', () => show(i)));
-prevBtn.addEventListener('click', () => show(current - 1));
-nextBtn.addEventListener('click', () => show(current + 1));
-
-// キーボード←→対応
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowLeft') show(current - 1);
-  if (e.key === 'ArrowRight') show(current + 1);
+tabs.forEach((t,i)=>t.addEventListener('click',()=>show(i)));
+prev.addEventListener('click',()=>show(idx-1));
+next.addEventListener('click',()=>show(idx+1));
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowLeft')show(idx-1);
+  if(e.key==='ArrowRight')show(idx+1);
 });
 
-// カレンダー生成
-const cal = document.getElementById('cal');
-const lostHours = 60;
-const lostSet = new Set();
-let placed = 0;
-for(let week=0; week<5 && placed<lostHours; week++){
-  for(let day=0; day<5 && placed<lostHours; day++){
-    for(let h=0; h<3 && placed<lostHours; h++){
-      const cellIdx = week*7*12 + day*12 + (7+h);
-      lostSet.add(cellIdx);
-      placed++;
+// Calendar
+const cal=document.getElementById('cal');
+const lost=new Set();
+let placed=0;
+for(let w=0;w<5&&placed<60;w++)
+  for(let d=0;d<5&&placed<60;d++)
+    for(let h=0;h<3&&placed<60;h++){
+      lost.add(w*7*12+d*12+(7+h));placed++;
     }
-  }
-}
-let html = '';
-for(let week=0; week<5; week++){
-  html += '<div class="cal-day">';
-  for(let day=0; day<7; day++){
-    for(let h=0; h<12; h++){
-      const idx = week*7*12 + day*12 + h;
-      html += `<div class="cal-cell${lostSet.has(idx) ? ' lost' : ''}"></div>`;
+let html='';
+for(let w=0;w<5;w++){
+  html+='<div class="cal-day">';
+  for(let d=0;d<7;d++)
+    for(let h=0;h<12;h++){
+      const id=w*7*12+d*12+h;
+      html+=`<div class="cal-cell${lost.has(id)?' lost':''}"></div>`;
     }
-  }
-  html += '</div>';
+  html+='</div>';
 }
-cal.innerHTML = html;
-
+cal.innerHTML=html;
 show(0);
 </script>
 </body>
