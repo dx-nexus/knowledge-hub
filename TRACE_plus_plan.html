@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Project TRACE+ — 構想計画書</title>
+<title>Project TRACE+ — 構想計画書 v0.2</title>
 <style>
 :root{
   --bg:#0e0e12; --surface:#181820; --border:#2a2a36;
@@ -31,16 +31,18 @@ table{width:100%;border-collapse:collapse;margin:18px 0 24px;font-size:14px;}
 th,td{border:1px solid var(--border);padding:9px 12px;text-align:left;vertical-align:top;}
 th{background:var(--surface);color:var(--dim);font-weight:500;}
 .draft{display:inline-block;font-size:11px;background:#3a2f1a;color:var(--accent2);padding:2px 8px;border-radius:3px;margin-left:8px;}
+.new{display:inline-block;font-size:11px;background:#1a3a2a;color:var(--accent);padding:2px 8px;border-radius:3px;margin-left:8px;}
 .foot{margin-top:64px;padding-top:24px;border-top:1px solid var(--border);font-size:12px;color:var(--dim);text-align:center;}
 .timeline{list-style:none;margin-left:0;}
 .timeline li{padding-left:20px;position:relative;}
 .timeline li::before{content:'';position:absolute;left:0;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent);}
+.note{font-size:13px;color:var(--dim);background:var(--surface);padding:14px 18px;border-radius:6px;margin:16px 0;}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-<div class="tag">PROJECT DOCUMENT / DRAFT v0.1</div>
+<div class="tag">PROJECT DOCUMENT / DRAFT v0.2</div>
 <h1>Project TRACE+</h1>
 <div class="sub">見えない頭脳労働を可視化する思考ログ基盤 ／ 構想計画書</div>
 
@@ -108,18 +110,19 @@ TRACE+は、最初から万人向けプロダクトとして設計しない。�
 <h2>検証方針</h2>
 
 <ul class="timeline">
-<li><strong>Phase 0（現在）</strong>：構想を計画書として固定。Gitに保存し、狼煙とする。</li>
+<li><strong>Phase 0（完了）</strong>：構想を計画書として固定。Gitに保存し、狼煙とした。</li>
 <li><strong>Phase 1（〜2週間）</strong>：手動運用で検証。日々の壁打ちログをClaudeが構造化し、思考ログとして蓄積。「本当に自分の役に立つか」を体で確かめる。</li>
 <li><strong>Phase 2</strong>：手応えがあれば自動化を検討（Claude APIによる解析スクリプト化）。手応えがなければ分類軸から見直す。</li>
 <li><strong>Phase 3</strong>：蓄積ログから普遍的パターンを抽出。プロダクト化の是非を判断。</li>
 </ul>
 
-<h2>思考の分類軸 <span class="draft">叩き台・他AIブレスト用</span></h2>
+<h2>思考の分類軸 <span class="draft">叩き台・継続精緻化中</span></h2>
 
 <p>
-日々の壁打ちテキストを、以下の軸で分類・構造化する。これは確定ではない。他のAI（Geminiほか）とのブレストを経て精緻化する前提の素案である。
+日々の壁打ちテキストを、以下の軸で分類・構造化する。これは確定ではなく、運用とブレストを経て育てていく素案である。
 </p>
 
+<h3>基本軸（6軸）</h3>
 <table>
 <tr><th>分類軸</th><th>捉えるもの</th></tr>
 <tr><td>論点整理</td><td>課題・ボトルネックの洗い出し</td></tr>
@@ -127,7 +130,20 @@ TRACE+は、最初から万人向けプロダクトとして設計しない。�
 <tr><td>調整</td><td>関係者間の温度調整・期待値調整</td></tr>
 <tr><td>仮説</td><td>「こうではないか」という見立て</td></tr>
 <tr><td>リスク検知</td><td>爆発の先読み・地雷回避</td></tr>
+<tr><td>センシング <span class="new">v0.2 追加</span></td><td>違和感・予兆の受信。まだリスクと言語化できないが、脳のバックグラウンドで処理している気づき（「あの人がずっと黙っていた」等）。リスク検知の一歩手前。</td></tr>
 </table>
+
+<h3>保留軸（独立させず、手動運用で頻度を観察）</h3>
+<table>
+<tr><th>候補</th><th>位置づけ</th></tr>
+<tr><td>翻訳・意味づけ</td><td>経営層の要望を現場タスクに、技術懸念を事業リスクに変換する橋渡し。複数軸にまたがる横断スキルの可能性があるため、独立軸にせず観察。</td></tr>
+<tr><td>トリアージ（捨てる決断）</td><td>炎上時の「何を諦めるか」の苦しい取捨選択。「判断」の特殊形としてサブタグ扱い。</td></tr>
+</table>
+
+<div class="note">
+<strong>「その他（分類不能）」バケツを必ず置く。</strong><br>
+上記の軸で分類できない思考は、無理に押し込めず「その他」に溜める。そこに溜まったログを後で見直すことで、思考のクセや「次の普遍的な軸の原石」が発見できる。綺麗に分類することがゴールではない。分類できなかったものの中にこそ、TRACE+が探している普遍性の種がある。
+</div>
 
 <p>
 出力は本HTMLと同形式の「思考ログ」として、日付ごとに記録する。
@@ -135,14 +151,15 @@ TRACE+は、最初から万人向けプロダクトとして設計しない。�
 
 <h2>次アクション</h2>
 <ul>
-<li>本計画書をGit（private-core）に保存し、Phase 0完了とする</li>
-<li>分類軸を他AIと共有し、ブレストで精緻化</li>
-<li>Phase 1：日次の思考ログ手動蓄積を開始</li>
-<li>自動化（Phase 2）の設計はClaudeに一任</li>
+<li>Phase 1：日次の思考ログ手動蓄積を開始（6軸＋その他バケツで運用）</li>
+<li>「翻訳・意味づけ」「トリアージ」の出現頻度を観察</li>
+<li>「その他」バケツに溜まったログから、6つ目以降の軸候補を発見</li>
+<li>自動化（Phase 2）の設計はClaudeに一任。手動ログの実物が貯まってから着手</li>
 </ul>
 
 <div class="foot">
-Project TRACE+ ／ 構想計画書 v0.1 ／ 2026-05-30<br>
+Project TRACE+ ／ 構想計画書 v0.2 ／ 2026-05-30 更新<br>
+v0.2 改訂：Phase 0完了後、PMO視点のレビューを受けて分類軸を更新（センシング軸の追加・その他バケツの導入）<br>
 「衝動が先にあった。表現は、たまたま文学だった。」
 </div>
 
