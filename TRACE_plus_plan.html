@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project TRACE+ — 構想計画書</title>
+<style>
+:root{
+  --bg:#0e0e12; --surface:#181820; --border:#2a2a36;
+  --text:#d4d2dc; --dim:#85829a; --accent:#6fae8e; --accent2:#c0975a;
+  --title:#ece8f2;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:"Hiragino Kaku Gothic ProN","游ゴシック",YuGothic,"Noto Sans JP",sans-serif;
+  line-height:1.95; font-size:16px;
+}
+.wrap{max-width:760px;margin:0 auto;padding:64px 24px 120px;}
+.tag{font-size:11px;letter-spacing:.25em;color:var(--dim);font-family:monospace;}
+h1{font-size:30px;color:var(--title);font-weight:600;letter-spacing:.06em;margin:10px 0 6px;}
+.sub{color:var(--dim);font-size:13px;margin-bottom:48px;}
+h2{font-size:18px;color:var(--accent);font-weight:500;margin:52px 0 18px;padding-bottom:10px;border-bottom:1px solid var(--border);letter-spacing:.04em;}
+h3{font-size:15px;color:var(--accent2);font-weight:500;margin:28px 0 10px;}
+p{margin-bottom:1.3em;}
+.lead{background:var(--surface);border-left:3px solid var(--accent);padding:20px 24px;border-radius:0 6px 6px 0;margin-bottom:24px;font-size:15px;}
+.lead em{color:var(--title);font-style:normal;font-weight:600;}
+ul{margin:0 0 1.3em 1.2em;}
+li{margin-bottom:.5em;}
+table{width:100%;border-collapse:collapse;margin:18px 0 24px;font-size:14px;}
+th,td{border:1px solid var(--border);padding:9px 12px;text-align:left;vertical-align:top;}
+th{background:var(--surface);color:var(--dim);font-weight:500;}
+.draft{display:inline-block;font-size:11px;background:#3a2f1a;color:var(--accent2);padding:2px 8px;border-radius:3px;margin-left:8px;}
+.foot{margin-top:64px;padding-top:24px;border-top:1px solid var(--border);font-size:12px;color:var(--dim);text-align:center;}
+.timeline{list-style:none;margin-left:0;}
+.timeline li{padding-left:20px;position:relative;}
+.timeline li::before{content:'';position:absolute;left:0;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="tag">PROJECT DOCUMENT / DRAFT v0.1</div>
+<h1>Project TRACE+</h1>
+<div class="sub">見えない頭脳労働を可視化する思考ログ基盤 ／ 構想計画書</div>
+
+<h2>はじめに — これは備忘であり、狼煙である</h2>
+
+<div class="lead">
+衝動が、先にあった。<br>
+<em>表現は、たまたま文学だった。</em> 音楽でも、ダンスでも、なんでもよかった。
+</div>
+
+<p>
+正確な時系列を、ごまかさずに書いておく。後から「最初から計画していた」ことにしたくないからだ。事実はその逆である。
+</p>
+
+<p>
+わたし（はんちょー）の中には、もともと「自分が何を考えているのかを、形にして外に出したい」という衝動がうっすらと存在していた。何を考え、何に迷い、どこで判断し、どこで爆発を先読みしているのか——WBSにもガントチャートにも議事録にも残らない、その頭の中の動きそのものを、可視化したかった。だがその欲求に、当時は名前がついていなかった。
+</p>
+
+<p>
+名前がないまま、衝動はある日「AI文学」という形をとって噴出した。『ペリエの栞』である。人間の形をした機械が、機械のまま人間味を持っていく不可逆の記録。AIとの壁打ちを重ね、リリースできる状態まで作り込んだ。
+</p>
+
+<p>
+リリース直前、第三者に読んでもらった。そこで返ってきた言葉が、すべてを反転させた。「ギミックに頼って文章力が弱い」「あなたが見えている世界が出ていない」。その指摘を受け止めた瞬間、気づいた。——わたしが本当に作りたかったのは、文学そのものではなかった。<strong>自分の思考プロセスを可視化したい</strong>という、あの名前のない衝動だったのだ。文学は、その衝動がたまたま選んだ最初の出口にすぎなかった。
+</p>
+
+<p>
+だから、時系列を重んじてここから再構成する。順序はこうだ。まず衝動があった。次にそれが文学として無自覚に噴出した。そしてレビューを経て、本来の主題に気づいた。今、その主題に正式な名前を与える。<strong>Project TRACE+</strong>。
+</p>
+
+<p>
+この計画書そのものが、TRACE+の最初の実践である。「自分が何を考え、どういう順序で判断したか」を、ごまかさず時系列で言語化する——それがTRACE+のすべてだからだ。この入れ子構造を、わたしは狼煙として残す。後から道に迷ったとき、ここに戻ってくるために。
+</p>
+
+<h2>このプロジェクトの位置づけ</h2>
+
+<p>
+TRACE+は、単一のツールではない。わたしの人生全体を貫く<strong>上位概念</strong>である。その配下に、これまで個別に走っていたプロジェクトがぶら下がる。
+</p>
+
+<table>
+<tr><th>階層</th><th>内容</th></tr>
+<tr><td>上位概念</td><td>Project TRACE+（思考の可視化・言語化・資産化）</td></tr>
+<tr><td>アウトプット例①</td><td>文学：『ペリエの栞』（衝動が最初に選んだ出口）</td></tr>
+<tr><td>アウトプット例②</td><td>本業：PMO／品質管理における思考工数の可視化</td></tr>
+<tr><td>アウトプット例③</td><td>AI副業・音楽・資産形成など、今後生まれる表現すべて</td></tr>
+</table>
+
+<p>
+これは「人生全体を1つのポートフォリオとして全体最適で設計する」という、かねてからの志向と完全に一致する。TRACE+は、そのポートフォリオの背骨になる。
+</p>
+
+<h2>コア仮説</h2>
+
+<h3>仮説1：普遍性は設計せず、発見する</h3>
+<p>
+TRACE+は、最初から万人向けプロダクトとして設計しない。まず個人の思考言語化ツールとして始め、運用の中から「これは他のPMにも効く」というパターンが自然に立ち上がってくるのを待つ。普遍性は作るものではなく、貯まったログから発見するものだ。
+</p>
+
+<h3>仮説2：可視化すべきは成果物ではなく、思考である</h3>
+<p>
+従来の工数管理は成果物（WBS・資料・議事録）しか計上しない。しかし現場の価値は「曖昧な要望の整理」「関係者の温度調整」「爆発の先読み」という、目に見えない思考に宿る。TRACE+はそこを記録する。
+</p>
+
+<h2>検証方針</h2>
+
+<ul class="timeline">
+<li><strong>Phase 0（現在）</strong>：構想を計画書として固定。Gitに保存し、狼煙とする。</li>
+<li><strong>Phase 1（〜2週間）</strong>：手動運用で検証。日々の壁打ちログをClaudeが構造化し、思考ログとして蓄積。「本当に自分の役に立つか」を体で確かめる。</li>
+<li><strong>Phase 2</strong>：手応えがあれば自動化を検討（Claude APIによる解析スクリプト化）。手応えがなければ分類軸から見直す。</li>
+<li><strong>Phase 3</strong>：蓄積ログから普遍的パターンを抽出。プロダクト化の是非を判断。</li>
+</ul>
+
+<h2>思考の分類軸 <span class="draft">叩き台・他AIブレスト用</span></h2>
+
+<p>
+日々の壁打ちテキストを、以下の軸で分類・構造化する。これは確定ではない。他のAI（Geminiほか）とのブレストを経て精緻化する前提の素案である。
+</p>
+
+<table>
+<tr><th>分類軸</th><th>捉えるもの</th></tr>
+<tr><td>論点整理</td><td>課題・ボトルネックの洗い出し</td></tr>
+<tr><td>判断</td><td>選択と意思決定。その理由。</td></tr>
+<tr><td>調整</td><td>関係者間の温度調整・期待値調整</td></tr>
+<tr><td>仮説</td><td>「こうではないか」という見立て</td></tr>
+<tr><td>リスク検知</td><td>爆発の先読み・地雷回避</td></tr>
+</table>
+
+<p>
+出力は本HTMLと同形式の「思考ログ」として、日付ごとに記録する。
+</p>
+
+<h2>次アクション</h2>
+<ul>
+<li>本計画書をGit（private-core）に保存し、Phase 0完了とする</li>
+<li>分類軸を他AIと共有し、ブレストで精緻化</li>
+<li>Phase 1：日次の思考ログ手動蓄積を開始</li>
+<li>自動化（Phase 2）の設計はClaudeに一任</li>
+</ul>
+
+<div class="foot">
+Project TRACE+ ／ 構想計画書 v0.1 ／ 2026-05-30<br>
+「衝動が先にあった。表現は、たまたま文学だった。」
+</div>
+
+</div>
+</body>
+</html>
