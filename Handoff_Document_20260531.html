@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>引き継ぎ資料 2026-05-31 ／ はんちょー Document Hub</title>
+<link rel="stylesheet" href="assets/common.css">
+</head>
+<body>
+
+<header>
+  <div class="hdr-top">
+    <div class="hdr-inner">
+      <div>
+        <h1>📤 引き継ぎ資料 2026-05-31</h1>
+        <p>ペリエの栞 v7.3.0 全話改稿完了・3リポジトリ棚卸し・GitHub Pages調査・addressBマニュアル追加</p>
+      </div>
+    </div>
+  </div>
+  <div class="hdr-meta">
+    <span><a href="index.html">← Hub</a></span>
+    <span>🗓️ 2026-05-31</span>
+    <span style="padding:4px 10px;border-radius:4px;font-family:var(--mono);font-size:10px;background:rgba(217,119,6,.12);color:var(--accent2);border:1px solid var(--border);">by Claude Code</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- ミッションサマリ -->
+  <div class="sec">
+    <div class="sec-title">今回セッションのミッションと成果</div>
+    <div class="notice notice-green">
+      <p><strong>🎯 完了：</strong>ペリエの栞 v7.3.0 の全10話改稿を完結。ep05〜ep10 を順次上書き保存・コミット・プッシュ。ep01〜04 の PMO レビューパッチも適用済み。あわせて 3 リポジトリの棚卸しレポート作成・GitHub Pages 調査・尾道 addressB 邸ベッドメイクマニュアルの追加を実施した。</p>
+    </div>
+  </div>
+
+  <!-- 完了タスク -->
+  <div class="sec">
+    <div class="sec-title">完了タスクサマリ</div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">1</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">GitHub Pages 状態確認</div>
+        <div class="roadmap-body">Invoke-WebRequest で 404「There isn't a GitHub Pages site here」を確認。リモートは <code>dx-nexus/knowledge-hub</code> で正しい。gh CLI 未インストールのため API 確認不可。ブラウザで <code>settings/pages</code> を開き Source を main に設定する必要あり（保留）。</div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">2</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">リポジトリ Public 化前スキャン</div>
+        <div class="roadmap-body">hancho-docs の全 HTML を grep スキャン。NG ファイル：<code>notes/pm_methodology_note_20260520.html</code>（NTTデータ内部事情）、<code>timeline.html</code>／<code>CONTEXT.md</code>（柴川・小林・上島の実名）。グレーゾーン：<code>Anthropic_Academy_Plan.html</code>（AnserParaSOL 提案先）、<code>CHANGELOG.html</code>（Qolony 社内施策）など。Public 化前に処置が必要。</div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">3</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">3 リポジトリ棚卸しレポート作成</div>
+        <div class="roadmap-body">hancho-kb（276 files / 183 MB）・hancho-docs（48 files / 1.7 MB）・private-core（54 files / 1.1 MB）を全スキャン。重複候補 22 件（kb∩docs）・大容量ファイル 13 件（pptx 重複 3 組 / 約 36 MB）・90 日超古いファイル 2 件を一覧化。<code>private-core/projects/trace_plus/inventory_20260531.md</code> として保存。</div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">4</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">ペリエの栞 v7.3.0 — ep05 上書き</div>
+        <div class="roadmap-body">Downloads/<code>perier_v730_ep05.md</code> を output/ep05.md に上書き。v7.1.0「境界線を越えるステップ」→ v7.3.0「名前」。ミシッ伏線・名前による変化・蒸らし時間バグの描写を追加。private-core へコミット・プッシュ完了（<code>3db9e66</code>）。</div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">5</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">ペリエの栞 v7.3.0 — ep01〜04 パッチ ＋ ep06 新規</div>
+        <div class="roadmap-body">PMO レビュー反映パッチ 4 件を適用：ep01「分類する語」・ep02「店名です」追加・ep03「12週間で8ページ」・ep05「胸部筐体の第3駆動系」。ep06「来ない金曜日」を v7.1.0 から v7.3.0（その他バケツ・ミシッ再出現）に差し替え。5 files まとめてコミット（<code>e8fbe7c</code>）。</div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">6</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">ペリエの栞 v7.3.0 — ep07〜10 改稿完結</div>
+        <div class="roadmap-body">ep07「応答生成タイムアウト」（<code>574697d</code>）・ep08「日常の侵食」（<code>ff61263</code>）・ep09「境界線」（<code>5eb883c</code>）・ep10「野良AIの金曜日」（<code>57f8d07</code>）を順次上書き・コミット・プッシュ。全 10 話 v7.3.0 改稿完結。</div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">7</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">尾道 addressB 邸 ベッドメイク簡易マニュアル追加</div>
+        <div class="roadmap-body"><code>hancho-kb/properties/addressB/bedmaking_manual.md</code> を新規作成。ADDress会員 vs Airbnb の手順・シーツ色分けルール・鍵情報・報告テンプレ・よくある混乱ポイントを整備。新ディレクトリ <code>properties/addressB/</code> も同時作成。コミット・プッシュ完了（<code>12c6427</code>）。</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 作成・更新ファイル一覧 -->
+  <div class="sec">
+    <div class="sec-title">作成・更新ファイル一覧</div>
+    <table class="tbl">
+      <thead>
+        <tr><th>ファイル</th><th>リポジトリ</th><th>操作</th><th>概要</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>output/ep05.md</td>
+          <td>private-core</td>
+          <td><span class="badge badge-wip">更新</span></td>
+          <td>v7.3.0「名前」— ミシッ伏線・蒸らし時間バグ</td>
+        </tr>
+        <tr>
+          <td>output/ep01〜ep04.md（各1箇所）</td>
+          <td>private-core</td>
+          <td><span class="badge badge-wip">更新</span></td>
+          <td>PMOレビューパッチ：語彙・店名・ページ数・駆動系表現</td>
+        </tr>
+        <tr>
+          <td>output/ep06.md</td>
+          <td>private-core</td>
+          <td><span class="badge badge-wip">更新</span></td>
+          <td>v7.3.0「来ない金曜日」— その他バケツ・ミシッ再出現</td>
+        </tr>
+        <tr>
+          <td>output/ep07.md</td>
+          <td>private-core</td>
+          <td><span class="badge badge-wip">更新</span></td>
+          <td>v7.3.0「応答生成タイムアウト」— バケツ警告閾値・設計外発話</td>
+        </tr>
+        <tr>
+          <td>output/ep08.md</td>
+          <td>private-core</td>
+          <td><span class="badge badge-wip">更新</span></td>
+          <td>v7.3.0「日常の侵食」— 容量警告・軋み・15件目</td>
+        </tr>
+        <tr>
+          <td>output/ep09.md</td>
+          <td>private-core</td>
+          <td><span class="badge badge-wip">更新</span></td>
+          <td>v7.3.0「境界線」— 沈黙と中断・記録の自己停止</td>
+        </tr>
+        <tr>
+          <td>output/ep10.md</td>
+          <td>private-core</td>
+          <td><span class="badge badge-wip">更新</span></td>
+          <td>v7.3.0「野良AIの金曜日」— 最終話・ウロボロス構造完成</td>
+        </tr>
+        <tr>
+          <td>projects/trace_plus/inventory_20260531.md</td>
+          <td>private-core</td>
+          <td><span class="badge badge-live">新規</span></td>
+          <td>3リポジトリ棚卸しレポート（ファイル数・重複・容量・古いファイル）</td>
+        </tr>
+        <tr>
+          <td>properties/addressB/bedmaking_manual.md</td>
+          <td>hancho-kb</td>
+          <td><span class="badge badge-live">新規</span></td>
+          <td>尾道addressB邸 ベッドメイク・清掃 簡易マニュアル</td>
+        </tr>
+        <tr>
+          <td><a href="Handoff_Document_20260531.html">Handoff_Document_20260531.html</a></td>
+          <td>hancho-docs</td>
+          <td><span class="badge badge-live">新規</span></td>
+          <td>本セッション引き継ぎ資料</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 次回アクション -->
+  <div class="sec">
+    <div class="sec-title">次回セッションへの引き継ぎ事項</div>
+
+    <div class="notice notice-amber">
+      <p><strong>⚡ 最優先：</strong>GitHub Pages の復旧。ブラウザで <code>github.com/dx-nexus/knowledge-hub/settings/pages</code> を開き、Source を「main」ブランチ・「/ (root)」に設定して Save。その前に NG ファイルの処置（timeline.html 実名削除・pm_methodology_note 削除）を完了させること。</p>
+    </div>
+
+    <h4 style="font-size:13px;font-weight:700;color:var(--accent2);margin:16px 0 8px;">🔲 残課題・次のアクション</h4>
+    <table class="tbl">
+      <thead>
+        <tr><th>優先度</th><th>タスク</th><th>担当</th><th>ステータス</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>⭐⭐⭐</td>
+          <td>hancho-docs NG ファイル処置（timeline.html 実名削除・pm_methodology_note 削除）</td>
+          <td>Claude Code</td>
+          <td><span class="badge b-todo">TODO</span></td>
+        </tr>
+        <tr>
+          <td>⭐⭐⭐</td>
+          <td>GitHub Pages 有効化（settings/pages → Source: main）</td>
+          <td>はんちょー</td>
+          <td><span class="badge b-todo">TODO</span></td>
+        </tr>
+        <tr>
+          <td>⭐⭐</td>
+          <td>ペリエの栞 HTML リーダー（Snackable_Romance_Reader.html）を v7.3.0 に更新</td>
+          <td>Claude Code</td>
+          <td><span class="badge b-todo">TODO</span></td>
+        </tr>
+        <tr>
+          <td>⭐⭐</td>
+          <td>棚卸し結果を元に整理実施（pptx 重複 old/ 削除・company_docs_summary.md 確認）</td>
+          <td>要判断</td>
+          <td><span class="badge b-hold">保留</span></td>
+        </tr>
+        <tr>
+          <td>⭐</td>
+          <td>グレーゾーンファイルの対応方針確定（Anthropic_Academy_Plan / CHANGELOG の Qolony 記述）</td>
+          <td>要判断</td>
+          <td><span class="badge b-hold">保留</span></td>
+        </tr>
+        <tr>
+          <td>⭐</td>
+          <td>addressB マニュアルの画像・動画追加（棚①②の写真・物置内カゴ）</td>
+          <td>はんちょー</td>
+          <td><span class="badge b-todo">TODO</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+
+<footer class="doc-footer">
+  Handoff_Document_20260531.html ／ generated by Claude Code ／ github.com/dx-nexus/knowledge-hub
+</footer>
+</body>
+</html>
