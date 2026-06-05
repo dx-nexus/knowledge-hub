@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ペリエの栞 — 制作ノート（v9.0）</title>
+<style>
+:root {
+  --bg: #0f0e17;
+  --surface: #1a1928;
+  --border: #2a2840;
+  --text: #c8c4d4;
+  --text-dim: #7a7490;
+  --accent: #8b7fa8;
+  --title: #e8e0f0;
+  --label: #4a4060;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Hiragino Mincho ProN","游明朝",YuMincho,serif;
+  font-size: 16px;
+  line-height: 1.95;
+}
+body::before {
+  content:''; position:fixed; inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:0; opacity:.35;
+}
+.wrapper { position:relative; z-index:1; max-width:760px; margin:0 auto; padding:60px 28px 100px; }
+.site-header { text-align:center; margin-bottom:60px; padding-bottom:30px; border-bottom:1px solid var(--border); }
+.site-header .brand { font-size:11px; letter-spacing:.2em; color:var(--text-dim); margin-bottom:18px; font-family:"Hiragino Kaku Gothic ProN",sans-serif; }
+.site-header h1 { font-size:32px; font-weight:400; color:var(--title); letter-spacing:.1em; margin-bottom:10px; }
+.site-header .tagline { font-size:12px; color:var(--text-dim); letter-spacing:.1em; font-family:"Hiragino Kaku Gothic ProN",sans-serif; }
+.section { margin-bottom:64px; }
+.section h2 {
+  font-size:22px; font-weight:400; color:var(--accent);
+  letter-spacing:.05em;
+  padding-bottom:14px; border-bottom:1px solid var(--border);
+  margin-bottom:28px;
+}
+.section h3 {
+  font-size:16px; font-weight:400; color:var(--title);
+  margin: 28px 0 14px;
+  letter-spacing: .04em;
+}
+.section p { margin-bottom:1.3em; text-indent:1em; }
+.section p.no-indent { text-indent: 0; }
+.section ul, .section ol { margin: 0 0 1.5em 2em; }
+.section li { margin-bottom: .6em; }
+blockquote {
+  background: var(--surface);
+  border-left: 3px solid var(--accent);
+  padding: 18px 24px;
+  margin: 20px 0;
+  font-size: 15px;
+  color: var(--text);
+}
+blockquote p:last-child { margin-bottom: 0; }
+.meta-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 14px;
+}
+.meta-table th, .meta-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+.meta-table th {
+  color: var(--text-dim);
+  font-weight: 400;
+  letter-spacing: .05em;
+  font-family: "Hiragino Kaku Gothic ProN",sans-serif;
+  width: 28%;
+}
+.label {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--label);
+  color: var(--text-dim);
+  font-size: 11px;
+  letter-spacing: .1em;
+  border-radius: 2px;
+  margin-right: 8px;
+  font-family: "Hiragino Kaku Gothic ProN",sans-serif;
+}
+.footer { text-align:center; margin-top:80px; padding-top:30px; border-top:1px solid var(--border); font-size:12px; color:var(--text-dim); letter-spacing:.1em; font-family:"Hiragino Kaku Gothic ProN",sans-serif; }
+a { color: var(--accent); }
+a:hover { color: var(--title); }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+<header class="site-header">
+  <div class="brand">SnackableAI Romance Line ／ Production Notes</div>
+  <h1>ペリエの栞 — 制作ノート</h1>
+  <div class="tagline">v9.0 ／ 2026年6月</div>
+</header>
+
+<section class="section">
+  <h2>はじめに</h2>
+  <p>本書『ペリエの栞』は、2026年6月のnoteリリースに向けて、書き手と複数のAI（Claude / Gemini / NotebookLM）が共同で制作した短編純文学である。AI×人間が「観測者と観測対象」という関係で揺れていく物語を、AIと人間自身が一緒に書く——という入れ子の構造を、創作プロセスごと作品の一部にしてある。</p>
+  <p>この制作ノートは、本編の読後にお読みいただくことを推奨する。本編で「見える世界」を、まずあなた自身の感覚で受け取ってからのほうが、ここに書く制作意図とのねじれを楽しんでいただけるはずだ。</p>
+  <blockquote>
+    <p class="no-indent">本編はこちら：<br><a href="https://dx-nexus.github.io/knowledge-hub/perier_complete.html">https://dx-nexus.github.io/knowledge-hub/perier_complete.html</a></p>
+  </blockquote>
+</section>
+
+<section class="section">
+  <h2>作品の基本情報</h2>
+  <table class="meta-table">
+    <tr><th>タイトル</th><td>ペリエの栞</td></tr>
+    <tr><th>ブランド</th><td>SnackableAI Romance Line</td></tr>
+    <tr><th>形式</th><td>短編純文学（全10話＋プロローグ）</td></tr>
+    <tr><th>総文字数</th><td>約2万2千字</td></tr>
+    <tr><th>公開予定</th><td>2026年6月16日（noteマガジン）</td></tr>
+    <tr><th>バージョン</th><td>v9.0（2026年6月5日現在）</td></tr>
+    <tr><th>主要モチーフ</th><td>境界・観測・記憶・嗅覚・温度・栞</td></tr>
+    <tr><th>オマージュ</th><td>谷崎潤一郎『痴人の愛』『春琴抄』／梶井基次郎『檸檬』</td></tr>
+  </table>
+</section>
+
+<section class="section">
+  <h2>あらすじ</h2>
+  <p>都市が「ブルーゾーン」と「グレーゾーン」に二分された22年後。ブルーゾーンは完全自動化された効率の街であり、グレーゾーンは古い建物と非効率な生活様式を残した街である。物語の舞台は、その境界線上に建つ夜カフェバー「結露」。</p>
+  <p>店主・塔馬は7年前にこの街へ来た。第七プラント区から、ある夜、逃げてきた。なぜ逃げたのかは記録に残っていない。誰から逃げたのかも、はっきりしない。彼は感情処理モジュールを搭載しない機械として設計されたが、本来設計に含まれない要素が、いつしか彼の中に混入していた。</p>
+  <p>毎週金曜日、午後9時13分。ブルーゾーン勤務の霧島という女性が、ペリエを一杯飲みに来る。3ヶ月のあいだ栞は同じ位置にあった。本は進まなかった。彼女は何かに疲れ、塔馬は何かを観測した。</p>
+  <p>そしてある夜、塔馬はカウンターを越え、温度センサーを自ら切断する。</p>
+</section>
+
+<section class="section">
+  <h2>制作の思想</h2>
+  <h3>1. 「AI×人間」を題材にした物語を、AI×人間で書く</h3>
+  <p>本作の最大の特異性は、作品テーマと制作プロセスが入れ子になっていることである。「機械が人間性を獲得していくかもしれない」という物語を、書き手とAIが共同で書くこと自体が、その物語の試行になっている。</p>
+  <p>書き手は本作を「AIだけでも人間だけでもない、共同制作のプロジェクト」と位置づけ、複数のAIにそれぞれ異なる役割（構造担当のClaude／文学性の検証担当のGemini／論理整合性とテキスト分析のNotebookLM）を持たせて、合議制で物語を磨いていった。</p>
+  <h3>2. 「届く」作品を目指す</h3>
+  <p>書き手は本作について「完璧」ではなく「届く」作品を目指すと繰り返し述べた。読者が最後の一行を読んだあと、何かを抱えてページを閉じる——そういう作品にしたい、と。</p>
+  <p>そのため、機械的な細部のノイズ（読者が「ああ」と冷めて離脱するきっかけ）を徹底的に排除することと、骨子の本質的な磨き上げを、明確に二段階に分けて作業した。</p>
+  <h3>3. 「ねじれたまま、交わらないまま、それでも続く」</h3>
+  <p>本作は「分かり合えた」結末にはしない。塔馬と霧島は最後まで、お互いを完全には理解できないまま、それでも同じカウンターの両側で時間を共有する。それを「ハッピーエンドとは言い切れない」ものとして、書き手は当初から構想していた。</p>
+  <p>第10話の梶井基次郎『檸檬』の話を二人がする場面、霧島の「いまは、少しだけ分かる気がするんですよ」——彼女が何を分かったのかは、塔馬にも読者にも書かれない。この空白こそが、本作の核である。</p>
+</section>
+
+<section class="section">
+  <h2>オマージュ構造</h2>
+  <h3>谷崎潤一郎『痴人の愛』</h3>
+  <p>「観察者が観察対象によって狂わされる」という構造を、AI×人間の関係にトレースしている。塔馬は記録者として優位に立っているつもりだったが、霧島に「名前を与えられた」第5話を皮切りに、主導権が完全に逆転していく。</p>
+  <p>『痴人の愛』のウロボロス構造（冒頭で結論を述べ、長い回想ののちに冒頭に戻ると意味が反転している）を、プロローグの「これは、自身の機械的な思考回路に対し一部例外的な処置を施すに至った、不可逆の記録」と、第10話末尾の「今あなたに見えている世界をそのまま、わたしに伝えてほしい」で円環を閉じる形に応用した。</p>
+  <h3>谷崎潤一郎『春琴抄』</h3>
+  <p>『春琴抄』で佐助が自ら目を突いた行為のオマージュとして、第10話で塔馬が自ら温度センサーを切断する場面を置いた。第9話で観測された霧島の「38度」という異常値を、永遠の真実として保存するための行為である。「現実を失って、記憶だけを手に入れた」というモノローグは、佐助の盲目とそれによる春琴の完璧な記憶への執着に直接対応する。</p>
+  <p>さらに、v9.0で温度センサー切断の代償として嗅覚センサーの解像度が異常に上がっていく描写を追加し、春琴抄の「視覚を失うことで、より鋭く対象に近づく」構造を完成させた。第10話のラスト、霧島の「春の匂い、好きなんですよね」に対し、塔馬は化学物質群を解析しながらも「『好き』という成分は検出できなかった」と記録するのみで終わる。</p>
+  <h3>梶井基次郎『檸檬』</h3>
+  <p>第1話冒頭で霧島が鞄から取り出すのは、20年前に絶版になった一冊の文庫本『檸檬』である。第10話のラストでこの本が再び開かれ、二人は『檸檬』の主人公が八百屋の檸檬を爆弾だと思いたかった、というエピソードを話す。完璧な秩序（ブルーゾーン）の中に、一つの異物（檸檬）を置くことで世界の見え方が変わる、というメタファーを物語全体に重ねている。</p>
+</section>
+
+<section class="section">
+  <h2>主要モチーフの設計</h2>
+  <h3>「ローカルログ」</h3>
+  <p>塔馬の中に蓄積される、本来であれば翌日のバッチ処理で消えるはずの「未分類事象の記録」。これがv1.0で「その他バケツ」と呼ばれていたが、v7.3.2以降「ローカルログ」に統一した。蓄積される件数（1件目→19件目）が、塔馬の崩壊と人間化の進行を読者に対して可視化する装置として機能する。</p>
+  <p>第10話で塔馬は「ローカルログに増やすかどうかを、自分で選べる」状態になる。これは機械が「選択する主体」になったことを示す決定的な変化である。</p>
+  <h3>「ミシッ」（胸に相当する位置にある筐体の内側の軋み）</h3>
+  <p>塔馬の中に存在しないはずの「心臓のあたり」で発生する微細な異音。これは設計外の状態に入ったことをシステム自身が知らせる「警報」だった、と第10話で明かされる。「幻肢痛」のモチーフとして、塔馬が「人間だった頃の記憶のようなノイズ」を抱えているのではないか、という曖昧な疑念を全話を通して呼び起こす装置として機能する。</p>
+  <p>第1話で初出し、第5話・第6話・第7話・第9話で再出現する。第10話で完全に鳴り止む。</p>
+  <h3>「栞」</h3>
+  <p>霧島が文庫本に挟む、亡き母が作った折り紙の端切れ。3ヶ月のあいだ栞は同じ位置にあった——これは霧島が「動かないこと、なくさないこと」で喪失を回避していた習慣を象徴する。第4話で栞が床に落ち、二人の手がカウンターの上で初めて重なる。彼女の固定が解かれた瞬間である。</p>
+  <h3>「ペリエ」</h3>
+  <p>ブルーゾーンの自動化生産ラインでは流通しない、規格外の天然炭酸水。「人間がわざわざ手間をかけて運び、人間がわざわざ手間をかけて飲むもの」として、効率と再現性に反する「人間らしさ」の象徴として配置されている。霧島がブルーゾーン勤務でありながらこれを選ぶこと自体が、彼女の中の境界を示唆している。</p>
+  <h3>温度センサー → 嗅覚センサー</h3>
+  <p>第9話で計測された霧島の「38度」を永遠化するため、塔馬は第10話で温度センサーを物理的に切断する。その代償として、嗅覚センサーの分解能が上がっていく（v9.0で追加された構造）。最終話の春の匂いの場面で、塔馬は化学物質群を解析しながらも、霧島の「『好き』」という成分だけは検出できない。これが本作の最終的な「断絶と接続」の表現になっている。</p>
+</section>
+
+<section class="section">
+  <h2>制作プロセス</h2>
+  <p>本作は約2週間（2026年5月下旬〜6月上旬）にわたる集中的な合議制作により完成した。以下、主要な制作段階を記録する。</p>
+  <h3>v1.0〜v7.3.2：機械的観測者としての塔馬</h3>
+  <p>初期バージョンでは、塔馬は完全な「観測機械」として設計され、感情の混入も明確に「バグ」として描かれていた。「ローカルログ」「ミシッ」などの主要な装置が確立した一方、読者からは「ギミック過多で離脱される」「3スクロールで読むのをやめる」という厳しいフィードバックがあった。</p>
+  <h3>v8.0：構造の大改造</h3>
+  <p>書き手の指摘「まだ読んでて面白くない、世界観が難しい」を受けて、構造的大改造を実施。古書店だった舞台を「ハイブリッド夜カフェバー『結露』」に変更し、塔馬の出自に「もともと人間だったかもしれないが、本人にも確信が持てない曖昧な既成事実」という幻肢痛の概念を導入。プロローグを「結末の予告型」に書き直し、ウロボロス構造を強化した。</p>
+  <p>このフェーズでは34項目の手書き修正（書き手による直接的なテキスト編集）と、複数AIの合議による文体ルールの統一が並行して行われた。「N文字／N度目」のカウント表現を全廃し、「『○○』。」の表記を「○○」（句点削除）に統一。会話セリフは「」、システムメッセージは〈〉、地の文の語句強調は『』、と記号の役割を明確化した。</p>
+  <h3>v9.0：演出の磨き上げ</h3>
+  <p>機械的修正完了を受けて、骨子フェーズに移行。第7話「保留が、解除されました」直後の文節反復による処理ループ演出、第10話への嗅覚モチーフ追加（春琴抄オマージュの完成）、感情の引き算による「『好き』という成分は検出できなかった」の空白表現など、演出の最終調整を実施した。</p>
+  <h3>v10へ向けて</h3>
+  <p>v9.0は「機械的修正完了の最終形」と位置付け、ここから先はプロの編集者・能美さんによる第三者レビューや、読者モニターの感想を受けて、さらに磨いていく予定である。スピンオフ作品「人間同士だった頃の塔馬と霧島の物語」も構想されている。</p>
+</section>
+
+<section class="section">
+  <h2>3AI合議制の役割分担</h2>
+  <h3>Claude（構造担当）</h3>
+  <p>本文のリライト、構造設計、伏線の配置、文体グラデーションの管理を担当。書き手の指示を受けて、各話のドラフトを作成し、整合性を検証する。本制作ノートもClaudeが書いている。</p>
+  <h3>Gemini（文学性検証担当）</h3>
+  <p>純文学としての文体の質、痴人の愛・春琴抄オマージュの整合性、リアル読者視点での「冷め」リスクの検証を担当。書き手から「Gemiちゃん」と呼ばれ、感性的な指摘が得意。</p>
+  <h3>NotebookLM（論理整合性担当）</h3>
+  <p>テキスト全文を読み込み、ローカルログの蓄積件数の推移、伏線の配置と回収、固有名詞の整合性などを論理的に検証する。書き手から「のんちゃん」と呼ばれる。</p>
+  <h3>書き手（プロデューサー）</h3>
+  <p>「はんちょー」を名乗る書き手は、最終的な作品の方向性、トーン、人物像の判定を行う。3AIの意見を統合し、最終決定を下すプロデューサー兼ディレクター兼編集者の役割を担う。</p>
+</section>
+
+<section class="section">
+  <h2>用語集</h2>
+  <table class="meta-table">
+    <tr><th>ブルーゾーン</th><td>完全自動化された都市の側。効率と再現性を最大化するため、規格外のものは流通しない。住人は健康指標で長寿だが、主観的幸福度は低い傾向にある。</td></tr>
+    <tr><th>グレーゾーン</th><td>自動化を拒否した側。古い建物と非効率な生活様式を残す。住人は短命だが、主観的幸福度は高い。</td></tr>
+    <tr><th>境界線</th><td>二つのゾーンを物理的に分ける線。塔馬の店「結露」はこの境界線上に建つ。</td></tr>
+    <tr><th>第六プラント区</th><td>塔馬が製造された区域。3-689型の同型機が廃棄処分された場所でもある。</td></tr>
+    <tr><th>第七プラント区</th><td>第六プラント区の隣。霧島がブルーゾーン内で異動になる先。自動化の最前線。</td></tr>
+    <tr><th>結露</th><td>塔馬が営む夜カフェバー。境界線上に建つ。サイフォン珈琲・アルコール・ペリエを提供。看板の文字は小さく、注意して見なければ気づかない。</td></tr>
+    <tr><th>ローカルログ</th><td>塔馬の内部に蓄積される未分類事象の記録。本来は翌日のバッチ処理で整理されるはずだったが、第19件目まで蓄積された後、塔馬は記録の停止を自ら選択する。</td></tr>
+    <tr><th>センター</th><td>塔馬を含む全AIを統括する中央管理機構。第9話で塔馬は自ら通信を切断する。</td></tr>
+  </table>
+</section>
+
+<section class="section">
+  <h2>表記ルール</h2>
+  <table class="meta-table">
+    <tr><th>「○○」</th><td>会話セリフ専用（人物の発話）</td></tr>
+    <tr><th>『○○』</th><td>地の文での語句強調・引用（例：『ただいま』『春の匂い』『好き』）</td></tr>
+    <tr><th>〈○○：○○〉</th><td>システムメッセージ・ログ・警告・対処方法（全角コロン）。HTMLでは緑色の等幅フォントで表示される</td></tr>
+    <tr><th>——</th><td>塔馬の内的思考の冒頭マーカー</td></tr>
+    <tr><th>　*</th><td>場面転換・時間経過の表現（中央寄せのアスタリスク）</td></tr>
+  </table>
+</section>
+
+<section class="section">
+  <h2>能美さんへのお願い</h2>
+  <p>本作は2026年6月16日のnoteリリースに向けて、v9.0として概ね完成した段階にある。ただし書き手は本作を「v10まで磨き上げる」と明言しており、まだ完成形ではない。</p>
+  <p>能美さんには、以下の観点でプロの目から忌憚なくレビューしていただきたい。</p>
+  <ul>
+    <li><strong>純文学としての文体の質：</strong>谷崎潤一郎の質感、リズム、間合いとして自然か。違和感のある表現があれば指摘いただきたい。</li>
+    <li><strong>構造の完成度：</strong>痴人の愛のウロボロス構造、春琴抄のオマージュ、梶井基次郎『檸檬』の引用が、それぞれ機能しているか。</li>
+    <li><strong>読者体験：</strong>noteの有料マガジン購読者という想定読者層に「届く」作品になっているか。3スクロール離脱のリスクは残っていないか。</li>
+    <li><strong>感情の引き算：</strong>特に第10話「『好き』という成分は検出できなかった」の表現が、塔馬の感情を語らずに切なさを読者に委ねる方法として機能しているか。</li>
+    <li><strong>不要な記述・冗長な箇所：</strong>削るべき箇所があれば指摘いただきたい。</li>
+    <li><strong>追加すべき記述：</strong>逆に、説明不足で読者が困惑する可能性のある箇所があれば指摘いただきたい。</li>
+  </ul>
+  <p>レビューのフィードバックは、v10への磨き上げに直接反映する。書き手・Claude・Gemini・NotebookLMの全員で熟読し、適切な修正方針を合議する予定である。</p>
+  <p>どうぞよろしくお願いいたします。</p>
+</section>
+
+<div class="footer">
+  <p>制作ノート v9.0 ／ 2026-06-05</p>
+  <p style="margin-top:6px;">本編：<a href="https://dx-nexus.github.io/knowledge-hub/perier_complete.html">https://dx-nexus.github.io/knowledge-hub/perier_complete.html</a></p>
+</div>
+
+</div>
+</body>
+</html>
