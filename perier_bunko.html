@@ -77,6 +77,65 @@ button.tocitem{display:flex;align-items:baseline;gap:16px;width:100%;background:
 </style>
 </head>
 <body>
+<div id="bunko-cover" style="
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background-color: #FAFAF8;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: opacity 1.2s ease-in-out;
+">
+    <div style="
+        width: 80vw; max-width: 600px; height: 85vh;
+        border: 1px solid #222;
+        outline: 1px solid #222;
+        outline-offset: -6px;
+        padding: 40px 20px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        writing-mode: vertical-rl;
+        text-orientation: upright;
+    ">
+        <h1 style="
+            font-family: 'Yu Mincho', 'Noto Serif JP', serif;
+            font-size: 2.5rem;
+            letter-spacing: 0.4em;
+            color: #1a1a1a;
+            margin: 0;
+            font-weight: normal;
+        ">ペリエの栞</h1>
+        <div style="margin: auto 0;">
+            <img src="images/cover_robot_spring.png" alt="ペリエの栞" style="
+                width: 120px;
+                height: auto;
+                opacity: 0.85;
+                mix-blend-mode: multiply;
+            ">
+        </div>
+        <p style="
+            font-family: 'Yu Mincho', 'Noto Serif JP', serif;
+            font-size: 1.2rem;
+            letter-spacing: 0.3em;
+            color: #1a1a1a;
+            margin: 0;
+        ">黒海 乃愛</p>
+    </div>
+</div>
+<script>
+document.getElementById('bunko-cover').addEventListener('click', function() {
+    this.style.opacity = '0';
+    this.style.pointerEvents = 'none';
+    setTimeout(() => { this.remove(); }, 1200);
+});
+</script>
+
+
 <div id="book"><div id="stage">
   <button id="toc-btn" onclick="UI.toc(true)">目次</button>
   <div id="viewport">
@@ -851,8 +910,31 @@ var Pager=(function(){
     chs.forEach(function(ch){
       ch.style.width='';
       var w=ch.getBoundingClientRect().width;
-      var pages=Math.max(1,Math.ceil((w-0.5)/pageW));
+      var pages=Math.max(1,Math.ceil(w/pageW));
+      // まず整数倍に設定して、内部の段落が境界をまたいでいないか実測
       ch.style.width=(pages*pageW)+'px';
+      // 各pの左端が、ページ境界の安全圏に収まるか検査
+      var chRight=ch.getBoundingClientRect().right;
+      var needExtraPage=false;
+      var ps=ch.querySelectorAll('p, span');
+      for(var i=0;i<ps.length;i++){
+        var pr=ps[i].getBoundingClientRect();
+        if(pr.width<=0||pr.height<=0) continue;
+        // 各pの左端が章右端からの距離で、ページ境界をまたぐかチェック
+        // 距離をpageWで割った余りが小さい（=境界近く）かつ pr.width分が次ページに食い込むか
+        var distFromRight=chRight-pr.right;
+        var pageIdx=Math.floor(distFromRight/pageW);
+        var pageLeftBoundary=chRight-(pageIdx+1)*pageW;
+        // pの左端がページ左境界より外（左）にあれば、はみ出し発生
+        if(pr.left < pageLeftBoundary - 0.5){
+          needExtraPage=true;
+          break;
+        }
+      }
+      if(needExtraPage){
+        pages+=1;
+        ch.style.width=(pages*pageW)+'px';
+      }
       chapterPage[ch.getAttribute('data-ch')]=acc;
       acc+=pages;
     });
