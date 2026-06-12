@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ペリエの栞 — v10.0 全10話完全版</title>
+<title>ペリエの栞</title>
 <style>
 :root {
   --bg: #0f0e17;
@@ -70,17 +70,68 @@ p.no-indent { text-indent:0; }
 .prologue h2 { color:var(--accent); font-size:18px; font-weight:400; margin-bottom:24px; letter-spacing:.06em; }
 .prologue p { text-indent:1em; margin-bottom:1.3em; font-size:16px; }
 .footer { text-align:center; margin-top:64px; font-size:12px; color:var(--text-dim); letter-spacing:.1em; font-family:"Hiragino Kaku Gothic ProN",sans-serif; }
+
+/* ===== カバーイラスト ===== */
+.cover-illustration {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3em 1em 1em;
+  background: var(--bg);
+}
+.cover-fig {
+  margin: 0;
+  max-width: 600px;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: coverFadeIn 1.4s cubic-bezier(0.4,0,0.2,1) 0.3s forwards;
+}
+.cover-img {
+  width: 100%;
+  border-radius: 4px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.10);
+  display: block;
+}
+@keyframes coverFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* 各話扉絵 */
+.ep-illustration {
+  text-align: center;
+  margin: 1.5em 0 1em;
+  opacity: 0;
+  animation: coverFadeIn 1s ease 0.2s forwards;
+}
+.ep-illustration img {
+  max-width: 100%;
+  max-height: 340px;
+  object-fit: cover;
+  border-radius: 3px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
 </style>
 </head>
 <body>
 <div class="wrapper">
 
 <header class="site-header">
-  <div class="brand">SnackableAI Romance Line ／ v10.0</div>
+  <div class="brand">SnackableAI Romance Line</div>
   <h1>ペリエの栞</h1>
-  <img src="images/アニメ風女性顔統合２.png" alt="ペリエの栞 表紙" style="width:100%;">
-  <div class="tagline">全10話・完全版（v10.0）</div>
+  <div class="tagline">全10話・完全版</div>
 </header>
+
+<section class="cover-illustration">
+  <figure class="cover-fig" id="cover-fig">
+    <img src="images/ai_arustory.png" 
+         alt="ペリエの栞 カバービジュアル" 
+         class="cover-img"
+         loading="eager">
+  </figure>
+</section>
 
 <section class="prologue-lead">
 <p style="text-align:center;font-weight:bold;margin:2em 0;font-size:1.1em;">これは、或る一体の超高性能な人間型観測機械が、ひとりの平凡な女にバグらされのめりこみ勝手に自滅していく、そんな只々情けない男の記録である。</p>
@@ -922,7 +973,7 @@ p.no-indent { text-indent:0; }
 </section>
 
 <footer class="footer">
-  <p>ペリエの栞　v10.0　全10話完結</p>
+  <p>ペリエの栞　全10話完結</p>
   <p style="margin-top:8px;">SnackableAI Romance Line ／ 2026</p>
 </footer>
 
