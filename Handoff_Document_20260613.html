@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>引き継ぎ資料 2026-06-13 ／ はんちょー Document Hub</title>
+<link rel="stylesheet" href="assets/common.css">
+</head>
+<body>
+
+<header>
+  <div class="hdr-top">
+    <div class="hdr-inner">
+      <div>
+        <h1>📤 引き継ぎ資料 2026-06-13</h1>
+        <p>ペリエ表紙画像を cover_anime_girl.png に差し替え・knowledge-hub へ push</p>
+      </div>
+    </div>
+  </div>
+  <div class="hdr-meta">
+    <span><a href="index.html">← Hub</a></span>
+    <span>🗓️ 2026-06-13</span>
+    <span style="padding:4px 10px;border-radius:4px;font-family:var(--mono);font-size:10px;background:rgba(217,119,6,.12);color:var(--accent2);border:1px solid var(--border);">by Claude Code</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- ミッションサマリ -->
+  <div class="sec">
+    <div class="sec-title">今回セッションのミッションと成果</div>
+    <div class="notice notice-green">
+      <p><strong>🎯 完了：</strong>perier-novel リポジトリの表紙画像（cover_anime_girl.png）を hancho-docs へコピーし、perier_complete.html 内の旧画像参照を置換。GitHub (dx-nexus/knowledge-hub) へ push 完了。また、セッション情報の他チャットへの共有可否について説明を実施。</p>
+    </div>
+  </div>
+
+  <!-- 完了タスク -->
+  <div class="sec">
+    <div class="sec-title">完了タスクサマリ</div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">1</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">リポジトリ現状把握</div>
+        <div class="roadmap-body">hancho-kb の全フォルダ・ファイル・git 履歴をスキャンし、30_Resources/ の成果物 HTML・CHANGELOG・index の構成を確認。</div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">2</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">表紙画像コピー &amp; HTML 差し替え</div>
+        <div class="roadmap-body">C:\git\perier-novel\images\cover_anime_girl.png を hancho-docs\images\ へコピー。perier_complete.html 内の ai_arustory.png / cover_robot_spring.png を cover_anime_girl.png に一括置換（-replace による正規表現置換）。</div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">3</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">git commit &amp; push to knowledge-hub</div>
+        <div class="roadmap-body">hancho-docs で git commit (ae1be75) 後、C:\git\hancho-docs-push.txt のトークンを使用して dx-nexus/knowledge-hub の main ブランチへ push 完了（40d78b5..ae1be75）。</div>
+      </div>
+    </div>
+    <div class="roadmap-connector"></div>
+
+    <div class="roadmap-step">
+      <div class="roadmap-num">4</div>
+      <div class="roadmap-content">
+        <div class="roadmap-title">セッション情報共有に関する説明</div>
+        <div class="roadmap-body">「実行結果を全 Claude チャットに共有できるか」という質問に回答。セッション間の自動共有は不可。CLAUDE.md・memory ファイル・/handoff スキルで引き継ぎ可能な旨を説明。</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 作成・更新ファイル一覧 -->
+  <div class="sec">
+    <div class="sec-title">作成・更新ファイル一覧</div>
+    <table class="tbl">
+      <thead>
+        <tr><th>ファイル</th><th>操作</th><th>概要</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>images/cover_anime_girl.png</td>
+          <td><span class="badge badge-live">新規</span></td>
+          <td>perier-novel から複製した表紙アニメ画像</td>
+        </tr>
+        <tr>
+          <td><a href="perier_complete.html">perier_complete.html</a></td>
+          <td><span class="badge badge-wip">更新</span></td>
+          <td>表紙画像参照を cover_anime_girl.png に差し替え</td>
+        </tr>
+        <tr>
+          <td><a href="Handoff_Document_20260613.html">Handoff_Document_20260613.html</a></td>
+          <td><span class="badge badge-live">新規</span></td>
+          <td>本引き継ぎ資料</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 次回アクション -->
+  <div class="sec">
+    <div class="sec-title">次回セッションへの引き継ぎ事項</div>
+
+    <div class="notice notice-amber">
+      <p><strong>⚡ 最優先：</strong>perier_complete.html の表紙画像表示を本番 URL で目視確認すること。</p>
+    </div>
+
+    <h4 style="font-size:13px;font-weight:700;color:var(--accent2);margin:16px 0 8px;">🔲 残課題・次のアクション</h4>
+    <table class="tbl">
+      <thead>
+        <tr><th>優先度</th><th>タスク</th><th>担当</th><th>ステータス</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>⭐⭐⭐</td>
+          <td>表紙画像の本番表示確認（knowledge-hub 公開 URL）</td>
+          <td>はんちょー</td>
+          <td><span class="badge b-todo">TODO</span></td>
+        </tr>
+        <tr>
+          <td>⭐⭐</td>
+          <td>push_hancho_docs.ps1 スクリプトの新規作成（private-core/scripts/ に未存在）</td>
+          <td>はんちょー / Claude</td>
+          <td><span class="badge b-todo">TODO</span></td>
+        </tr>
+        <tr>
+          <td>⭐</td>
+          <td>perier_bunko.html の表紙画像も同様に差し替えるか確認</td>
+          <td>はんちょー</td>
+          <td><span class="badge b-todo">TODO</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+
+<footer class="doc-footer">
+  Handoff_Document_20260613.html ／ generated by Claude Code ／ github.com/dx-nexus/knowledge-hub
+</footer>
+</body>
+</html>
