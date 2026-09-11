@@ -23,7 +23,7 @@ Claude / Gemini / Codex / Claude Code が共通参照するハンドオフ文書
 - Summary: 2026526_B_Infrastructure_Summary.txt
 
 ### 2026年5月26日 — EA事業部全体会議（月次定例）
-- 参加者: 柴川修一郎, 小林義明, 上島稔, EA事業部メンバー一同
+- 参加者: EA事業部メンバー一同（個人名は非掲載）
 - 用語抽出数: 9
 - Summary: 2026526_EA_Monthly_Meeting_Summary.txt
 

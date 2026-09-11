@@ -164,7 +164,7 @@ body{background:var(--dark);color:#E0E0F0;font-family:'Meiryo UI','Meiryo',sans-
       <div class="analogy-name cf">OPTION B</div>
       <div class="analogy-product">Cloudflare Pages + Zero Trust</div>
       <div class="analogy-metaphor">「<strong>顔認証＋玄関カメラ＋入館証</strong>のある要塞」<br>— 登録したメールアドレスの持ち主だけが、ワンタイムPINで入れる。</div>
-      <div class="analogy-why">NTTデータ社員など特定ドメインのメール保有者だけを許可できる。1人ずつの入退記録が残る。設定に3〜5時間かかるが、50名まで無料。</div>
+      <div class="analogy-why">特定企業の社員など特定ドメインのメール保有者だけを許可できる。1人ずつの入退記録が残る。設定に3〜5時間かかるが、50名まで無料。</div>
     </div>
   </div>
 </div>
@@ -184,7 +184,7 @@ body{background:var(--dark);color:#E0E0F0;font-family:'Meiryo UI','Meiryo',sans-
 
     <div class="cg-row-label">認証方式</div>
     <div class="cg-cell v"><span class="val">共有パスワード<br>（全員が同じ文字列を入力）</span></div>
-    <div class="cg-cell cf"><span class="val">メールドメイン認証 + ワンタイムPIN<br>（例: @nttdata.com のみ許可）</span><span class="win-badge">WIN</span></div>
+    <div class="cg-cell cf"><span class="val">メールドメイン認証 + ワンタイムPIN<br>（例: @example.co.jp のみ許可）</span><span class="win-badge">WIN</span></div>
 
     <div class="cg-row-label">堅牢性</div>
     <div class="cg-cell v"><span class="badge badge-mid">中</span><span class="val"> パスワード漏洩で全員アウト。Chromeへの保存・共有での流出リスクあり。</span></div>
@@ -230,7 +230,7 @@ body{background:var(--dark);color:#E0E0F0;font-family:'Meiryo UI','Meiryo',sans-
       <div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><strong>Cloudflareアカウント作成</strong>（無料）<span class="flow-time">5分</span></div></div>
       <div class="flow-step"><div class="flow-num">2</div><div class="flow-text"><strong>Cloudflare PagesにGitHub接続</strong>（hancho-docsをPrivate化後）<span class="flow-time">15分</span></div></div>
       <div class="flow-step"><div class="flow-num">3</div><div class="flow-text"><strong>Zero Trust Access アプリを作成</strong>（ドメイン設定・ポリシー設定）<span class="flow-time">30分</span></div></div>
-      <div class="flow-step"><div class="flow-num">4</div><div class="flow-text"><strong>メールドメインポリシー設定</strong>（例: @qolony.co.jp のみ許可 + OTP）<span class="flow-time">20分</span></div></div>
+      <div class="flow-step"><div class="flow-num">4</div><div class="flow-text"><strong>メールドメインポリシー設定</strong>（例: @example.co.jp のみ許可 + OTP）<span class="flow-time">20分</span></div></div>
       <div class="flow-step"><div class="flow-num">5</div><div class="flow-text"><strong>DNS切り替え・動作確認</strong><span class="flow-time">30分〜</span></div></div>
     </div>
   </div>
@@ -261,7 +261,7 @@ body{background:var(--dark);color:#E0E0F0;font-family:'Meiryo UI','Meiryo',sans-
         <div class="rd-label">CLOUDFLARE を選ぶなら</div>
         <div class="rd-when">
           ・<strong>本番運用の最終形</strong>として最初から正しく作りたい<br>
-          ・NTTデータ等のクライアントに共有する可能性がある<br>
+          ・金融系大手SI等のクライアントに共有する可能性がある<br>
           ・コンプライアンス上、入退記録が必要<br>
           ・無料で企業レベルのセキュリティを実現したい
         </div>
